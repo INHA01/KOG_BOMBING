@@ -6,18 +6,13 @@
         _MainTex("Albedo(RGB)", 2D)="White"{}
         _Glossiness("Smoothness", Range(0, 1)) = 0
         _Metallic("Metallic", Range(0, 1)) = 0
-        [HideInInspector]_QueueOffset("_QueueOffset", Float) = 0
-        [HideInInspector]_QueueControl("_QueueControl", Float) = -1
-        [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
-        [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
-        [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
     }
     SubShader
     {
         Tags
         {
-            "RenderType"="Opaque"
-            "UniversalMaterialType" = "Lit"
+            "RenderType"="Transparent" 
+            "Queue"="Transparent" 
         }
 
         Stencil {

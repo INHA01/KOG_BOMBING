@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ViewMaskObject : MonoBehaviour
+namespace Semin
 {
-    void Start()
-    {
-        gameObject.SetActive(false);   
-    }
+	public class ViewMaskObject : MonoBehaviour
+	{
+		void Start()
+		{
+			gameObject.SetActive(false);
+		}
+	}
 }

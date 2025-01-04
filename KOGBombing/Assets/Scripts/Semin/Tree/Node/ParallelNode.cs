@@ -42,5 +42,5 @@ namespace Semin
 			return INode.ENodeState.Success;
 		}
 	}
-
+		
 }

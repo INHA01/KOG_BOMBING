@@ -7,12 +7,12 @@ namespace Semin
 {
 	public class ActionNode : INode
 	{
-		Func<INode.ENodeState> update = null;
+		Func<INode.ENodeState> act = null;
 
 		public INode.ENodeState Evaluate()
 		{
-			if (update != null)
-				return update.Invoke();
+			if (act != null)
+				return act.Invoke();
 			else return INode.ENodeState.Fail;
 		}
 	}

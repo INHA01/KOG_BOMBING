@@ -19,10 +19,6 @@ namespace Semin
 		{
 			return x == y;
 		}
-		public bool Equals(EKey x, EKey y)
-		{
-			throw new System.NotImplementedException();
-		}
 
 		int IEqualityComparer<EKey>.GetHashCode(EKey obj)
 		{

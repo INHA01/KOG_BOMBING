@@ -8,6 +8,12 @@ namespace Semin
 	public class ActionNode : INode
 	{
 		Func<INode.ENodeState> act = null;
+		
+		public ActionNode(Func<INode.ENodeState> onUpdate)
+		{
+			act = onUpdate;
+		}
+
 
 		public INode.ENodeState Evaluate()
 		{

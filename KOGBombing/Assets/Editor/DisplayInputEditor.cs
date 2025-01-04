@@ -34,7 +34,7 @@ namespace Semin
 			playerController = (PlayerController)EditorGUILayout.ObjectField(playerController, typeof(PlayerController), true);
 			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandWidth(true), GUILayout.Height(500));
 
-			for (int i = 0; i < playerController.inputs.Count; i++)
+			for (int i = 0; i < playerController.Inputs.Count; i++)
 			{
 				GUILayout.Label($"Key: {playerController.Inputs.Keys.ElementAt(i)}, Value: {playerController.Inputs.Values.ElementAt(i)}");
 			}

@@ -6,34 +6,38 @@ using Unity.VisualScripting;
 
 namespace Semin
 {
-
-
 	public class PlayerController : MonoBehaviour
 	{
-
-		public float moveSpeed = 6;
-		public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
+		[SerializeField] public GameObject playerObj;
+		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 		public Dictionary<EKey, bool> Inputs { get { return inputs; } }
-
-		Rigidbody rigidbody;
+		BehaviourTree behaviourTree;
+		public float moveSpeed = 6;
 		Camera viewCamera;
-		Vector3 velocity;
 
 		void Start()
 		{
-			rigidbody = GetComponent<Rigidbody>();
 			viewCamera = Camera.main;
 
 			for (int i = 0; i < (int)EKey.MAX; i++)
 				inputs[(EKey)i] = false;
+
+			behaviourTree = new BehaviourTree(SetBehaviourTree());
+		}
+
+		INode SetBehaviourTree()
+		{
+			return new ParallelNode(
+				new List<INode>()
+				{
+					new ActionNode(Move),
+					new ActionNode(RotatePlayer)
+				}
+			);
 		}
 
 		void Update()
 		{
-			Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, viewCamera.transform.position.y));
-			transform.LookAt(mousePos + Vector3.up * transform.position.y);
-			velocity = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized * moveSpeed;
-
 			//  Move
 			if (Input.GetKeyDown(KeyCode.W))
 				inputs[EKey.W] = true;
@@ -53,9 +57,58 @@ namespace Semin
 				inputs[EKey.D] = false;
 		}
 
-		void FixedUpdate()
-		{
-			rigidbody.MovePosition(rigidbody.position + velocity * Time.fixedDeltaTime);
+		private void FixedUpdate()
+		{ 
+			behaviourTree.Operate();
 		}
+
+
+		#region Attack Node
+		INode.ENodeState Move()
+		{
+			bool isSuccess = false;
+
+			if (inputs[EKey.W])
+			{
+				Debug.Log(transform.forward);
+				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+				isSuccess = true;
+			}
+			if (inputs[EKey.A])
+			{
+				transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * -1);
+				isSuccess = true;
+			}
+			if (inputs[EKey.D])
+			{
+				transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
+				isSuccess = true;
+			}
+			if (inputs[EKey.S])
+			{
+				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1);
+				isSuccess = true;
+			}
+
+			if (isSuccess)
+				return INode.ENodeState.Success;
+			return INode.ENodeState.Fail;
+		}
+
+		INode.ENodeState RotatePlayer()
+		{
+			Ray cameraRay = viewCamera.ScreenPointToRay(Input.mousePosition);
+			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
+			float rayLength;
+
+			if (GroupPlane.Raycast(cameraRay, out rayLength))
+			{
+				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+				playerObj.transform.LookAt(new Vector3(pointTolook.x, playerObj.transform.position.y, pointTolook.z));
+			}
+
+			return INode.ENodeState.Success;
+		}
+		#endregion
 	}
 }

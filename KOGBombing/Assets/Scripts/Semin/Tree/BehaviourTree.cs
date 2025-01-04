@@ -13,7 +13,7 @@ namespace Semin
 			rootNode = node;
 		}
 
-		public void Operator()
+		public void Operate()
 		{
 			rootNode.Evaluate();
 		}

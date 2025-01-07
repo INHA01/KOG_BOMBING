@@ -2,36 +2,139 @@
 {
     Properties
     {
-        _Color("Color", Color) = (1, 1, 1, 0)
-        _MainTex("Albedo(RGB)", 2D)="White"{}
+        _Color("Color", Color) = (1, 1, 1, 1)
+        //_MainTex ("Texture", 2D) = "white" {}
         _Glossiness("Smoothness", Range(0, 1)) = 0
         _Metallic("Metallic", Range(0, 1)) = 0
+        _DarkenFactor ("Darken Factor", Range(0.0, 1.0)) = 0.5 // 어둡게 할 비율
+        _MainTex ("Base (RGB)", 2D) = "white" { }
     }
     SubShader
     {
+        LOD 100
+        Name "Universal Forward"
         Tags
-        {
-            "RenderType"="Transparent" 
-            "Queue"="Transparent" 
+        {            
+            "RenderType"="Opacue" 
         }
 
-        Stencil {
-            Ref 1
-            Comp equal
+        Pass
+        {
+            Name "Universal Forward"
+            Tags
+            {            
+                "RenderType"="Opacue" 
+            }
+
+            ZWrite On
+            Stencil
+            {
+                Ref 1
+                Comp Equal
+            }
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+            
+            struct appdata_t
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+            };
+
+            sampler2D _MainTex;
+            float _DarkenFactor; // 어둡게 할 비율
+
+            v2f vert (appdata_t v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                return o;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 col = tex2D(_MainTex, i.uv);
+                
+                // 겹쳐지지 않는 부분은 어둡게
+                //col.rgb *= (1.0 - _DarkenFactor); // 어둡게 할 비율에 따라 색상 조정
+                
+                return col;
+            }
+            ENDHLSL
         }
+
         Pass
         {
             Name "Universal Forward"
             Tags
             {
+                "RenderType"="Opacue" 
                 "LightMode" = "UniversalForward"
             }
+            // 겹쳐지지 않는 부분에서 색상 보이기
+            Stencil
+            {
+                Ref 1
+                Comp NotEqual
+                Pass Keep
+            }
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+
+            struct appdata_t
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+            };
+
+            sampler2D _MainTex;
+            float _DarkenFactor; // 어둡게 할 비율
+
+            v2f vert (appdata_t v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                return o;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 col = tex2D(_MainTex, i.uv);
+                
+                // 겹쳐지지 않는 부분은 어둡게
+                //col.rgb *= (1.0 - _DarkenFactor); // 어둡게 할 비율에 따라 색상 조정
+                
+                return col * 0.1f;
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
         
         // Render State
         Cull Back
         Blend One Zero
         ZTest LEqual
-        ZWrite On
         
         // Debug
         // <None>

@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 namespace Semin
 {
+
 	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField] public GameObject playerObj;
@@ -14,7 +16,16 @@ namespace Semin
 		public Dictionary<EKey, bool> Inputs { get { return inputs; } }
 		BehaviourTree behaviourTree;
 		public float moveSpeed = 6;
+		Vector2 speedValue = Vector2.zero;
 		Camera viewCamera;
+
+		public enum EDirection
+		{
+			Up,
+			Down,
+			Left,
+			Right,
+		}
 
 		void Start()
 		{
@@ -32,31 +43,13 @@ namespace Semin
 			return new ParallelNode(
 				new List<INode>()
 				{
-					new ActionNode(Move),
+					new IfDecoratorNode(() => CheckInput(inputs[EKey.W]), new ActionNode(() => Move(EDirection.Up))),
+					new IfDecoratorNode(() => CheckInput(inputs[EKey.A]), new ActionNode(() => Move(EDirection.Left))),
+					new IfDecoratorNode(() => CheckInput(inputs[EKey.S]), new ActionNode(() => Move(EDirection.Down))),
+					new IfDecoratorNode(() => CheckInput(inputs[EKey.D]), new ActionNode(() => Move(EDirection.Right))),
 					new ActionNode(RotatePlayer)
 				}
 			);
-		}
-
-		void Update()
-		{
-			//  Move
-			if (Input.GetKeyDown(KeyCode.W))
-				inputs[EKey.W] = true;
-			if (Input.GetKeyUp(KeyCode.W))
-				inputs[EKey.W] = false;
-			if (Input.GetKeyDown(KeyCode.A))
-				inputs[EKey.A] = true;
-			if (Input.GetKeyUp(KeyCode.A))
-				inputs[EKey.A] = false;
-			if (Input.GetKeyDown(KeyCode.S))
-				inputs[EKey.S] = true;
-			if (Input.GetKeyUp(KeyCode.S))
-				inputs[EKey.S] = false;
-			if (Input.GetKeyDown(KeyCode.D))
-				inputs[EKey.D] = true;
-			if (Input.GetKeyUp(KeyCode.D))
-				inputs[EKey.D] = false;
 		}
 
 		private void FixedUpdate()
@@ -64,36 +57,26 @@ namespace Semin
 			behaviourTree.Operate();
 		}
 
-
 		#region Attack Node
-		INode.ENodeState Move()
+		INode.ENodeState Move(EDirection direction)
 		{
-			bool isSuccess = false;
-
-			if (inputs[EKey.W])
+			switch(direction)
 			{
-				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
-				isSuccess = true;
-			}
-			if (inputs[EKey.A])
-			{
-				transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * -1);
-				isSuccess = true;
-			}
-			if (inputs[EKey.D])
-			{
-				transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
-				isSuccess = true;
-			}
-			if (inputs[EKey.S])
-			{
-				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1);
-				isSuccess = true;
+				case EDirection.Left:
+					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * -1 * speedValue.x);
+					break;
+				case EDirection.Right:
+					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * speedValue.x);
+					break;
+				case EDirection.Up:
+					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * speedValue.y);
+					break;
+				case EDirection.Down:
+					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1 * speedValue.y);
+					break;
 			}
 
-			if (isSuccess)
-				return INode.ENodeState.Success;
-			return INode.ENodeState.Fail;
+			return INode.ENodeState.Success;
 		}
 
 		INode.ENodeState RotatePlayer()
@@ -109,6 +92,63 @@ namespace Semin
 			}
 
 			return INode.ENodeState.Success;
+		}
+
+		#endregion
+
+		#region If Decorater Node
+		bool CheckInput(bool input)
+		{
+			return input;
+		}
+		#endregion
+
+		#region Input System
+		public void OnMove(InputValue value)
+		{
+			Vector2 inputVector = value.Get<Vector2>();
+			speedValue.x = Mathf.Abs(inputVector.x);
+			speedValue.y = Mathf.Abs(inputVector.y);
+			inputVector.x = ConvertToThreeValues(value.Get<Vector2>().normalized.x);
+			inputVector.y = ConvertToThreeValues(value.Get<Vector2>().normalized.y);
+
+			switch(inputVector.x)
+			{
+				case -1:
+					inputs[EKey.A] = true;
+					break;
+				case 0:
+					inputs[EKey.A] = false;
+					inputs[EKey.D] = false;
+					break;
+				case 1:
+					inputs[EKey.D] = true;
+					break;
+			}
+
+			switch (inputVector.y)
+			{
+				case -1:
+					inputs[EKey.S] = true;
+					break;
+				case 0:
+					inputs[EKey.W] = false;
+					inputs[EKey.S] = false;
+					break;
+				case 1:
+					inputs[EKey.W] = true;
+					break;
+			}
+		}
+
+		public int ConvertToThreeValues(float value)
+		{
+			if (value > 0)
+				return 1;
+			else if (value < 0)
+				return -1;
+			else
+				return 0;
 		}
 		#endregion
 	}

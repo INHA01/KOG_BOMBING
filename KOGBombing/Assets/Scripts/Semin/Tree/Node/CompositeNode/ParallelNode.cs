@@ -8,27 +8,27 @@ namespace Semin
 {
 	public class ParallelNode : INode
 	{
-		List<INode> child;
+		List<INode> children;
 		bool isSuccessed;
 		bool isRunning;
 
 		public ParallelNode(List<INode> child)
 		{
-			this.child = child;
+			this.children = child;
 			isSuccessed = false;
 		}
 
 		public INode.ENodeState Evaluate()
 		{
-			if (child == null || child.Count == 0)
+			if (children == null || children.Count == 0)
 				return INode.ENodeState.Fail;
 
 			isSuccessed = false;
 			isRunning = false; 
 
-			for (int i = 0; i < child.Count; i++)
+			for (int i = 0; i < children.Count; i++)
 			{
-				switch (child[i].Evaluate())
+				switch (children[i].Evaluate())
 				{
 					case INode.ENodeState.Success:
 						isSuccessed = true;

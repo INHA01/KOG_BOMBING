@@ -6,21 +6,21 @@ namespace Semin
 {
 	public class SelectorNode : INode
 	{
-		List<INode> child;
+		List<INode> children;
 
 		public SelectorNode(List<INode> chlid)
 		{
-			child = chlid;
+			children = chlid;
 		}
 
 		public INode.ENodeState Evaluate()
 		{
-			if (child == null)
+			if (children == null)
 				return INode.ENodeState.Fail;
 
-			for (int i = 0; i < child.Count; i++)
+			for (int i = 0; i < children.Count; i++)
 			{
-				switch (child[i].Evaluate())
+				switch (children[i].Evaluate())
 				{
 					case INode.ENodeState.Running:
 						return INode.ENodeState.Running;

@@ -7,21 +7,21 @@ namespace Semin
 {
 	public class SequenceNode : INode
 	{
-		List<INode> child;
+		List<INode> children;
 
 		public SequenceNode(List<INode> node)
 		{
-			child = node;
+			children = node;
 		}
 
 		public INode.ENodeState Evaluate()
 		{
-			if (child == null || child.Count == 0)
+			if (children == null || children.Count == 0)
 				return INode.ENodeState.Fail;
 
-			for (int i = 0; i < child.Count; i++)
+			for (int i = 0; i < children.Count; i++)
 			{
-				switch (child[i].Evaluate())
+				switch (children[i].Evaluate())
 				{
 					case INode.ENodeState.Running:
 						return INode.ENodeState.Running;

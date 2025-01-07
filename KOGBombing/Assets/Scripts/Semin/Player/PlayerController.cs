@@ -17,6 +17,7 @@ namespace Semin
 		BehaviourTree behaviourTree;
 		public float moveSpeed = 6;
 		Vector2 speedValue = Vector2.zero;
+		Vector2 mousePos = Vector2.zero;
 		Camera viewCamera;
 
 		public enum EDirection
@@ -81,7 +82,7 @@ namespace Semin
 
 		INode.ENodeState RotatePlayer()
 		{
-			Ray cameraRay = viewCamera.ScreenPointToRay(Input.mousePosition);
+			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
 			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
 			float rayLength;
 
@@ -104,6 +105,11 @@ namespace Semin
 		#endregion
 
 		#region Input System
+		public void OnRotate(InputValue value)
+		{
+			mousePos = value.Get<Vector2>();
+		}
+	
 		public void OnMove(InputValue value)
 		{
 			Vector2 inputVector = value.Get<Vector2>();

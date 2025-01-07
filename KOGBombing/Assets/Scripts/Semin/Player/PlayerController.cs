@@ -9,6 +9,7 @@ namespace Semin
 	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField] public GameObject playerObj;
+		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 		public Dictionary<EKey, bool> Inputs { get { return inputs; } }
 		BehaviourTree behaviourTree;
@@ -22,6 +23,7 @@ namespace Semin
 			for (int i = 0; i < (int)EKey.MAX; i++)
 				inputs[(EKey)i] = false;
 
+			rigidBody = GetComponent<Rigidbody>();	
 			behaviourTree = new BehaviourTree(SetBehaviourTree());
 		}
 
@@ -70,7 +72,6 @@ namespace Semin
 
 			if (inputs[EKey.W])
 			{
-				Debug.Log(transform.forward);
 				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 				isSuccess = true;
 			}

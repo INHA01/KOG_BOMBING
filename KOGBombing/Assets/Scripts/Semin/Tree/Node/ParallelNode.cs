@@ -10,6 +10,7 @@ namespace Semin
 	{
 		List<INode> child;
 		bool isSuccessed;
+		bool isRunning;
 
 		public ParallelNode(List<INode> child)
 		{
@@ -23,6 +24,8 @@ namespace Semin
 				return INode.ENodeState.Fail;
 
 			isSuccessed = false;
+			isRunning = false; 
+
 			for (int i = 0; i < child.Count; i++)
 			{
 				switch (child[i].Evaluate())
@@ -31,6 +34,7 @@ namespace Semin
 						isSuccessed = true;
 						continue;
 					case INode.ENodeState.Running:
+						isRunning = true;
 						continue;
 					case INode.ENodeState.Fail:
 						continue;
@@ -39,6 +43,8 @@ namespace Semin
 
 			if (!isSuccessed)
 				return INode.ENodeState.Fail;
+			if (isRunning)
+				return INode.ENodeState.Running;
 			return INode.ENodeState.Success;
 		}
 	}

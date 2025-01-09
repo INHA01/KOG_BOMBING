@@ -121,7 +121,6 @@ public class RandomMatch : PhotonMatch
         
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("test2");
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
         }
     }

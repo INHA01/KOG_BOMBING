@@ -2,14 +2,16 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using Unity.VisualScripting;
 using UnityEngine.InputSystem;
-
+using Photon.Pun;
+using Photon.Realtime;
 namespace Semin
 {
 
 	public class PlayerController : MonoBehaviour
 	{
+		[SerializeField]
+		PhotonView pv;
 		[SerializeField] public GameObject playerObj;
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -54,7 +56,8 @@ namespace Semin
 		}
 
 		private void FixedUpdate()
-		{ 
+		{
+			if (!pv.IsMine) return;
 			behaviourTree.Operate();
 		}
 

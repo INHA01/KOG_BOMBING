@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Semin
 {
-	public class SelectorNode : INode
-	{
-		List<INode> children;
-
-		public SelectorNode(List<INode> chlid)
+	public class SequenceNode : CompositeNode
+    {
+		public SequenceNode(List<INode> node)
 		{
-			children = chlid;
+			children = node;
 		}
 
-		public INode.ENodeState Evaluate()
+		public override INode.ENodeState Evaluate()
 		{
-			if (children == null)
+			if (children == null || children.Count == 0)
 				return INode.ENodeState.Fail;
 
 			for (int i = 0; i < children.Count; i++)
@@ -25,11 +24,13 @@ namespace Semin
 					case INode.ENodeState.Running:
 						return INode.ENodeState.Running;
 					case INode.ENodeState.Success:
-						return INode.ENodeState.Success;
+						continue;
+					case INode.ENodeState.Fail:
+						return INode.ENodeState.Fail;
 				}
 			}
 
-			return INode.ENodeState.Fail;
+			return INode.ENodeState.Success;
 		}
 	}
 }

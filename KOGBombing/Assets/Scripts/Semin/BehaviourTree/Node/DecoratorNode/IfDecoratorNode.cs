@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Semin
 {
-	public class IfDecoratorNode : DecoraterNode
+	public class IfDecoratorNode : DecoratorNode
 	{
 		private Func<bool> condition;
 

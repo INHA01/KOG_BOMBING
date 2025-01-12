@@ -18,8 +18,8 @@ namespace Semin
 				return INode.ENodeState.Fail;
 
 			for (int i = 0; i < children.Count; i++)
-			{
-				switch (children[i].Evaluate())
+            {
+                switch (children[i].Evaluate())
 				{
 					case INode.ENodeState.Running:
 						return INode.ENodeState.Running;

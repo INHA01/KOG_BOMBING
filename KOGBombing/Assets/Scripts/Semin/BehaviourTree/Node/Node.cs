@@ -6,7 +6,7 @@ namespace Semin
 {
 	public abstract class Node : ScriptableObject, INode
 	{
-        [HideInInspector] public string guid;
+        public string guid;
 		[HideInInspector] public Vector2 position;
 
 		public abstract INode.ENodeState Evaluate();

@@ -7,7 +7,7 @@ namespace Semin
 {
     public abstract class CompositeNode : Node
     {
-        [SerializeField] protected List<Node> children;
+        [SerializeField] protected List<Node> children = new List<Node>();
 
         public abstract override INode.ENodeState Evaluate();
 
@@ -19,6 +19,8 @@ namespace Semin
 
         public void AddChild(Node child)
         {
+            if (children == null)
+                children = new List<Node>();
             children.Add(child);
         }
 

@@ -11,8 +11,6 @@ public class FuncDropdownFieldView : DropdownField
     public Action<FuncDropdownFieldView> OnSelected;
     public new class UxmlFactory : UxmlFactory<FuncDropdownFieldView, DropdownField.UxmlTraits> { }
     private MethodInfo[] methods;
-    public MethodInfo SelectMethod;
-    public PlayerController gameObj;
     public Func<INode.ENodeState> SelectFunc;
     public NodeView SelectNode;
 
@@ -23,17 +21,20 @@ public class FuncDropdownFieldView : DropdownField
 
     public void SetDropdownMenu(ClassDropdownFieldView field)
     {
+        choices.Clear();
         if (field != null)
         {
-            gameObj = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-            methods = field.SelectType.GetDeclaredMethods();
-            if (SelectNode.node is ActionNode action)
+            if (field.SelectType != null)
+                methods = field.SelectType.GetDeclaredMethods();    
+            Type type = null;
+            if (SelectNode.node is ActionNode)
+                type = typeof(INode.ENodeState);
+            else if (SelectNode.node is IfDecoratorNode)
+                type = typeof(bool);
+            for (int i = 0; i < methods.Length; i++)
             {
-                for (int i = 0; i < methods.Length; i++)
-                {
-                    if (methods[i].IsPublic && methods[i].ReturnType == typeof(INode.ENodeState))
-                        choices.Add(methods[i].Name);
-                }
+                if (methods[i].IsPublic && methods[i].ReturnType == type)   
+                    choices.Add(methods[i].Name);
             }
         }
     }
@@ -41,17 +42,6 @@ public class FuncDropdownFieldView : DropdownField
     public override void SetValueWithoutNotify(string newValue)
     {
         base.SetValueWithoutNotify(newValue);
-        if (methods != null)
-        {
-            for (int i = 0; i < methods.Length; i++)
-            {
-                if (newValue == methods[i].Name)
-                {
-                    SelectFunc = gameObj.RotatePlayer;
-                    SelectMethod = methods[i];
-                }
-            }
-        }
         if (OnSelected != null)
             OnSelected.Invoke(this);
     }

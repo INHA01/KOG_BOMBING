@@ -65,6 +65,7 @@ public class BehaviorTreeEditor : EditorWindow
         funcDropdownView.OnSelected = OnFuncSelectionChanged;
 
         directionParameterView.OnSelected = OnDirectionSelectionChanged;
+        keyParameterView.OnSelected = OnKeySelectionChanged;
 
         fieldView.SetEnabled(false);
         funcDropdownView.SetEnabled(false);
@@ -84,6 +85,9 @@ public class BehaviorTreeEditor : EditorWindow
     void OnNodeSelectionChanged(NodeView node)
     {
         inspectorView.UpdateSelection(node);
+        funcDropdownView.value = null;
+        keyParameterView.value = null;
+        directionParameterView.value = null;
         selectNode = node;  
 
         if (inspectorView.SelectNode.node is CompositeNode || inspectorView.SelectNode.node is RootNode)
@@ -96,6 +100,8 @@ public class BehaviorTreeEditor : EditorWindow
         {
             funcDropdownView.SetEnabled(true);
             classDropdownView.SetEnabled(true);
+            funcDropdownView.SelectNode = node;
+            funcDropdownView.SetDropdownMenu(classDropdownView);
         }
     }
 
@@ -112,6 +118,8 @@ public class BehaviorTreeEditor : EditorWindow
 
     void OnFuncSelectionChanged(FuncDropdownFieldView field)
     {
+        if (field.value == null)
+            return;
         parameters = GetParameters(field.value.ToString());
 
         PlayerController controller = fieldView.value.GetComponent<PlayerController>();
@@ -119,20 +127,32 @@ public class BehaviorTreeEditor : EditorWindow
             return;
 
         if (selectNode.node is ActionNode action)
-        {
             action.SetAction(field.value.ToString(), controller);
-        }
+        else if (selectNode.node is IfDecoratorNode deco)
+            deco.SetCondition(field.value.ToString(), controller);
     }
 
     void OnDirectionSelectionChanged(DirectionParameterView direction)
     {
+        if (funcDropdownView.value == null)
+            return;
         PlayerController controller = fieldView.value.GetComponent<PlayerController>();
         if (parameters.Length > 0)
         {
             if (selectNode.node is ActionNode action)
-            {
-                action.SetActionWithParam(funcDropdownView.value.ToString(), controller, typeof(PlayerController.EDirection), direction.value.ToString());
-            }
+                action.SetActionWithParam(funcDropdownView.value.ToString(), controller, direction.value.ToString());
+        }
+    }
+
+    void OnKeySelectionChanged(KeyParameterView key)
+    {
+        if (funcDropdownView.value == null)
+            return;
+        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
+        if (parameters.Length > 0)
+        {
+            if (selectNode.node is IfDecoratorNode deco)
+                deco.SetConditionWithParam(funcDropdownView.value.ToString(), controller, key.value.ToString());
         }
     }
 

@@ -1,19 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7687267869080679730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
-  m_Name: ActionNode
-  m_EditorClassIdentifier: 
-  guid: 7356388ff572e7e47a8e269d40eded9f
-  position: {x: 0, y: 0}
 --- !u!114 &-5960134068068445967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,8 +13,79 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   guid: cb2cf1624a5c05544b0edcd1210687e2
-  position: {x: 33.23999, y: 119.56}
-  child: {fileID: 0}
+  position: {x: -2.5599976, y: 120}
+  child: {fileID: -3632268561137321133}
+--- !u!114 &-4300339909218241574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: c77c27f0e6a3ed0449ab946b5ac1e3fc
+  position: {x: 0, y: 0}
+  target: {fileID: 0}
+  paramName: 
+  method: 
+--- !u!114 &-3632268561137321133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a5409d9ede8f54b86de6158dd9638c, type: 3}
+  m_Name: ParallelNode
+  m_EditorClassIdentifier: 
+  guid: 8406dfb136b4446458310c0a1a2d385b
+  position: {x: 183, y: 120}
+  children:
+  - {fileID: 6671587735553896167}
+  - {fileID: 1850769793715714496}
+  - {fileID: -2008146607459325110}
+  - {fileID: 2096103126947413009}
+--- !u!114 &-2008146607459325110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 667717dad8c85fa4490bfcb15e8aafb0
+  position: {x: 389.00003, y: 120.00001}
+  child: {fileID: 7448638544402809524}
+  method: CheckInput
+  target: {fileID: 0}
+  paramName: S
+--- !u!114 &-1398979879415953316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: f17813db707082349864b80883ed60b8
+  position: {x: 529.99994, y: 221.99998}
+  target: {fileID: 0}
+  paramName: Right
+  method: Move
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,4 +102,118 @@ MonoBehaviour:
   state: 2
   nodes:
   - {fileID: -5960134068068445967}
-  - {fileID: -7687267869080679730}
+  - {fileID: -3632268561137321133}
+  - {fileID: 6671587735553896167}
+  - {fileID: 1787528668479356024}
+  - {fileID: 1850769793715714496}
+  - {fileID: -2008146607459325110}
+  - {fileID: 2096103126947413009}
+  - {fileID: 4374226516329978960}
+  - {fileID: 7448638544402809524}
+  - {fileID: -1398979879415953316}
+  - {fileID: -4300339909218241574}
+--- !u!114 &1787528668479356024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 013b84c8d05d94748ab7eb02abb0519a
+  position: {x: 530, y: -82.00005}
+  target: {fileID: 0}
+  paramName: Up
+  method: Move
+--- !u!114 &1850769793715714496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: f45f6a817f16f704db9e5ff76419d86f
+  position: {x: 389, y: 17}
+  child: {fileID: 4374226516329978960}
+  method: CheckInput
+  target: {fileID: 0}
+  paramName: A
+--- !u!114 &2096103126947413009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 7d901420afc13fb48846fd188546155f
+  position: {x: 389.00006, y: 222.18001}
+  child: {fileID: -1398979879415953316}
+  method: CheckInput
+  target: {fileID: 0}
+  paramName: D
+--- !u!114 &4374226516329978960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 87db9a45692d8bd4bb14ba7ffb2b8e0d
+  position: {x: 530, y: 16.999952}
+  target: {fileID: 0}
+  paramName: Left
+  method: Move
+--- !u!114 &6671587735553896167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: a154e70d7dcc67048b8d7a817c2ba9c4
+  position: {x: 389, y: -82}
+  child: {fileID: 1787528668479356024}
+  method: CheckInput
+  target: {fileID: 0}
+  paramName: W
+--- !u!114 &7448638544402809524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: d71c3fc0844b38d4ebfaac8955df190d
+  position: {x: 530, y: 120}
+  target: {fileID: 0}
+  paramName: Down
+  method: Move

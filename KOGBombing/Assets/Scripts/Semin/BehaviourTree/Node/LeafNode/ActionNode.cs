@@ -12,9 +12,6 @@ namespace Semin
         public Func<INode.ENodeState> act;
         [HideInInspector] public PlayerController target;
         public string paramName = null;
-        public System.Type paramType = null;
-
-        public PlayerController targetInspector { get { return target; } }
         public string method = "";
 
 
@@ -27,16 +24,13 @@ namespace Semin
         {
             method = methodName;
             target = controller;
-            paramType = null;
             paramName = null;
         }
 
-        public void SetActionWithParam(string methodName, PlayerController controller, System.Type paramType, string paramName)
+        public void SetActionWithParam(string methodName, PlayerController controller, string paramName)
         {
             method = methodName;
             target = controller;
-            this.paramType = paramType;
-            Debug.Log(this.paramType);
             this.paramName = paramName;
         }
 
@@ -45,9 +39,9 @@ namespace Semin
             var methdoInfo = target.GetType().GetMethod(method);
             if (methdoInfo != null)
             {
-                if (paramName != null)
+                ParameterInfo[] parameters = methdoInfo.GetParameters();
+                if (parameters.Length > 0)
                 {
-                    ParameterInfo[] parameters = methdoInfo.GetParameters();
                     System.Type type = parameters[0].ParameterType;
                     act = () => (INode.ENodeState)methdoInfo.Invoke(target, new object[] { Enum.Parse(type, paramName) });
                 }

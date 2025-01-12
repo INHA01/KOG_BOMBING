@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.VisualScripting.Metadata;
 
 namespace Semin
 {
@@ -11,6 +12,12 @@ namespace Semin
         [SerializeField] protected Node child;
 
         public override abstract INode.ENodeState Evaluate();
+
+        public override void Start()
+        {
+            if (child)
+                child.Start();
+        }
 
         public DecoratorNode(Node child)
         {
@@ -30,7 +37,8 @@ namespace Semin
         public override Node Clone()
         {
             DecoratorNode node = Instantiate(this);
-            node.child = child.Clone();
+            if (child != null) 
+                node.child = child.Clone();
             return node;
         }
     }

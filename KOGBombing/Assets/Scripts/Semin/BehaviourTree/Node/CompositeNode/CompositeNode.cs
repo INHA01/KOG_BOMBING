@@ -11,6 +11,12 @@ namespace Semin
 
         public abstract override INode.ENodeState Evaluate();
 
+        public override void Start()
+        {
+            for (int i = 0; i < children.Count; i++) 
+                children[i].Start();
+        }
+
         public void AddChild(Node child)
         {
             children.Add(child);

@@ -12,7 +12,7 @@ public class BehaviorTreeRunner : MonoBehaviour
         tree.rootNode.Start();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         tree.Operate();
     }

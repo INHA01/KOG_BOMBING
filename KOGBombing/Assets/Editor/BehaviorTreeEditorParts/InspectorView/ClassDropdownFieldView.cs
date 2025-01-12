@@ -12,15 +12,16 @@ public class ClassDropdownFieldView : DropdownField
     public Action<ClassDropdownFieldView> OnSelected;
     public new class UxmlFactory : UxmlFactory<ClassDropdownFieldView, DropdownField.UxmlTraits> { }
     MonoBehaviour[] components;
-    public Type SelectType;
+    public Type SelectType = null;
     public PlayerController playerController;
     public ClassDropdownFieldView()
     {
-
+        SelectType = typeof(PlayerController);
     }
 
     internal void SetDropdownMenu(ObjectFieldView field)
     {
+        choices.Clear();
         components = field.value.GetComponents<MonoBehaviour>();
 
         foreach (var component in components)

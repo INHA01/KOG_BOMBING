@@ -44,10 +44,10 @@ namespace Semin
 			return new ParallelNode(
 				new List<Node>()
 				{
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.W]), new ActionNode(() => Move(EDirection.Up))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.A]), new ActionNode(() => Move(EDirection.Left))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.S]), new ActionNode(() => Move(EDirection.Down))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.D]), new ActionNode(() => Move(EDirection.Right))),
+					new IfDecoratorNode(() => CheckInput(EKey.W), new ActionNode(() => Move(EDirection.Up))),
+					new IfDecoratorNode(() => CheckInput(EKey.A), new ActionNode(() => Move(EDirection.Left))),
+					new IfDecoratorNode(() => CheckInput(EKey.S), new ActionNode(() => Move(EDirection.Down))),
+					new IfDecoratorNode(() => CheckInput(EKey.D), new ActionNode(() => Move(EDirection.Right))),
 					new ActionNode(RotatePlayer)
 				}
 			);
@@ -98,9 +98,9 @@ namespace Semin
 		#endregion
 
 		#region If Decorater Node
-		public bool CheckInput(bool input)
+		public bool CheckInput(EKey key)
 		{
-			return input;
+			return inputs[key];
 		}
 		#endregion
 

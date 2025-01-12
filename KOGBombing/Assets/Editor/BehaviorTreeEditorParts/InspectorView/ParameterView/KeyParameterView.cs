@@ -30,10 +30,7 @@ public class KeyParameterView : DropdownField
         for (int i = 0; i < enumValues.Length; i++)
         {
             if (newValue == enumValues[i].ToString())
-            {
                 Enum.TryParse<EKey>(enumValues[i], out SelectKey);
-                Debug.Log(SelectKey.ToString());
-            }
         }
         if (OnSelected != null)
             OnSelected.Invoke(this);

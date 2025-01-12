@@ -42,7 +42,8 @@ public class SCBehaviorTree : ScriptableObject
 
 	public void DeleteNode(Node node)
 	{
-		AssetDatabase.RemoveObjectFromAsset(node);
+        nodes.Remove(node);
+        AssetDatabase.RemoveObjectFromAsset(node);
 		AssetDatabase.SaveAssets();
 	}
 

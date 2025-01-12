@@ -1,18 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomListModel : MonoBehaviour
+public class RoomListModel:MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject RoomPanelPref;
+    public Transform trRoomListPanel;
+    public Dictionary<string, CustomRoomPresenter> DicRoomInfo = new Dictionary<string, CustomRoomPresenter>();
 }

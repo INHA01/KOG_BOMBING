@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using System.Text;
+using System;
 
 public class RandomMatch : PhotonMatch
 {
@@ -11,11 +12,23 @@ public class RandomMatch : PhotonMatch
     TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
     [SerializeField]
     int maxPlayer = 2;
+    [SerializeField]
+    RandomMatchPresenter randomMatchUi;
     bool isMatching = false;
     bool isRandomMatch = false;
+    Action connectMaster;
+    private void Start()
+    {
+        connectMaster = randomMatchUi.SetEnableMatchButton;
+    }
     public void SetMaxPlayer(int value)
     {
         maxPlayer = value;
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        connectMaster();
     }
 
     public override void Match()

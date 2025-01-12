@@ -11,7 +11,7 @@ namespace Semin
 	{
 		private Func<bool> condition;
 
-		public IfDecoratorNode(Func<bool> condition, INode child) : base(child)
+		public IfDecoratorNode(Func<bool> condition, Node child) : base(child)
 		{
 			this.condition = condition;
 		}

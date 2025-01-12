@@ -7,7 +7,7 @@ namespace Semin
 {
 	public class SequenceNode : CompositeNode
     {
-		public SequenceNode(List<INode> node)
+		public SequenceNode(List<Node> node)
 		{
 			children = node;
 		}

@@ -12,8 +12,6 @@ namespace Semin
 	{
 		[SerializeField]
 		PhotonView pv;
-		[SerializeField]
-		bool canPhotonConnect = false;
 		[SerializeField] public GameObject playerObj;
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -31,9 +29,11 @@ namespace Semin
 			Left,
 			Right,
 		}
+		PlayerShooting playerShooting;
 
 		void Start()
 		{
+			playerShooting = GetComponent<PlayerShooting>();
 			viewCamera = Camera.main;
 
 			for (int i = 0; i < (int)EKey.MAX; i++)
@@ -59,12 +59,9 @@ namespace Semin
 
 		private void FixedUpdate()
 		{
-			if(canPhotonConnect)
-			{
-				if (!pv.IsMine) return;
-			}
-            behaviourTree.Operate();
-        }
+			//if (!pv.IsMine) return;
+			behaviourTree.Operate();
+		}
 
 		#region Attack Node
 		INode.ENodeState Move(EDirection direction)
@@ -113,6 +110,10 @@ namespace Semin
 		#endregion
 
 		#region Input System
+		public void OnAttack(InputValue value)
+		{
+			playerShooting.ShootButton();
+		}
 		public void OnRotate(InputValue value)
 		{
 			mousePos = value.Get<Vector2>();

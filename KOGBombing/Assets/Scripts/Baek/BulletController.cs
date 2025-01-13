@@ -13,11 +13,13 @@ public class BulletController : PooledObject
 
     float span = 0;
 
+    public Vector3 shootDirection;
+
     public float DestroyTime { get => destroyTime; set => destroyTime = value; }
     void Update()
     {
         span += Time.deltaTime;
-        transform.Translate(new Vector3(0, 0, moveSpeed) * Time.deltaTime);
+        transform.Translate(shootDirection *moveSpeed * Time.deltaTime);
         if (span > destroyTime)
         {
             span = 0;

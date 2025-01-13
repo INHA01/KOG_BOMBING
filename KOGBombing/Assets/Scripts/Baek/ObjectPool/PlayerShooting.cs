@@ -16,11 +16,20 @@ public class PlayerShooting : MonoBehaviour
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
     ObjectPool magazine;
+
+    Transform playerTransform;
+
     void Start()
     {
+        playerTransform = transform.GetChild(0);
+        
         magazine = GetComponent<ObjectPool>();
         bulletCount = 9;
         magazineCount = 4;
+    }
+    void Update()
+    {
+        Debug.DrawRay(new Vector3(bulletSpawnPosi.position.x, 0, bulletSpawnPosi.position.z), new Vector3(playerTransform.position.x, 0, playerTransform.position.z) - new Vector3(bulletSpawnPosi.position.x, 0, bulletSpawnPosi.position.z), Color.red);
     }
     public void ShootButton()
     {
@@ -38,7 +47,10 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         bullet.GetComponent<BulletController>().DestroyTime = bulletDestroyTime;
-        bullet.transform.SetPositionAndRotation(bulletSpawnPosi.position, this.transform.localRotation);
+        Vector3 dir = new Vector3(bulletSpawnPosi.position.x, 0, bulletSpawnPosi.position.z) - new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
+        bullet.GetComponent<BulletController>().shootDirection = dir.normalized;
+        bullet.transform.position = bulletSpawnPosi.position;
+
         bullet.SetActive(true);
     }
     IEnumerator Shooting()

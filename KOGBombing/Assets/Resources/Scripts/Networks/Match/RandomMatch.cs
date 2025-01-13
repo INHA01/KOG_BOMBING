@@ -104,6 +104,13 @@ namespace Orpul1
                 Debug.Log("joinFail");
             }
         }
+       
+        public override void OnCreateRoomFailed(short returnCode, string message)
+        {
+            if (isRandomMatch)
+                Debug.Log("CreateRoomFailed!");
+        }
+
         private RoomOptions SetRoomOption()
         {
             StringBuilder roomName = new StringBuilder();
@@ -121,12 +128,6 @@ namespace Orpul1
             Debug.Log($"CreateRoom {roomName.ToString()}");
 
             return roomOpt;
-        }
-
-        public override void OnCreateRoomFailed(short returnCode, string message)
-        {
-            if (isRandomMatch)
-                Debug.Log("CreateRoomFailed!");
         }
 
         IEnumerator CoWaitPlayers()

@@ -12,13 +12,13 @@ namespace Semin
 	{
 		[SerializeField]
 		PhotonView pv;
-		[SerializeField]
-		bool canPhotonConnect = false;
 		[SerializeField] public GameObject playerObj;
+		[SerializeField]
+		bool canConnectPhoton = false;
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 		public Dictionary<EKey, bool> Inputs { get { return inputs; } }
-		BehaviourTree behaviourTree;
+		//BehaviourTree behaviourTree;
 		public float moveSpeed = 6;
 		Vector2 speedValue = Vector2.zero;
 		Vector2 mousePos = Vector2.zero;
@@ -31,27 +31,29 @@ namespace Semin
 			Left,
 			Right,
 		}
+		PlayerShooting playerShooting;
 
 		void Start()
 		{
+			playerShooting = GetComponent<PlayerShooting>();
 			viewCamera = Camera.main;
 
 			for (int i = 0; i < (int)EKey.MAX; i++)
 				inputs[(EKey)i] = false;
 
 			rigidBody = GetComponent<Rigidbody>();	
-			behaviourTree = new BehaviourTree(SetBehaviourTree());
+			//behaviourTree = new BehaviourTree(SetBehaviourTree());
 		}
 
 		INode SetBehaviourTree()
 		{
 			return new ParallelNode(
-				new List<INode>()
+				new List<Node>()
 				{
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.W]), new ActionNode(() => Move(EDirection.Up))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.A]), new ActionNode(() => Move(EDirection.Left))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.S]), new ActionNode(() => Move(EDirection.Down))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.D]), new ActionNode(() => Move(EDirection.Right))),
+					new IfDecoratorNode(() => CheckInput(EKey.W), new ActionNode(() => Move(EDirection.Up))),
+					new IfDecoratorNode(() => CheckInput(EKey.A), new ActionNode(() => Move(EDirection.Left))),
+					new IfDecoratorNode(() => CheckInput(EKey.S), new ActionNode(() => Move(EDirection.Down))),
+					new IfDecoratorNode(() => CheckInput(EKey.D), new ActionNode(() => Move(EDirection.Right))),
 					new ActionNode(RotatePlayer)
 				}
 			);
@@ -59,15 +61,15 @@ namespace Semin
 
 		private void FixedUpdate()
 		{
-			if(canPhotonConnect)
+			if(canConnectPhoton)
 			{
-				if (!pv.IsMine) return;
-			}
-            behaviourTree.Operate();
-        }
+                if (!pv.IsMine) return;
+            }
+			//behaviourTree.Operate();
+		}
 
-		#region Attack Node
-		INode.ENodeState Move(EDirection direction)
+        #region Attack Node
+        public INode.ENodeState Move(EDirection direction)
 		{
 			switch(direction)
 			{
@@ -88,7 +90,7 @@ namespace Semin
 			return INode.ENodeState.Success;
 		}
 
-		INode.ENodeState RotatePlayer()
+        public INode.ENodeState RotatePlayer()
 		{
 			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
 			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
@@ -106,13 +108,17 @@ namespace Semin
 		#endregion
 
 		#region If Decorater Node
-		bool CheckInput(bool input)
+		public bool CheckInput(EKey key)
 		{
-			return input;
+			return inputs[key];
 		}
 		#endregion
 
 		#region Input System
+		public void OnAttack(InputValue value)
+		{
+			playerShooting.ShootButton();
+		}
 		public void OnRotate(InputValue value)
 		{
 			mousePos = value.Get<Vector2>();

@@ -1,0 +1,69 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class ObjectPool :  MonoBehaviour
+{
+    [SerializeField] public int initPoolSize;
+    [SerializeField] private PooledObject objectToPool;
+    [SerializeField] Transform parent;
+
+    private Queue<PooledObject> queue;
+    public int Count { get => queue.Count; }
+
+
+    private void Start()
+    {
+        SetupPool();
+    }
+
+    virtual protected void SetupPool()
+    {
+        if (objectToPool == null)
+        {
+            return;
+        }
+
+        queue = new Queue<PooledObject>();
+
+        PooledObject instance = null;
+
+        for (int i = 0; i < initPoolSize; i++)
+        {
+            instance = Instantiate(objectToPool);
+            instance.Pool = this;
+            instance.gameObject.SetActive(false);
+            queue.Enqueue(instance);
+            if (parent != null)
+            {
+                instance.transform.SetParent(parent);
+            }
+        }
+    }
+
+    public PooledObject GetPooledObject()
+    {
+        if (objectToPool == null)
+        {
+            return null;
+        }
+        if (queue.Count == 0)
+        {
+            PooledObject newInstance = Instantiate(objectToPool);
+            newInstance.Pool = this;
+            return newInstance;
+        }
+
+        PooledObject nextInstance = queue.Dequeue();
+        nextInstance.gameObject.SetActive(true);
+        return nextInstance;
+    }
+
+    public void ReturnToPool(PooledObject pooledObject)
+    {
+        queue.Enqueue(pooledObject);
+        pooledObject.gameObject.SetActive(false);
+    }
+}

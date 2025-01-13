@@ -2,22 +2,25 @@ using Photon.Realtime;
 using System.Text;
 using UnityEngine;
 
-public class CustomRoomPresenter : MonoBehaviour
+namespace Orpul1
 {
-    [SerializeField]
-    CustomRoomView view;
-    CustomServerModel model = new CustomServerModel();
-    public void SetServerInfo(RoomInfo roomInfo)
+    public class CustomRoomPresenter : MonoBehaviour
     {
-        model.roomInfo = roomInfo;
-        model.stbServerName.Append(roomInfo.Name);
-        model.stbPlayerCount.Append(roomInfo.PlayerCount);
-        view.tmpServerName.text = model.stbServerName.ToString();
-        view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
-    }
-    public void SetPlayerCount(StringBuilder playerCount)
-    {
-        model.stbPlayerCount = playerCount;
-        view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
+        [SerializeField]
+        CustomRoomView view;
+        CustomServerModel model = new CustomServerModel();
+        public void SetServerInfo(RoomInfo roomInfo)
+        {
+            model.roomInfo = roomInfo;
+            model.stbServerName.Append(roomInfo.Name);
+            model.stbPlayerCount.Append(roomInfo.PlayerCount);
+            view.tmpServerName.text = model.stbServerName.ToString();
+            view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
+        }
+        public void SetPlayerCount(StringBuilder playerCount)
+        {
+            model.stbPlayerCount = playerCount;
+            view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
+        }
     }
 }

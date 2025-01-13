@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class RandomMatchModel
+namespace Orpul1
 {
-    public StringBuilder matchingText = new StringBuilder("Matching...");
-    public StringBuilder matchText = new StringBuilder("Random Match");
+    public class RandomMatchModel
+    {
+        public StringBuilder matchingText = new StringBuilder("Matching...");
+        public StringBuilder matchText = new StringBuilder("Random Match");
+    }
 }

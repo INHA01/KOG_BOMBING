@@ -2,8 +2,11 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class CustomRoomView : MonoBehaviour
+namespace Orpul1
 {
-    public TextMeshProUGUI tmpServerName;
-    public TextMeshProUGUI tmpPlayerCount;
+    public class CustomRoomView : MonoBehaviour
+    {
+        public TextMeshProUGUI tmpServerName;
+        public TextMeshProUGUI tmpPlayerCount;
+    }
 }

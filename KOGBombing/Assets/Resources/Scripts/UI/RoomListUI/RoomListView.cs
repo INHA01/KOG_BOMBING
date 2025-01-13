@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomListView : MonoBehaviour
+namespace Orpul1
 {
-    public Transform trRoomPanel;
+    public class RoomListView : MonoBehaviour
+    {
+        public Transform trRoomPanel;
+    }
 }

@@ -6,101 +6,108 @@ using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using System.Text;
 using System;
 
-public class RandomMatch : PhotonMatch
+namespace Orpul1
 {
-    [SerializeField, Tooltip("Set MaxPlayer")]
-    TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
-    [SerializeField]
-    string playerNickName;
-    [SerializeField]
-    int maxPlayer = 2;
-    [SerializeField]
-    RandomMatchPresenter randomMatchUi;
-    bool isMatching = false;
-    bool isRandomMatch = false;
-    Action connectMaster;
-    private void Start()
+    public class RandomMatch : PhotonMatch
     {
-        connectMaster = randomMatchUi.SetEnableMatchButton;
-        PhotonNetwork.LocalPlayer.NickName = playerNickName;
-    }
-    public void SetMaxPlayer(int value)
-    {
-        maxPlayer = value;
-    }
+        [SerializeField, Tooltip("Set MaxPlayer")]
+        TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
+        [SerializeField]
+        string playerNickName;
+        [SerializeField]
+        int maxPlayer = 2;
+        [SerializeField]
+        RandomMatchPresenter randomMatchUi;
+        bool isMatching = false;
+        bool isRandomMatch = false;
+        Action connectMaster;
+        private void Start()
+        {
+            connectMaster = randomMatchUi.SetEnableMatchButton;
+            PhotonNetwork.LocalPlayer.NickName = playerNickName;
+        }
+        public void SetMaxPlayer(int value)
+        {
+            maxPlayer = value;
+        }
 
-    public override void OnConnectedToMaster()
-    {
-        connectMaster();
-    }
+        public override void OnConnectedToMaster()
+        {
+            connectMaster();
+        }
 
-    public override void Match()
-    {
-        if (isMatching)
+        public override void Match()
         {
-            isMatching = false;
-            isRandomMatch = false;
-            if (PhotonNetwork.InRoom) PhotonNetwork.LeaveRoom();
-            if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
+            if (isMatching)
+            {
+                isMatching = false;
+                isRandomMatch = false;
+                if (PhotonNetwork.InRoom) PhotonNetwork.LeaveRoom();
+                if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
+            }
+            else
+            {
+                isMatching = true;
+                isRandomMatch = true;
+                PhotonNetwork.JoinLobby(randomMatchLobby);
+            }
         }
-        else
-        {
-            isMatching = true;
-            isRandomMatch = true;
-            PhotonNetwork.JoinLobby(randomMatchLobby);
-        }
-    }
 
-    public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
-    {
-        if(isRandomMatch)
-            base.OnRoomPropertiesUpdate(propertiesThatChanged);
-    }
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        if(isRandomMatch)
-            base.OnPlayerEnteredRoom(newPlayer);
-    }
-    public override void OnJoinedLobby()
-    {
-        if (isRandomMatch)
+        public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
-            Debug.Log($"randomMatch {isRandomMatch}");
-            base.OnJoinedLobby();
-            PhotonNetwork.JoinRandomRoom();
+            if (isRandomMatch)
+                base.OnRoomPropertiesUpdate(propertiesThatChanged);
         }
-    }
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            if (isRandomMatch)
+                base.OnPlayerEnteredRoom(newPlayer);
+        }
+        public override void OnJoinedLobby()
+        {
+            if (isRandomMatch)
+            {
+                Debug.Log($"randomMatch {isRandomMatch}");
+                base.OnJoinedLobby();
+                PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.FillRoom,null,null,null, SetRoomOption());
+            }
+        }
 
-    public override void OnJoinedRoom()
-    {
-        if (isRandomMatch && PhotonNetwork.IsMasterClient) 
+        public override void OnJoinedRoom()
         {
-            Debug.Log("RadnomJoinRoom");
-            base.OnJoinedRoom();
-            StartCoroutine("CoWaitPlayers");
+            if (isRandomMatch && PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("RadnomJoinRoom");
+                base.OnJoinedRoom();
+                StartCoroutine("CoWaitPlayers");
+            }
         }
-    }
 
-    public override void OnLeftRoom()
-    {
-        if (isRandomMatch)
+        public override void OnLeftRoom()
         {
-            PhotonNetwork.LeaveRoom();
+            if (isRandomMatch)
+            {
+                PhotonNetwork.LeaveRoom();
+            }
         }
-    }
-    public override void OnLeftLobby()
-    {
-        if (isRandomMatch)
+        public override void OnLeftLobby()
         {
-            isMatching = false;
+            if (isRandomMatch)
+            {
+                isMatching = false;
+            }
         }
-    }
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        if (isRandomMatch)
+        public override void OnJoinRandomFailed(short returnCode, string message)
+        {
+            if (isRandomMatch)
+            {
+                Debug.Log("joinFail");
+            }
+        }
+        private RoomOptions SetRoomOption()
         {
             StringBuilder roomName = new StringBuilder();
-            roomName.Append("RandomRoom"+PhotonNetwork.LocalPlayer.NickName);
+            roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
             Debug.Log($"{PhotonNetwork.LocalPlayer.NickName}");
             RoomOptions roomOpt = new RoomOptions()
             {
@@ -110,37 +117,33 @@ public class RandomMatch : PhotonMatch
                 PublishUserId = true,
                 CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
             };
-            
+
             Debug.Log($"CreateRoom {roomName.ToString()}");
 
-            PhotonNetwork.CreateRoom(roomName.ToString(), roomOpt, randomMatchLobby);
-            
+            return roomOpt;
         }
-    }
-        
 
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        if (isRandomMatch)
-            Debug.Log("CreateRoomFailed!");
-    }
-
-    IEnumerator CoWaitPlayers()
-    {
-        Debug.Log($"PlayerCnt: {PhotonNetwork.CurrentRoom.PlayerCount}");
-
-        while (true)
+        public override void OnCreateRoomFailed(short returnCode, string message)
         {
-            if (!isMatching) yield break;
-            if (PhotonNetwork.CurrentRoom.PlayerCount >= maxPlayer) break;
-            yield return null;
+            if (isRandomMatch)
+                Debug.Log("CreateRoomFailed!");
         }
-        
-        if (PhotonNetwork.IsMasterClient)
+
+        IEnumerator CoWaitPlayers()
         {
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
+            Debug.Log($"PlayerCnt: {PhotonNetwork.CurrentRoom.PlayerCount}");
+
+            while (true)
+            {
+                if (!isMatching) yield break;
+                if (PhotonNetwork.CurrentRoom.PlayerCount >= maxPlayer) break;
+                yield return null;
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
+            }
         }
     }
-
-    
 }

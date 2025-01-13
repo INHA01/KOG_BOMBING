@@ -69,7 +69,7 @@ namespace Orpul1
             {
                 Debug.Log($"randomMatch {isRandomMatch}");
                 base.OnJoinedLobby();
-                PhotonNetwork.JoinRandomRoom();
+                PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.FillRoom,null,null,null, SetRoomOption());
             }
         }
 
@@ -101,25 +101,27 @@ namespace Orpul1
         {
             if (isRandomMatch)
             {
-                StringBuilder roomName = new StringBuilder();
-                roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
-                Debug.Log($"{PhotonNetwork.LocalPlayer.NickName}");
-                RoomOptions roomOpt = new RoomOptions()
-                {
-                    IsVisible = true,
-                    IsOpen = true,
-                    MaxPlayers = maxPlayer,
-                    PublishUserId = true,
-                    CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
-                };
-
-                Debug.Log($"CreateRoom {roomName.ToString()}");
-
-                PhotonNetwork.CreateRoom(roomName.ToString(), roomOpt, randomMatchLobby);
-
+                Debug.Log("joinFail");
             }
         }
+        private RoomOptions SetRoomOption()
+        {
+            StringBuilder roomName = new StringBuilder();
+            roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
+            Debug.Log($"{PhotonNetwork.LocalPlayer.NickName}");
+            RoomOptions roomOpt = new RoomOptions()
+            {
+                IsVisible = true,
+                IsOpen = true,
+                MaxPlayers = maxPlayer,
+                PublishUserId = true,
+                CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
+            };
 
+            Debug.Log($"CreateRoom {roomName.ToString()}");
+
+            return roomOpt;
+        }
 
         public override void OnCreateRoomFailed(short returnCode, string message)
         {

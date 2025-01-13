@@ -12,6 +12,8 @@ namespace Semin
 	{
 		[SerializeField]
 		PhotonView pv;
+		[SerializeField]
+		bool canPhotonConnect = false;
 		[SerializeField] public GameObject playerObj;
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -57,9 +59,12 @@ namespace Semin
 
 		private void FixedUpdate()
 		{
-			if (!pv.IsMine) return;
-			behaviourTree.Operate();
-		}
+			if(canPhotonConnect)
+			{
+				if (!pv.IsMine) return;
+			}
+            behaviourTree.Operate();
+        }
 
 		#region Attack Node
 		INode.ENodeState Move(EDirection direction)

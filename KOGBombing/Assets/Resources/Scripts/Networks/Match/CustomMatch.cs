@@ -19,6 +19,7 @@ namespace Orpul1
         Action<Player> setRemovePlayer;
         private void Start()
         {
+            customRoomUIObj.SetActive(false);   
             /*setPlayerList = customRoomUIObj.GetComponent<CustomRoomPresenter>().SetPlayerList;
             updatePlayer = customRoomUIObj.GetComponent<CustomRoomPresenter>().UpdatePlayer;
             setRemovePlayer = customRoomUIObj.GetComponent<CustomRoomPresenter>().SetRemovePlayer;*/

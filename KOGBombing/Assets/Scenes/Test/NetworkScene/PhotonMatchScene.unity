@@ -204,7 +204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 57636201}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1644401257}
+        m_TargetAssemblyTypeName: Orpul1.NetworkDirector, Assembly-CSharp
+        m_MethodName: onCustomMatch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &57636201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4113,6 +4125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RandomMatchObj: {fileID: 1748524191}
+  CustomMatchObj: {fileID: 790732505}
 --- !u!1 &1715555350
 GameObject:
   m_ObjectHideFlags: 0

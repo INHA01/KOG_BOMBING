@@ -14,12 +14,15 @@ namespace Orpul1
         */
         [SerializeField]
         GameObject RandomMatchObj;
+        [SerializeField]
+        GameObject CustomMatchObj;
         /*[SerializeField]
         CustomMatch CustomMatch;*/
         IMatchAble customMatch, randomMatch;
         private void Start()
         {
             randomMatch = RandomMatchObj.GetComponent<IMatchAble>();
+            customMatch = CustomMatchObj.GetComponent<IMatchAble>();
             //customMatch = CustomMatch;
             //authValue.AuthType = CustomAuthenticationType.Custom;
             /*

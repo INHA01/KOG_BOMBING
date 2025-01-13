@@ -36,6 +36,10 @@ namespace Semin
 
         public override void Start()
         {
+            if (target == null)
+            {
+                target = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            }
             var methdoInfo = target.GetType().GetMethod(method);
             if (methdoInfo != null)
             {
@@ -54,6 +58,7 @@ namespace Semin
 
         public override INode.ENodeState Evaluate()
         {
+            Debug.Log(act.Method.Name  );
             if (act != null)
                 return act.Invoke();
             return INode.ENodeState.Fail;

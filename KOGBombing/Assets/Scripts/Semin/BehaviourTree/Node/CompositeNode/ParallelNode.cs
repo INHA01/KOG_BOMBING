@@ -4,19 +4,18 @@ using UnityEngine;
 
 namespace Semin
 {
-	public class ParallelNode : INode
-	{
-		List<INode> children;
+	public class ParallelNode : CompositeNode
+    {
 		bool isSuccessed;
 		bool isRunning;
 
 		public ParallelNode(List<INode> child)
 		{
-			this.children = child;
+            children = child;
 			isSuccessed = false;
 		}
 
-		public INode.ENodeState Evaluate()
+		public override INode.ENodeState Evaluate()
 		{
 			if (children == null || children.Count == 0)
 				return INode.ENodeState.Fail;

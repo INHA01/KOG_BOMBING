@@ -94,9 +94,7 @@ namespace Semin
 							viewPoints.Add(edge.pointB);
 						}
 					}
-
 				}
-
 
 				viewPoints.Add(newViewCast.point);
 				oldViewCast = newViewCast;
@@ -165,10 +163,7 @@ namespace Semin
 			{
 				return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
 			}
-			else
-			{
-				return new ViewCastInfo(false, transform.position + dir * viewRadius, viewRadius, globalAngle);
-			}
+			return new ViewCastInfo(false, transform.position + dir * viewRadius, viewRadius, globalAngle);
 		}
 
 		public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)

@@ -58,6 +58,7 @@ namespace Semin
 
         public override INode.ENodeState Evaluate()
         {
+            Debug.Log(act.Method.Name  );
             if (act != null)
                 return act.Invoke();
             return INode.ENodeState.Fail;

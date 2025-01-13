@@ -79,8 +79,11 @@ public class BehaviorTreeEditor : EditorWindow
 		SCBehaviorTree tree = Selection.activeObject as SCBehaviorTree;
 
         if (tree)
+        {
             treeView.PopulateView(tree);
-	}
+            EditorUtility.SetDirty(tree);
+        }
+    }
 
     void OnNodeSelectionChanged(NodeView node)
     {

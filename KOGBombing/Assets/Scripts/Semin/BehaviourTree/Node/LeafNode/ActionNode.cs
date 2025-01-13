@@ -11,8 +11,8 @@ namespace Semin
 
         public Func<INode.ENodeState> act;
         [HideInInspector] public PlayerController target;
-        public string paramName = null;
-        public string method = "";
+        [SerializeField] public string paramName = null;
+        [SerializeField] public string method = "";
 
 
         public ActionNode(Func<INode.ENodeState> onUpdate)

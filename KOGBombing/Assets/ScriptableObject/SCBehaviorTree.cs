@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu()]
 public class SCBehaviorTree : ScriptableObject
@@ -115,4 +116,16 @@ public class SCBehaviorTree : ScriptableObject
 		tree.rootNode = tree.rootNode.Clone();
 		return tree;
 	}
+
+    private void OnDisable()
+    {
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssets();
+    }
+
+    private void OnDestroy()
+    {
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssets();
+    }
 }

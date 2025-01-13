@@ -1153,7 +1153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 350, y: -775}
+  m_AnchoredPosition: {x: 350, y: -925}
   m_SizeDelta: {x: 700, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &655293411
@@ -4122,7 +4122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5067d1fdef9494488a09fdfad508aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlayer: 2
+  playerNickName: Player2
+  maxPlayer: 1
   randomMatchUi: {fileID: 1858024758}
 --- !u!1 &1749701915
 GameObject:

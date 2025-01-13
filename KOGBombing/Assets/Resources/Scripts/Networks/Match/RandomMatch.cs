@@ -11,6 +11,8 @@ public class RandomMatch : PhotonMatch
     [SerializeField, Tooltip("Set MaxPlayer")]
     TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
     [SerializeField]
+    string playerNickName;
+    [SerializeField]
     int maxPlayer = 2;
     [SerializeField]
     RandomMatchPresenter randomMatchUi;
@@ -20,6 +22,7 @@ public class RandomMatch : PhotonMatch
     private void Start()
     {
         connectMaster = randomMatchUi.SetEnableMatchButton;
+        PhotonNetwork.LocalPlayer.NickName = playerNickName;
     }
     public void SetMaxPlayer(int value)
     {
@@ -98,6 +101,7 @@ public class RandomMatch : PhotonMatch
         {
             StringBuilder roomName = new StringBuilder();
             roomName.Append("RandomRoom"+PhotonNetwork.LocalPlayer.NickName);
+            Debug.Log($"{PhotonNetwork.LocalPlayer.NickName}");
             RoomOptions roomOpt = new RoomOptions()
             {
                 IsVisible = true,

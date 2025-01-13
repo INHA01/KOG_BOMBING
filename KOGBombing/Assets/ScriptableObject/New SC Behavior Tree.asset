@@ -1,22 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8857239064694527703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
-  m_Name: ActionNode
-  m_EditorClassIdentifier: 
-  guid: ce588403447cb4f47ba3e0feaccccaae
-  position: {x: 0, y: 0}
-  target: {fileID: 0}
-  paramName: 
-  method: 
 --- !u!114 &-8718120872409594515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +129,7 @@ MonoBehaviour:
   - {fileID: -7291068028632484817}
   - {fileID: 751084058380809884}
   - {fileID: -4145469237452933700}
-  - {fileID: -8857239064694527703}
+  - {fileID: 9022692475244846378}
 --- !u!114 &381088846509182949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,3 +200,20 @@ MonoBehaviour:
   method: CheckInput
   target: {fileID: 0}
   paramName: A
+--- !u!114 &9022692475244846378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: d18f9a79de8bc964096a1e7df26a6b83
+  position: {x: 0, y: 0}
+  target: {fileID: 0}
+  paramName: 
+  method: 

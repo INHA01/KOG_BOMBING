@@ -8,18 +8,18 @@ namespace Orpul1
 {
     public class NetworkDirector : MonoBehaviourPunCallbacks
     {
-        [SerializeField]
+        /*[SerializeField]
         protected string sampleUserId = "";
         AuthenticationValues authValue = new AuthenticationValues();
-
+        */
         [SerializeField]
-        RandomMatch RandomMatch;
+        GameObject RandomMatchObj;
         /*[SerializeField]
         CustomMatch CustomMatch;*/
         IMatchAble customMatch, randomMatch;
         private void Start()
         {
-            randomMatch = RandomMatch;
+            randomMatch = RandomMatchObj.GetComponent<IMatchAble>();
             //customMatch = CustomMatch;
             //authValue.AuthType = CustomAuthenticationType.Custom;
             /*
@@ -34,10 +34,10 @@ namespace Orpul1
         {
             Debug.Log($"authen {debugMessage}");
         }
-        public override void OnConnectedToMaster()
+        /*public override void OnConnectedToMaster()
         {
             // Debug.Log($"userid: {PhotonNetwork.LocalPlayer.UserId}");
-        }
+        }*/
 
         public void onRandomMatch()
         {

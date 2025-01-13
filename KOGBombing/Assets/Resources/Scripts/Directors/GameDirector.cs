@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine;
+
+namespace Orpul1
+{
+    public class GameDirector : MonoBehaviour
+    {
+        [SerializeField]
+        GameObject playerCamera;
+        void Start()
+        {
+            GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefs/Player", Vector3.zero, Quaternion.Euler(0, 45, 0));
+            GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
+            cameraObj.GetComponent<PlayerCamera>().target = playerObj;
+        }
+    }
+}

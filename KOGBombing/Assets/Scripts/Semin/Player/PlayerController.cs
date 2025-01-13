@@ -2,14 +2,16 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using Unity.VisualScripting;
 using UnityEngine.InputSystem;
-
+using Photon.Pun;
+using Photon.Realtime;
 namespace Semin
 {
 
 	public class PlayerController : MonoBehaviour
 	{
+		[SerializeField]
+		PhotonView pv;
 		[SerializeField] public GameObject playerObj;
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -27,9 +29,11 @@ namespace Semin
 			Left,
 			Right,
 		}
+		PlayerShooting playerShooting;
 
 		void Start()
 		{
+			playerShooting = GetComponent<PlayerShooting>();
 			viewCamera = Camera.main;
 
 			for (int i = 0; i < (int)EKey.MAX; i++)
@@ -55,6 +59,7 @@ namespace Semin
 
 		private void FixedUpdate()
 		{ 
+			//if (!pv.IsMine) return;
 			//behaviourTree.Operate();
 		}
 
@@ -105,6 +110,10 @@ namespace Semin
 		#endregion
 
 		#region Input System
+		public void OnAttack(InputValue value)
+		{
+			playerShooting.ShootButton();
+		}
 		public void OnRotate(InputValue value)
 		{
 			mousePos = value.Get<Vector2>();

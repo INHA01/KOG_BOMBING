@@ -13,6 +13,8 @@ namespace Semin
 		[SerializeField]
 		PhotonView pv;
 		[SerializeField] public GameObject playerObj;
+		[SerializeField]
+		bool canConnectPhoton = false;
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 		public Dictionary<EKey, bool> Inputs { get { return inputs; } }
@@ -59,7 +61,10 @@ namespace Semin
 
 		private void FixedUpdate()
 		{
-			//if (!pv.IsMine) return;
+			if(canConnectPhoton)
+			{
+                if (!pv.IsMine) return;
+            }
 			behaviourTree.Operate();
 		}
 

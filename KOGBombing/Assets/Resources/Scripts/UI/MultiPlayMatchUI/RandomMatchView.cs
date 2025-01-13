@@ -2,8 +2,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RandomMatchView : MonoBehaviour
+namespace Orpul1
 {
-    public Button btnMatch;
-    public TextMeshProUGUI tmpMatch;
+    public class RandomMatchView : MonoBehaviour
+    {
+        public Button btnMatch;
+        public TextMeshProUGUI tmpMatch;
+    }
 }

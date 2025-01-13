@@ -1,8 +1,12 @@
 using Photon.Realtime;
 using System.Text;
-public class CustomServerModel
+
+namespace Orpul1
 {
-    public StringBuilder stbServerName = new StringBuilder();
-    public StringBuilder stbPlayerCount = new StringBuilder();
-    public RoomInfo roomInfo;
+    public class CustomServerModel
+    {
+        public StringBuilder stbServerName = new StringBuilder();
+        public StringBuilder stbPlayerCount = new StringBuilder();
+        public RoomInfo roomInfo;
+    }
 }

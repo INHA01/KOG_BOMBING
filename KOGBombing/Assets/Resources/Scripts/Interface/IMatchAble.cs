@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IMatchAble
+namespace Orpul1
 {
-    public void Match();
+    public interface IMatchAble
+    {
+        public void Match();
+    }
 }

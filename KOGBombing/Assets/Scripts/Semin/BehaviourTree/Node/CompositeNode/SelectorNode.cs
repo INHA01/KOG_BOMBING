@@ -6,7 +6,7 @@ namespace Semin
 {
 	public class SelectorNode : CompositeNode
     {
-		public SelectorNode(List<INode> chlid)
+		public SelectorNode(List<Node> chlid)
 		{
 			children = chlid;
 		}

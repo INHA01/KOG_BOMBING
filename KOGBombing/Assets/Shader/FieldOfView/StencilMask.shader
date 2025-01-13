@@ -31,7 +31,10 @@ Shader "Custom/Stencil Mask"
             {
                 "LightMode" = "UniversalForward"
             }
+        }
         
+        Pass 
+        {
         // Render State
         
         // Debug

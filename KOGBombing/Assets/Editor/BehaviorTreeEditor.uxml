@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <uie:Toolbar>
+        <uie:ToolbarMenu tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="true" text="Assets" />
+    </uie:Toolbar>
+    <SplitView fixed-pane-initial-dimension="300" name="SplitView">
+        <ui:VisualElement name="Left-Panel" style="flex-grow: 1; visibility: visible; overflow: visible; display: flex; background-color: rgba(0, 0, 0, 0); -unity-background-scale-mode: stretch-to-fill;">
+            <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" style="background-color: rgba(37, 37, 37, 0); color: rgb(219, 219, 219);" />
+            <ObjectFieldView />
+            <ui:VisualElement focusable="true" name="FunctionView" style="flex-grow: 1; justify-content: center; position: relative; flex-direction: row; align-items: center; align-self: auto; width: auto; overflow: visible; max-height: 40px;">
+                <ui:Label tabindex="-1" text="Script" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); color: rgb(219, 219, 219); flex-grow: 1;" />
+                <ClassDropdownFieldView style="flex-grow: 1; max-width: 25%;" />
+                <ui:Label tabindex="-1" text="Funcion" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); color: rgb(219, 219, 219); flex-grow: 1;" />
+                <FuncDropdownFieldView style="flex-grow: 1; max-width: 30%;" />
+            </ui:VisualElement>
+            <ui:VisualElement focusable="true" name="ParameterView" style="flex-grow: 1; justify-content: center; position: relative; flex-direction: row; align-items: center; align-self: auto; width: auto; overflow: visible; max-height: 40px;">
+                <ui:Label tabindex="-1" text="Key Type" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); color: rgb(219, 219, 219); flex-grow: 1; align-items: stretch;" />
+                <KeyParameterView choices="W,A,S,D,MAX" style="max-width: 25%;" />
+                <ui:Label tabindex="-1" text="Direction" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); color: rgb(219, 219, 219); flex-grow: 1;" />
+                <DirectionParameterView choices="Up,Down,Left,Right" style="max-width: 25%;" />
+            </ui:VisualElement>
+            <InspectorView style="align-items: stretch; justify-content: flex-start; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Right-Panel" style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="Tree View" parse-escape-sequences="true" display-tooltip-when-elided="true" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); color: rgb(219, 219, 219);" />
+            <BehaviorTreeView style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </SplitView>
+</ui:UXML>

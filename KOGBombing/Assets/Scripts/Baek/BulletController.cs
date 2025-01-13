@@ -35,5 +35,10 @@ public class BulletController : PooledObject
             span = 0;
             Release();
         }
+        if (collision.collider.tag == "Target")
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

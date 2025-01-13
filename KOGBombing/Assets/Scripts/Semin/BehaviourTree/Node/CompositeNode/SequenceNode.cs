@@ -7,7 +7,7 @@ namespace Semin
 {
 	public class SequenceNode : CompositeNode
     {
-		public SequenceNode(List<INode> node)
+		public SequenceNode(List<Node> node)
 		{
 			children = node;
 		}
@@ -18,8 +18,8 @@ namespace Semin
 				return INode.ENodeState.Fail;
 
 			for (int i = 0; i < children.Count; i++)
-			{
-				switch (children[i].Evaluate())
+            {
+                switch (children[i].Evaluate())
 				{
 					case INode.ENodeState.Running:
 						return INode.ENodeState.Running;

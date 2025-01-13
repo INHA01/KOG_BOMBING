@@ -9,7 +9,7 @@ namespace Semin
 		bool isSuccessed;
 		bool isRunning;
 
-		public ParallelNode(List<INode> child)
+		public ParallelNode(List<Node> child)
 		{
             children = child;
 			isSuccessed = false;

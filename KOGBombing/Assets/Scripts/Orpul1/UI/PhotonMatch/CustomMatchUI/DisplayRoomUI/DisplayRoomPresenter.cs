@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Orpul1
 {
-    public class CustomRoomPresenter : MonoBehaviour
+    public class DisplayRoomPresenter : MonoBehaviour
     {
         [SerializeField]
-        CustomRoomView view;
-        CustomServerModel model = new CustomServerModel();
+        DisplayRoomView view;
+        DisplayRoomModel model = new DisplayRoomModel();
 
         public void SetServerInfo(RoomInfo roomInfo)
         {

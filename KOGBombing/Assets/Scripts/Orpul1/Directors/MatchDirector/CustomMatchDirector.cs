@@ -3,33 +3,51 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
 {
-    public class CustomMatch : PhotonMatch
+    public class CustomMatchDirector : PhotonMatch
     {
         [SerializeField]
         GameObject customRoomUIObj;
+
+        [SerializeField]
+        PhotonUpdateController<List<RoomInfo>> roomUpdateController;
+
+        [SerializeField]
+        PhotonUpdateController<Player> playerUpdateController;
+
+        [SerializeField]
+        GameObject createRoomPanel;
+
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
-        Action<List<RoomInfo>> SetRoomUpdate;
-        Action setPlayerList;
-        Action<Player> updatePlayer;
-        Action<Player> setRemovePlayer;
+
+        
         private void Start()
         {
-            customRoomUIObj.SetActive(false);   
-            /*setPlayerList = customRoomUIObj.GetComponent<CustomRoomPresenter>().SetPlayerList;
-            updatePlayer = customRoomUIObj.GetComponent<CustomRoomPresenter>().UpdatePlayer;
-            setRemovePlayer = customRoomUIObj.GetComponent<CustomRoomPresenter>().SetRemovePlayer;*/
+            customRoomUIObj.SetActive(false);
+            createRoomPanel.SetActive(false);
         }
 
         public override void Match()
         {
             isCustomMatch = true;
+            customRoomUIObj.SetActive(isCustomMatch);
             PhotonNetwork.JoinLobby(customLobby);
+        }
+        public void OnExitLobby()
+        {
+            customRoomUIObj.SetActive(false);
+            createRoomPanel.SetActive(false);
+            PhotonNetwork.LeaveLobby();
+        }
+        public void OnActiveCreateRoom()
+        {
+            createRoomPanel.SetActive(true);
         }
 
         public void OnGameStartButton()
@@ -58,6 +76,7 @@ namespace Orpul1
         {
             if (isCustomMatch)
             {
+                Debug.Log("CustomMatch JoinLobby");
                 base.OnJoinedLobby();
             }
         }
@@ -66,16 +85,16 @@ namespace Orpul1
             // TODO >> : 룸 리스트 갱신
             if(isCustomMatch)
             {
-                SetRoomUpdate(roomList);
-                /*
-                 * 1. 룸이 생성되어있는 것들을 가져오기
-                 */
+                Debug.Log("CustomMatch RoomListUpdate");
+                roomUpdateController.UpdateInfo(roomList);
+                //SetRoomUpdate(roomList);
             }
         }
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
             if (isCustomMatch)
             {
+                Debug.Log("CustomMatch RoomPropertiesUpdate");
                 base.OnRoomPropertiesUpdate(propertiesThatChanged);
             }
         }
@@ -83,7 +102,8 @@ namespace Orpul1
         {
             if (isCustomMatch && targetPlayer.CustomProperties.ContainsKey("Team"))
             {
-                updatePlayer(targetPlayer);
+                playerUpdateController.UpdateInfo(targetPlayer);
+                //updatePlayer(targetPlayer);
             }
         }
 
@@ -91,7 +111,8 @@ namespace Orpul1
         {
             if (isCustomMatch)
             {
-                setRemovePlayer(otherPlayer);
+                playerUpdateController.UpdateInfo(otherPlayer);
+                //setRemovePlayer(otherPlayer);
             }
         }
         public override void OnJoinedRoom()
@@ -100,21 +121,22 @@ namespace Orpul1
             {
                 Debug.Log($"isCustomMatch {isCustomMatch}");
                 base.OnJoinedRoom();
-                setPlayerList();
+                playerUpdateController.UpdateInfo(PhotonNetwork.LocalPlayer);
+                //setPlayerList();
             }
         }
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             if (isCustomMatch)
             {
-                Debug.Log("CreateRoomFailed!");
+                Debug.Log("CustomMatch CreateRoomFailed!");
             }
         }
         public override void OnJoinRoomFailed(short returnCode, string message)
         {
             if (isCustomMatch)
             {
-                Debug.Log("JoinRoom Fail");
+                Debug.Log("CustomMatch JoinRoom Fail");
             }
         }
     }

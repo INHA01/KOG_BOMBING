@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Orpul1
 {
-    public class CustomServerModel
+    public class DisplayRoomModel
     {
         public StringBuilder stbServerName = new StringBuilder();
         public StringBuilder stbPlayerCount = new StringBuilder();

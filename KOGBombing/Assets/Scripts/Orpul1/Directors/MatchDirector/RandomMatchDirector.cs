@@ -8,32 +8,18 @@ using System;
 
 namespace Orpul1
 {
-    public class RandomMatch : PhotonMatch
+    public class RandomMatchDirector : PhotonMatch
     {
-        [SerializeField, Tooltip("Set MaxPlayer")]
         TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
-        [SerializeField]
-        string playerNickName;
+
         [SerializeField]
         int maxPlayer = 2;
-        [SerializeField]
-        RandomMatchPresenter randomMatchUi;
+
         bool isMatching = false;
         bool isRandomMatch = false;
-        Action connectMaster;
-        private void Start()
-        {
-            connectMaster = randomMatchUi.SetEnableMatchButton;
-            PhotonNetwork.LocalPlayer.NickName = playerNickName;
-        }
         public void SetMaxPlayer(int value)
         {
             maxPlayer = value;
-        }
-
-        public override void OnConnectedToMaster()
-        {
-            connectMaster();
         }
 
         public override void Match()
@@ -94,6 +80,7 @@ namespace Orpul1
         {
             if (isRandomMatch)
             {
+                Debug.Log("RandomMatch LeftLobby");
                 isMatching = false;
             }
         }

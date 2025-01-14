@@ -15,10 +15,6 @@ namespace Orpul1
             view.btnMatch.interactable = false;
             view.tmpMatch.text = model.matchText.ToString();
         }
-        public void SetEnableMatchButton()
-        {
-            view.btnMatch.interactable = true;
-        }
         public void OnRandomMatching()
         {
             isMatching = !isMatching;

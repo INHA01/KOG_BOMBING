@@ -28,12 +28,13 @@ namespace Orpul1
         }
         public StringBuilder GetRoomName()
         {
-            return model.StbRoomName;
+            StringBuilder result = new StringBuilder(view.InputRoomName.text.ToString());
+            return result;
         }
         public int GetMaxPlayer()
         {
             int maxPlayer = 0;
-            int.TryParse(model.StbPlayerCnt.ToString(), out maxPlayer);
+            int.TryParse(view.DropDPlayerCnt.ToString(), out maxPlayer);
             return maxPlayer;
         }
     }

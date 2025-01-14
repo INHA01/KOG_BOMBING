@@ -1,8 +1,6 @@
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -27,11 +25,7 @@ public class SCBehaviorTree : ScriptableObject
             if (node != null)
             {
                 node.name = type.Name;
-                node.guid = GUID.Generate().ToString();
-                nodes.Add(node);
-
-                AssetDatabase.AddObjectToAsset(node, this);
-                AssetDatabase.SaveAssets();
+				nodes.Add(node);
             }
             else
             {
@@ -44,8 +38,6 @@ public class SCBehaviorTree : ScriptableObject
 	public void DeleteNode(Node node)
 	{
         nodes.Remove(node);
-        AssetDatabase.RemoveObjectFromAsset(node);
-		AssetDatabase.SaveAssets();
 	}
 
 	public void AddChild(Node parent, Node child)
@@ -116,16 +108,4 @@ public class SCBehaviorTree : ScriptableObject
 		tree.rootNode = tree.rootNode.Clone();
 		return tree;
 	}
-
-    private void OnDisable()
-    {
-        EditorUtility.SetDirty(this);
-        AssetDatabase.SaveAssets();
-    }
-
-    private void OnDestroy()
-    {
-        EditorUtility.SetDirty(this);
-        AssetDatabase.SaveAssets();
-    }
 }

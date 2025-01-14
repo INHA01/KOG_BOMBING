@@ -44,13 +44,6 @@ public class BehaviorTreeView : GraphView
 		DeleteElements(graphElements);
 		graphViewChanged += OnGraphViewChanged;
 
-		if (tree.rootNode == null)
-		{
-			tree.rootNode = tree.CreateNode(typeof(RootNode)) as RootNode;
-			EditorUtility.SetDirty(tree);
-			AssetDatabase.SaveAssets();
-		}
-
 		tree.nodes.ForEach(n => CreateNodeView(n));
 
 		tree.nodes.ForEach(n =>
@@ -82,7 +75,11 @@ public class BehaviorTreeView : GraphView
 			{
 				NodeView nodeView = elem as NodeView;
 				if (nodeView != null)
+				{
 					tree.DeleteNode(nodeView.node);
+					AssetDatabase.RemoveObjectFromAsset(nodeView.node);
+					AssetDatabase.SaveAssets();
+				}
 
 				Edge edge = elem as Edge;
 				if (edge != null)
@@ -103,6 +100,8 @@ public class BehaviorTreeView : GraphView
 				tree.AddChild(parentView.node, childView.node);
 			});
 		}
+		EditorUtility.SetDirty(tree);
+		AssetDatabase.SaveAssets();
 
 		return graphViewChange;
 	}
@@ -123,6 +122,9 @@ public class BehaviorTreeView : GraphView
 	public void CreateNode(System.Type type)
 	{
 		Semin.Node node = tree.CreateNode(type);
+		node.guid = GUID.Generate().ToString();
+		AssetDatabase.AddObjectToAsset(node, tree);
+		AssetDatabase.SaveAssets();
 		CreateNodeView(node);
 	}
 

@@ -2684,9 +2684,9 @@ GameObject:
   - component: {fileID: 922550079}
   - component: {fileID: 919132148868432491}
   - component: {fileID: 919132148868432492}
-  - component: {fileID: 919132148868432493}
   - component: {fileID: 919132148868432494}
   - component: {fileID: 919132148868432495}
+  - component: {fileID: 919132148868432496}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2708,6 +2708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   playerObj: {fileID: 1446483182}
+  canConnectPhoton: 0
   moveSpeed: 6
 --- !u!114 &919132148868432492
 MonoBehaviour:
@@ -2740,19 +2741,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &919132148868432493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148868432490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e85aecb3cfd07bf49a95ccd84f0e9a22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: a683f9be114a47f49abb3c7de07392b9, type: 2}
 --- !u!114 &919132148868432494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2787,6 +2775,19 @@ MonoBehaviour:
   objectToPool: {fileID: 1190724311667645180, guid: a695b616164bc134a986a0eb3da15d15,
     type: 3}
   parent: {fileID: 1715140997}
+--- !u!114 &919132148868432496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148868432490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85aecb3cfd07bf49a95ccd84f0e9a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tree: {fileID: 11400000, guid: a2eeebfaf9e303f4d9ee9d36dd056c8f, type: 2}
 --- !u!1 &929344149004435014
 GameObject:
   m_ObjectHideFlags: 0

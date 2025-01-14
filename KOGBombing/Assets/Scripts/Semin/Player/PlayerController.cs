@@ -31,9 +31,10 @@ namespace Semin
 			Left,
 			Right,
 		}
-		PlayerShooting playerShooting;
+        PlayerShooting playerShooting;
+        
 
-		void Start()
+        void Start()
 		{
 			playerShooting = GetComponent<PlayerShooting>();
 			viewCamera = Camera.main;
@@ -67,6 +68,9 @@ namespace Semin
             }
 			//behaviourTree.Operate();
 		}
+        #region Attack Area
+        
+        #endregion
 
         #region Attack Node
         public INode.ENodeState Move(EDirection direction)
@@ -117,12 +121,12 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
-			//playerShooting.ShootButton();
+			playerShooting.ShootButton();
 		}
 		public void OnRotate(InputValue value)
 		{
 			mousePos = value.Get<Vector2>();
-		}
+        }
 	
 		public void OnMove(InputValue value)
 		{

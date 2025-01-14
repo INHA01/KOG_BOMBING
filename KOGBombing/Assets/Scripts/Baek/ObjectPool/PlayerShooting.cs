@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
-    [SerializeField] Transform bulletSpawnPosi;
+    [Header("AttackRange")]
+    [SerializeField] GameObject attackRange;
+    [SerializeField] Transform shootStartPos;
+    [SerializeField] Transform shootEndPos;
 
+    [Header("Bullet")]
     [SerializeField] int bulletCount;
     [SerializeField] int magazineCount;
 
@@ -19,6 +23,8 @@ public class PlayerShooting : MonoBehaviour
 
     Transform playerTransform;
 
+    Vector3 mousePos;
+
     void Start()
     {
         playerTransform = transform.GetChild(0);
@@ -27,9 +33,34 @@ public class PlayerShooting : MonoBehaviour
         bulletCount = 9;
         magazineCount = 4;
     }
-    void Update()
+    private void FixedUpdate()
     {
-        Debug.DrawRay(new Vector3(bulletSpawnPosi.position.x, 0, bulletSpawnPosi.position.z), new Vector3(playerTransform.position.x, 0, playerTransform.position.z) - new Vector3(bulletSpawnPosi.position.x, 0, bulletSpawnPosi.position.z), Color.red);
+        ShowAttackArea();
+    }
+    bool CheckMouseOutScreen()
+    {
+        mousePos = Input.mousePosition;
+        return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
+    }
+    void ShowAttackArea()
+    {
+        if (!CheckMouseOutScreen())
+            return;
+        Vector3 attackPoint = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10));
+        float length = (attackPoint - this.transform.position).magnitude;
+
+        //공격 범위 설정
+        //Vector3 direction = this.transform.position + playerObj.transform.forward * 2.0f;
+        //if (length < 1)
+        //    length = 1;
+        //attackRange.transform.position = playerObj.transform.position + direction.normalized * length / 2;
+        //attackRange.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
+
+        Vector3 directoin = shootEndPos.position - shootStartPos.position;
+        if (length < 1)
+            length = 1;
+        attackRange.transform.position = shootStartPos.position + directoin.normalized * length / 2;
+        attackRange.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
     }
     public void ShootButton()
     {
@@ -47,9 +78,9 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         bullet.GetComponent<BulletController>().DestroyTime = bulletDestroyTime;
-        Vector3 dir = new Vector3(bulletSpawnPosi.position.x, 0, bulletSpawnPosi.position.z) - new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
+        Vector3 dir = new Vector3(shootStartPos.position.x, 0, shootStartPos.position.z) - new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
         bullet.GetComponent<BulletController>().shootDirection = dir.normalized;
-        bullet.transform.position = bulletSpawnPosi.position;
+        bullet.transform.position = shootStartPos.position;
 
         bullet.SetActive(true);
     }

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Text;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Orpul1
         [SerializeField]
         CustomRoomView view;
         CustomServerModel model = new CustomServerModel();
+
         public void SetServerInfo(RoomInfo roomInfo)
         {
             model.roomInfo = roomInfo;
@@ -17,10 +19,12 @@ namespace Orpul1
             view.tmpServerName.text = model.stbServerName.ToString();
             view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
         }
-        public void SetPlayerCount(StringBuilder playerCount)
+
+        public void OnEnterRoom()
         {
-            model.stbPlayerCount = playerCount;
-            view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
+            if (!model.roomInfo.IsOpen) return;
+            if (model.roomInfo.PlayerCount > model.roomInfo.MaxPlayers) return;
+            PhotonNetwork.JoinRoom(model.roomInfo.Name);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Orpul1
         GameObject customRoomUIObj;
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
+        Action<List<RoomInfo>> SetRoomUpdate;
         Action setPlayerList;
         Action<Player> updatePlayer;
         Action<Player> setRemovePlayer;
@@ -58,6 +59,17 @@ namespace Orpul1
             if (isCustomMatch)
             {
                 base.OnJoinedLobby();
+            }
+        }
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        {
+            // TODO >> : 룸 리스트 갱신
+            if(isCustomMatch)
+            {
+                SetRoomUpdate(roomList);
+                /*
+                 * 1. 룸이 생성되어있는 것들을 가져오기
+                 */
             }
         }
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)

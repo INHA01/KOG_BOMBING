@@ -17,15 +17,13 @@ namespace Orpul1
         {
             for (int i = 0; i < roomList.Count; i++)
             {
-                if (roomList[i].RemovedFromList)
+                if (model.DicRoomInfo.ContainsKey(roomList[i].Name))
                 {
-                    Destroy(model.DicRoomInfo[roomList[i].Name].gameObject);
-                    model.DicRoomInfo.Remove(roomList[i].Name);
-                }
-                else if (model.DicRoomInfo.ContainsKey(roomList[i].Name))
-                {
-                    // TODO: ·ë Á¤º¸ º¯°æ
-                    model.DicRoomInfo[roomList[i].Name].SetPlayerCount(new StringBuilder(roomList.Count.ToString()));
+                    if (roomList[i].RemovedFromList)
+                    {
+                        Destroy(model.DicRoomInfo[roomList[i].Name].gameObject);
+                        model.DicRoomInfo.Remove(roomList[i].Name);
+                    }
                 }
                 else
                 {

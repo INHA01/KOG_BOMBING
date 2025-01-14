@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
@@ -15,20 +16,26 @@ namespace Orpul1
         GameObject customRoomUIObj;
 
         [SerializeField]
+        GameObject createRoomPanel;
+
+        [SerializeField]
         PhotonUpdateController<List<RoomInfo>> roomUpdateController;
 
         [SerializeField]
         PhotonUpdateController<Player> playerUpdateController;
-
         [SerializeField]
-        GameObject createRoomPanel;
+        GameObject createRoomObj;
+        Func<StringBuilder> GetRoomName;
+        Func<int> GetMaxPlayer;
 
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
-
         
         private void Start()
         {
+            CreateRoomPresenter createRoomPresenter = createRoomObj.GetComponent<CreateRoomPresenter>();
+            GetRoomName = createRoomPresenter.GetRoomName;
+            GetMaxPlayer = createRoomPresenter.GetMaxPlayer;
             customRoomUIObj.SetActive(false);
             createRoomPanel.SetActive(false);
         }
@@ -64,6 +71,20 @@ namespace Orpul1
                 PhotonNetwork.LeaveLobby();
                 isCustomMatch = false;
             }
+        }
+
+        public void OnCreateRoomBtn()
+        {
+            RoomOptions options = new RoomOptions()
+            {
+                MaxPlayers = GetMaxPlayer(),
+                IsVisible = true,
+                IsOpen = true,
+                PublishUserId = true,
+                CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
+            };
+            PhotonNetwork.CreateRoom(GetRoomName().ToString(), options);
+            Debug.Log($"CreateRoom : {GetRoomName().ToString()}");
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
@@ -119,7 +140,7 @@ namespace Orpul1
         {
             if (isCustomMatch)
             {
-                Debug.Log($"isCustomMatch {isCustomMatch}");
+                Debug.Log($"CustomMatch JoinRoom");
                 base.OnJoinedRoom();
                 playerUpdateController.UpdateInfo(PhotonNetwork.LocalPlayer);
                 //setPlayerList();

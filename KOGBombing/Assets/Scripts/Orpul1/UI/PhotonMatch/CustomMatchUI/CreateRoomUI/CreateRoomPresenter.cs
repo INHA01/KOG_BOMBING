@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace Orpul1
@@ -10,19 +12,29 @@ namespace Orpul1
         [SerializeField]
         CreateRoomView view;
         CreateRoomModel model = new CreateRoomModel();
-        public void onInputRoomName()
+        public void InputFieldSetRoomName()
         {
             model.StbRoomName.Clear();
             model.StbRoomName.Append(view.InputRoomName.text);
         }
-        public void onDropDPlayerCount()
+        public void DropDownSetPlayerCnt()
         {
             model.StbPlayerCnt.Clear();
             model.StbPlayerCnt.Append(view.DropDPlayerCnt.value);
         }
-        public CreateRoomModel GetRoomInfoModel()
+        public void OnQuitBtn()
         {
-            return model;
+            view.popupObj.SetActive(false);
+        }
+        public StringBuilder GetRoomName()
+        {
+            return model.StbRoomName;
+        }
+        public int GetMaxPlayer()
+        {
+            int maxPlayer = 0;
+            int.TryParse(model.StbPlayerCnt.ToString(), out maxPlayer);
+            return maxPlayer;
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Orpul1
 {
     public class CreateRoomView : MonoBehaviour
     {
+        public GameObject popupObj;
         public TMP_InputField InputRoomName;
         public TMP_Dropdown DropDPlayerCnt;
     }

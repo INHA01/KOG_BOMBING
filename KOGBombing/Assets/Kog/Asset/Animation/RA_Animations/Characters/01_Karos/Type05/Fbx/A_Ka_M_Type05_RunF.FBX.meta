@@ -20,10 +20,14 @@ ModelImporter:
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Errors found in
       old project file will be treated as a warnings. Configuration mis-match will
       be ignored, but current Configuration needs to be fixed:\n\tParent for 'Core'
-      differs from one found in HumanDescription. 'A_Ka_M_Type05_RunF 1' was found
+      differs from one found in HumanDescription. 'A_Ka_M_Type05_RunF' was found
       instead of 'Root'.\n"
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'A_Ka_M_Type05_RunF_v4_\uB290\uB9B0\uBC84\uC804_03'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Pelvis'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Spine'
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -61,154 +65,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Core
-        weight: 1
-      - path: Core/Pelvis
-        weight: 1
-      - path: Core/Pelvis/Spine
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/ForeTwist2_L
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_G0_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_G0_L/Finger_G1_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_G0_L/Finger_G1_L/Finger_G2_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_J0_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_J0_L/Finger_J1_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_J0_L/Finger_J1_L/Finger_J2_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_S0_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_S0_L/Finger_S1_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_S0_L/Finger_S1_L/Finger_S2_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_U0_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_U0_L/Finger_U1_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_U0_L/Finger_U1_L/Finger_U2_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_Y0_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_Y0_L/Finger_Y1_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Finger_Y0_L/Finger_Y1_L/Finger_Y2_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/ForeTwist_L
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/Forearm_L/Hand_L/Weapon_Hand_L
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/UpperTwist2_L
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_L/UpperArm_L/UpperTwist_L
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/ForeTwist2_R
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_G0_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_G0_R/Finger_G1_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_G0_R/Finger_G1_R/Finger_G2_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_J0_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_J0_R/Finger_J1_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_J0_R/Finger_J1_R/Finger_J2_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_S0_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_S0_R/Finger_S1_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_S0_R/Finger_S1_R/Finger_S2_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_U0_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_U0_R/Finger_U1_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_U0_R/Finger_U1_R/Finger_U2_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_Y0_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_Y0_R/Finger_Y1_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Finger_Y0_R/Finger_Y1_R/Finger_Y2_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/ForeTwist_R
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/Forearm_R/Hand_R/Weapon_hand_R
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/UpperTwist2_R
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Clavicle_R/UpperArm_R/UpperTwist_R
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/Bone_EyeBall_L
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/Bone_EyeBall_R
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/Bone_EyeL_Target
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/Bone_EyeR_Target
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/FaceCtrl_Root
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/FaceCtrl_Root/EyeClosed_pivot
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/FaceCtrl_Root/EyeClosed_pivot/EyeClosed_Helper
-        weight: 0
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/FaceCtrl_Root/JawOpen_pivot
-        weight: 1
-      - path: Core/Pelvis/Spine/Spine1/Spine2/Neck/Head/FaceCtrl_Root/JawOpen_pivot/JawOpen_Helper
-        weight: 0
-      - path: Core/Pelvis/Thigh_L
-        weight: 1
-      - path: Core/Pelvis/Thigh_L/Calf_L
-        weight: 1
-      - path: Core/Pelvis/Thigh_L/Calf_L/Foot_L
-        weight: 1
-      - path: Core/Pelvis/Thigh_L/Calf_L/Foot_L/Toe_L
-        weight: 1
-      - path: Core/Pelvis/Thigh_R
-        weight: 1
-      - path: Core/Pelvis/Thigh_R/Calf_R
-        weight: 1
-      - path: Core/Pelvis/Thigh_R/Calf_R/Foot_R
-        weight: 1
-      - path: Core/Pelvis/Thigh_R/Calf_R/Foot_R/Toe_R
-        weight: 1
-      maskType: 0
+      transformMask: []
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     isReadable: 0

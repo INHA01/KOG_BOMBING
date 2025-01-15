@@ -64,38 +64,36 @@ namespace Semin
 			);
 		}
 
-		private void FixedUpdate()
+        private void Update()
+        {
+			UpdateAnimation();
+        }
+
+        private void FixedUpdate()
 		{
 			if (canConnectPhoton)
 			{
 				if (!pv.IsMine) return;
 			}
-
-			Quaternion rotation = Quaternion.Euler(0, -45, 0);
-			Vector3 forward = playerObj.transform.forward; // 캐릭터가 바라보는 방향
-			forward.y = 0;
-			forward.Normalize();			
-			forward = rotation * forward;
-
-			Vector3 right = playerObj.transform.right;
-			right.y = 0;
-			right.Normalize();
-			right = rotation * right;
-
-			Vector3 normal = speedValue.normalized;
-			float adjustedHorizontal = Vector3.Dot(new Vector3(normal.x, 0, normal.y), right);
-			float adjustedVertical = Vector3.Dot(new Vector3(normal.x, 0, normal.y), forward);
-			if (speedValue.x != 0 || speedValue.y != 0)
-			{                                                                                                                                            
-				animator.SetFloat("Horizontal", adjustedHorizontal);
-				animator.SetFloat("Vertical", adjustedVertical);
-			}				
-			else
-			{
-				animator.SetFloat("Horizontal", 0);
-				animator.SetFloat("Vertical", 0);
-			}
 		}
+
+		private void UpdateAnimation()
+		{
+			if (speedValue.magnitude <= 0.1f) return;
+
+            Quaternion rotation = Quaternion.Euler(0, -45, 0);
+            Vector3 forward = playerObj.transform.forward; // 캐릭터가 바라보는 방향
+            forward = rotation * forward;
+
+            Vector3 right = playerObj.transform.right;
+            right = rotation * right;
+
+            float adjustedHorizontal = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), right);
+            float adjustedVertical = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), forward);
+
+            animator.SetFloat("Horizontal", adjustedHorizontal);
+            animator.SetFloat("Vertical", adjustedVertical);
+        }
 
         #region Action Node
         public INode.ENodeState Move(EDirection direction)

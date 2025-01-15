@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -132,9 +133,13 @@ namespace Orpul1
             if (isCustomMatch)
             {
                 Debug.Log($"CustomMatch JoinRoom");
-                customRoomPopupPanel.SetActive(true);
                 base.OnJoinedRoom();
-                playerUpdateController.UpdateInfo(PhotonNetwork.LocalPlayer);
+                customRoomPopupPanel.SetActive(true);
+                Player[] playerList = PhotonNetwork.PlayerList;
+                for (int i=0; i< playerList.Length; i++)
+                {
+                    playerUpdateController.UpdateInfo(playerList[i]);
+                }
             }
         }
         public override void OnCreateRoomFailed(short returnCode, string message)

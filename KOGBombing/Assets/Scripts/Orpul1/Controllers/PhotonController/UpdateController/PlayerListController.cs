@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Photon.Pun;
 using Photon.Realtime;
@@ -26,7 +27,15 @@ namespace Orpul1
         {
             if(!dicPlayerInfo.ContainsKey(playerInfo.NickName))
             {
-                int teamIndex = GetTeamIndex();
+                int teamIndex = 0;
+                if ((string)playerInfo.CustomProperties["Team"]!=null)
+                {
+                    teamIndex = GetTeamIndex(new StringBuilder(playerInfo.CustomProperties["Team"].ToString()));
+                }
+                else
+                {
+                    teamIndex = GetTeamIndex();
+                }
                 GameObject playerPanelObj = Instantiate(playerPanelPref, trTeamPanel[teamIndex]);
                 DisplayPlayerPresenter presenter = playerPanelObj.GetComponent<DisplayPlayerPresenter>();
                 presenter.Init(new StringBuilder(playerInfo.NickName), new StringBuilder("0"));
@@ -64,6 +73,14 @@ namespace Orpul1
                 return (int)ETeamType.REDTEAM;
             }
 
+            return (int)ETeamType.BLUETEAM;
+        }
+        private int GetTeamIndex(StringBuilder stbTeam)
+        {
+            if (stbTeam.ToString() == "RT")
+            {
+                return (int)ETeamType.REDTEAM;
+            }
             return (int)ETeamType.BLUETEAM;
         }
     }

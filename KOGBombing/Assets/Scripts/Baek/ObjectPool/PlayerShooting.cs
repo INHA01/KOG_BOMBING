@@ -7,9 +7,15 @@ public class PlayerShooting : MonoBehaviour
 {
     [Header("AttackRange")]
     [SerializeField] GameObject attackRange;
+    [SerializeField] GameObject noAttackRange;
     [SerializeField] Transform shootStartPos;
     [SerializeField] Transform shootEndPos;
+    
     Vector3 mousePos;
+    Vector3 direction;
+    float maxDistance;
+    float attackRangelength;
+    float noAttackRangeLength;
 
     [Header("Bullet")]
     [SerializeField] int bulletCount;
@@ -21,10 +27,8 @@ public class PlayerShooting : MonoBehaviour
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
     ObjectPool magazine;
+    public Vector3 attackPoint;
 
-    float maxDistance;
-    Vector3 directoin;
-    float length;
 
     void Start()
     {
@@ -46,13 +50,30 @@ public class PlayerShooting : MonoBehaviour
     {
         if (!CheckMouseOutScreen())
             return;
-        Vector3 attackPoint = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10));
-        length = (attackPoint - this.transform.position).magnitude;
-        directoin = shootEndPos.position - shootStartPos.position;
-        if (length < 1)
-            length = 1;
-        attackRange.transform.position = shootStartPos.position + directoin.normalized * length / 2;
-        attackRange.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
+        direction = attackPoint - shootStartPos.position;
+        attackRangelength = (attackPoint - shootStartPos.position).magnitude;
+        if (attackRangelength > maxDistance)
+        {
+            noAttackRangeLength = attackRangelength - maxDistance;
+            SetArea(noAttackRange, shootEndPos.position, noAttackRangeLength);
+            noAttackRange.SetActive(true);
+
+            attackRangelength = maxDistance;
+        }
+        else
+        {
+            noAttackRange.SetActive(false);
+
+            if (attackRangelength < 1)
+                attackRangelength = 1;
+        }
+        SetArea(attackRange, shootStartPos.position, attackRangelength);
+    }
+    void SetArea(GameObject area , Vector3 pos, float length)
+    {
+        Vector3 areaPos = pos + direction.normalized * length / 2;
+        area.transform.position = new Vector3(areaPos.x, area.transform.position.y, areaPos.z);
+        area.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
     }
     public void ShootButton()
     {
@@ -73,10 +94,10 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("bullet is null");
             return;
         }
-        if(length > maxDistance)
-            length = maxDistance;
-        bullet.GetComponent<BulletController>().DestroyDistance = length;
-        bullet.GetComponent<BulletController>().shootDirection = directoin.normalized;
+        if(attackRangelength > maxDistance)
+            attackRangelength = maxDistance;
+        bullet.GetComponent<BulletController>().DestroyDistance = attackRangelength;
+        bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
         bullet.transform.position = shootStartPos.position;
 
         bullet.SetActive(true);

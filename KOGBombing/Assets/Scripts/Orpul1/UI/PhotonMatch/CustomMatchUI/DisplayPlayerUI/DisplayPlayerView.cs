@@ -6,4 +6,5 @@ using UnityEngine;
 public class DisplayPlayerView : MonoBehaviour
 {
     public TextMeshProUGUI tmpNickname;
+    public TextMeshProUGUI tmpLevel;
 }

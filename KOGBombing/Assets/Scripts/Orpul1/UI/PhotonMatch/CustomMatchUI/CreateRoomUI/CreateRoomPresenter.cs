@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-
+using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 namespace Orpul1
 {
     public class CreateRoomPresenter : MonoBehaviour
@@ -22,20 +19,26 @@ namespace Orpul1
             model.StbPlayerCnt.Clear();
             model.StbPlayerCnt.Append(view.DropDPlayerCnt.value);
         }
-        public void OnQuitBtn()
-        {
-            view.popupObj.SetActive(false);
-        }
-        public StringBuilder GetRoomName()
-        {
-            StringBuilder result = new StringBuilder(view.InputRoomName.text.ToString());
-            return result;
-        }
-        public int GetMaxPlayer()
+
+        public void OnCreateRoomBtn()
         {
             int maxPlayer = 0;
             int.TryParse(view.DropDPlayerCnt.ToString(), out maxPlayer);
-            return maxPlayer;
+            RoomOptions options = new RoomOptions()
+            {
+                MaxPlayers = maxPlayer,
+                IsVisible = true,
+                IsOpen = true,
+                PublishUserId = true,
+                CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
+            };
+            PhotonNetwork.CreateRoom(view.InputRoomName.text.ToString(), options);
+            view.createRoomPopupPanel.SetActive(false);
+        }
+
+        public void OnQuitBtn()
+        {
+            view.createRoomPopupPanel.SetActive(false);
         }
     }
 }

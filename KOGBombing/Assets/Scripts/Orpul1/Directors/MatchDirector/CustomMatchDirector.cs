@@ -16,28 +16,20 @@ namespace Orpul1
         GameObject customRoomUIObj;
 
         [SerializeField]
-        GameObject createRoomPanel;
+        GameObject customRoomPopupPanel;
 
         [SerializeField]
         PhotonUpdateController<List<RoomInfo>> roomUpdateController;
 
         [SerializeField]
         PhotonUpdateController<Player> playerUpdateController;
-        [SerializeField]
-        GameObject createRoomObj;
-        Func<StringBuilder> GetRoomName;
-        Func<int> GetMaxPlayer;
 
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
         
         private void Start()
         {
-            CreateRoomPresenter createRoomPresenter = createRoomObj.GetComponent<CreateRoomPresenter>();
-            GetRoomName = createRoomPresenter.GetRoomName;
-            GetMaxPlayer = createRoomPresenter.GetMaxPlayer;
             customRoomUIObj.SetActive(false);
-            createRoomPanel.SetActive(false);
         }
 
         public override void Match()
@@ -46,6 +38,7 @@ namespace Orpul1
             customRoomUIObj.SetActive(isCustomMatch);
             PhotonNetwork.JoinLobby(customLobby);
         }
+        /*
         public void OnExitLobby()
         {
             customRoomUIObj.SetActive(false);
@@ -85,7 +78,7 @@ namespace Orpul1
             };
             PhotonNetwork.CreateRoom(GetRoomName().ToString(), options);
             Debug.Log($"CreateRoom : {GetRoomName().ToString()}");
-        }
+        }*/
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (isCustomMatch)
@@ -124,7 +117,6 @@ namespace Orpul1
             if (isCustomMatch && targetPlayer.CustomProperties.ContainsKey("Team"))
             {
                 playerUpdateController.UpdateInfo(targetPlayer);
-                //updatePlayer(targetPlayer);
             }
         }
 
@@ -132,8 +124,7 @@ namespace Orpul1
         {
             if (isCustomMatch)
             {
-                playerUpdateController.UpdateInfo(otherPlayer);
-                //setRemovePlayer(otherPlayer);
+                playerUpdateController.UpdateInfo(otherPlayer, true);
             }
         }
         public override void OnJoinedRoom()
@@ -141,9 +132,9 @@ namespace Orpul1
             if (isCustomMatch)
             {
                 Debug.Log($"CustomMatch JoinRoom");
+                customRoomPopupPanel.SetActive(true);
                 base.OnJoinedRoom();
                 playerUpdateController.UpdateInfo(PhotonNetwork.LocalPlayer);
-                //setPlayerList();
             }
         }
         public override void OnCreateRoomFailed(short returnCode, string message)

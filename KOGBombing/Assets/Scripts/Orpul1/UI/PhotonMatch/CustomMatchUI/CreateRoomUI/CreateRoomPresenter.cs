@@ -33,6 +33,7 @@ namespace Orpul1
                 CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
             };
             PhotonNetwork.CreateRoom(view.InputRoomName.text.ToString(), options);
+            view.InputRoomName.text = "";
             view.createRoomPopupPanel.SetActive(false);
         }
 

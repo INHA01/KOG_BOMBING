@@ -38,7 +38,6 @@ namespace Orpul1
                 PhotonNetwork.JoinLobby(randomMatchLobby);
             }
         }
-
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
             if (isRandomMatch)

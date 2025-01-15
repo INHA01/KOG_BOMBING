@@ -1,11 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
@@ -15,6 +11,9 @@ namespace Orpul1
     {
         [SerializeField]
         GameObject customRoomPopupPanel;
+        [SerializeField]
+        GameObject customRoomPanel;
+        Action SetRoomOwner;
 
         [SerializeField]
         PhotonUpdateController<List<RoomInfo>> roomUpdateController;
@@ -24,13 +23,24 @@ namespace Orpul1
 
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
-        
+
+        private void Start()
+        {
+            SetRoomOwner = customRoomPanel.GetComponent<CustomRoomPresenter>().SetRoomOwner;
+        }
         public override void Match()
         {
             isCustomMatch = true;
             PhotonNetwork.JoinLobby(customLobby);
         }
-        
+
+        public override void OnConnectedToMaster()
+        {
+            if(isCustomMatch)
+            {
+                PhotonNetwork.JoinLobby(customLobby);
+            }
+        }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (isCustomMatch)
@@ -74,17 +84,23 @@ namespace Orpul1
         {
             if (isCustomMatch)
             {
+                base.OnPlayerLeftRoom(otherPlayer);
                 playerUpdateController.UpdateInfo(otherPlayer, true);
+                SetRoomOwner();
             }
         }
         public override void OnJoinedRoom()
         {
             if (isCustomMatch)
             {
+                int debugRedTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+                int debugBlueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+                Debug.Log($"RoomTeam -> RT: {debugRedTeam} :: BT{debugBlueTeam}");
                 Debug.Log($"CustomMatch JoinRoom");
                 base.OnJoinedRoom();
                 customRoomPopupPanel.SetActive(true);
                 Player[] playerList = PhotonNetwork.PlayerList;
+                SetRoomOwner();
 
                 for (int i=0; i< playerList.Length; i++)
                 {

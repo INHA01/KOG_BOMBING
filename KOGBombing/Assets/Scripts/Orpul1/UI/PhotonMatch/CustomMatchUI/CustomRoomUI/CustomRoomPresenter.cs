@@ -13,12 +13,11 @@ public class CustomRoomPresenter : MonoBehaviour
     public void OnLeaveRoomBtn()
     {
         view.customRoomPanel.SetActive(false);
-        Debug.Log("Click Leave Button");
+        Debug.Log("Click Leave Room Button");
         PhotonNetwork.LeaveRoom();
     }
     public void OnStartRoomBtn()
     {
-        //PhotonNetwork.CurrentRoom.CustomProperties["RoomState"] = "Start";
         PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
     }
     public void OnSwapTeamBtn()
@@ -33,6 +32,17 @@ public class CustomRoomPresenter : MonoBehaviour
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "RT" } });
             Debug.Log("Swap Red TEAM");
         }
-        
+    }
+    
+    public void SetRoomOwner()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            view.btnStartGame.interactable = true;
+        }
+        else
+        {
+            view.btnStartGame.interactable = false;
+        }
     }
 }

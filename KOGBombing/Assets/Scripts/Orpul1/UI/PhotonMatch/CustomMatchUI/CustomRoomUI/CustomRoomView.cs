@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomRoomView : MonoBehaviour
 {
     public GameObject customRoomPanel;
+    public Button btnStartGame;
 }

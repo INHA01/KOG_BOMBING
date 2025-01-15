@@ -11,9 +11,10 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Transform shootStartPos;
     [SerializeField] Transform shootEndPos;
     
+    public Vector3 attackPoint;
     Vector3 mousePos;
     Vector3 direction;
-    float maxDistance;
+    float maxLength;
     float attackRangelength;
     float noAttackRangeLength;
 
@@ -27,12 +28,11 @@ public class PlayerShooting : MonoBehaviour
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
     ObjectPool magazine;
-    public Vector3 attackPoint;
 
 
     void Start()
     {
-        maxDistance = (shootEndPos.position - shootStartPos.position).magnitude;
+        maxLength = (shootEndPos.position - shootStartPos.position).magnitude;
         magazine = GetComponent<ObjectPool>();
         bulletCount = 9;
         magazineCount = 4;
@@ -52,13 +52,13 @@ public class PlayerShooting : MonoBehaviour
             return;
         direction = attackPoint - shootStartPos.position;
         attackRangelength = (attackPoint - shootStartPos.position).magnitude;
-        if (attackRangelength > maxDistance)
+        if (attackRangelength > maxLength)
         {
-            noAttackRangeLength = attackRangelength - maxDistance;
+            noAttackRangeLength = attackRangelength - maxLength;
             SetArea(noAttackRange, shootEndPos.position, noAttackRangeLength);
             noAttackRange.SetActive(true);
 
-            attackRangelength = maxDistance;
+            attackRangelength = maxLength;
         }
         else
         {
@@ -75,7 +75,7 @@ public class PlayerShooting : MonoBehaviour
         area.transform.position = new Vector3(areaPos.x, area.transform.position.y, areaPos.z);
         area.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
     }
-    public void ShootButton()
+    public void Shoot()
     {
         if (magazineCount > 0 && shootingCoroutine == null)
         {
@@ -86,7 +86,7 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("No magazine");
         }
     }
-    private void Shoot()
+    void BulletSpawn()
     {
         GameObject bullet = magazine.GetPooledObject().gameObject;
         if (bullet == null)
@@ -94,8 +94,8 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("bullet is null");
             return;
         }
-        if(attackRangelength > maxDistance)
-            attackRangelength = maxDistance;
+        if(attackRangelength > maxLength)
+            attackRangelength = maxLength;
         bullet.GetComponent<BulletController>().DestroyDistance = attackRangelength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
         bullet.transform.position = shootStartPos.position;
@@ -107,7 +107,7 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            Shoot();
+            BulletSpawn();
             bulletCount--;
         }
         magazineCount--;

@@ -121,7 +121,7 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
-			playerShooting.ShootButton();
+			playerShooting.Shoot();
 		}
 		public void OnRotate(InputValue value)
 		{

@@ -5,6 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 namespace Semin
 {
 
@@ -12,7 +13,10 @@ namespace Semin
 	{
 		[SerializeField]
 		PhotonView pv;
-		[SerializeField] public GameObject playerObj;
+		[SerializeField] 
+		public GameObject playerObj; 
+		[SerializeField]
+		public Animator animator;
 		[SerializeField]
 		bool canConnectPhoton = false;
 		Rigidbody rigidBody;
@@ -23,6 +27,7 @@ namespace Semin
 		Vector2 speedValue = Vector2.zero;
 		Vector2 mousePos = Vector2.zero;
 		Camera viewCamera;
+		
 
 		public enum EDirection
 		{
@@ -61,29 +66,52 @@ namespace Semin
 
 		private void FixedUpdate()
 		{
-			if(canConnectPhoton)
+			if (canConnectPhoton)
 			{
-                if (!pv.IsMine) return;
-            }
-			//behaviourTree.Operate();
+				if (!pv.IsMine) return;
+			}
+
+			Quaternion rotation = Quaternion.Euler(0, -45, 0);
+			Vector3 forward = playerObj.transform.forward; // 캐릭터가 바라보는 방향
+			forward.y = 0;
+			forward.Normalize();			
+			forward = rotation * forward;
+
+			Vector3 right = playerObj.transform.right;
+			right.y = 0;
+			right.Normalize();
+			right = rotation * right;
+
+			Vector3 normal = speedValue.normalized;
+			float adjustedHorizontal = Vector3.Dot(new Vector3(normal.x, 0, normal.y), right);
+			float adjustedVertical = Vector3.Dot(new Vector3(normal.x, 0, normal.y), forward);
+			if (speedValue.x != 0 || speedValue.y != 0)
+			{                                                                                                                                            
+				animator.SetFloat("Horizontal", adjustedHorizontal);
+				animator.SetFloat("Vertical", adjustedVertical);
+			}				
+			else
+			{
+				animator.SetFloat("Horizontal", 0);
+				animator.SetFloat("Vertical", 0);
+			}
 		}
 
-        #region Attack Node
+        #region Action Node
         public INode.ENodeState Move(EDirection direction)
 		{
-			switch(direction)
+			Vector3 movement;
+			switch (direction)
 			{
 				case EDirection.Left:
-					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * -1 * speedValue.x);
-					break;
 				case EDirection.Right:
-					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * speedValue.x);
+					movement = transform.right * Time.deltaTime * moveSpeed * speedValue.x;
+					rigidBody.MovePosition(rigidBody.position + movement);
 					break;
 				case EDirection.Up:
-					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * speedValue.y);
-					break;
 				case EDirection.Down:
-					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1 * speedValue.y);
+					movement = transform.forward * Time.deltaTime * moveSpeed * speedValue.y;
+					rigidBody.MovePosition(rigidBody.position + movement);
 					break;
 			}
 
@@ -127,8 +155,8 @@ namespace Semin
 		public void OnMove(InputValue value)
 		{
 			Vector2 inputVector = value.Get<Vector2>();
-			speedValue.x = Mathf.Abs(inputVector.x);
-			speedValue.y = Mathf.Abs(inputVector.y);
+			speedValue.x = inputVector.x;
+			speedValue.y = inputVector.y;
 			inputVector.x = ConvertToThreeValues(value.Get<Vector2>().normalized.x);
 			inputVector.y = ConvertToThreeValues(value.Get<Vector2>().normalized.y);
 

@@ -3,26 +3,20 @@ using UnityEngine;
 
 public class BulletController : PooledObject
 {
-    [SerializeField]
-    float moveSpeed;
-
-    [SerializeField]
-    int damage = 2;
-
-    float destroyTime = 5f;
-
-    float span = 0;
+    [SerializeField] float moveSpeed;
+    //[SerializeField] int damage = 2;
 
     public Vector3 shootDirection;
-
-    public float DestroyTime { get => destroyTime; set => destroyTime = value; }
+    float destroyDistance;
+    float distance;
+    public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     void Update()
     {
-        span += Time.deltaTime;
         transform.Translate(shootDirection *moveSpeed * Time.deltaTime);
-        if (span > destroyTime)
+        distance += moveSpeed * Time.deltaTime;
+        if (distance > destroyDistance)
         {
-            span = 0;
+            distance = 0;
             Release();
         }
     }
@@ -32,13 +26,12 @@ public class BulletController : PooledObject
         if (collision.collider.tag == "Player")
         {
             //collision.collider.GetComponent<PlayerController>().Hit(damage);
-            span = 0;
             Release();
         }
         if (collision.collider.tag == "Target")
         {
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            Release();
         }
     }
 }

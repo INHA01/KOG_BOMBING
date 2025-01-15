@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -8,12 +9,12 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] GameObject attackRange;
     [SerializeField] Transform shootStartPos;
     [SerializeField] Transform shootEndPos;
+    Vector3 mousePos;
 
     [Header("Bullet")]
     [SerializeField] int bulletCount;
     [SerializeField] int magazineCount;
 
-    [SerializeField] float bulletDestroyTime;
     [SerializeField] float reloadTime;
     [SerializeField] float shootingTerm;
 
@@ -21,14 +22,13 @@ public class PlayerShooting : MonoBehaviour
     Coroutine reloadCoroutine;
     ObjectPool magazine;
 
-    Transform playerTransform;
-
-    Vector3 mousePos;
+    float maxDistance;
+    Vector3 directoin;
+    float length;
 
     void Start()
     {
-        playerTransform = transform.GetChild(0);
-        
+        maxDistance = (shootEndPos.position - shootStartPos.position).magnitude;
         magazine = GetComponent<ObjectPool>();
         bulletCount = 9;
         magazineCount = 4;
@@ -47,16 +47,8 @@ public class PlayerShooting : MonoBehaviour
         if (!CheckMouseOutScreen())
             return;
         Vector3 attackPoint = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10));
-        float length = (attackPoint - this.transform.position).magnitude;
-
-        //공격 범위 설정
-        //Vector3 direction = this.transform.position + playerObj.transform.forward * 2.0f;
-        //if (length < 1)
-        //    length = 1;
-        //attackRange.transform.position = playerObj.transform.position + direction.normalized * length / 2;
-        //attackRange.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
-
-        Vector3 directoin = shootEndPos.position - shootStartPos.position;
+        length = (attackPoint - this.transform.position).magnitude;
+        directoin = shootEndPos.position - shootStartPos.position;
         if (length < 1)
             length = 1;
         attackRange.transform.position = shootStartPos.position + directoin.normalized * length / 2;
@@ -68,6 +60,10 @@ public class PlayerShooting : MonoBehaviour
         {
             shootingCoroutine = StartCoroutine(Shooting());
         }
+        else if(magazineCount == 0)
+        {
+            Debug.Log("No magazine");
+        }
     }
     private void Shoot()
     {
@@ -77,9 +73,10 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("bullet is null");
             return;
         }
-        bullet.GetComponent<BulletController>().DestroyTime = bulletDestroyTime;
-        Vector3 dir = new Vector3(shootStartPos.position.x, 0, shootStartPos.position.z) - new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
-        bullet.GetComponent<BulletController>().shootDirection = dir.normalized;
+        if(length > maxDistance)
+            length = maxDistance;
+        bullet.GetComponent<BulletController>().DestroyDistance = length;
+        bullet.GetComponent<BulletController>().shootDirection = directoin.normalized;
         bullet.transform.position = shootStartPos.position;
 
         bullet.SetActive(true);
@@ -97,6 +94,7 @@ public class PlayerShooting : MonoBehaviour
         {
             bulletCount = 9;
         }
+        Debug.Log("magazine count: " + magazineCount);
         yield return new WaitForSeconds(shootingTerm);
         if (reloadCoroutine == null)
             reloadCoroutine = StartCoroutine(Reload());
@@ -107,10 +105,9 @@ public class PlayerShooting : MonoBehaviour
         while(magazineCount < 4)
         {
             yield return new WaitForSeconds(reloadTime);
-            if (magazine.Count > 9 * magazineCount)
+            if (magazine.Count > 9)
             {
                 Debug.Log("Reload");
-                Debug.Log("queue count: " + magazine.Count);
                 magazineCount++;
                 if(bulletCount == 0)
                     bulletCount = 9;

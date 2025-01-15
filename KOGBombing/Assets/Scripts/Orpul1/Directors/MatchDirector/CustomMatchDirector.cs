@@ -14,9 +14,6 @@ namespace Orpul1
     public class CustomMatchDirector : PhotonMatch
     {
         [SerializeField]
-        GameObject customRoomUIObj;
-
-        [SerializeField]
         GameObject customRoomPopupPanel;
 
         [SerializeField]
@@ -28,58 +25,12 @@ namespace Orpul1
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
         
-        private void Start()
-        {
-            customRoomUIObj.SetActive(false);
-        }
-
         public override void Match()
         {
             isCustomMatch = true;
-            customRoomUIObj.SetActive(isCustomMatch);
             PhotonNetwork.JoinLobby(customLobby);
         }
-        /*
-        public void OnExitLobby()
-        {
-            customRoomUIObj.SetActive(false);
-            createRoomPanel.SetActive(false);
-            PhotonNetwork.LeaveLobby();
-        }
-        public void OnActiveCreateRoom()
-        {
-            createRoomPanel.SetActive(true);
-        }
-
-        public void OnGameStartButton()
-        {
-            if (isCustomMatch && PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
-            }
-        }
-        public void OnLeftCustomMatch()
-        {
-            if (isCustomMatch)
-            {
-                PhotonNetwork.LeaveLobby();
-                isCustomMatch = false;
-            }
-        }
-
-        public void OnCreateRoomBtn()
-        {
-            RoomOptions options = new RoomOptions()
-            {
-                MaxPlayers = GetMaxPlayer(),
-                IsVisible = true,
-                IsOpen = true,
-                PublishUserId = true,
-                CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
-            };
-            PhotonNetwork.CreateRoom(GetRoomName().ToString(), options);
-            Debug.Log($"CreateRoom : {GetRoomName().ToString()}");
-        }*/
+        
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (isCustomMatch)
@@ -97,12 +48,10 @@ namespace Orpul1
         }
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
-            // TODO >> : 룸 리스트 갱신
             if(isCustomMatch)
             {
                 Debug.Log("CustomMatch RoomListUpdate");
                 roomUpdateController.UpdateInfo(roomList);
-                //SetRoomUpdate(roomList);
             }
         }
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
@@ -136,6 +85,7 @@ namespace Orpul1
                 base.OnJoinedRoom();
                 customRoomPopupPanel.SetActive(true);
                 Player[] playerList = PhotonNetwork.PlayerList;
+
                 for (int i=0; i< playerList.Length; i++)
                 {
                     playerUpdateController.UpdateInfo(playerList[i]);

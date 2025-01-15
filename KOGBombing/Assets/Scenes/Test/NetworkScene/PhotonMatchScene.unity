@@ -217,6 +217,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1080076612}
+        m_TargetAssemblyTypeName: RoomListPanelPresenter, Assembly-CSharp
+        m_MethodName: OnActivePopupBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &57636201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,7 +1212,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514995559}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1627,7 +1639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2415,6 +2427,7 @@ GameObject:
   - component: {fileID: 878163716}
   - component: {fileID: 878163718}
   - component: {fileID: 878163717}
+  - component: {fileID: 878163719}
   m_Layer: 5
   m_Name: CustomRoomPanel
   m_TagString: Untagged
@@ -2480,6 +2493,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878163715}
   m_CullTransparentMesh: 1
+--- !u!114 &878163719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878163715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521044485f8de454ebe2c9e511d16062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customRoomPanel: {fileID: 611444800}
 --- !u!1 &885404113
 GameObject:
   m_ObjectHideFlags: 0
@@ -2738,7 +2764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d3ee23ffb8f2c40a922453f72879b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customRoomUIObj: {fileID: 1142535909}
   customRoomPopupPanel: {fileID: 611444800}
   roomUpdateController: {fileID: 1466023650}
   playerUpdateController: {fileID: 1466023651}
@@ -2997,6 +3022,7 @@ GameObject:
   - component: {fileID: 1080076611}
   - component: {fileID: 1080076613}
   - component: {fileID: 1080076612}
+  - component: {fileID: 1080076614}
   m_Layer: 0
   m_Name: CustomMatch
   m_TagString: Untagged
@@ -3045,6 +3071,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 337539797}
+--- !u!114 &1080076614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080076610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afa31ecbb6bdb24d8c9920b1a095667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view: {fileID: 878163719}
 --- !u!1 &1132751281
 GameObject:
   m_ObjectHideFlags: 0
@@ -5390,7 +5429,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1596913022}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1080076614}
+        m_TargetAssemblyTypeName: CustomRoomPresenter, Assembly-CSharp
+        m_MethodName: OnStartRoomBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1596913022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5544,7 +5595,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1618555390}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1080076614}
+        m_TargetAssemblyTypeName: CustomRoomPresenter, Assembly-CSharp
+        m_MethodName: OnLeaveRoomBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1618555390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5760,7 +5823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2a318f7be658e498c313d9bc77b767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNickname: sad
+  playerNickname: asdf
   RandomMatchObj: {fileID: 933763714}
   CustomMatchObj: {fileID: 933763714}
   btnRandomMatch: {fileID: 1972171051}
@@ -7647,7 +7710,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2143902710}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1080076614}
+        m_TargetAssemblyTypeName: CustomRoomPresenter, Assembly-CSharp
+        m_MethodName: OnSwapTeamBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2143902710
 MonoBehaviour:
   m_ObjectHideFlags: 0

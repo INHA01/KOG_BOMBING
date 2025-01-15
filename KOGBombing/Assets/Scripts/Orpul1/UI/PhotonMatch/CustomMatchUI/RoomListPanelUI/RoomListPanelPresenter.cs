@@ -7,6 +7,14 @@ public class RoomListPanelPresenter : MonoBehaviour
     RoomListPanelView view;
     RoomListPanelModel model;
 
+    private void Start()
+    {
+        view.roomListPanelObj.SetActive(false);
+    }
+    public void OnActivePopupBtn()
+    {
+        view.roomListPanelObj.SetActive(true);
+    }
     public void OnLeaveMatchBtn()
     {
         view.roomListPanelObj.SetActive(false);

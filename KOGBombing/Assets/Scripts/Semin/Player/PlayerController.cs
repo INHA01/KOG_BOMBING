@@ -1,12 +1,8 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine.InputSystem;
 using Photon.Pun;
-using Photon.Realtime;
 using System.Text;
-using Photon.Pun.UtilityScripts;
 namespace Semin
 {
 
@@ -162,7 +158,7 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
-			//playerShooting.ShootButton();
+			playerShooting.Shoot();
 		}
 		public void OnRotate(InputValue value)
 		{

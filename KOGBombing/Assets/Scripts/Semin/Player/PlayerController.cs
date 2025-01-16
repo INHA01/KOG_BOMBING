@@ -97,7 +97,12 @@ namespace Semin
 
 		private void UpdateAnimation()
 		{
-			if (speedValue.magnitude <= 0.1f) return;
+			if (speedValue.magnitude <= 0.1f)
+			{
+				animator.SetFloat("Horizontal", speedValue.x);
+				animator.SetFloat("Vertical", speedValue.y);
+				return;
+			}
 
 			Quaternion rotation = Quaternion.Euler(0, -45, 0);
 			Vector3 forward = playerObj.transform.forward;

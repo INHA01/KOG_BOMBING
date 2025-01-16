@@ -265,6 +265,7 @@ GameObject:
   - component: {fileID: 4447552362137319855}
   - component: {fileID: 3993526391316514513}
   - component: {fileID: 6474392262909287008}
+  - component: {fileID: 6603717530331945351}
   - component: {fileID: 4495833246607394455}
   - component: {fileID: 426232067582746825}
   - component: {fileID: 5189433771045383234}
@@ -342,6 +343,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6603717530331945351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586275429653294337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85aecb3cfd07bf49a95ccd84f0e9a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tree: {fileID: 11400000, guid: a2eeebfaf9e303f4d9ee9d36dd056c8f, type: 2}
+  pv: {fileID: 5189433771045383234}
 --- !u!114 &4495833246607394455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +423,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 4495833246607394455}
   - {fileID: -999808191672801536}
   - {fileID: 1965374967950444819}
   sceneViewId: 0
@@ -426,7 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
+  m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
 --- !u!1 &605181706700197959
@@ -3094,7 +3110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
+  m_SynchronizePosition: 0
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1

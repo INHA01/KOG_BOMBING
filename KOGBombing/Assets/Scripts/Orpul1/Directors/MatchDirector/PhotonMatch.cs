@@ -15,7 +15,14 @@ namespace Orpul1
                 newPlayer.SetCustomProperties(new PhotonHashTable { { "Team", SetTeam().ToString() } });
             }
         }
-
+        public override void OnLeftRoom()
+        {
+            Debug.Log("LeftRoom");
+        }
+        public override void OnLeftLobby()
+        {
+            Debug.Log("LeftLobby");
+        }
         public override void OnJoinedRoom()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -28,7 +35,20 @@ namespace Orpul1
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "UID", PhotonNetwork.LocalPlayer.UserId } });
         }
-
+        public override void OnPlayerLeftRoom(Player otherPlayer)
+        {
+            if ((string)otherPlayer.CustomProperties["Team"]=="RT")
+            {
+                int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam - 1 } });
+            }
+            else
+            {
+                int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam - 1 } });
+            }
+            
+        }
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
             if (propertiesThatChanged.ContainsKey("RoomState"))
@@ -38,7 +58,7 @@ namespace Orpul1
                     PhotonNetwork.CurrentRoom.IsOpen = false;
                     PhotonNetwork.IsMessageQueueRunning = true;
                     PhotonNetwork.CurrentRoom.IsOpen = false;
-                    PhotonNetwork.LoadLevel(1);
+                    PhotonNetwork.LoadLevel(2);
                 }
             }
         }
@@ -48,16 +68,12 @@ namespace Orpul1
             int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
             if (redTeam > blueTeam)
             {
-                int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-                PhotonNetwork.CurrentRoom.CustomProperties["BT"] = blueTeamCnt + 1;
-                Debug.Log($"bt {(int)PhotonNetwork.CurrentRoom.CustomProperties["BT"]}");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam + 1 } });
                 return new StringBuilder("BT");
             }
             else
             {
-                int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-                PhotonNetwork.CurrentRoom.CustomProperties["RT"] = redTeamCnt + 1;
-                Debug.Log($"rt {(int)PhotonNetwork.CurrentRoom.CustomProperties["RT"]}");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam + 1 } });
                 return new StringBuilder("RT");
             }
         }

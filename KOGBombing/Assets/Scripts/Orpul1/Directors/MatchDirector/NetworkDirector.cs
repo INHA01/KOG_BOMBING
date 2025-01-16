@@ -9,40 +9,22 @@ namespace Orpul1
 {
     public class NetworkDirector : MonoBehaviourPunCallbacks
     {
-        /*[SerializeField]
-        protected string sampleUserId = "";
-        AuthenticationValues authValue = new AuthenticationValues();
-        */
         [SerializeField]
-        string playerNickname = "";
+        PhotonMatch randomMatch;
         [SerializeField]
-        GameObject RandomMatchObj;
-        [SerializeField]
-        GameObject CustomMatchObj;
+        PhotonMatch customMatch;
 
         [SerializeField]
         Button btnRandomMatch;
         [SerializeField]
         Button btnCustomMatch;
-
-        IMatchAble customMatch, randomMatch;
+        
         private void Start()
         {
-            randomMatch = RandomMatchObj.GetComponent<RandomMatchDirector>();
-            customMatch = CustomMatchObj.GetComponent<CustomMatchDirector>();
             btnRandomMatch.interactable = false;
             btnCustomMatch.interactable = false;
-
-            PhotonNetwork.LocalPlayer.NickName = playerNickname;
-            //customMatch = CustomMatch;
-            //authValue.AuthType = CustomAuthenticationType.Custom;
-            /*
-            authValue.AddAuthParameter("UserID", sampleUserId);
-            authValue.UserId = sampleUserId;
-            PhotonNetwork.AuthValues = authValue;
-    */
+            Debug.Log("Try ConnectMaster");
             PhotonNetwork.ConnectUsingSettings();
-            Debug.Log("ConnectMasterServer!");
         }
         public override void OnCustomAuthenticationFailed(string debugMessage)
         {
@@ -50,7 +32,7 @@ namespace Orpul1
         }
         public override void OnConnectedToMaster()
         {
-            // Debug.Log($"userid: {PhotonNetwork.LocalPlayer.UserId}");
+            Debug.Log("ConnectMasterServer!");
             btnRandomMatch.interactable = true;
             btnCustomMatch.interactable = true;
         }

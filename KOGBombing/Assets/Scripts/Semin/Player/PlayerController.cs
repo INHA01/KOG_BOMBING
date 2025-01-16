@@ -5,18 +5,16 @@ using System;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Text;
 using Photon.Pun.UtilityScripts;
 namespace Semin
 {
 
-	public class PlayerController : MonoBehaviour
+	public class PlayerController : MonoBehaviour,IPunObservable
 	{
 		[SerializeField]
 		PhotonView pv;
-		[SerializeField] 
-		public GameObject playerObj; 
-		[SerializeField]
-		public Animator animator;
+		[SerializeField] public GameObject playerObj;
 		[SerializeField]
 		bool canConnectPhoton = false;
 		Rigidbody rigidBody;
@@ -27,7 +25,6 @@ namespace Semin
 		Vector2 speedValue = Vector2.zero;
 		Vector2 mousePos = Vector2.zero;
 		Camera viewCamera;
-		
 
 		public enum EDirection
 		{
@@ -36,10 +33,9 @@ namespace Semin
 			Left,
 			Right,
 		}
-        PlayerShooting playerShooting;
-        
+		PlayerShooting playerShooting;
 
-        void Start()
+		void Start()
 		{
 			playerShooting = GetComponent<PlayerShooting>();
 			viewCamera = Camera.main;
@@ -47,11 +43,27 @@ namespace Semin
 			for (int i = 0; i < (int)EKey.MAX; i++)
 				inputs[(EKey)i] = false;
 
-			rigidBody = GetComponent<Rigidbody>();	
+			rigidBody = GetComponent<Rigidbody>();
 			//behaviourTree = new BehaviourTree(SetBehaviourTree());
+			SetTeamFieldOfView();
+
+        }
+		void SetTeamFieldOfView()
+		{
+			StringBuilder mineTeam = new StringBuilder((string)pv.Owner.CustomProperties["Team"]);
+
+            if (!pv.IsMine)
+			{
+				StringBuilder otherTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+
+                if (mineTeam.ToString() != otherTeam.ToString())
+				{
+					GetComponentInChildren<FieldOfView>().enabled = false;
+				}
+			}
 		}
 
-		INode SetBehaviourTree()
+	INode SetBehaviourTree()
 		{
 			return new ParallelNode(
 				new List<Node>()
@@ -65,72 +77,48 @@ namespace Semin
 			);
 		}
 
-        private void Update()
-        {
-			UpdateAnimation();
-        }
-
-        private void FixedUpdate()
+		private void FixedUpdate()
 		{
-			if (canConnectPhoton)
+			if(canConnectPhoton)
 			{
-				if (!pv.IsMine) return;
-			}
+                if (!pv.IsMine) return;
+            }
+			//behaviourTree.Operate();
 		}
-        #region Attack Area
-        
-        #endregion
 
-		private void UpdateAnimation()
-		{
-			if (speedValue.magnitude <= 0.1f) return;
-
-            Quaternion rotation = Quaternion.Euler(0, -45, 0);
-            Vector3 forward = playerObj.transform.forward; // 캐릭터가 바라보는 방향
-            forward = rotation * forward;
-
-            Vector3 right = playerObj.transform.right;
-            right = rotation * right;
-
-            float adjustedHorizontal = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), right);
-            float adjustedVertical = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), forward);
-
-            animator.SetFloat("Horizontal", adjustedHorizontal);
-            animator.SetFloat("Vertical", adjustedVertical);
-        }
-
-        #region Action Node
+        #region Attack Node
         public INode.ENodeState Move(EDirection direction)
 		{
-			Vector3 movement;
-			switch (direction)
+			switch(direction)
 			{
 				case EDirection.Left:
+					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * -1 * speedValue.x);
+					break;
 				case EDirection.Right:
-					movement = transform.right * Time.deltaTime * moveSpeed * speedValue.x;
-					rigidBody.MovePosition(rigidBody.position + movement);
+					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * speedValue.x);
 					break;
 				case EDirection.Up:
+					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * speedValue.y);
+					break;
 				case EDirection.Down:
-					movement = transform.forward * Time.deltaTime * moveSpeed * speedValue.y;
-					rigidBody.MovePosition(rigidBody.position + movement);
+					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1 * speedValue.y);
 					break;
 			}
 
 			return INode.ENodeState.Success;
 		}
+
         public INode.ENodeState RotatePlayer()
 		{
 			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
-            Plane GroupPlane = new Plane(Vector3.up, playerObj.transform.position);
-            float rayLength;
+			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
+			float rayLength;
 
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
-                Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-                playerShooting.attackPoint = pointTolook;
-                playerObj.transform.LookAt(pointTolook);
-            }
+				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+				playerObj.transform.LookAt(new Vector3(pointTolook.x, playerObj.transform.position.y, pointTolook.z));
+			}
 
 			return INode.ENodeState.Success;
 		}
@@ -147,18 +135,18 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
-			playerShooting.Shoot();
+			//playerShooting.ShootButton();
 		}
 		public void OnRotate(InputValue value)
 		{
 			mousePos = value.Get<Vector2>();
-        }
+		}
 	
 		public void OnMove(InputValue value)
 		{
 			Vector2 inputVector = value.Get<Vector2>();
-			speedValue.x = inputVector.x;
-			speedValue.y = inputVector.y;
+			speedValue.x = Mathf.Abs(inputVector.x);
+			speedValue.y = Mathf.Abs(inputVector.y);
 			inputVector.x = ConvertToThreeValues(value.Get<Vector2>().normalized.x);
 			inputVector.y = ConvertToThreeValues(value.Get<Vector2>().normalized.y);
 
@@ -200,6 +188,20 @@ namespace Semin
 			else
 				return 0;
 		}
-		#endregion
-	}
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            /*if(stream.IsWriting)
+			{
+				stream.SendNext(transform.position);
+				stream.SendNext(transform.rotation);
+			}
+			else
+			{
+				transform.position = (Vector3)stream.ReceiveNext();
+				transform.rotation = (Quaternion)stream.ReceiveNext();
+			}*/
+        }
+        #endregion
+    }
 }

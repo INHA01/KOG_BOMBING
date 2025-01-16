@@ -4,16 +4,15 @@ using UnityEngine;
 using System.Collections;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using System.Text;
-using System;
 
 namespace Orpul1
 {
     public class RandomMatchDirector : PhotonMatch
     {
-        TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
-
         [SerializeField]
         int maxPlayer = 2;
+
+        TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
 
         bool isMatching = false;
         bool isRandomMatch = false;
@@ -38,7 +37,6 @@ namespace Orpul1
                 PhotonNetwork.JoinLobby(randomMatchLobby);
             }
         }
-
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
             if (isRandomMatch)

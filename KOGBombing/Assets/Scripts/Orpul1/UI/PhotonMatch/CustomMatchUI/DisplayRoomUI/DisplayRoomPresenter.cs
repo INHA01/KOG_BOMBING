@@ -14,10 +14,8 @@ namespace Orpul1
         public void SetServerInfo(RoomInfo roomInfo)
         {
             model.roomInfo = roomInfo;
-            model.stbServerName.Append(roomInfo.Name);
-            model.stbPlayerCount.Append(roomInfo.PlayerCount);
-            view.tmpServerName.text = model.stbServerName.ToString();
-            view.tmpPlayerCount.text = model.stbPlayerCount.ToString();
+            view.tmpServerName.text = roomInfo.Name;
+            view.tmpPlayerCount.text = roomInfo.PlayerCount.ToString();
         }
 
         public void OnEnterRoom()

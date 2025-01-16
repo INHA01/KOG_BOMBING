@@ -11,11 +11,20 @@ namespace Orpul1
         
         [SerializeField] GameObject roomPanelPref;
         [SerializeField] Transform trRoomListPanel;
-        public override void UpdateInfo(List<RoomInfo> roomList)
+
+
+        public override void UpdateInfo(List<RoomInfo> roomList, bool isRemove)
         {
             for (int i = 0; i < roomList.Count; i++)
             {
-                if (dicRoomInfo.ContainsKey(roomList[i].Name))
+                if (!dicRoomInfo.ContainsKey(roomList[i].Name))
+                {
+                    // TODO: 룸 정보 입력 후 저장
+                    DisplayRoomPresenter presenter = Instantiate(roomPanelPref, trRoomListPanel).GetComponent<DisplayRoomPresenter>();
+                    presenter.SetServerInfo(roomList[i]);
+                    dicRoomInfo.Add(roomList[i].Name, presenter);
+                }
+                else
                 {
                     if (roomList[i].RemovedFromList)
                     {
@@ -23,14 +32,9 @@ namespace Orpul1
                         dicRoomInfo.Remove(roomList[i].Name);
                     }
                 }
-                else
-                {
-                    // TODO: 룸 정보 입력 후 저장
-                    DisplayRoomPresenter presenter = Instantiate(roomPanelPref, trRoomListPanel).GetComponent<DisplayRoomPresenter>();
-                    presenter.SetServerInfo(roomList[i]);
-                    dicRoomInfo.Add(roomList[i].Name, presenter);
-                }
+                
             }
         }
+
     }
 }

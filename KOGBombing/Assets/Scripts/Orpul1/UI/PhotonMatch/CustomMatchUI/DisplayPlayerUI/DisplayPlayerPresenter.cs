@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class DisplayPlayerPresenter : MonoBehaviour
@@ -12,17 +11,19 @@ public class DisplayPlayerPresenter : MonoBehaviour
     [SerializeField] DisplayPlayerView view;
     DisplayPlayerModel model = new DisplayPlayerModel();
     
-    public void SetPlayerUIInfo(Transform[] teams)
+    public void Init(StringBuilder nickname, StringBuilder level)
     {
-        model.trTeams = teams;
+        model.stbNickname.Clear();
+        model.stbLevel.Clear();
+        model.stbNickname.Append(nickname.ToString());
+        model.stbLevel.Append(level.ToString());
+        view.tmpNickname.text = nickname.ToString();
+        view.tmpLevel.text = level.ToString();
     }
 
-    public void SetTeam(ETeamType teamType)
+    public void SetTeam(Transform trTeam)
     {
-        if (teamType == ETeamType.REDTEAM)
-            transform.SetParent(model.trTeams[(int)ETeamType.REDTEAM]);
-        else
-            transform.SetParent(model.trTeams[(int)ETeamType.BLUETEAM]);
+        transform.SetParent(trTeam);
     }
     
 }

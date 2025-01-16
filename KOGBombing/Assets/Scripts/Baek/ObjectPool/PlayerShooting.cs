@@ -32,10 +32,13 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField]
     PhotonView pv;
+    [SerializeField]
+    bool canConnectPhoton = true;
 
     private void FixedUpdate()
     {
-        if (!pv.IsMine) return;
+        if (canConnectPhoton && !pv.IsMine) return;
+        if (attackRange == null || noAttackRange == null) return;
         ShowAttackArea();
     }
     public void Init(Transform model)
@@ -44,7 +47,7 @@ public class PlayerShooting : MonoBehaviour
         magazine = GetComponent<Magazine>();
         bulletCount = 9;
         magazineCount = 4;
-        if(pv.IsMine)
+        if (!canConnectPhoton || (pv != null && pv.IsMine))
         {
             attackRange = Instantiate(attackRangePrefab);
             attackRange.transform.SetParent(model);
@@ -58,7 +61,7 @@ public class PlayerShooting : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
     }
-    void SetArea(GameObject area, Vector3 pos, float length , Vector3 direction)
+    void SetArea(GameObject area, Vector3 pos, float length, Vector3 direction)
     {
         Vector3 areaPos = pos + direction.normalized * length / 2;
         area.transform.position = new Vector3(areaPos.x, area.transform.position.y, areaPos.z);
@@ -66,20 +69,20 @@ public class PlayerShooting : MonoBehaviour
     }
     void ShowAttackArea()
     {
-        
+
         if (!CheckMouseOutScreen())
             return;
         Vector3 direction = attackPoint - shootStartPos.position;
         float mousePosLength = direction.magnitude;
         float attackRangeLength = mousePosLength;
-        
+
         bool rayHit = false;
         Ray shootRay = new Ray(shootStartPos.position, direction);
         RaycastHit hit;
         if (Physics.Raycast(shootRay, out hit, maxLength) && hit.collider.tag != "Bullet")
         {
             float distance = (hit.point - shootStartPos.position).magnitude;
-            if(distance < attackRangeLength)
+            if (distance < attackRangeLength)
                 attackRangeLength = distance;
             rayHit = true;
         }
@@ -105,8 +108,8 @@ public class PlayerShooting : MonoBehaviour
         {
             noAttackRange.SetActive(false);
         }
-        
-        SetArea(attackRange, shootStartPos.position, attackRangeLength , direction);
+
+        SetArea(attackRange, shootStartPos.position, attackRangeLength, direction);
     }
     #endregion
 
@@ -117,7 +120,7 @@ public class PlayerShooting : MonoBehaviour
         {
             shootingCoroutine = StartCoroutine(Shooting());
         }
-        else if(magazineCount == 0)
+        else if (magazineCount == 0)
         {
             Debug.Log("No magazine");
         }
@@ -144,8 +147,12 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            pv.RPC("BulletSpawn",RpcTarget.AllBuffered);
-            //BulletSpawn();
+            //>> 추후 RPC 사용하는거로 변경 예정
+            if(canConnectPhoton)
+                pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
+            else
+                BulletSpawn();
+
             bulletCount--;
         }
         magazineCount--;

@@ -18,7 +18,7 @@ public class BehaviorTreeRunner : MonoBehaviour
 		//tree = tree.Clone();
     }
 
-	private void LateUpdate()
+	private void FixedUpdate()
 	{
 		if (canConnectPhoton && !pv.IsMine) return;
 		tree.Operate();

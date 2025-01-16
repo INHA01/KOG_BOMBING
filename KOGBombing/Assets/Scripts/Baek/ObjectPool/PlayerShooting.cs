@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,6 +26,8 @@ public class PlayerShooting : MonoBehaviour
     Coroutine reloadCoroutine;
     ObjectPool magazine;
 
+    [SerializeField]
+    PhotonView pv;
 
     void Start()
     {
@@ -35,6 +38,7 @@ public class PlayerShooting : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!pv.IsMine) return;
         ShowAttackArea();
     }
     #region Attack area
@@ -107,6 +111,8 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("No magazine");
         }
     }
+
+    [PunRPC]
     void BulletSpawn()
     {
         GameObject bullet = magazine.GetPooledObject().gameObject;
@@ -127,7 +133,8 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            BulletSpawn();
+            pv.RPC("BulletSpawn",RpcTarget.AllBuffered);
+            //BulletSpawn();
             bulletCount--;
         }
         magazineCount--;

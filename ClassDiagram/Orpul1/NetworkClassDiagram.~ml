@@ -3107,7 +3107,17 @@
 <XPD:REF name="BehavioralFeature">uAdqvxkGaEqwpb13nUJF8wAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[2]" type="UMLOperation" guid="iqpJZt9a4EuNanfniLDsgwAA">
+<XPD:OBJ name="Operations[2]" type="UMLOperation" guid="Zs0C+DS/hECpHI/fqP2gcgAA">
+<XPD:ATTR name="Name" type="string">OnConnectedToMaster</XPD:ATTR>
+<XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="vEnn9D5SB0Sej3fulEeUVgAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">override void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">Zs0C+DS/hECpHI/fqP2gcgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[3]" type="UMLOperation" guid="iqpJZt9a4EuNanfniLDsgwAA">
 <XPD:ATTR name="Name" type="string">OnPlayerEnteredRoom</XPD:ATTR>
 <XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
@@ -3121,7 +3131,7 @@
 <XPD:REF name="BehavioralFeature">iqpJZt9a4EuNanfniLDsgwAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[3]" type="UMLOperation" guid="d1BhC03iIEK4GT3oz89mzQAA">
+<XPD:OBJ name="Operations[4]" type="UMLOperation" guid="d1BhC03iIEK4GT3oz89mzQAA">
 <XPD:ATTR name="Name" type="string">OnJoinedLobby</XPD:ATTR>
 <XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
@@ -3131,7 +3141,7 @@
 <XPD:REF name="BehavioralFeature">d1BhC03iIEK4GT3oz89mzQAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[4]" type="UMLOperation" guid="s+pWgpPPUkqo7mQrWh1dCwAA">
+<XPD:OBJ name="Operations[5]" type="UMLOperation" guid="s+pWgpPPUkqo7mQrWh1dCwAA">
 <XPD:ATTR name="Name" type="string">OnRoomListUpdate</XPD:ATTR>
 <XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
@@ -3145,7 +3155,7 @@
 <XPD:REF name="BehavioralFeature">s+pWgpPPUkqo7mQrWh1dCwAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[5]" type="UMLOperation" guid="zy9iYjt66EOU9jdXBCO9igAA">
+<XPD:OBJ name="Operations[6]" type="UMLOperation" guid="zy9iYjt66EOU9jdXBCO9igAA">
 <XPD:ATTR name="Name" type="string">OnRoomPropertiesUpdate</XPD:ATTR>
 <XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
@@ -3159,7 +3169,7 @@
 <XPD:REF name="BehavioralFeature">zy9iYjt66EOU9jdXBCO9igAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[6]" type="UMLOperation" guid="sVBA6TYsEUCk3xQntaCJJAAA">
+<XPD:OBJ name="Operations[7]" type="UMLOperation" guid="sVBA6TYsEUCk3xQntaCJJAAA">
 <XPD:ATTR name="Name" type="string">OnPlayerPropertiesUpdate</XPD:ATTR>
 <XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">3</XPD:ATTR>
@@ -3175,16 +3185,6 @@
 <XPD:OBJ name="Parameters[2]" type="UMLParameter" guid="MTojez/8k0muJJxqqxsXPgAA">
 <XPD:ATTR name="Name" type="string">PhotonHashTable</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">sVBA6TYsEUCk3xQntaCJJAAA</XPD:REF>
-</XPD:OBJ>
-</XPD:OBJ>
-<XPD:OBJ name="Operations[7]" type="UMLOperation" guid="+PgtZoYDNEubhVbNkjmtvwAA">
-<XPD:ATTR name="Name" type="string">OnCreateRoomBtn</XPD:ATTR>
-<XPD:REF name="Owner">pEuftHie20qLz/0OWp/bYgAA</XPD:REF>
-<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="YRsGln8vNU6lQXm0Ftw5XwAA">
-<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
-<XPD:REF name="BehavioralFeature">+PgtZoYDNEubhVbNkjmtvwAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="Operations[8]" type="UMLOperation" guid="hFon3bIxIkK6LBhC7vsDhAAA">

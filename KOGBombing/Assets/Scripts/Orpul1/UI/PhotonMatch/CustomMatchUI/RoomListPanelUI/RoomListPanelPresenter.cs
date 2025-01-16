@@ -5,7 +5,6 @@ public class RoomListPanelPresenter : MonoBehaviour
 {
     [SerializeField]
     RoomListPanelView view;
-    RoomListPanelModel model;
 
     private void Start()
     {

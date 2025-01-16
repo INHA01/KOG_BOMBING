@@ -5,10 +5,12 @@ using System;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Text;
+using Photon.Pun.UtilityScripts;
 namespace Semin
 {
 
-	public class PlayerController : MonoBehaviour
+	public class PlayerController : MonoBehaviour,IPunObservable
 	{
 		[SerializeField]
 		PhotonView pv;
@@ -41,11 +43,27 @@ namespace Semin
 			for (int i = 0; i < (int)EKey.MAX; i++)
 				inputs[(EKey)i] = false;
 
-			rigidBody = GetComponent<Rigidbody>();	
+			rigidBody = GetComponent<Rigidbody>();
 			//behaviourTree = new BehaviourTree(SetBehaviourTree());
+			SetTeamFieldOfView();
+
+        }
+		void SetTeamFieldOfView()
+		{
+			StringBuilder mineTeam = new StringBuilder((string)pv.Owner.CustomProperties["Team"]);
+
+            if (!pv.IsMine)
+			{
+				StringBuilder otherTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+
+                if (mineTeam.ToString() != otherTeam.ToString())
+				{
+					GetComponentInChildren<FieldOfView>().enabled = false;
+				}
+			}
 		}
 
-		INode SetBehaviourTree()
+	INode SetBehaviourTree()
 		{
 			return new ParallelNode(
 				new List<Node>()
@@ -170,6 +188,20 @@ namespace Semin
 			else
 				return 0;
 		}
-		#endregion
-	}
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if(stream.IsWriting)
+			{
+				stream.SendNext(transform.position);
+				stream.SendNext(transform.rotation);
+			}
+			else
+			{
+				transform.position = (Vector3)stream.ReceiveNext();
+				transform.rotation = (Quaternion)stream.ReceiveNext();
+			}
+        }
+        #endregion
+    }
 }

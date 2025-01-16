@@ -45,7 +45,7 @@ namespace Orpul1
             else
             {
                 int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", blueTeam - 1 } });
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam - 1 } });
             }
             
         }
@@ -69,15 +69,11 @@ namespace Orpul1
             if (redTeam > blueTeam)
             {
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam + 1 } });
-                //PhotonNetwork.CurrentRoom.CustomProperties["BT"] = blueTeamCnt + 1;
-                Debug.Log($"bt {(int)PhotonNetwork.CurrentRoom.CustomProperties["BT"]}");
                 return new StringBuilder("BT");
             }
             else
             {
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam + 1 } });
-                //PhotonNetwork.CurrentRoom.CustomProperties["RT"] = redTeamCnt + 1;
-                Debug.Log($"rt {(int)PhotonNetwork.CurrentRoom.CustomProperties["RT"]}");
                 return new StringBuilder("RT");
             }
         }

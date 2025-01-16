@@ -70,6 +70,9 @@ namespace Orpul1
             {
                 Debug.Log("CustomMatch RoomPropertiesUpdate");
                 base.OnRoomPropertiesUpdate(propertiesThatChanged);
+                int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+                int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+                Debug.Log($"RED : {redTeam}\n BLUE : {blueTeam}");
             }
         }
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)

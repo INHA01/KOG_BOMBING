@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: eabb2e9a26c28184192ee52cfbb7b4ff
   position: {x: 240, y: 329}
-  target: {fileID: 0}
   child: {fileID: 4090798965584611331}
   method: CheckInput
   paramName: D
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &-2868367699037132009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34,12 +32,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: a481cbad0f6b85945a6bc7148385b42b
   position: {x: 240, y: 252}
-  target: {fileID: 0}
   child: {fileID: 7656592042732011275}
   method: CheckInput
   paramName: S
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &-2499939484404964562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,8 +49,7 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   guid: 1bf4658094aa37c468dd5c06192aca36
-  position: {x: -1.6000061, y: 98}
-  target: {fileID: 0}
+  position: {x: -2, y: 98}
   child: {fileID: 2434004268787652550}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -96,11 +91,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 80e118d56fd7e5042845030357647883
   position: {x: 381, y: 98}
-  target: {fileID: 0}
   paramName: Up
   method: Move
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &2434004268787652550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,7 +108,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 8f629913c112f194bb74ecb6e08fcfd7
   position: {x: 101, y: 98}
-  target: {fileID: 0}
   children:
   - {fileID: 5067302664874811843}
   - {fileID: 4902193812734569458}
@@ -136,11 +128,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 0eb38de7cbfc52f4483514dd1277dda7
   position: {x: 381, y: 175}
-  target: {fileID: 0}
   paramName: Left
   method: Move
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &4090798965584611331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,11 +145,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: c48c30bc936ef7143ac3764633cd92a9
   position: {x: 381.00003, y: 329}
-  target: {fileID: 0}
   paramName: Right
   method: Move
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &4902193812734569458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,12 +162,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 2fbf33f005fd2da4fa96c1246ce82597
   position: {x: 240, y: 175}
-  target: {fileID: 0}
   child: {fileID: 3018357059920909211}
   method: CheckInput
   paramName: A
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &5067302664874811843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,12 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: c8293c8fa42f74e418b1a19fe60b10db
   position: {x: 240, y: 98}
-  target: {fileID: 0}
   child: {fileID: 1611147295211626105}
   method: CheckInput
   paramName: W
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &7656592042732011275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,11 +198,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 6fe213c2fe249454fb1b745153a7fdf5
   position: {x: 381, y: 252}
-  target: {fileID: 0}
   paramName: Down
   method: Move
   className: PlayerController
-  methodTarget: {fileID: 0}
 --- !u!114 &8095830710428520962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,8 +215,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: d801980be0e1e39458698ab211bc04b3
   position: {x: 240, y: 406}
-  target: {fileID: 0}
   paramName: 
   method: RotatePlayer
   className: PlayerController
-  methodTarget: {fileID: 0}

@@ -38,7 +38,7 @@ public class PlayerShooting : MonoBehaviour
     private void FixedUpdate()
     {
         if (canConnectPhoton && !pv.IsMine) return;
-        if (attackRange == null || noAttackRange == null) return;
+        //if (attackRange == null || noAttackRange == null) return;
         ShowAttackArea();
     }
     public void Init(Transform model)

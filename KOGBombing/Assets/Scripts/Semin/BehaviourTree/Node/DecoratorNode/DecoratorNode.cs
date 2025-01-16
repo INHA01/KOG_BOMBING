@@ -39,7 +39,12 @@ namespace Semin
             if (child != null) 
                 node.child = child.Clone();
             return node;
-        }
-    }
+		}
+		public override void SetTarget(GameObject target)
+		{
+			base.SetTarget(target);
+			child.SetTarget(target);
+		}
+	}
 
 }

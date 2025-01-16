@@ -11,50 +11,59 @@ namespace Semin
 	{
 		private Func<bool> condition;
         public string method = "";
-        [HideInInspector] public PlayerController target;
         public string paramName = "";
+		public string className = "";
+		private Component methodTarget;
 
 		public IfDecoratorNode(Func<bool> condition, Node child) : base(child)
 		{
 			this.condition = condition;
         }
 
-        public void SetCondition(string methodName, PlayerController controller)
+        public void SetCondition(string methodName, GameObject controller, string className)
         {
             method = methodName;
             target = controller;
             paramName = null;
+            this.className = className;
         }
 
-        public void SetConditionWithParam(string methodName, PlayerController controller, string paramName)
+        public void SetConditionWithParam(string methodName, GameObject controller, string paramName, string className)
         {
             method = methodName;
             target = controller;
             this.paramName = paramName;
+            this.className = className;
         }
 
-        public override void Start()
+		public override void SetTarget(GameObject target)
+		{
+			base.SetTarget(target); 
+			child.SetTarget(target);
+		}
+
+		public override void Start()
         {
-            base.Start();
-            if (target == null)
-            {
-                target = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-            }
-            var methdoInfo = target.GetType().GetMethod(method);
-            if (methdoInfo != null)
-            {
-                ParameterInfo[] parameters = methdoInfo.GetParameters();
-                if (parameters.Length > 0)
-                {
-                    System.Type type = parameters[0].ParameterType;
-                    condition = () => (bool)methdoInfo.Invoke(target, new object[] { Enum.Parse(type, paramName) });
-                }
-                else
-                {
-                    condition = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), target, methdoInfo);
-                }
-            }
-        }
+			base.Start();
+			System.Type componentType = System.Type.GetType(className);
+
+			methodTarget = target.GetComponent(componentType);
+
+			var methdoInfo = methodTarget.GetType().GetMethod(method);
+			if (methdoInfo != null)
+			{
+				ParameterInfo[] parameters = methdoInfo.GetParameters();
+				if (parameters.Length > 0)
+				{
+					System.Type type = parameters[0].ParameterType;
+					condition = () => (bool)methdoInfo.Invoke(methodTarget, new object[] { Enum.Parse(type, paramName) });
+				}
+				else
+				{
+					condition = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), methodTarget, methdoInfo);
+				}
+			}
+		}
 
         public override INode.ENodeState Evaluate()
         {

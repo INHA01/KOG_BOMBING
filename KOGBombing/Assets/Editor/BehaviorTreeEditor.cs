@@ -125,25 +125,25 @@ public class BehaviorTreeEditor : EditorWindow
             return;
         parameters = GetParameters(field.value.ToString());
 
-        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
+        GameObject controller = fieldView.value as GameObject;
         if (controller == null)
             return;
 
         if (selectNode.node is ActionNode action)
-            action.SetAction(field.value.ToString(), controller);
+            action.SetAction(field.value.ToString(), controller, classDropdownView.value);
         else if (selectNode.node is IfDecoratorNode deco)
-            deco.SetCondition(field.value.ToString(), controller);
+            deco.SetCondition(field.value.ToString(), controller, classDropdownView.value);
     }
 
     void OnDirectionSelectionChanged(DirectionParameterView direction)
     {
         if (funcDropdownView.value == null)
             return;
-        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
+        GameObject controller = fieldView.value as GameObject;
         if (parameters.Length > 0)
         {
             if (selectNode.node is ActionNode action)
-                action.SetActionWithParam(funcDropdownView.value.ToString(), controller, direction.value.ToString());
+                action.SetActionWithParam(funcDropdownView.value.ToString(), controller, direction.value.ToString(), classDropdownView.value);
         }
     }
 
@@ -151,11 +151,11 @@ public class BehaviorTreeEditor : EditorWindow
     {
         if (funcDropdownView.value == null)
             return;
-        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
+        GameObject controller = fieldView.value as GameObject;
         if (parameters.Length > 0)
         {
             if (selectNode.node is IfDecoratorNode deco)
-                deco.SetConditionWithParam(funcDropdownView.value.ToString(), controller, key.value.ToString());
+                deco.SetConditionWithParam(funcDropdownView.value.ToString(), controller, key.value.ToString(), classDropdownView.value);
         }
     }
 

@@ -18,6 +18,12 @@ namespace Semin
 			return child.Evaluate();
 		}
 
+		public override void SetTarget(GameObject target)
+		{
+			base.SetTarget(target);
+			child.SetTarget(target);
+		}
+
 		public override Node Clone()
 		{
 			RootNode node = Instantiate(this);
@@ -28,6 +34,6 @@ namespace Semin
         public override void Start()
         {
 			child.Start();
-        }
-    }
+		}
+	}
 }

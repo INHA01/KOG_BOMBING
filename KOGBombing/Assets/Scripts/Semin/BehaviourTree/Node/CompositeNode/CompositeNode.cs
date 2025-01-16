@@ -13,7 +13,7 @@ namespace Semin
 
         public override void Start()
         {
-            for (int i = 0; i < children.Count; i++) 
+			for (int i = 0; i < children.Count; i++) 
                 children[i].Start();
         }
 
@@ -39,8 +39,16 @@ namespace Semin
             CompositeNode node = Instantiate(this);
             node.children = children.ConvertAll(c => c.Clone());
             return node;
-        }
-    }
+		}
+		public override void SetTarget(GameObject target)
+		{
+            base.SetTarget(target);
+			for ( int i = 0; i < children.Count; i++ )
+            {
+                children[i].SetTarget(target);
+			}
+		}
+	}
 
 
 }

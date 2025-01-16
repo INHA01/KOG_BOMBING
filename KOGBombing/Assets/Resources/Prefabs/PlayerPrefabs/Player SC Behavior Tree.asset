@@ -1,23 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6600243904880464477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
-  m_Name: ActionNode
-  m_EditorClassIdentifier: 
-  guid: 84ec2f6f92cc39c42820593d8448f351
-  position: {x: 381, y: 252}
-  target: {fileID: 0}
-  paramName: Down
-  method: Move
---- !u!114 &-6542536016440865139
+--- !u!114 &-3861472368458923142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29,12 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
-  guid: b166a177bd4fa564fbfc507eff2edca4
-  position: {x: 240, y: 252}
-  child: {fileID: -6600243904880464477}
-  method: CheckInput
+  guid: eabb2e9a26c28184192ee52cfbb7b4ff
+  position: {x: 240, y: 329}
   target: {fileID: 0}
+  child: {fileID: 4090798965584611331}
+  method: CheckInput
+  paramName: D
+  className: PlayerController
+  methodTarget: {fileID: 0}
+--- !u!114 &-2868367699037132009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: a481cbad0f6b85945a6bc7148385b42b
+  position: {x: 240, y: 252}
+  target: {fileID: 0}
+  child: {fileID: 7656592042732011275}
+  method: CheckInput
   paramName: S
+  className: PlayerController
+  methodTarget: {fileID: 0}
 --- !u!114 &-2499939484404964562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,25 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 1bf4658094aa37c468dd5c06192aca36
   position: {x: -1.6000061, y: 98}
-  child: {fileID: 2434004268787652550}
---- !u!114 &-444015195206601022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
-  m_Name: IfDecoratorNode
-  m_EditorClassIdentifier: 
-  guid: 00a0b4d95bb34824eaa0d9de9e23b201
-  position: {x: 240, y: 329}
-  child: {fileID: 697526556496258592}
-  method: CheckInput
   target: {fileID: 0}
-  paramName: D
+  child: {fileID: 2434004268787652550}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,32 +73,15 @@ MonoBehaviour:
   nodes:
   - {fileID: -2499939484404964562}
   - {fileID: 2434004268787652550}
-  - {fileID: 3110429395330382367}
   - {fileID: 4902193812734569458}
-  - {fileID: -6542536016440865139}
-  - {fileID: -444015195206601022}
   - {fileID: 1611147295211626105}
   - {fileID: 3018357059920909211}
-  - {fileID: -6600243904880464477}
-  - {fileID: 697526556496258592}
   - {fileID: 8095830710428520962}
---- !u!114 &697526556496258592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
-  m_Name: ActionNode
-  m_EditorClassIdentifier: 
-  guid: 2df77b221c1d6a141a1f243198fcad87
-  position: {x: 381, y: 329}
-  target: {fileID: 0}
-  paramName: Right
-  method: Move
+  - {fileID: 5067302664874811843}
+  - {fileID: -2868367699037132009}
+  - {fileID: 7656592042732011275}
+  - {fileID: -3861472368458923142}
+  - {fileID: 4090798965584611331}
 --- !u!114 &1611147295211626105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +99,8 @@ MonoBehaviour:
   target: {fileID: 0}
   paramName: Up
   method: Move
+  className: PlayerController
+  methodTarget: {fileID: 0}
 --- !u!114 &2434004268787652550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,12 +115,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 8f629913c112f194bb74ecb6e08fcfd7
   position: {x: 101, y: 98}
+  target: {fileID: 0}
   children:
-  - {fileID: 3110429395330382367}
+  - {fileID: 5067302664874811843}
   - {fileID: 4902193812734569458}
-  - {fileID: -6542536016440865139}
-  - {fileID: -444015195206601022}
   - {fileID: 8095830710428520962}
+  - {fileID: -2868367699037132009}
+  - {fileID: -3861472368458923142}
 --- !u!114 &3018357059920909211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +139,9 @@ MonoBehaviour:
   target: {fileID: 0}
   paramName: Left
   method: Move
---- !u!114 &3110429395330382367
+  className: PlayerController
+  methodTarget: {fileID: 0}
+--- !u!114 &4090798965584611331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,15 +150,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
-  m_Name: IfDecoratorNode
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
   m_EditorClassIdentifier: 
-  guid: ecfd936f1f47d024aa6ac69a6736c378
-  position: {x: 240, y: 98}
-  child: {fileID: 1611147295211626105}
-  method: CheckInput
+  guid: c48c30bc936ef7143ac3764633cd92a9
+  position: {x: 381.00003, y: 329}
   target: {fileID: 0}
-  paramName: W
+  paramName: Right
+  method: Move
+  className: PlayerController
+  methodTarget: {fileID: 0}
 --- !u!114 &4902193812734569458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,10 +174,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 2fbf33f005fd2da4fa96c1246ce82597
   position: {x: 240, y: 175}
+  target: {fileID: 0}
   child: {fileID: 3018357059920909211}
   method: CheckInput
-  target: {fileID: 0}
   paramName: A
+  className: PlayerController
+  methodTarget: {fileID: 0}
+--- !u!114 &5067302664874811843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: c8293c8fa42f74e418b1a19fe60b10db
+  position: {x: 240, y: 98}
+  target: {fileID: 0}
+  child: {fileID: 1611147295211626105}
+  method: CheckInput
+  paramName: W
+  className: PlayerController
+  methodTarget: {fileID: 0}
+--- !u!114 &7656592042732011275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 6fe213c2fe249454fb1b745153a7fdf5
+  position: {x: 381, y: 252}
+  target: {fileID: 0}
+  paramName: Down
+  method: Move
+  className: PlayerController
+  methodTarget: {fileID: 0}
 --- !u!114 &8095830710428520962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +232,9 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: d801980be0e1e39458698ab211bc04b3
-  position: {x: 240.00003, y: 405.99997}
+  position: {x: 240, y: 406}
   target: {fileID: 0}
   paramName: 
   method: RotatePlayer
+  className: PlayerController
+  methodTarget: {fileID: 0}

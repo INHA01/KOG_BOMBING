@@ -1,6 +1,7 @@
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,6 +11,15 @@ public class SCBehaviorTree : ScriptableObject
 	public Node rootNode;
 	[HideInInspector] public INode.ENodeState state = INode.ENodeState.Running;
 	public List<Node> nodes = new List<Node>();
+	GameObject target;
+
+	public void SetTarget(GameObject target)
+	{
+		this.target = target;
+		rootNode.SetTarget(target);
+		rootNode.Start();
+		//rootNode.SetTarget(target);
+	}
 
 	public INode.ENodeState Operate()
 	{
@@ -106,6 +116,7 @@ public class SCBehaviorTree : ScriptableObject
 	{
 		SCBehaviorTree tree = Instantiate(this);
 		tree.rootNode = tree.rootNode.Clone();
+		//tree.rootNode.SetTarget(target);
 		return tree;
 	}
 }

@@ -8,6 +8,7 @@ namespace Semin
 	{
         public string guid;
 		[HideInInspector] public Vector2 position;
+		protected GameObject target;
 
 		public abstract INode.ENodeState Evaluate();
 
@@ -16,9 +17,11 @@ namespace Semin
 			return Instantiate(this);
 		}
 
-		public virtual void Start()
+		public virtual void SetTarget(GameObject target)
 		{
-
+			this.target = target;
 		}
+
+		public abstract void Start();
 	}
 }

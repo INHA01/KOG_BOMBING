@@ -14,7 +14,10 @@ namespace Semin
 	{
 		[SerializeField]
 		PhotonView pv;
-		[SerializeField] public GameObject playerObj;
+		[SerializeField] 
+		public GameObject playerObj;
+		[SerializeField]
+		public Animator animator;
 		[SerializeField]
 		bool canConnectPhoton = false;
 		Rigidbody rigidBody;
@@ -77,6 +80,12 @@ namespace Semin
 			);
 		}
 
+		private void Update()
+		{
+			UpdateAnimation();
+		}
+
+
 		private void FixedUpdate()
 		{
 			if(canConnectPhoton)
@@ -86,8 +95,28 @@ namespace Semin
 			//behaviourTree.Operate();
 		}
 
-        #region Attack Node
-        public INode.ENodeState Move(EDirection direction)
+		private void UpdateAnimation()
+		{
+			if (speedValue.magnitude <= 0.1f) return;
+
+			Quaternion rotation = Quaternion.Euler(0, -45, 0);
+			Vector3 forward = playerObj.transform.forward;
+			forward = rotation * forward;
+
+			Vector3 right = playerObj.transform.right;
+			right = rotation * right;
+
+			float adjustedHorizontal = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), right);
+			float adjustedVertical = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), forward);
+
+			animator.SetFloat("Horizontal", adjustedHorizontal);
+			animator.SetFloat("Vertical", adjustedVertical);
+		}
+
+
+
+		#region Attack Node
+		public INode.ENodeState Move(EDirection direction)
 		{
 			switch(direction)
 			{

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,14 @@ using UnityEngine.UIElements;
 public class PlayerShooting : MonoBehaviour
 {
     [Header("AttackRange")]
-    [SerializeField] GameObject attackRange;
-    [SerializeField] GameObject noAttackRange;
     [SerializeField] Transform shootStartPos;
     [SerializeField] Transform shootEndPos;
-    
+    [SerializeField] GameObject attackRangePrefab;
+    [SerializeField] GameObject noAttackRangePrefab;
+
+    GameObject attackRange;
+    GameObject noAttackRange;
+
     public Vector3 attackPoint;
     float maxLength;
 
@@ -23,19 +27,28 @@ public class PlayerShooting : MonoBehaviour
 
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
-    ObjectPool magazine;
+    Magazine magazine;
 
+    [SerializeField]
+    PhotonView pv;
 
-    void Start()
-    {
-        maxLength = (shootEndPos.position - shootStartPos.position).magnitude;
-        magazine = GetComponent<ObjectPool>();
-        bulletCount = 9;
-        magazineCount = 4;
-    }
     private void FixedUpdate()
     {
         ShowAttackArea();
+    }
+    public void Init(Transform model)
+    {
+        maxLength = (shootEndPos.position - shootStartPos.position).magnitude;
+        magazine = GetComponent<Magazine>();
+        bulletCount = 9;
+        magazineCount = 4;
+        if(pv.IsMine)
+        {
+            attackRange = Instantiate(attackRangePrefab);
+            attackRange.transform.SetParent(model);
+            noAttackRange = Instantiate(noAttackRangePrefab);
+            noAttackRange.transform.SetParent(model);
+        }
     }
     #region Attack area
     bool CheckMouseOutScreen()

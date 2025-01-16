@@ -7,25 +7,30 @@ using UnityEngine;
 public class ObjectPool :  MonoBehaviour
 {
     [SerializeField] public int initPoolSize;
-    [SerializeField] private PooledObject objectToPool;
-    [SerializeField] Transform parent;
+    [SerializeField] protected PooledObject objectToPool;
+    [SerializeField] protected GameObject parentPrefab;
+    protected Transform parent;
 
-    private Queue<PooledObject> queue;
+    protected Queue<PooledObject> queue;
     public int Count { get => queue.Count; }
 
 
-    private void Start()
+    protected void Start()
     {
         SetupPool();
     }
-
+    virtual protected void Init()
+    {
+        GameObject parentInstance = Instantiate(parentPrefab);
+        parent = parentInstance.transform;
+    }
     virtual protected void SetupPool()
     {
-        if (objectToPool == null)
+        Init();
+        if (objectToPool == null || parent == null)
         {
             return;
         }
-
         queue = new Queue<PooledObject>();
 
         PooledObject instance = null;
@@ -36,7 +41,7 @@ public class ObjectPool :  MonoBehaviour
             instance.Pool = this;
             instance.gameObject.SetActive(false);
             queue.Enqueue(instance);
-            if (parent != null)
+            if (parentPrefab != null)
             {
                 instance.transform.SetParent(parent);
             }

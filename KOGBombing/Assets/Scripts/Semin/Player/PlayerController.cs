@@ -41,6 +41,7 @@ namespace Semin
 		void Start()
 		{
 			playerShooting = GetComponent<PlayerShooting>();
+			playerShooting.Init(playerObj.transform);
 			viewCamera = Camera.main;
 
 			for (int i = 0; i < (int)EKey.MAX; i++)
@@ -162,7 +163,7 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
-			//playerShooting.ShootButton();
+			playerShooting.Shoot();
 		}
 		public void OnRotate(InputValue value)
 		{

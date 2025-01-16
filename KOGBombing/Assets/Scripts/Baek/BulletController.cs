@@ -25,6 +25,8 @@ public class BulletController : PooledObject
         if (collision.collider.tag == "Player")
         {
             //collision.collider.GetComponent<PlayerController>().Hit(damage);
+            Rigidbody rigidbody = collision.collider.GetComponent<Rigidbody>();
+            rigidbody.AddForce(shootDirection * 10, ForceMode.Impulse);
             distance = 0;
             Release();
         }

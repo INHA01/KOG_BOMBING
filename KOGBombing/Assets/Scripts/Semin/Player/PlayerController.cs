@@ -1,16 +1,12 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine.InputSystem;
 using Photon.Pun;
-using Photon.Realtime;
 using System.Text;
-using Photon.Pun.UtilityScripts;
 namespace Semin
 {
 
-	public class PlayerController : MonoBehaviour,IPunObservable
+	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField]
 		PhotonView pv;
@@ -163,16 +159,19 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
+			if (!pv.IsMine) return;
 			playerShooting.Shoot();
 		}
 		public void OnRotate(InputValue value)
 		{
-			mousePos = value.Get<Vector2>();
+            if (!pv.IsMine) return;
+            mousePos = value.Get<Vector2>();
 		}
 	
 		public void OnMove(InputValue value)
 		{
-			Vector2 inputVector = value.Get<Vector2>();
+            if (!pv.IsMine) return;
+            Vector2 inputVector = value.Get<Vector2>();
 			speedValue.x = Mathf.Abs(inputVector.x);
 			speedValue.y = Mathf.Abs(inputVector.y);
 			inputVector.x = ConvertToThreeValues(value.Get<Vector2>().normalized.x);
@@ -217,19 +216,6 @@ namespace Semin
 				return 0;
 		}
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            /*if(stream.IsWriting)
-			{
-				stream.SendNext(transform.position);
-				stream.SendNext(transform.rotation);
-			}
-			else
-			{
-				transform.position = (Vector3)stream.ReceiveNext();
-				transform.rotation = (Quaternion)stream.ReceiveNext();
-			}*/
-        }
-        #endregion
+       #endregion
     }
 }

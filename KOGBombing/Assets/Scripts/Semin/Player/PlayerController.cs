@@ -31,9 +31,10 @@ namespace Semin
 			Left,
 			Right,
 		}
-		PlayerShooting playerShooting;
+        PlayerShooting playerShooting;
+        
 
-		void Start()
+        void Start()
 		{
 			playerShooting = GetComponent<PlayerShooting>();
 			viewCamera = Camera.main;
@@ -67,6 +68,9 @@ namespace Semin
             }
 			//behaviourTree.Operate();
 		}
+        #region Attack Area
+        
+        #endregion
 
         #region Attack Node
         public INode.ENodeState Move(EDirection direction)
@@ -89,18 +93,18 @@ namespace Semin
 
 			return INode.ENodeState.Success;
 		}
-
         public INode.ENodeState RotatePlayer()
 		{
 			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
-			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
-			float rayLength;
+            Plane GroupPlane = new Plane(Vector3.up, playerObj.transform.position);
+            float rayLength;
 
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
-				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-				playerObj.transform.LookAt(new Vector3(pointTolook.x, playerObj.transform.position.y, pointTolook.z));
-			}
+                Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+                playerShooting.attackPoint = pointTolook;
+                playerObj.transform.LookAt(pointTolook);
+            }
 
 			return INode.ENodeState.Success;
 		}
@@ -117,12 +121,12 @@ namespace Semin
 		#region Input System
 		public void OnAttack(InputValue value)
 		{
-			//playerShooting.ShootButton();
+			playerShooting.Shoot();
 		}
 		public void OnRotate(InputValue value)
 		{
 			mousePos = value.Get<Vector2>();
-		}
+        }
 	
 		public void OnMove(InputValue value)
 		{

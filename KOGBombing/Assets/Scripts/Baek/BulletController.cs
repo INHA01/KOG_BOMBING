@@ -20,17 +20,18 @@ public class BulletController : PooledObject
             Release();
         }
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Player")
         {
             //collision.collider.GetComponent<PlayerController>().Hit(damage);
+            distance = 0;
             Release();
         }
         if (collision.collider.tag == "Target")
         {
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            distance = 0;
             Release();
         }
     }

@@ -12,11 +12,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Transform shootEndPos;
     
     public Vector3 attackPoint;
-    Vector3 mousePos;
-    Vector3 direction;
     float maxLength;
-    float attackRangeLength;
-    float noAttackRangeLength;
 
     [Header("Bullet")]
     [SerializeField] int bulletCount;
@@ -41,12 +37,13 @@ public class PlayerShooting : MonoBehaviour
     {
         ShowAttackArea();
     }
+    #region Attack area
     bool CheckMouseOutScreen()
     {
-        mousePos = Input.mousePosition;
+        Vector3 mousePos = Input.mousePosition;
         return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
     }
-    void SetArea(GameObject area, Vector3 pos, float length)
+    void SetArea(GameObject area, Vector3 pos, float length , Vector3 direction)
     {
         Vector3 areaPos = pos + direction.normalized * length / 2;
         area.transform.position = new Vector3(areaPos.x, area.transform.position.y, areaPos.z);
@@ -54,28 +51,51 @@ public class PlayerShooting : MonoBehaviour
     }
     void ShowAttackArea()
     {
+        
         if (!CheckMouseOutScreen())
             return;
-        direction = attackPoint - shootStartPos.position;
-        attackRangeLength = (attackPoint - shootStartPos.position).magnitude;
-        if (attackRangeLength > maxLength)
+        Vector3 direction = attackPoint - shootStartPos.position;
+        float mousePosLength = direction.magnitude;
+        float attackRangeLength = mousePosLength;
+        
+        bool rayHit = false;
+        Ray shootRay = new Ray(shootStartPos.position, direction);
+        RaycastHit hit;
+        if (Physics.Raycast(shootRay, out hit, maxLength) && hit.collider.tag != "Bullet")
         {
-            noAttackRangeLength = attackRangeLength - maxLength;
-            SetArea(noAttackRange, shootEndPos.position, noAttackRangeLength);
+            float distance = (hit.point - shootStartPos.position).magnitude;
+            if(distance < attackRangeLength)
+                attackRangeLength = distance;
+            rayHit = true;
+        }
+
+        if (attackRangeLength > maxLength || rayHit)
+        {
+            float noAttackRangeLength;
+            if (rayHit)
+            {
+                noAttackRangeLength = mousePosLength - attackRangeLength;
+                SetArea(noAttackRange, hit.point, noAttackRangeLength, direction);
+            }
+            else
+            {
+                noAttackRangeLength = attackRangeLength - maxLength;
+                SetArea(noAttackRange, shootEndPos.position, noAttackRangeLength, direction);
+                attackRangeLength = maxLength;
+            }
             noAttackRange.SetActive(true);
 
-            attackRangeLength = maxLength;
         }
         else
         {
             noAttackRange.SetActive(false);
-
-            if (attackRangeLength < 1)
-                attackRangeLength = 1;
         }
-        SetArea(attackRange, shootStartPos.position, attackRangeLength);
+        
+        SetArea(attackRange, shootStartPos.position, attackRangeLength , direction);
     }
-    
+    #endregion
+
+    #region Shooting
     public void Shoot()
     {
         if (magazineCount > 0 && shootingCoroutine == null)
@@ -95,11 +115,10 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("bullet is null");
             return;
         }
-        if(attackRangeLength > maxLength)
-            attackRangeLength = maxLength;
-        bullet.GetComponent<BulletController>().DestroyDistance = attackRangeLength;
+        Vector3 direction = (shootEndPos.position - shootStartPos.position);
+        bullet.GetComponent<BulletController>().DestroyDistance = maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        bullet.transform.position = shootStartPos.position;
+        bullet.transform.position = shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);
 
         bullet.SetActive(true);
     }
@@ -124,14 +143,14 @@ public class PlayerShooting : MonoBehaviour
     }
     IEnumerator Reload()
     {
-        while(magazineCount < 4)
+        while (magazineCount < 4)
         {
             yield return new WaitForSeconds(reloadTime);
             if (magazine.Count > 9)
             {
                 Debug.Log("Reload");
                 magazineCount++;
-                if(bulletCount == 0)
+                if (bulletCount == 0)
                     bulletCount = 9;
             }
             else
@@ -139,4 +158,5 @@ public class PlayerShooting : MonoBehaviour
         }
         reloadCoroutine = null;
     }
+    #endregion
 }

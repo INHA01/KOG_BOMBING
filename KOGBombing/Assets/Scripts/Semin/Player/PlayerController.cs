@@ -48,7 +48,8 @@ namespace Semin
 
 			rigidBody = GetComponent<Rigidbody>();
 			//behaviourTree = new BehaviourTree(SetBehaviourTree());
-			SetTeamFieldOfView();
+			if(canConnectPhoton)
+				SetTeamFieldOfView();
 
         }
 		void SetTeamFieldOfView()
@@ -83,16 +84,6 @@ namespace Semin
 		private void Update()
 		{
 			UpdateAnimation();
-		}
-
-
-		private void FixedUpdate()
-		{
-			if(canConnectPhoton)
-			{
-                if (!pv.IsMine) return;
-            }
-			//behaviourTree.Operate();
 		}
 
 		private void UpdateAnimation()

@@ -7,16 +7,17 @@ public class BehaviorTreeRunner : MonoBehaviour
 {
     [SerializeField] public SCBehaviorTree tree;
     [SerializeField] PhotonView pv;
+    [SerializeField] bool canConnectPhoton;
     void Start()
     {
-        if (!pv.IsMine) return;
+        if (canConnectPhoton&&!pv.IsMine) return;
         tree = tree.Clone();
         tree.rootNode.Start();
     }
 
     void FixedUpdate()
     {
-        if (!pv.IsMine) return;
+        if (canConnectPhoton&&!pv.IsMine) return;
         tree.Operate();
     }
 }

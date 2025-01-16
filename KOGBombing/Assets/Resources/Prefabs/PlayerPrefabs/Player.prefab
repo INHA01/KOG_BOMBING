@@ -8,10 +8,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1055956268508796724, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: canConnectPhoton
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1084845064576805521, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_Name
-      value: SinglePlayer
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1094112876497018481, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -62,6 +67,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6527240402747218028, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: canConnectPhoton
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

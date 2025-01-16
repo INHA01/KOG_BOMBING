@@ -133,20 +133,22 @@ namespace Semin
 			return INode.ENodeState.Success;
 		}
 
-        public INode.ENodeState RotatePlayer()
+		public INode.ENodeState RotatePlayer()
 		{
 			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
-			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
+			Plane GroupPlane = new Plane(Vector3.up, playerObj.transform.position);
 			float rayLength;
 
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
 				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-				playerObj.transform.LookAt(new Vector3(pointTolook.x, playerObj.transform.position.y, pointTolook.z));
+				playerShooting.attackPoint = pointTolook;
+				playerObj.transform.LookAt(pointTolook);
 			}
 
 			return INode.ENodeState.Success;
 		}
+
 
 		#endregion
 

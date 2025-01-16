@@ -12,6 +12,10 @@ namespace Orpul1
     {
         [SerializeField]
         GameObject playerCamera;
+        private void Awake()
+        {
+            Application.targetFrameRate = 60;
+        }
         void Start()
         {
             GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefs/Player", Vector3.zero, Quaternion.Euler(0, 45, 0));

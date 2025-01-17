@@ -83,8 +83,6 @@ public class PlayerController : MonoBehaviour
 			animator.UpdateAnimation(speedValue);
 	}
 
-
-
 	#region Attack Node
 	public INode.ENodeState Move(EDirection direction)
 	{
@@ -139,7 +137,7 @@ public class PlayerController : MonoBehaviour
 	public void OnAttack(InputValue value)
 	{
 		if (!pv.IsMine) return;
-		playerShooting.Shoot();
+		playerShooting.Shoot(animator);
 	}
 	public void OnRotate(InputValue value)
 	{

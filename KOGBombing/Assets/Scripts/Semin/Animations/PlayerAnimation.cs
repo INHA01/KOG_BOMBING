@@ -5,14 +5,15 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    [SerializeField] Animator animator;
+    [SerializeField] public Animator animator;
 	GameObject playerObj;
 	Vector3 pointToLookAt;
 	[Range(1f, 20f)]
 	public float RotateSpeed;
-	bool isRotate = false;
+	Vector3 speedValue;
+	bool isRotate;
 
-	void Start()
+	void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -30,6 +31,7 @@ public class PlayerAnimation : MonoBehaviour
 
 	public void UpdateAnimation(Vector2 speedValue)
 	{
+		this.speedValue = speedValue;
 		if (speedValue.magnitude <= 0.1f)
 		{
 			animator.SetFloat("Horizontal", speedValue.x);
@@ -80,6 +82,23 @@ public class PlayerAnimation : MonoBehaviour
 			Quaternion targetRotation = Quaternion.LookRotation(pointToLookAt - transform.position);
 			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
 		}
+	}
+
+	public void Shoot()
+	{
+		Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
+		float rayLength;
+
+		if (GroupPlane.Raycast(cameraRay, out rayLength))
+		{
+			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+			transform.LookAt(pointTolook);
+			Quaternion targetRotation = Quaternion.LookRotation(pointTolook - transform.position);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10.0f * Time.deltaTime);
+		}
+
+        animator.SetTrigger("Shoot");
 	}
 
 	private void OnAnimatorIK(int layerIndex)

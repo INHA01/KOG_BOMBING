@@ -35,6 +35,8 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField]
     bool canConnectPhoton = true;
 
+    PlayerAnimation animator;
+
     private void FixedUpdate()
     {
         if (canConnectPhoton && !pv.IsMine) return;
@@ -123,8 +125,9 @@ public class PlayerShooting : MonoBehaviour
     #endregion
 
     #region Shooting
-    public void Shoot()
+    public void Shoot(PlayerAnimation animator)
     {
+        this.animator = animator;
         if (magazineCount > 0 && shootingCoroutine == null)
         {
             shootingCoroutine = StartCoroutine(Shooting());
@@ -139,7 +142,7 @@ public class PlayerShooting : MonoBehaviour
     void BulletSpawn()
     {
         GameObject bullet = magazine.GetPooledObject().gameObject;
-        if (bullet == null)
+		if (bullet == null)
         {
             Debug.Log("bullet is null");
             return;
@@ -155,22 +158,23 @@ public class PlayerShooting : MonoBehaviour
     {
         while (bulletCount > 0)
         {
-            yield return new WaitForSeconds(0.1f);
-            //>> 추후 RPC 사용하는거로 변경 예정
-            if(canConnectPhoton)
+            animator.Shoot();
+			//>> 추후 RPC 사용하는거로 변경 예정
+			if (canConnectPhoton)
                 pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
             else
                 BulletSpawn();
-
-            bulletCount--;
-        }
+			bulletCount--;
+			yield return new WaitForSeconds(0.1f);
+		}
         magazineCount--;
-        if (magazineCount > 0)
+		if (magazineCount > 0)
         {
             bulletCount = InitbulletCount;
         }
         Debug.Log("magazine count: " + magazineCount);
-        yield return new WaitForSeconds(shootingTerm);
+
+		yield return new WaitForSeconds(shootingTerm);
         if (reloadCoroutine == null)
             reloadCoroutine = StartCoroutine(Reload());
         shootingCoroutine = null;

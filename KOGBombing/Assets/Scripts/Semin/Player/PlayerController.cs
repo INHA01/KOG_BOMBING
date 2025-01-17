@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
 		rigidBody = GetComponent<Rigidbody>();
 		if(canConnectPhoton)
 			SetTeamFieldOfView();
-
     }
 
 	private void Start()

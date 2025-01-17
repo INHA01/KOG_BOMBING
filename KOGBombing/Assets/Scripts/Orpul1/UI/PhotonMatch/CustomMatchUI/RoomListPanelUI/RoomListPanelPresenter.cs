@@ -16,8 +16,9 @@ public class RoomListPanelPresenter : MonoBehaviour
     }
     public void OnLeaveMatchBtn()
     {
+        view.btnRandomMatch.interactable = true;
+        view.btnCustomMatch.interactable = true;
         view.roomListPanelObj.SetActive(false);
-        
         PhotonNetwork.LeaveLobby();
     }
     public void OnCreatRoomBtn()

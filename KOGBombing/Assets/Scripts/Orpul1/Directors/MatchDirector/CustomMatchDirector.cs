@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.Encryption;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
@@ -34,19 +35,20 @@ namespace Orpul1
             PhotonNetwork.JoinLobby(customLobby);
         }
 
-        public override void OnConnectedToMaster()
-        {
-            if(isCustomMatch)
-            {
-                PhotonNetwork.JoinLobby(customLobby);
-            }
-        }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (isCustomMatch)
             {
                 base.OnPlayerEnteredRoom(newPlayer);
             }
+        }
+        public override void OnLeftLobby()
+        {
+            isCustomMatch = false;
+        }
+        public override void OnLeftRoom()
+        {
+            isCustomMatch = false;
         }
         public override void OnJoinedLobby()
         {

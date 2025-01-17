@@ -13,6 +13,7 @@ public class CustomRoomPresenter : MonoBehaviour
     public void OnLeaveRoomBtn()
     {
         view.customRoomPanel.SetActive(false);
+        view.customRoomListPanel.SetActive(false);
         Debug.Log("Click Leave Room Button");
         PhotonNetwork.LeaveRoom();
     }

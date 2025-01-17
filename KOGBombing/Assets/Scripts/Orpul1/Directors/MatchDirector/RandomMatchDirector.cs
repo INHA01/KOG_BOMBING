@@ -34,6 +34,7 @@ namespace Orpul1
             {
                 isMatching = true;
                 isRandomMatch = true;
+                Debug.Log("Join RandomLobby");
                 PhotonNetwork.JoinLobby(randomMatchLobby);
             }
         }
@@ -53,7 +54,8 @@ namespace Orpul1
             {
                 Debug.Log($"randomMatch {isRandomMatch}");
                 base.OnJoinedLobby();
-                PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.FillRoom,null,null,null, SetRoomOption());
+                PhotonNetwork.JoinRandomRoom();
+                //PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.FillRoom,randomMatchLobby,null,null, SetRoomOption());
             }
         }
 
@@ -86,7 +88,11 @@ namespace Orpul1
         {
             if (isRandomMatch)
             {
-                Debug.Log("joinFail");
+                StringBuilder roomName = new StringBuilder();
+                roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
+
+                PhotonNetwork.CreateRoom(roomName.ToString(), SetRoomOption());
+                Debug.Log("joinFail Create Room");
             }
         }
        
@@ -98,8 +104,7 @@ namespace Orpul1
 
         private RoomOptions SetRoomOption()
         {
-            StringBuilder roomName = new StringBuilder();
-            roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
+            
             Debug.Log($"{PhotonNetwork.LocalPlayer.NickName}");
             RoomOptions roomOpt = new RoomOptions()
             {
@@ -110,7 +115,6 @@ namespace Orpul1
                 CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
             };
 
-            Debug.Log($"CreateRoom {roomName.ToString()}");
 
             return roomOpt;
         }

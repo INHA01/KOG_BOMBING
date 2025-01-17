@@ -511,6 +511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5ac7c46138cce4b993d3f55ffca260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btnRandomMatch: {fileID: 1972171051}
+  btnCustomMatch: {fileID: 57636200}
   createPanelObj: {fileID: 595455800}
   roomListPanelObj: {fileID: 1142535909}
 --- !u!1 &126873073
@@ -2599,6 +2601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customRoomPanel: {fileID: 611444800}
+  customRoomListPanel: {fileID: 1142535909}
   btnStartGame: {fileID: 1596913021}
 --- !u!1 &885404113
 GameObject:

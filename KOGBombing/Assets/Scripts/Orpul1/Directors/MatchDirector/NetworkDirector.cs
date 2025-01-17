@@ -39,11 +39,26 @@ namespace Orpul1
 
         public void onRandomMatch()
         {
+            btnCustomMatch.interactable = !btnCustomMatch.interactable;
             randomMatch.Match();
         }
         public void onCustomMatch()
         {
+            btnCustomMatch.interactable = false;
+            btnRandomMatch.interactable = false;
             customMatch.Match();
+        }
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                Debug.Log($"inRoom: {PhotonNetwork.InRoom}");
+                Debug.Log($"inLobby: {PhotonNetwork.InLobby}");
+                if (PhotonNetwork.InLobby)
+                {
+                    Debug.Log($"lobbyName: {PhotonNetwork.CurrentLobby.Name}");
+                }
+            }
         }
     }
 }

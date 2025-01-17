@@ -11,17 +11,18 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Transform shootEndPos;
     [SerializeField] GameObject attackRangePrefab;
     [SerializeField] GameObject noAttackRangePrefab;
+    [SerializeField] float maxLength;
 
     GameObject attackRange;
     GameObject noAttackRange;
 
     public Vector3 attackPoint;
-    float maxLength;
 
     [Header("Bullet")]
-    [SerializeField] int bulletCount;
-    [SerializeField] int magazineCount;
-
+    [SerializeField] int InitbulletCount = 9;
+    [SerializeField] int InitmagazineCount = 4;
+    int bulletCount;
+    int magazineCount;
     [SerializeField] float reloadTime;
     [SerializeField] float shootingTerm;
 
@@ -42,10 +43,10 @@ public class PlayerShooting : MonoBehaviour
     }
     public void Init(Transform model)
     {
-        maxLength = (shootEndPos.position - shootStartPos.position).magnitude;
+        bulletCount = InitbulletCount;
+        magazineCount = InitmagazineCount;
+        //maxLength = (shootEndPos.position - shootStartPos.position).magnitude;
         magazine = GetComponent<Magazine>();
-        bulletCount = 9;
-        magazineCount = 4;
         if (!canConnectPhoton || (pv != null && pv.IsMine))
         {
             attackRange = Instantiate(attackRangePrefab);
@@ -77,13 +78,20 @@ public class PlayerShooting : MonoBehaviour
 
         bool rayHit = false;
         Ray shootRay = new Ray(shootStartPos.position, direction);
-        RaycastHit hit;
-        if (Physics.Raycast(shootRay, out hit, maxLength) && hit.collider.tag != "Bullet")
+        // 전부 다 검사
+        RaycastHit[] hits = Physics.RaycastAll(shootRay, maxLength);
+        Vector3 hitPoint = Vector3.zero;
+        for (int i = 0; i < hits.Length; i++)
         {
-            float distance = (hit.point - shootStartPos.position).magnitude;
-            if (distance < attackRangeLength)
-                attackRangeLength = distance;
-            rayHit = true;
+            if (hits[i].collider.tag != "Bullet")
+            {
+                float distance = (hits[i].point - shootStartPos.position).magnitude;
+                if (distance < attackRangeLength)
+                    attackRangeLength = distance;
+                rayHit = true;
+                hitPoint = hits[i].point;
+                break;
+            }
         }
 
         if (attackRangeLength > maxLength || rayHit)
@@ -92,11 +100,13 @@ public class PlayerShooting : MonoBehaviour
             if (rayHit)
             {
                 noAttackRangeLength = mousePosLength - attackRangeLength;
-                SetArea(noAttackRange, hit.point, noAttackRangeLength, direction);
+                //SetArea(noAttackRange, hit.point, noAttackRangeLength, direction);
+                SetArea(noAttackRange, hitPoint, noAttackRangeLength, direction);
             }
             else
             {
                 noAttackRangeLength = attackRangeLength - maxLength;
+                shootEndPos.position = shootStartPos.position + direction.normalized * maxLength;
                 SetArea(noAttackRange, shootEndPos.position, noAttackRangeLength, direction);
                 attackRangeLength = maxLength;
             }
@@ -157,7 +167,7 @@ public class PlayerShooting : MonoBehaviour
         magazineCount--;
         if (magazineCount > 0)
         {
-            bulletCount = 9;
+            bulletCount = InitbulletCount;
         }
         Debug.Log("magazine count: " + magazineCount);
         yield return new WaitForSeconds(shootingTerm);
@@ -167,15 +177,15 @@ public class PlayerShooting : MonoBehaviour
     }
     IEnumerator Reload()
     {
-        while (magazineCount < 4)
+        while (magazineCount < InitmagazineCount)
         {
             yield return new WaitForSeconds(reloadTime);
-            if (magazine.Count > 9)
+            if (magazine.Count > InitbulletCount)
             {
                 Debug.Log("Reload");
                 magazineCount++;
                 if (bulletCount == 0)
-                    bulletCount = 9;
+                    bulletCount = InitbulletCount;
             }
             else
                 Debug.Log("Not enough bullet");

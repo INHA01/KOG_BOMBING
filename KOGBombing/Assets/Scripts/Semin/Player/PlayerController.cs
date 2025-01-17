@@ -14,9 +14,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] 
 	public GameObject playerObj;
 	[SerializeField]
-	public Animator animator;
-	[SerializeField]
 	bool canConnectPhoton = false;
+	PlayerAnimation animator;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
@@ -24,6 +23,7 @@ public class PlayerController : MonoBehaviour
 	Vector2 speedValue = Vector2.zero;
 	Vector2 mousePos = Vector2.zero;
 	Camera viewCamera;
+	
 
 	public enum EDirection
 	{
@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
 		if(canConnectPhoton)
 			SetTeamFieldOfView();
 
+		animator = GetComponent<PlayerAnimation>();
+		animator.SetPlayerObject(playerObj);
     }
 
 	private void Start()
@@ -76,30 +78,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		UpdateAnimation();
-	}
-
-	private void UpdateAnimation()
-	{
-		if (speedValue.magnitude <= 0.1f)
-		{
-			animator.SetFloat("Horizontal", speedValue.x);
-			animator.SetFloat("Vertical", speedValue.y);
-			return;
-		}
-
-		Quaternion rotation = Quaternion.Euler(0, -45, 0);
-		Vector3 forward = playerObj.transform.forward;
-		forward = rotation * forward;
-
-		Vector3 right = playerObj.transform.right;
-		right = rotation * right;
-
-		float adjustedHorizontal = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), right);
-		float adjustedVertical = Vector3.Dot(new Vector3(speedValue.x, 0, speedValue.y), forward);
-
-		animator.SetFloat("Horizontal", adjustedHorizontal);
-		animator.SetFloat("Vertical", adjustedVertical);
+		animator.UpdateAnimation(speedValue);
 	}
 
 
@@ -136,19 +115,8 @@ public class PlayerController : MonoBehaviour
 		{
 			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
 			playerShooting.attackPoint = pointTolook;
-
-			Vector3 targetDirection = (pointTolook - playerObj.transform.position).normalized;
-			float angle = Vector3.SignedAngle(playerObj.transform.forward, targetDirection, Vector3.up);
-
-			// Animation
-			if (speedValue.magnitude <= 0.1f)
-			{
-				if (Mathf.Abs(angle) > 0.5f)
-					animator.SetBool("Rotation", true);
-				else animator.SetBool("Rotation", false);
-			}
-			else animator.SetBool("Rotation", false);
 			playerObj.transform.LookAt(pointTolook);
+			animator.Rotation(pointTolook, speedValue);
 		}
 
 		return INode.ENodeState.Success;

@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 		rigidBody = GetComponent<Rigidbody>();
 		if(canConnectPhoton)
 			SetTeamFieldOfView();
+
     }
 
 	private void Start()
@@ -106,21 +107,21 @@ public class PlayerController : MonoBehaviour
 	#region Attack Node
 	public INode.ENodeState Move(EDirection direction)
 	{
-		switch(direction)
+		Vector3 movement;
+		switch (direction)
 		{
 			case EDirection.Left:
-				transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * -1 * speedValue.x);
-				break;
 			case EDirection.Right:
-				transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * speedValue.x);
+				movement = transform.right * Time.deltaTime * moveSpeed * speedValue.x;
+				rigidBody.MovePosition(rigidBody.position + movement);
 				break;
 			case EDirection.Up:
-				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * speedValue.y);
-				break;
 			case EDirection.Down:
-				transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1 * speedValue.y);
+				movement = transform.forward * Time.deltaTime * moveSpeed * speedValue.y;
+				rigidBody.MovePosition(rigidBody.position + movement);
 				break;
 		}
+
 
 		return INode.ENodeState.Success;
 	}
@@ -135,6 +136,18 @@ public class PlayerController : MonoBehaviour
 		{
 			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
 			playerShooting.attackPoint = pointTolook;
+
+			Vector3 targetDirection = (pointTolook - playerObj.transform.position).normalized;
+			float angle = Vector3.SignedAngle(playerObj.transform.forward, targetDirection, Vector3.up);
+
+			// Animation
+			if (speedValue.magnitude <= 0.1f)
+			{
+				if (Mathf.Abs(angle) > 0.5f)
+					animator.SetBool("Rotation", true);
+				else animator.SetBool("Rotation", false);
+			}
+			else animator.SetBool("Rotation", false);
 			playerObj.transform.LookAt(pointTolook);
 		}
 
@@ -167,8 +180,8 @@ public class PlayerController : MonoBehaviour
 	{
         if (!pv.IsMine) return;
         Vector2 inputVector = value.Get<Vector2>();
-		speedValue.x = Mathf.Abs(inputVector.x);
-		speedValue.y = Mathf.Abs(inputVector.y);
+		speedValue.x = inputVector.x;
+		speedValue.y = inputVector.y;
 		inputVector.x = ConvertToThreeValues(value.Get<Vector2>().normalized.x);
 		inputVector.y = ConvertToThreeValues(value.Get<Vector2>().normalized.y);
 

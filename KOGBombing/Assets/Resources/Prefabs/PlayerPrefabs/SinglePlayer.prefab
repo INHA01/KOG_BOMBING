@@ -268,8 +268,8 @@ MonoBehaviour:
     type: 3}
   maxLength: 13
   attackPoint: {x: 0, y: 0, z: 0}
-  bulletCount: 9
-  magazineCount: 4
+  InitbulletCount: 9
+  InitmagazineCount: 4
   reloadTime: 3.2
   shootingTerm: 1
   pv: {fileID: 0}
@@ -326,6 +326,8 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8894044268401136495}
+  - {fileID: 7799719852954471310}
+  - {fileID: 0}
   - {fileID: 9218072504105106236}
   sceneViewId: 0
   InstantiationId: 0
@@ -545,6 +547,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 277391757025662010}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 309ef7cd2893d1c43ac007a0f766a9a2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7799719852954471310}
   m_SourcePrefab: {fileID: 100100000, guid: 309ef7cd2893d1c43ac007a0f766a9a2, type: 3}
 --- !u!1 &8607103005998974962 stripped
 GameObject:
@@ -573,6 +579,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7799719852954471310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8607103005998974962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!4 &8951258544732396872 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 309ef7cd2893d1c43ac007a0f766a9a2,

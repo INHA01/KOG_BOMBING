@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] Animator animator;
-	[SerializeField] GameObject model;
 	GameObject playerObj;
 	Vector3 pointToLookAt;
+	[Range(1f, 20f)]
+	public float RotateSpeed;
+	bool isRotate = false;
 
 	void Start()
     {
-        
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -50,27 +53,32 @@ public class PlayerAnimation : MonoBehaviour
 
 	public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)
 	{
+		isRotate = true;
 		this.pointToLookAt = pointToLookAt;
+		pointToLookAt.y -= 2.0f;
+		Vector3 targetDirection = (pointToLookAt - transform.position).normalized;
+		float angle = Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up);
 
-		Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
-		float rayLength;
-
-		if (GroupPlane.Raycast(cameraRay, out rayLength))
+		if (speedValue.magnitude < 0.1f)
 		{
-			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-			Vector3 targetDirection = (pointTolook - model.transform.position).normalized;
-			float angle = Vector3.SignedAngle(model.transform.forward, targetDirection, Vector3.up);
-
-			if (speedValue.magnitude < 0.1f)
+			float deltaAngle = Mathf.Abs(angle);
+			if (deltaAngle < 0.5f)
+				animator.SetBool("Rotation", false);
+			else if (deltaAngle < 60f) 
+				isRotate = false;
+			else
+				animator.SetBool("Rotation", true);
+			if (animator.GetBool("Rotation") == true)
 			{
-				if (Mathf.Abs(angle) > 0.5f)
-					animator.SetBool("Rotation", true);
-				else animator.SetBool("Rotation", false);
+				Quaternion targetRotation = Quaternion.LookRotation(pointToLookAt - transform.position);
+				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
 			}
-			else animator.SetBool("Rotation", false);
-
-			model.transform.LookAt(pointTolook);
+		}
+		else
+		{
+			animator.SetBool("Rotation", false);
+			Quaternion targetRotation = Quaternion.LookRotation(pointToLookAt - transform.position);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
 		}
 	}
 

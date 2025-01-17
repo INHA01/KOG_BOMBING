@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
+using Photon.Pun.Demo.Cockpit;
 
 
 
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject playerObj;
 	[SerializeField]
 	bool canConnectPhoton = false;
+	[SerializeField] 
 	PlayerAnimation animator;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -46,7 +48,6 @@ public class PlayerController : MonoBehaviour
 		if(canConnectPhoton)
 			SetTeamFieldOfView();
 
-		animator = GetComponent<PlayerAnimation>();
 		animator.SetPlayerObject(playerObj);
     }
 
@@ -78,7 +79,8 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		animator.UpdateAnimation(speedValue);
+		if (animator != null)
+			animator.UpdateAnimation(speedValue);
 	}
 
 
@@ -115,8 +117,9 @@ public class PlayerController : MonoBehaviour
 		{
 			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
 			playerShooting.attackPoint = pointTolook;
-			playerObj.transform.LookAt(pointTolook);
 			animator.Rotation(pointTolook, speedValue);
+
+			playerObj.transform.LookAt(pointTolook);
 		}
 
 		return INode.ENodeState.Success;

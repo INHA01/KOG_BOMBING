@@ -1516,20 +1516,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 85.952, y: 164.684, z: 202.62}
---- !u!114 &2015959369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084845065568507203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fa0c4a07ab60594bae44d75f0f8d6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 277391755912326120}
-  model: {fileID: 668307385}
 --- !u!1 &2091261042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1776,6 +1762,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &277391755912326121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668307385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa0c4a07ab60594bae44d75f0f8d6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 277391755912326120}
+  RotateSpeed: 7
 --- !u!114 &484276211547359575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1860,7 +1860,6 @@ GameObject:
   - component: {fileID: 1055956269622634726}
   - component: {fileID: 2047044684933473352}
   - component: {fileID: 8894044269518679229}
-  - component: {fileID: 2015959369}
   m_Layer: 0
   m_Name: SinglePlayer
   m_TagString: Player
@@ -2074,9 +2073,10 @@ MonoBehaviour:
     type: 3}
   noAttackRangePrefab: {fileID: 3503415046760577678, guid: 038aa9519b5f6c140b5d6fb96a379a96,
     type: 3}
+  maxLength: 0
   attackPoint: {x: 0, y: 0, z: 0}
-  bulletCount: 0
-  magazineCount: 0
+  InitbulletCount: 9
+  InitmagazineCount: 4
   reloadTime: 3.2
   shootingTerm: 1
   pv: {fileID: 0}
@@ -2177,6 +2177,7 @@ MonoBehaviour:
   pv: {fileID: 2047044684933473352}
   playerObj: {fileID: 772106138384255484}
   canConnectPhoton: 0
+  animator: {fileID: 277391755912326121}
   moveSpeed: 6
 --- !u!4 &6786506343823665476
 Transform:
@@ -2291,6 +2292,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 277391755912326120}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 309ef7cd2893d1c43ac007a0f766a9a2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 277391755912326121}
   m_SourcePrefab: {fileID: 100100000, guid: 309ef7cd2893d1c43ac007a0f766a9a2, type: 3}
 --- !u!114 &9218072503134356718
 MonoBehaviour:

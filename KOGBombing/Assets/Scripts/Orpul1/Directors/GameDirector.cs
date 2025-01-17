@@ -21,6 +21,7 @@ namespace Orpul1
             GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/Player", Vector3.zero, Quaternion.Euler(0, 45, 0));
 			GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
+            playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
         }
     }
 }

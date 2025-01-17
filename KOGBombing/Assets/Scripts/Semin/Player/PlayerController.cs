@@ -50,7 +50,13 @@ public class PlayerController : MonoBehaviour
 
 	private void Start()
 	{
-		viewCamera = Camera.main;
+		if (viewCamera == null)
+			viewCamera = Camera.main;
+	}
+
+	public void SetCamera(Camera cam)
+	{
+		viewCamera = cam;
 	}
 
 	void SetTeamFieldOfView()

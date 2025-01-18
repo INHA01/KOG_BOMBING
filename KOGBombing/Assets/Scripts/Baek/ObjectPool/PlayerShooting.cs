@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public class PlayerShooting : MonoBehaviour
@@ -11,13 +12,16 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Transform shootEndPos;
     [SerializeField] GameObject attackRangePrefab;
     [SerializeField] GameObject noAttackRangePrefab;
+    [SerializeField] GameObject maxAttackRangePrefab;
     [SerializeField] float maxLength;
 
     GameObject attackRange;
     GameObject noAttackRange;
+    GameObject maxxAttackRange;
 
     LineRenderer lineRenderer1;
     LineRenderer lineRenderer2;
+    DecalProjector decalProjector;
 
     public Vector3 attackPoint;
 
@@ -61,14 +65,16 @@ public class PlayerShooting : MonoBehaviour
             lineRenderer2.startWidth = 2.0f * this.transform.localScale.x;
             lineRenderer2.endWidth = 2.0f * this.transform.localScale.x;
             noAttackRange.transform.SetParent(model);
+
+            maxxAttackRange = Instantiate(maxAttackRangePrefab);
+            maxxAttackRange.transform.SetParent(model);
+            maxxAttackRange.transform.position = (shootStartPos.position + shootEndPos.position) / 2;
+            maxxAttackRange.SetActive(false);
+            decalProjector = maxxAttackRange.GetComponent<DecalProjector>();
+            decalProjector.size = new Vector3(maxLength, 5 , 0.2f);
         }
     }
     #region Attack area
-    bool CheckMouseOutScreen()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
-    }
     public void SetPoint(LineRenderer area ,Vector3 start, Vector3 end)
     {
         area.SetPosition(0, start);
@@ -76,8 +82,6 @@ public class PlayerShooting : MonoBehaviour
     }
     void ShowAttackArea()
     {
-        if (!CheckMouseOutScreen())
-            return;
         Vector3 direction = attackPoint - new Vector3(shootStartPos.position.x, attackPoint.y, shootStartPos.position.z);
         float mousePosLength = direction.magnitude;
         float attackRangeLength = mousePosLength;
@@ -155,6 +159,7 @@ public class PlayerShooting : MonoBehaviour
     }
     IEnumerator Shooting()
     {
+        maxxAttackRange.SetActive(true);
         while (bulletCount > 0)
         {
             yield return new WaitForSeconds(0.1f);
@@ -171,6 +176,7 @@ public class PlayerShooting : MonoBehaviour
         {
             bulletCount = InitbulletCount;
         }
+        maxxAttackRange.SetActive(false);
         Debug.Log("magazine count: " + magazineCount);
         yield return new WaitForSeconds(shootingTerm);
         if (reloadCoroutine == null)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Semin;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BehaviorTreeRunner : MonoBehaviour
@@ -13,9 +14,9 @@ public class BehaviorTreeRunner : MonoBehaviour
     void Start()
     {
         if (canConnectPhoton&&!pv.IsMine) return;
-        tree.SetTarget(gameObject);
-		//tree.rootNode.Start();
-		//tree = tree.Clone();
+		tree = tree.Clone();
+		tree.SetTarget(gameObject);
+		StartCoroutine(Ready());
     }
 
 	private void FixedUpdate()
@@ -23,4 +24,10 @@ public class BehaviorTreeRunner : MonoBehaviour
 		if (canConnectPhoton && !pv.IsMine) return;
 		tree.Operate();
 	}
+
+    IEnumerator Ready()
+    {
+        yield return new WaitForEndOfFrame();
+        tree.rootNode.Start();
+    }
 }

@@ -17,7 +17,6 @@ public class SCBehaviorTree : ScriptableObject
 	{
 		this.target = target;
 		rootNode.SetTarget(target);
-		rootNode.Start();
 		//rootNode.SetTarget(target);
 	}
 
@@ -116,7 +115,6 @@ public class SCBehaviorTree : ScriptableObject
 	{
 		SCBehaviorTree tree = Instantiate(this);
 		tree.rootNode = tree.rootNode.Clone();
-		//tree.rootNode.SetTarget(target);
 		return tree;
 	}
 }

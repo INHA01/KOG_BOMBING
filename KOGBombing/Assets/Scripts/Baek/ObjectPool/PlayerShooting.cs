@@ -16,6 +16,9 @@ public class PlayerShooting : MonoBehaviour
     GameObject attackRange;
     GameObject noAttackRange;
 
+    LineRenderer lineRenderer1;
+    LineRenderer lineRenderer2;
+
     public Vector3 attackPoint;
 
     [Header("Bullet")]
@@ -38,20 +41,25 @@ public class PlayerShooting : MonoBehaviour
     private void FixedUpdate()
     {
         if (canConnectPhoton && !pv.IsMine) return;
-        //if (attackRange == null || noAttackRange == null) return;
         ShowAttackArea();
     }
     public void Init(Transform model)
     {
         bulletCount = InitbulletCount;
         magazineCount = InitmagazineCount;
-        //maxLength = (shootEndPos.position - shootStartPos.position).magnitude;
         magazine = GetComponent<Magazine>();
         if (!canConnectPhoton || (pv != null && pv.IsMine))
         {
             attackRange = Instantiate(attackRangePrefab);
+            lineRenderer1 = attackRange.GetComponent<LineRenderer>();
+            lineRenderer1.startWidth = 2.0f * this.transform.localScale.x;
+            lineRenderer1.endWidth = 2.0f * this.transform.localScale.x;
             attackRange.transform.SetParent(model);
+
             noAttackRange = Instantiate(noAttackRangePrefab);
+            lineRenderer2 = noAttackRange.GetComponent<LineRenderer>();
+            lineRenderer2.startWidth = 2.0f * this.transform.localScale.x;
+            lineRenderer2.endWidth = 2.0f * this.transform.localScale.x;
             noAttackRange.transform.SetParent(model);
         }
     }
@@ -61,24 +69,21 @@ public class PlayerShooting : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
     }
-    void SetArea(GameObject area, Vector3 pos, float length, Vector3 direction)
+    public void SetPoint(LineRenderer area ,Vector3 start, Vector3 end)
     {
-        Vector3 areaPos = pos + direction.normalized * length / 2;
-        area.transform.position = new Vector3(areaPos.x, area.transform.position.y, areaPos.z);
-        area.transform.localScale = new Vector3(0.1f, length / 2, 2.0f);
+        area.SetPosition(0, start);
+        area.SetPosition(1, end);
     }
     void ShowAttackArea()
     {
-
         if (!CheckMouseOutScreen())
             return;
-        Vector3 direction = attackPoint - shootStartPos.position;
+        Vector3 direction = attackPoint - new Vector3(shootStartPos.position.x, attackPoint.y, shootStartPos.position.z);
         float mousePosLength = direction.magnitude;
         float attackRangeLength = mousePosLength;
-
+        
         bool rayHit = false;
         Ray shootRay = new Ray(shootStartPos.position, direction);
-        // 전부 다 검사
         RaycastHit[] hits = Physics.RaycastAll(shootRay, maxLength);
         Vector3 hitPoint = Vector3.zero;
         for (int i = 0; i < hits.Length; i++)
@@ -100,25 +105,22 @@ public class PlayerShooting : MonoBehaviour
             if (rayHit)
             {
                 noAttackRangeLength = mousePosLength - attackRangeLength;
-                //SetArea(noAttackRange, hit.point, noAttackRangeLength, direction);
-                SetArea(noAttackRange, hitPoint, noAttackRangeLength, direction);
             }
             else
             {
                 noAttackRangeLength = attackRangeLength - maxLength;
-                shootEndPos.position = shootStartPos.position + direction.normalized * maxLength;
-                SetArea(noAttackRange, shootEndPos.position, noAttackRangeLength, direction);
                 attackRangeLength = maxLength;
             }
             noAttackRange.SetActive(true);
-
         }
         else
         {
             noAttackRange.SetActive(false);
         }
-
-        SetArea(attackRange, shootStartPos.position, attackRangeLength, direction);
+        Vector3 canAttackPoint = shootStartPos.position + direction.normalized * attackRangeLength;
+        SetPoint(lineRenderer1, shootStartPos.position, canAttackPoint);
+        Vector3 canNotAttackPoint = new Vector3(attackPoint.x, canAttackPoint.y, attackPoint.z);
+        SetPoint(lineRenderer2, canAttackPoint, canNotAttackPoint);
     }
     #endregion
 

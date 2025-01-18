@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -82,7 +82,7 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 1071337817672403904}
+      objectReference: {fileID: 2093382085591792498}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[2]
@@ -92,7 +92,7 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 6653052910028107773}
+      objectReference: {fileID: 1071337817672403904}
     - target: {fileID: 3900849375641417542, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: pv
@@ -154,10 +154,13 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: Vertical
+  - Type: 4
+    SynchronizeType: 2
+    Name: Rotation
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 1
 --- !u!114 &747309639952147347 stripped
 MonoBehaviour:
@@ -178,6 +181,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 8156867798748147964}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2093382085591792498 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7799719852954471310, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 8156867798748147964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450807048061368078}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}

@@ -130,19 +130,23 @@ public class PlayerController : MonoBehaviour
 	{
 		return inputs[key];
 	}
-	#endregion
-
-	#region Input System
-	public void OnAttack(InputValue value)
+    #endregion
+    #region Input System
+    public void OnAttack(InputValue value)
 	{
 		if (!pv.IsMine) return;
 		playerShooting.Shoot();
 	}
+    bool CheckMouseOutScreen(Vector2 mousePos)
+    {
+        return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
+    }
 	public void OnRotate(InputValue value)
 	{
         if (!pv.IsMine) return;
+		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         mousePos = value.Get<Vector2>();
-	}
+    }
 	
 	public void OnMove(InputValue value)
 	{

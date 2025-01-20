@@ -12,7 +12,6 @@ namespace Orpul1
         [SerializeField] GameObject roomPanelPref;
         [SerializeField] Transform trRoomListPanel;
 
-
         public override void UpdateInfo(List<RoomInfo> roomList, bool isRemove)
         {
             for (int i = 0; i < roomList.Count; i++)
@@ -35,6 +34,17 @@ namespace Orpul1
                 
             }
         }
+
+        public override void RemoveAllInfo()
+        {
+            List<string> keyList = new List<string>(dicRoomInfo.Keys);
+            for (int i = 0; i < keyList.Count; i++)
+            {
+                Destroy(dicRoomInfo[keyList[i]].gameObject);
+                dicRoomInfo.Remove(keyList[i]);
+            }
+        }
+
 
     }
 }

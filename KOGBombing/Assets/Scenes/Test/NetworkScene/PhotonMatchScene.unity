@@ -751,6 +751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5067d1fdef9494488a09fdfad508aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  updateDelay: 1
   maxPlayer: 2
 --- !u!1 &281412326
 GameObject:
@@ -1334,6 +1335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d3ee23ffb8f2c40a922453f72879b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  updateDelay: 1
   customRoomPopupPanel: {fileID: 611444800}
   customRoomPanel: {fileID: 1080076610}
   roomUpdateController: {fileID: 1466023650}
@@ -1369,6 +1371,37 @@ Transform:
   m_Children:
   - {fileID: 933463628}
   m_Father: {fileID: 1148531307}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &585059829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 585059830}
+  m_Layer: 0
+  m_Name: PhotonRoomListController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &585059830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585059829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1616917212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589184988
 GameObject:
@@ -2824,7 +2857,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 933763715}
-  - component: {fileID: 933763718}
   m_Layer: 0
   m_Name: PhotonMatchDirector
   m_TagString: Untagged
@@ -2849,21 +2881,6 @@ Transform:
   - {fileID: 166613742}
   m_Father: {fileID: 1972442509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &933763718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 933763714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96d5de0d70f674249b1fcb191b91128e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomPanelPref: {fileID: 4668787977807835266, guid: 39e32a2a84af7f040bf09670e77a1671,
-    type: 3}
-  trRoomListPanel: {fileID: 462491054}
 --- !u!1 &1030726325
 GameObject:
   m_ObjectHideFlags: 0
@@ -5579,6 +5596,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1466023649}
+  - {fileID: 585059830}
   m_Father: {fileID: 1148531307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1618555387

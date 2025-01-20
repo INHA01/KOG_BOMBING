@@ -1,7 +1,7 @@
-using ExitGames.Client.Photon.Encryption;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
@@ -24,7 +24,7 @@ namespace Orpul1
 
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
         bool isCustomMatch = false;
-
+        
         private void Start()
         {
             SetRoomOwner = customRoomPanel.GetComponent<CustomRoomPresenter>().SetRoomOwner;
@@ -32,9 +32,15 @@ namespace Orpul1
         public override void Match()
         {
             isCustomMatch = true;
-            PhotonNetwork.JoinLobby(customLobby);
+            base.Match();
         }
 
+        protected override IEnumerator CoWaitMatch()
+        {
+            float span = Time.time + updateDelay;
+            while (span>Time.time) yield return null;
+            PhotonNetwork.JoinLobby(customLobby);
+        }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (isCustomMatch)
@@ -44,11 +50,22 @@ namespace Orpul1
         }
         public override void OnLeftLobby()
         {
-            isCustomMatch = false;
+            if(isCustomMatch)
+            {
+                Debug.Log("DeleteInfos OnLeftLobby");
+                roomUpdateController.RemoveAllInfo();
+                isCustomMatch = false;
+            }
         }
         public override void OnLeftRoom()
         {
-            isCustomMatch = false;
+            if(isCustomMatch)
+            {
+                Debug.Log("DeleteInfos OnLeftRoom");
+                roomUpdateController.RemoveAllInfo();
+                playerUpdateController.RemoveAllInfo();
+                isCustomMatch = false;
+            }
         }
         public override void OnJoinedLobby()
         {
@@ -58,6 +75,7 @@ namespace Orpul1
                 base.OnJoinedLobby();
             }
         }
+
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             if(isCustomMatch)

@@ -19,8 +19,7 @@ namespace Orpul1
         public void SetMaxPlayer(int value)
         {
             maxPlayer = value;
-        }
-
+        } 
         public override void Match()
         {
             if (isMatching)
@@ -35,9 +34,16 @@ namespace Orpul1
                 isMatching = true;
                 isRandomMatch = true;
                 Debug.Log("Join RandomLobby");
-                PhotonNetwork.JoinLobby(randomMatchLobby);
+                base.Match();
             }
         }
+        protected override IEnumerator CoWaitMatch()
+        {
+            float span = Time.time + updateDelay;
+            while (span > Time.time) yield return null;
+            PhotonNetwork.JoinLobby(randomMatchLobby);
+        }
+       
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
             if (isRandomMatch)

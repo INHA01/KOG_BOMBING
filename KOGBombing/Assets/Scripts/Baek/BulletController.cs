@@ -1,9 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 
 public class BulletController : PooledObject
 {
     [SerializeField] float moveSpeed;
+    public string strTeamBullet;
     //[SerializeField] int damage = 2;
 
     public Vector3 shootDirection;
@@ -20,11 +22,28 @@ public class BulletController : PooledObject
             Release();
         }
     }
+
+    // >> : 추가된 코드(다른 팀인지 확인)
+    private bool IsOtherTeam(PhotonView pView)
+    {
+        string mineTeam = (string)pView.Owner.CustomProperties["Team"];
+        
+        Debug.Log($"mineTeam: {mineTeam} : otherTeam: {strTeamBullet}");
+        
+        if (mineTeam == strTeamBullet) return false;
+        return true;
+    }
+    // << :
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Player")
         {
-            //collision.collider.GetComponent<PlayerController>().Hit(damage);
+            // >> : 추가된 코드
+            PhotonView pView = collision.transform.GetComponent<PhotonView>();
+            if (!pView) return;
+            if (!IsOtherTeam(pView)) return;
+            Debug.Log("OtherTeam");
+            // << :
             Rigidbody rigidbody = collision.collider.GetComponent<Rigidbody>();
             rigidbody.AddForce(shootDirection * 10, ForceMode.Impulse);
             distance = 0;

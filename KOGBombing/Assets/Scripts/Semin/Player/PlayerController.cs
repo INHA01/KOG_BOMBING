@@ -7,7 +7,7 @@ using Semin;
 
 
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
 	PhotonView pv;
@@ -195,6 +195,21 @@ public class PlayerController : MonoBehaviour
 		else
 			return 0;
 	}
-
     #endregion
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+		if(stream.IsWriting)
+		{
+			stream.SendNext(transform.rotation);
+			stream.SendNext(rigidBody.velocity);
+		}
+		else if(stream.IsReading)
+		{
+			transform.rotation = (Quaternion)stream.ReceiveNext();
+			rigidBody.velocity = (Vector3)stream.ReceiveNext();
+			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            transform.position += rigidBody.velocity * lag;
+
+        }
+    }
 }

@@ -153,6 +153,7 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (shootEndPos.position - shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
+        bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);
 
         bullet.SetActive(true);

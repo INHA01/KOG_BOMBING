@@ -25,7 +25,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Vector2 speedValue = Vector2.zero;
 	Vector2 mousePos = Vector2.zero;
 	Camera viewCamera;
-	
+
+	// 지연보상 테스트
+	Vector3 networkPosi = Vector3.zero;
+	Quaternion networkRotation = Quaternion.identity;
 
 	public enum EDirection
 	{
@@ -81,6 +84,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		if (animator != null)
 			animator.UpdateAnimation(speedValue);
+		if(!pv.IsMine)
+		{
+			if((transform.position - networkPosi).sqrMagnitude >= 10f)
+			{
+				transform.position = Vector3.Lerp(transform.position, networkPosi, Time.deltaTime);
+			}
+			transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime);
+		}
 	}
 
 	#region Attack Node
@@ -201,12 +212,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
     {
 		if(stream.IsWriting)
 		{
+			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
 			stream.SendNext(rigidBody.velocity);
 		}
 		else if(stream.IsReading)
 		{
-			transform.rotation = (Quaternion)stream.ReceiveNext();
+			networkPosi = (Vector3)stream.ReceiveNext();
+			networkRotation = (Quaternion)stream.ReceiveNext();
 			rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             transform.position += rigidBody.velocity * lag;

@@ -17,7 +17,7 @@ public class PlayerShooting : MonoBehaviour
 
     GameObject attackRange;
     GameObject noAttackRange;
-    GameObject maxxAttackRange;
+    GameObject maxAttackRange;
 
     LineRenderer lineRenderer1;
     LineRenderer lineRenderer2;
@@ -66,12 +66,14 @@ public class PlayerShooting : MonoBehaviour
             lineRenderer2.endWidth = 2.0f * this.transform.localScale.x;
             noAttackRange.transform.SetParent(model);
 
-            maxxAttackRange = Instantiate(maxAttackRangePrefab);
-            maxxAttackRange.transform.SetParent(model);
-            maxxAttackRange.transform.position = (shootStartPos.position + shootEndPos.position) / 2;
-            maxxAttackRange.SetActive(false);
-            decalProjector = maxxAttackRange.GetComponent<DecalProjector>();
+            maxAttackRange = Instantiate(maxAttackRangePrefab);
+            maxAttackRange.transform.SetParent(model);
+            maxAttackRange.transform.position = (shootStartPos.position + shootEndPos.position) / 2;
+            maxAttackRange.SetActive(false);
+            decalProjector = maxAttackRange.GetComponent<DecalProjector>();
             decalProjector.size = new Vector3(maxLength, 5 , 0.2f);
+            Debug.Log("maxAttackRange: " + maxAttackRange.transform.position);
+            Debug.Log("shootMagnitude: " + (shootEndPos.position - shootStartPos.position).magnitude);
         }
     }
     #region Attack area
@@ -153,14 +155,15 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (shootEndPos.position - shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
+        if (canConnectPhoton)
+            bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);
 
         bullet.SetActive(true);
     }
     IEnumerator Shooting()
     {
-        maxxAttackRange.SetActive(true);
+        maxAttackRange.SetActive(true);
         while (bulletCount > 0)
         {
             yield return new WaitForSeconds(0.1f);
@@ -177,7 +180,7 @@ public class PlayerShooting : MonoBehaviour
         {
             bulletCount = InitbulletCount;
         }
-        maxxAttackRange.SetActive(false);
+        maxAttackRange.SetActive(false);
         Debug.Log("magazine count: " + magazineCount);
         yield return new WaitForSeconds(shootingTerm);
         if (reloadCoroutine == null)

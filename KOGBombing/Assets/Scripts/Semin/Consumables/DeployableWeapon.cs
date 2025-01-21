@@ -1,35 +1,38 @@
+using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DeployableWeapon : MonoBehaviour, ISupportWeapon
 {
-	[SerializeField] public GameObject prefab;
+	[SerializeField] public AttackConsum consum;
 	protected float duration;
 	protected float range;
 	protected float hp;
 	protected float damage;
-	protected int count = 1;
+	private int count = 10;
 	public float Damage { get { return damage; } }
-	public int Count { get { return count; } }
 
 	public virtual void Use(UseSupportWeaponInfo info)
 	{
-		if (prefab == null)
+		if (consum == null)
 			return;
 
 		if (info is UseDeployableWeaponInfo attackInfo)
 		{
 			if (count < attackInfo.UseCount)
 				return;
-			count -= attackInfo.UseCount;
-			GameObject obj =Instantiate(prefab, attackInfo.Position, Quaternion.identity);
-			Debug.Log(obj);
+			AttackConsum obj = Instantiate(consum.gameObject, attackInfo.Position, Quaternion.identity).GetComponent<AttackConsum>();
+			obj.Use();
 		}
 	}
 
-	public void SetWeapon(GameObject gameObject)
+	public void SetWeapon(GameObject consum)
 	{
-		prefab = gameObject;
+		if (!consum.GetComponent<AttackConsum>())
+			return;
+
+		this.consum = consum.GetComponent<AttackConsum>();
+		Debug.Log(consum);
 	}
 }

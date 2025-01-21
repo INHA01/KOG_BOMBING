@@ -6,8 +6,7 @@ namespace Semin
 {
 	public interface IConsumable
 	{
-		public int Count { get; }
-		public bool Use(UseSupportWeaponInfo info);
+		public void Use();
 	}
 
 }

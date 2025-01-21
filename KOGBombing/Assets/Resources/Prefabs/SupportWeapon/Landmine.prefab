@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3760219330505423870}
+  - component: {fileID: 9143231483034674756}
   m_Layer: 0
   m_Name: Landmine
   m_TagString: Untagged
@@ -25,13 +26,29 @@ Transform:
   m_GameObject: {fileID: 2076389301880976140}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.7209448, y: -4.279936, z: 3.423912}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6774798552185362190}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9143231483034674756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076389301880976140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f279952d86edaa40ae0f883a38cf5e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 10
+  interval: 0.5
+  damage: 30
+  time: 3
 --- !u!1001 &6453185609055580389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43,17 +60,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f8802bcb684d9f24b896dd0c2adb8965,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6362077
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8802bcb684d9f24b896dd0c2adb8965,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.279936
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8802bcb684d9f24b896dd0c2adb8965,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.9606042
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f8802bcb684d9f24b896dd0c2adb8965,
         type: 3}

@@ -5,6 +5,7 @@ using Photon.Pun;
 using System.Text;
 using Semin;
 using Photon.Pun.Demo.Cockpit;
+using UnityEditor.SceneManagement;
 
 
 
@@ -18,7 +19,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	bool canConnectPhoton = false;
 	[SerializeField] 
 	PlayerAnimation animator;
-	public ISupportWeapon supportWeapon = new DeployableWeapon();
+	public ISupportWeapon supportWeapon;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
@@ -53,12 +54,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			SetTeamFieldOfView();
 
 		animator.SetPlayerObject(playerObj);
-    }
+
+	}
 
 	private void Start()
 	{
 		if (viewCamera == null)
 			viewCamera = Camera.main;
+
+		supportWeapon = gameObject.AddComponent<DeployableWeapon>();
 
 		if (supportWeapon is DeployableWeapon support)
 			support.SetWeapon(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
@@ -204,7 +208,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnUseAttackConsum(InputValue value)
 	{
 		if (!pv.IsMine) return;
-		supportWeapon.Use(new UseDeployableWeaponInfo(1, playerObj.transform.position));
+		supportWeapon.Use(new UseDeployableWeaponInfo(1, transform.position));
 	}
 
 	public int ConvertToThreeValues(float value)

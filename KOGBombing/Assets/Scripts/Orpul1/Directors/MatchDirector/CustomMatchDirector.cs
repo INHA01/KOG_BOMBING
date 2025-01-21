@@ -82,7 +82,6 @@ namespace Orpul1
             {
                 int debugRedTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
                 int debugBlueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-                Debug.Log($"RoomTeam -> RT: {debugRedTeam} :: BT{debugBlueTeam}");
                 Debug.Log($"CustomMatch JoinRoom");
                 base.OnJoinedRoom();
                 customRoomPopupPanel.SetActive(true);

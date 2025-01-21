@@ -9,11 +9,10 @@ public class BehaviorTreeRunner : MonoBehaviour
 {
     [SerializeField] public BehaviorTreeAsset tree;
     [SerializeField] PhotonView pv;
-    [SerializeField] bool canConnectPhoton;
 
     void Start()
     {
-        if (canConnectPhoton&&!pv.IsMine) return;
+        if (!pv.IsMine) return;
 		tree = tree.Clone();
 		tree.SetTarget(gameObject);
 		StartCoroutine(Ready());
@@ -21,7 +20,7 @@ public class BehaviorTreeRunner : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (canConnectPhoton && !pv.IsMine) return;
+		if (!pv.IsMine) return;
 		tree.Operate();
 	}
 

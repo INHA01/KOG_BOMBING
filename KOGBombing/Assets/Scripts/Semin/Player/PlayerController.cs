@@ -8,7 +8,7 @@ using Photon.Pun.Demo.Cockpit;
 
 
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
 	PhotonView pv;
@@ -131,19 +131,23 @@ public class PlayerController : MonoBehaviour
 	{
 		return inputs[key];
 	}
-	#endregion
-
-	#region Input System
-	public void OnAttack(InputValue value)
+    #endregion
+    #region Input System
+    public void OnAttack(InputValue value)
 	{
 		if (!pv.IsMine) return;
 		playerShooting.Shoot(animator);
 	}
+    bool CheckMouseOutScreen(Vector2 mousePos)
+    {
+        return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
+    }
 	public void OnRotate(InputValue value)
 	{
         if (!pv.IsMine) return;
+		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         mousePos = value.Get<Vector2>();
-	}
+    }
 	
 	public void OnMove(InputValue value)
 	{
@@ -192,6 +196,21 @@ public class PlayerController : MonoBehaviour
 		else
 			return 0;
 	}
-
     #endregion
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+		if(stream.IsWriting)
+		{
+			stream.SendNext(transform.rotation);
+			stream.SendNext(rigidBody.velocity);
+		}
+		else if(stream.IsReading)
+		{
+			transform.rotation = (Quaternion)stream.ReceiveNext();
+			rigidBody.velocity = (Vector3)stream.ReceiveNext();
+			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            transform.position += rigidBody.velocity * lag;
+
+        }
+    }
 }

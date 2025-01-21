@@ -50,7 +50,16 @@ namespace Orpul1
             {
                 SetPlayerTeam(playerInfo);
             }
+        }
 
+        public override void RemoveAllInfo()
+        {
+            List<string> keyList = new List<string>(dicPlayerInfo.Keys);
+            for (int i=0; i< keyList.Count; i++)
+            {
+                Destroy(dicPlayerInfo[keyList[i]].gameObject);
+                dicPlayerInfo.Remove(keyList[i]);
+            }
         }
         private void SetPlayerTeam(Player playerInfo)
         {
@@ -81,5 +90,7 @@ namespace Orpul1
             }
             return (int)ETeamType.BLUETEAM;
         }
+
+      
     }
 }

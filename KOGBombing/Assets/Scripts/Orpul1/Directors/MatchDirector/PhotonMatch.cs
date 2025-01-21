@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using System.Text;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
@@ -8,6 +9,14 @@ namespace Orpul1
 {
     public abstract class PhotonMatch : MonoBehaviourPunCallbacks, IMatchAble
     {
+        [SerializeField]
+        protected float updateDelay;
+        public virtual void Match()
+        {
+            StartCoroutine(CoWaitMatch());
+        }
+        protected abstract IEnumerator CoWaitMatch();
+        
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -77,6 +86,6 @@ namespace Orpul1
                 return new StringBuilder("RT");
             }
         }
-        public abstract void Match();
+        
     }
 }

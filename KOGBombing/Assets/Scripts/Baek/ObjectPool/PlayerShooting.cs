@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public class PlayerShooting : MonoBehaviour
@@ -11,13 +12,16 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Transform shootEndPos;
     [SerializeField] GameObject attackRangePrefab;
     [SerializeField] GameObject noAttackRangePrefab;
+    [SerializeField] GameObject maxAttackRangePrefab;
     [SerializeField] float maxLength;
 
     GameObject attackRange;
     GameObject noAttackRange;
+    GameObject maxAttackRange;
 
     LineRenderer lineRenderer1;
     LineRenderer lineRenderer2;
+    DecalProjector decalProjector;
 
     public Vector3 attackPoint;
 
@@ -63,14 +67,18 @@ public class PlayerShooting : MonoBehaviour
             lineRenderer2.startWidth = 2.0f * this.transform.localScale.x;
             lineRenderer2.endWidth = 2.0f * this.transform.localScale.x;
             noAttackRange.transform.SetParent(model);
+
+            maxAttackRange = Instantiate(maxAttackRangePrefab);
+            maxAttackRange.transform.SetParent(model);
+            maxAttackRange.transform.position = (shootStartPos.position + shootEndPos.position) / 2;
+            maxAttackRange.SetActive(false);
+            decalProjector = maxAttackRange.GetComponent<DecalProjector>();
+            decalProjector.size = new Vector3(maxLength, 5 , 0.2f);
+            Debug.Log("maxAttackRange: " + maxAttackRange.transform.position);
+            Debug.Log("shootMagnitude: " + (shootEndPos.position - shootStartPos.position).magnitude);
         }
     }
     #region Attack area
-    bool CheckMouseOutScreen()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
-    }
     public void SetPoint(LineRenderer area ,Vector3 start, Vector3 end)
     {
         area.SetPosition(0, start);
@@ -78,8 +86,6 @@ public class PlayerShooting : MonoBehaviour
     }
     void ShowAttackArea()
     {
-        if (!CheckMouseOutScreen())
-            return;
         Vector3 direction = attackPoint - new Vector3(shootStartPos.position.x, attackPoint.y, shootStartPos.position.z);
         float mousePosLength = direction.magnitude;
         float attackRangeLength = mousePosLength;
@@ -152,12 +158,15 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (shootEndPos.position - shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
+        if (canConnectPhoton)
+            bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);
 
         bullet.SetActive(true);
     }
     IEnumerator Shooting()
     {
+        maxAttackRange.SetActive(true);
         while (bulletCount > 0)
         {
             animator.Shoot();
@@ -174,6 +183,7 @@ public class PlayerShooting : MonoBehaviour
         {
             bulletCount = InitbulletCount;
         }
+        maxAttackRange.SetActive(false);
         Debug.Log("magazine count: " + magazineCount);
 
 		yield return new WaitForSeconds(shootingTerm);

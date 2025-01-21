@@ -6,21 +6,15 @@ using static UnityEngine.GraphicsBuffer;
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] public Animator animator;
+	[Range(1f, 20f)] public float RotateSpeed;
 	GameObject playerObj;
 	Vector3 pointToLookAt;
-	[Range(1f, 20f)]
-	public float RotateSpeed;
 	Vector3 speedValue;
-	bool isRotate;
 
 	void Awake()
     {
-        animator = GetComponent<Animator>();
-    }
-
-    void Update()
-    {
-        
+		if (animator == null)
+			animator = GetComponent<Animator>();
     }
 
 	public void SetPlayerObject(GameObject playerObj)
@@ -55,50 +49,41 @@ public class PlayerAnimation : MonoBehaviour
 
 	public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)
 	{
-		isRotate = true;
 		this.pointToLookAt = pointToLookAt;
-		pointToLookAt.y -= 2.0f;
-		Vector3 targetDirection = (pointToLookAt - transform.position).normalized;
-		float angle = Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up);
+		Vector3 direction = pointToLookAt - transform.position;
+		direction.y = 0;
+		float angle = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
 
 		if (speedValue.magnitude < 0.1f)
 		{
 			float deltaAngle = Mathf.Abs(angle);
 			if (deltaAngle < 0.5f)
 				animator.SetBool("Rotation", false);
-			else if (deltaAngle < 60f) 
-				isRotate = false;
-			else
+			else if (deltaAngle >= 60.0f)
 				animator.SetBool("Rotation", true);
 			if (animator.GetBool("Rotation") == true)
 			{
-				Quaternion targetRotation = Quaternion.LookRotation(pointToLookAt - transform.position);
+				Quaternion targetRotation = Quaternion.LookRotation(direction);
 				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
 			}
 		}
 		else
 		{
 			animator.SetBool("Rotation", false);
-			Quaternion targetRotation = Quaternion.LookRotation(pointToLookAt - transform.position);
+			Quaternion targetRotation = Quaternion.LookRotation(direction);
 			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
 		}
 	}
 
 	public void Shoot()
 	{
-		Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
-		float rayLength;
+		Vector3 direction = pointToLookAt - transform.position;
+		direction.y = 0;
+		Quaternion targetRotation = Quaternion.LookRotation(direction);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50f * Time.deltaTime);
 
-		if (GroupPlane.Raycast(cameraRay, out rayLength))
-		{
-			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-			transform.LookAt(pointTolook);
-			Quaternion targetRotation = Quaternion.LookRotation(pointTolook - transform.position);
-			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10.0f * Time.deltaTime);
-		}
 
-        animator.SetTrigger("Shoot");
+		animator.SetTrigger("Shoot");
 	}
 
 	private void OnAnimatorIK(int layerIndex)

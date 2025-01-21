@@ -12,6 +12,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     Transform spawnPosi;
     [SerializeField]
     GameObject playerCamera;
+
     private void Awake()
     {
         PhotonNetwork.OfflineMode = true;
@@ -21,20 +22,26 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-
         Debug.Log("Call back Master");
         CreateRoom();
-        
     }
     public override void OnJoinedRoom()
     {
+        Debug.Log("JoinRoom");
         SpawnPlayer();
+    }
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        SpawnPlayer();
+    }
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log("FailRoom");
     }
     void CreateRoom()
     {
-        PhotonNetwork.CreateRoom("OfflineModeRoom");
-        RoomOptions roomOptions = new RoomOptions();
-        
+        Debug.Log("CreteRoom");
+        PhotonNetwork.CreateRoom("OfflineModeRoom"+Time.time.ToString());
     }
     void SpawnPlayer()
     {

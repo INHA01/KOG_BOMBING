@@ -37,12 +37,6 @@ namespace Orpul1
                 base.Match();
             }
         }
-        protected override IEnumerator CoWaitMatch()
-        {
-            float span = Time.time + updateDelay;
-            while (span > Time.time) yield return null;
-            PhotonNetwork.JoinLobby(randomMatchLobby);
-        }
        
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
@@ -123,6 +117,12 @@ namespace Orpul1
 
 
             return roomOpt;
+        }
+        protected override IEnumerator CoWaitMatch()
+        {
+            float span = Time.time + updateDelay;
+            while (span > Time.time) yield return null;
+            PhotonNetwork.JoinLobby(randomMatchLobby);
         }
 
         IEnumerator CoWaitPlayers()

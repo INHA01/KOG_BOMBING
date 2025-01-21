@@ -11,18 +11,19 @@ namespace Orpul1
     public class CustomMatchDirector : PhotonMatch
     {
         [SerializeField]
-        GameObject customRoomPopupPanel;
-        [SerializeField]
-        GameObject customRoomPanel;
-        Action SetRoomOwner;
-
-        [SerializeField]
         PhotonUpdateController<List<RoomInfo>> roomUpdateController;
 
         [SerializeField]
         PhotonUpdateController<Player> playerUpdateController;
 
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
+
+        [SerializeField]
+        GameObject customRoomPopupPanel;
+        [SerializeField]
+        GameObject customRoomPanel;
+        Action SetRoomOwner;
+
         bool isCustomMatch = false;
         
         private void Start()
@@ -34,13 +35,12 @@ namespace Orpul1
             isCustomMatch = true;
             base.Match();
         }
-
-        protected override IEnumerator CoWaitMatch()
+        public void OnLeftLobbyBtn()
         {
-            float span = Time.time + updateDelay;
-            while (span>Time.time) yield return null;
-            PhotonNetwork.JoinLobby(customLobby);
+            if(PhotonNetwork.InLobby)
+                PhotonNetwork.LeaveLobby();
         }
+       
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (isCustomMatch)
@@ -73,6 +73,26 @@ namespace Orpul1
             {
                 Debug.Log("CustomMatch JoinLobby");
                 base.OnJoinedLobby();
+            }
+        }
+
+        public override void OnJoinedRoom()
+        {
+            if (isCustomMatch)
+            {
+                int debugRedTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+                int debugBlueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+                Debug.Log($"RoomTeam -> RT: {debugRedTeam} :: BT{debugBlueTeam}");
+                Debug.Log($"CustomMatch JoinRoom");
+                base.OnJoinedRoom();
+                customRoomPopupPanel.SetActive(true);
+                Player[] playerList = PhotonNetwork.PlayerList;
+                SetRoomOwner();
+
+                for (int i = 0; i < playerList.Length; i++)
+                {
+                    playerUpdateController.UpdateInfo(playerList[i]);
+                }
             }
         }
 
@@ -112,25 +132,7 @@ namespace Orpul1
                 SetRoomOwner();
             }
         }
-        public override void OnJoinedRoom()
-        {
-            if (isCustomMatch)
-            {
-                int debugRedTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-                int debugBlueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-                Debug.Log($"RoomTeam -> RT: {debugRedTeam} :: BT{debugBlueTeam}");
-                Debug.Log($"CustomMatch JoinRoom");
-                base.OnJoinedRoom();
-                customRoomPopupPanel.SetActive(true);
-                Player[] playerList = PhotonNetwork.PlayerList;
-                SetRoomOwner();
-
-                for (int i=0; i< playerList.Length; i++)
-                {
-                    playerUpdateController.UpdateInfo(playerList[i]);
-                }
-            }
-        }
+     
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             if (isCustomMatch)
@@ -144,6 +146,13 @@ namespace Orpul1
             {
                 Debug.Log("CustomMatch JoinRoom Fail");
             }
+        }
+
+        protected override IEnumerator CoWaitMatch()
+        {
+            float span = Time.time + updateDelay;
+            while (span > Time.time) yield return null;
+            PhotonNetwork.JoinLobby(customLobby);
         }
     }
 }

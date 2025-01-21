@@ -969,8 +969,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   createRoomPopupPanel: {fileID: 595455800}
-  InputRoomName: {fileID: 2119757927}
-  DropDPlayerCnt: {fileID: 1030726327}
+  tmpInputRoomName: {fileID: 2119757927}
+  tmpDropDPlayerCnt: {fileID: 1030726327}
 --- !u!1 &415130768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,10 +1336,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateDelay: 1
-  customRoomPopupPanel: {fileID: 611444800}
-  customRoomPanel: {fileID: 1080076610}
   roomUpdateController: {fileID: 1466023650}
   playerUpdateController: {fileID: 1466023651}
+  customRoomPopupPanel: {fileID: 611444800}
+  customRoomPanel: {fileID: 1080076610}
 --- !u!1 &579999264
 GameObject:
   m_ObjectHideFlags: 0
@@ -6873,6 +6873,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1080076612}
         m_TargetAssemblyTypeName: RoomListPanelPresenter, Assembly-CSharp
         m_MethodName: OnLeaveMatchBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 569967857}
+        m_TargetAssemblyTypeName: Orpul1.CustomMatchDirector, Assembly-CSharp
+        m_MethodName: OnLeftLobbyBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

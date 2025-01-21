@@ -4,6 +4,6 @@ using UnityEngine.UI;
 
 public class PhotonLoginView : MonoBehaviour
 {
-    public TMP_InputField nicknameInput;
+    public TMP_InputField tmpInputNickname;
     public Button btnLogin;
 }

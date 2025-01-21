@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] public Animator animator;
 	[Range(1f, 20f)] public float RotateSpeed;
+	[SerializeField] PhotonView pv;
 	GameObject playerObj;
 	Vector3 pointToLookAt;
 	Vector3 speedValue;
@@ -88,7 +90,7 @@ public class PlayerAnimation : MonoBehaviour
 
 	private void OnAnimatorIK(int layerIndex)
 	{
-		if (animator != null)
+		if (animator != null && pv.IsMine)
 		{
 			animator.SetLookAtPosition(pointToLookAt);
 			animator.SetLookAtWeight(1.0f);

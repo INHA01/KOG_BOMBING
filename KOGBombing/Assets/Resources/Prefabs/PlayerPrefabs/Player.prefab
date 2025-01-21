@@ -113,6 +113,11 @@ PrefabInstance:
       propertyPath: canConnectPhoton
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7300479445460102179, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: pv
+      value: 
+      objectReference: {fileID: 7880054976068676454}
     - target: {fileID: 8894044268401136495, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_SynchronizeRotation
@@ -162,6 +167,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: Rotation
+  - Type: 9
+    SynchronizeType: 2
+    Name: Shoot
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0

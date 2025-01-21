@@ -8,6 +8,8 @@ public enum EKey
 	A,
 	S,
 	D,
+	NUM_1,
+	NUM_2,
 	MAX
 }
 

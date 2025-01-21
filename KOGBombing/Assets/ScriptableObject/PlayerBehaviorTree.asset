@@ -1,0 +1,220 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6981434794934456990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a5409d9ede8f54b86de6158dd9638c, type: 3}
+  m_Name: ParallelNode
+  m_EditorClassIdentifier: 
+  guid: 79342286855fc6649bdf0e8161f0b4f4
+  position: {x: 52, y: 70}
+  children:
+  - {fileID: -5215224428827648621}
+  - {fileID: 7428477062917207401}
+  - {fileID: -2564680646511739078}
+  - {fileID: 4549044918267445955}
+  - {fileID: -5288419803410853016}
+--- !u!114 &-6430694936911059803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: f98e44cf9600d5240b4119cd0c6a6eeb
+  position: {x: 333.99997, y: 224}
+  paramName: Down
+  method: Move
+  className: PlayerController
+--- !u!114 &-5288419803410853016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: c531646cc1b5f9f4e8668128c0e9841e
+  position: {x: 193, y: 378}
+  paramName: 
+  method: RotatePlayer
+  className: PlayerController
+--- !u!114 &-5215224428827648621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 955484e767faaef40b8589f8dd543113
+  position: {x: 193.32, y: 70}
+  child: {fileID: 6193472429586276356}
+  method: CheckInput
+  paramName: W
+  className: PlayerController
+--- !u!114 &-3995514849858621972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 87c74d0e167f431489038a7dc06d2411
+  position: {x: 334, y: 146.99998}
+  paramName: Left
+  method: Move
+  className: PlayerController
+--- !u!114 &-2714862213305048360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944122a116b9af342bd02f8f287fc027, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  guid: 2372331e3ee48ff489ddf6c1ea5edccd
+  position: {x: -51.5, y: 70}
+  child: {fileID: -6981434794934456990}
+--- !u!114 &-2564680646511739078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 734c5d71a8fa31b4283ad693faea6f00
+  position: {x: 193, y: 224}
+  child: {fileID: -6430694936911059803}
+  method: CheckInput
+  paramName: S
+  className: PlayerController
+--- !u!114 &-1482104750248519893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 215100e938cd47347976f6cfa2d9d5dd
+  position: {x: 334, y: 301}
+  paramName: Right
+  method: Move
+  className: PlayerController
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe35afed294ad84495f59562869d8b6, type: 3}
+  m_Name: PlayerBehaviorTree
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: -2714862213305048360}
+  state: 2
+  nodes:
+  - {fileID: -2714862213305048360}
+  - {fileID: -5215224428827648621}
+  - {fileID: 7428477062917207401}
+  - {fileID: -2564680646511739078}
+  - {fileID: 4549044918267445955}
+  - {fileID: -6981434794934456990}
+  - {fileID: -5288419803410853016}
+  - {fileID: 6193472429586276356}
+  - {fileID: -3995514849858621972}
+  - {fileID: -6430694936911059803}
+  - {fileID: -1482104750248519893}
+--- !u!114 &4549044918267445955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 30b1aa60a8a55b047ba013da8ffac84e
+  position: {x: 193, y: 301}
+  child: {fileID: -1482104750248519893}
+  method: CheckInput
+  paramName: D
+  className: PlayerController
+--- !u!114 &6193472429586276356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 2daf35ad2c3351a4db5454e837fdcef2
+  position: {x: 334, y: 70}
+  paramName: Up
+  method: Move
+  className: PlayerController
+--- !u!114 &7428477062917207401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: f5894b817fe765f4ca5ebf0b9318b0e8
+  position: {x: 193, y: 147}
+  child: {fileID: -3995514849858621972}
+  method: CheckInput
+  paramName: A
+  className: PlayerController

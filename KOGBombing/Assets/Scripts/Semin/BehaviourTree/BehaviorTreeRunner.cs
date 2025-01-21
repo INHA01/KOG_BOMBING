@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BehaviorTreeRunner : MonoBehaviour
 {
-    [SerializeField] public SCBehaviorTree tree;
+    [SerializeField] public BehaviorTreeAsset tree;
     [SerializeField] PhotonView pv;
     [SerializeField] bool canConnectPhoton;
 

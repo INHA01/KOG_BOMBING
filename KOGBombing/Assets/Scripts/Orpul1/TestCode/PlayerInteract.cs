@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerInteract
 {
     Transform trPlayer;
-    IInteractAble interactObj;
+    IInteractAble iInteractObj;
     private bool canInteract = true;
     public bool isInteracting = false;
     // >> TODO : Blackboard를 사용하여 값을 따로 설정해 주는 작업을 줄이는 방안 검토해보기
@@ -16,30 +16,38 @@ public class PlayerInteract
         trPlayer = transform;
     }
 
-    public void ProcessInteract()
+    public bool FindInteractObj()
     {
         Collider[] colliders = Physics.OverlapSphere(trPlayer.position, 1f);
         
-        if (colliders.Length == 0) return;
+        if (colliders.Length == 0) return false;
+        IInteractAble interactObj = null;
         for (int i = 0; i < colliders.Length; i++) 
         {
             interactObj = colliders[i].GetComponent<IInteractAble>();
-            if (interactObj != null)
-                break;
+            if (interactObj != null) break;
         }
-        if (interactObj == null) return;
-        canInteract = false;
+        if (interactObj == null) return false;
+        
+        iInteractObj = interactObj;
+        Debug.Log("Find interact Object");
+        return true;
+    }
+
+    public void ProcessInteract()
+    {
+        Debug.Log("Process Interact");
         isInteracting = true;
-        interactObj.ProcessInteract();
+        iInteractObj.ProcessInteract();
     }
 
     public void AbortInteract()
     {
-        if (interactObj == null) return;
-        interactObj.AbortInteract();
-        canInteract = true;
+        Debug.Log("Abort Interact");
+        if (iInteractObj == null) return;
+        iInteractObj.AbortInteract();
         isInteracting = false;
-        interactObj = null;
+        iInteractObj = null;
     }
 
 }

@@ -120,9 +120,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		return INode.ENodeState.Success;
 	}
-
+	public INode.ENodeState FindInteractObj()
+	{
+		if (playerInteract.FindInteractObj() == false)
+			return INode.ENodeState.Fail;
+		return INode.ENodeState.Success;
+	}
 	public INode.ENodeState ProcessInteractive()
 	{
+		Debug.Log("Process interact");
 		playerInteract.ProcessInteract();
         return INode.ENodeState.Success;
 	}
@@ -162,10 +168,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool CheckInput(EKey key)
 	{
 		return inputs[key];
-	}
-	public bool CanInteract()
-	{
-		return !playerInteract.isInteracting;
 	}
 	public bool IsInteracting()
 	{

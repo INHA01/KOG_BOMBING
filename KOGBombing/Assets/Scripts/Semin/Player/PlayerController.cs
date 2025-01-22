@@ -39,14 +39,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
-        attackRange.Init(playerObj.transform, playerData);
         playerShooting = GetComponent<PlayerShooting>();
-<<<<<<< HEAD
+        attackRange.Init(playerObj.transform, playerData);
 		playerInteract.Init(transform);
-		playerShooting.Init(animator);
-=======
 		playerShooting.Init(animator,attackRange);
->>>>>>> main
 
         for (int i = 0; i < (int)EKey.MAX; i++)
 			inputs.Add((EKey)i, false);
@@ -149,7 +145,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 	public bool IsInteracting()
 	{
-		Debug.Log("상호작용 체크");
 		return playerInteract.CanInteract;
 	}
     #endregion
@@ -237,4 +232,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         }
     }
+    private void OnDrawGizmos()
+    {
+		Gizmos.DrawWireSphere(transform.position, 1);
+    }
+
 }

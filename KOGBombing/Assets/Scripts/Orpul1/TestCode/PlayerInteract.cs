@@ -19,23 +19,22 @@ public class PlayerInteract
     public void ProcessInteract()
     {
         Collider[] colliders = Physics.OverlapSphere(trPlayer.position, 1f);
+        
         if (colliders.Length == 0) return;
         for (int i = 0; i < colliders.Length; i++) 
         {
-            interactObj = colliders[i] as IInteractAble;
+            interactObj = colliders[i].GetComponent<IInteractAble>();
             if (interactObj != null)
                 break;
         }
         if (interactObj == null) return;
         canInteract = false;
-        Debug.Log("상호작용 실행");
         interactObj.ProcessInteract();
     }
 
     public void AbortInteract()
     {
         if (interactObj == null) return;
-        Debug.Log("상호작용 중단");
         interactObj.AbortInteract();
         canInteract = true;
         interactObj = null;

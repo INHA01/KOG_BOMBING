@@ -33,13 +33,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseAttackConsum",
-                    "type": "Button",
-                    "id": "573985af-fbaf-4f13-afae-2a6c67c10a91",
+                    "name": "Interact",
+                    "type": "Value",
+                    "id": "fd460c9a-6955-4b2a-a6be-f45d85aa7e18",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -122,12 +122,12 @@
                 },
                 {
                     "name": "",
-                    "id": "2bf27dd7-29cc-4dd7-a596-40fbb1a67f31",
-                    "path": "<Keyboard>/2",
+                    "id": "447c8e76-ed7b-4ed2-8bd6-5e9d711e8fd3",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UseAttackConsum",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

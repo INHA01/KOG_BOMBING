@@ -8,20 +8,16 @@ using Photon.Pun.Demo.Cockpit;
 using UnityEditor.SceneManagement;
 
 
-
 public class PlayerController : MonoBehaviour, IPunObservable
 {
-	[SerializeField]
-	PhotonView pv;
 	[SerializeField] 
 	public GameObject playerObj;
-	[SerializeField]
-	bool canConnectPhoton = false;
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
+	PlayerInteract playerInteract = new PlayerInteract();
 	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
 	public float moveSpeed = 6;
 	Vector2 speedValue = Vector2.zero;
@@ -39,19 +35,24 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		Left,
 		Right,
 	}
-	PlayerShooting playerShooting;
+    AttackRange attackRange;
+    PlayerShooting playerShooting;
+    PlayerData playerData;
 
-	void Awake()
+    void Awake()
 	{
-		playerShooting = GetComponent<PlayerShooting>();
-		playerShooting.Init(playerObj.transform);
+        playerData = GetComponent<PlayerData>();
+		attackRange = new AttackRange();
+        playerShooting = GetComponent<PlayerShooting>();
+        attackRange.Init(playerObj.transform, playerData);
+		playerInteract.Init(transform);
+		playerShooting.Init(animator,attackRange);
 
-		for (int i = 0; i < (int)EKey.MAX; i++)
+        for (int i = 0; i < (int)EKey.MAX; i++)
 			inputs.Add((EKey)i, false);
 
 		rigidBody = GetComponent<Rigidbody>();
-		//if(canConnectPhoton)
-			//SetTeamFieldOfView();
+		SetTeamFieldOfView();
 
 		animator.SetPlayerObject(playerObj);
 
@@ -77,9 +78,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	void SetTeamFieldOfView()
 	{
-		StringBuilder mineTeam = new StringBuilder((string)pv.Owner.CustomProperties["Team"]);
+		StringBuilder mineTeam = new StringBuilder((string)playerData.pv.Owner.CustomProperties["Team"]);
 
-        if (!pv.IsMine)
+        if (!playerData.pv.IsMine)
 		{
 			StringBuilder otherTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
 
@@ -94,24 +95,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		if (animator != null)
 			animator.UpdateAnimation(speedValue);
+		if(attackRange != null)
+            attackRange.ShowAttackArea();
 	}
-    private void FixedUpdate()
-    {
-        if (!pv.IsMine)
-        {
-            if ((transform.position - networkPosi).sqrMagnitude >= 10f)
-            {
-                transform.position = Vector3.Lerp(transform.position, networkPosi, Time.deltaTime);
-            }
-            if (Mathf.Abs(Quaternion.Angle(transform.rotation, networkRotation)) > 2f)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime);
-            }
-        }
-    }
 
-    #region Attack Node
-    public INode.ENodeState Move(EDirection direction)
+	#region Attack Node
+	public INode.ENodeState Move(EDirection direction)
 	{
 		Vector3 movement;
 		switch (direction)
@@ -132,6 +121,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		return INode.ENodeState.Success;
 	}
 
+	public INode.ENodeState ProcessInteractive()
+	{
+		playerInteract.ProcessInteract();
+        return INode.ENodeState.Success;
+	}
+	public INode.ENodeState AbortInteract()
+	{
+        playerInteract.AbortInteract();
+        return INode.ENodeState.Success;
+    }
 	public INode.ENodeState RotatePlayer()
 	{
 		Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
@@ -141,7 +140,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (GroupPlane.Raycast(cameraRay, out rayLength))
 		{
 			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-			playerShooting.attackPoint = pointTolook;
+			playerData.mousePos = pointTolook;
 			animator.Rotation(pointTolook, speedValue);
 
 			playerObj.transform.LookAt(pointTolook);
@@ -149,6 +148,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		return INode.ENodeState.Success;
 	}
+
+	public INode.ENodeState ShootBullet()
+	{
+        playerShooting.Shoot();
+        return INode.ENodeState.Success;
+    }
 
 
 	#endregion
@@ -158,12 +163,19 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		return inputs[key];
 	}
+	public bool CanInteract()
+	{
+		return !playerInteract.isInteracting;
+	}
+	public bool IsInteracting()
+	{
+		return playerInteract.isInteracting;
+	}
     #endregion
     #region Input System
     public void OnAttack(InputValue value)
 	{
-		if (!pv.IsMine) return;
-		playerShooting.Shoot(animator);
+		inputs[EKey.LMOUSEBUTTON] = value.isPressed;
 	}
     bool CheckMouseOutScreen(Vector2 mousePos)
     {
@@ -171,14 +183,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
     }
 	public void OnRotate(InputValue value)
 	{
-        if (!pv.IsMine) return;
 		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         mousePos = value.Get<Vector2>();
     }
 	
 	public void OnMove(InputValue value)
 	{
-        if (!pv.IsMine) return;
+        if (!playerData.pv.IsMine) return;
         Vector2 inputVector = value.Get<Vector2>();
 		speedValue.x = inputVector.x;
 		speedValue.y = inputVector.y;
@@ -219,7 +230,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		supportWeapon.Use(new UseDeployableWeaponInfo(1, transform.position));
 	}
 
-	public int ConvertToThreeValues(float value)
+	public void OnInteract(InputValue value)
+	{
+        inputs[EKey.F] = value.isPressed;
+    }
+
+    public int ConvertToThreeValues(float value)
 	{
 		if (value > 0)  
 			return 1;
@@ -233,18 +249,21 @@ public class PlayerController : MonoBehaviour, IPunObservable
     {
 		if(stream.IsWriting)
 		{
-			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
 			stream.SendNext(rigidBody.velocity);
 		}
 		else if(stream.IsReading)
 		{
-			networkPosi = (Vector3)stream.ReceiveNext();
-			networkRotation = (Quaternion)stream.ReceiveNext();
+			transform.rotation = (Quaternion)stream.ReceiveNext();
 			rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            networkPosi += rigidBody.velocity * lag;
+            transform.position += rigidBody.velocity * lag;
 
         }
     }
+    private void OnDrawGizmos()
+    {
+		Gizmos.DrawWireSphere(transform.position, 1);
+    }
+
 }

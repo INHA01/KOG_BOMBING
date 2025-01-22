@@ -1,5 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8805397999584832426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: b657134a57c64114e9acef68e0836e18
+  position: {x: 193, y: 589}
+  child: {fileID: 6882639984666204211}
+  method: CheckInput
+  paramName: LMOUSEBUTTON
+  className: PlayerController
 --- !u!114 &-6981434794934456990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21,6 +39,7 @@ MonoBehaviour:
   - {fileID: 4549044918267445955}
   - {fileID: -5288419803410853016}
   - {fileID: -1657674516172925830}
+  - {fileID: -8805397999584832426}
 --- !u!114 &-6430694936911059803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +226,8 @@ MonoBehaviour:
   - {fileID: 327535805608488999}
   - {fileID: -1657674516172925830}
   - {fileID: 5499220917565172958}
+  - {fileID: -8805397999584832426}
+  - {fileID: 6882639984666204211}
 --- !u!114 &327535805608488999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +332,23 @@ MonoBehaviour:
   position: {x: 334, y: 70}
   paramName: Up
   method: Move
+  className: PlayerController
+--- !u!114 &6882639984666204211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 32a724eb36e0a614e8e9d72196e443e3
+  position: {x: 377, y: 589}
+  paramName: 
+  method: ShootBullet
   className: PlayerController
 --- !u!114 &7428477062917207401
 MonoBehaviour:

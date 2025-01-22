@@ -10,8 +10,6 @@ using Photon.Pun.Demo.Cockpit;
 
 public class PlayerController : MonoBehaviour, IPunObservable
 {
-	[SerializeField]
-	PhotonView pv;
 	[SerializeField] 
 	public GameObject playerObj;
 	[SerializeField] 
@@ -40,11 +38,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
     void Awake()
 	{
         playerData = GetComponent<PlayerData>();
-        attackRange = GetComponent<AttackRange>();
-        attackRange.Init(playerObj.transform);
+		attackRange = new AttackRange();
+        attackRange.Init(playerObj.transform, playerData);
         playerShooting = GetComponent<PlayerShooting>();
+<<<<<<< HEAD
 		playerInteract.Init(transform);
 		playerShooting.Init(animator);
+=======
+		playerShooting.Init(animator,attackRange);
+>>>>>>> main
 
         for (int i = 0; i < (int)EKey.MAX; i++)
 			inputs.Add((EKey)i, false);
@@ -68,9 +70,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	void SetTeamFieldOfView()
 	{
-		StringBuilder mineTeam = new StringBuilder((string)pv.Owner.CustomProperties["Team"]);
+		StringBuilder mineTeam = new StringBuilder((string)playerData.pv.Owner.CustomProperties["Team"]);
 
-        if (!pv.IsMine)
+        if (!playerData.pv.IsMine)
 		{
 			StringBuilder otherTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
 
@@ -85,11 +87,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		if (animator != null)
 			animator.UpdateAnimation(speedValue);
+		if(attackRange != null)
+            attackRange.ShowAttackArea();
 	}
-	void FixedUpdate()
-	{
-		attackRange.ShowAttackArea(playerData);
-    }
 
 	#region Attack Node
 	public INode.ENodeState Move(EDirection direction)
@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     #region Input System
     public void OnAttack(InputValue value)
 	{
-		if (!pv.IsMine) return;
+		if (!playerData.pv.IsMine) return;
 		playerShooting.Shoot();
 	}
     bool CheckMouseOutScreen(Vector2 mousePos)
@@ -165,14 +165,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
     }
 	public void OnRotate(InputValue value)
 	{
-        if (!pv.IsMine) return;
+        if (!playerData.pv.IsMine) return;
 		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         mousePos = value.Get<Vector2>();
     }
 	
 	public void OnMove(InputValue value)
 	{
-        if (!pv.IsMine) return;
+        if (!playerData.pv.IsMine) return;
         Vector2 inputVector = value.Get<Vector2>();
 		speedValue.x = inputVector.x;
 		speedValue.y = inputVector.y;

@@ -10,8 +10,4 @@ public class Magazine : ObjectPool
         parentInstance.GetComponent<FollowPlayer>().Init(gameObject);
         parent = parentInstance.transform;
     }
-    protected override void SetupPool()
-    {
-        base.SetupPool();
-    }
 }

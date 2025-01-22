@@ -3,53 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class AttackRange : MonoBehaviour
+public class AttackRange 
 {
-    [Header("AttackRange")]
-    [SerializeField] GameObject attackRangePrefab;
-    [SerializeField] GameObject noAttackRangePrefab;
-    [SerializeField] GameObject maxAttackRangePrefab;
-
     GameObject attackRange;
     GameObject noAttackRange;
     GameObject maxAttackRange;
 
     LineRenderer lineRenderer1;
     LineRenderer lineRenderer2;
-    DecalProjector decalProjector;
 
     PlayerData playerData;
 
-    #region Attack area
-    public void Init(Transform model)
+    public void Init(Transform model , PlayerData playerData)
     {
-        playerData = GetComponent<PlayerData>();
+        this.playerData = playerData;
 
-        attackRange = Instantiate(attackRangePrefab);
-        lineRenderer1 = attackRange.GetComponent<LineRenderer>();
-        lineRenderer1.startWidth = 2.0f * this.transform.localScale.x;
-        lineRenderer1.endWidth = 2.0f * this.transform.localScale.x;
+        attackRange = playerData.AttackRange;
+        lineRenderer1 = playerData.SetRenderer(attackRange);
         attackRange.transform.SetParent(model);
 
-        noAttackRange = Instantiate(noAttackRangePrefab);
-        lineRenderer2 = noAttackRange.GetComponent<LineRenderer>();
-        lineRenderer2.startWidth = 2.0f * this.transform.localScale.x;
-        lineRenderer2.endWidth = 2.0f * this.transform.localScale.x;
+        noAttackRange = playerData.NoAttackRange;
+        lineRenderer2 = playerData.SetRenderer(noAttackRange);
         noAttackRange.transform.SetParent(model);
 
-        maxAttackRange = Instantiate(maxAttackRangePrefab);
+        maxAttackRange = playerData.MaxAttackRange;
+        playerData.SetDecalProjector(maxAttackRange);
         maxAttackRange.transform.SetParent(model);
         maxAttackRange.transform.position = (playerData.shootStartPos.position + playerData.shootEndPos.position) / 2;
         maxAttackRange.SetActive(false);
-        decalProjector = maxAttackRange.GetComponent<DecalProjector>();
-        decalProjector.size = new Vector3(playerData.maxLength, 5, 0.2f);
     }
-    public void SetPoint(LineRenderer area, Vector3 start, Vector3 end)
+    void SetPoint(LineRenderer area, Vector3 start, Vector3 end)
     {
         area.SetPosition(0, start);
         area.SetPosition(1, end);
     }
-    public void ShowAttackArea(PlayerData playerData)
+    public void ShowAttackArea()
     {
         Vector3 direction = playerData.mousePos - new Vector3(playerData.shootStartPos.position.x, playerData.mousePos.y, playerData.shootStartPos.position.z);
         float mousePosLength = direction.magnitude;
@@ -92,5 +80,4 @@ public class AttackRange : MonoBehaviour
         else
             maxAttackRange.SetActive(false);
     }
-    #endregion
 }

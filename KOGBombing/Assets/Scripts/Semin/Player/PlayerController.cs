@@ -5,6 +5,7 @@ using Photon.Pun;
 using System.Text;
 using Semin;
 using Photon.Pun.Demo.Cockpit;
+using UnityEditor.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour, IPunObservable
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public GameObject playerObj;
 	[SerializeField] 
 	PlayerAnimation animator;
+	public ISupportWeapon supportWeapon;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 	PlayerInteract playerInteract = new PlayerInteract();
@@ -21,7 +23,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Vector2 speedValue = Vector2.zero;
 	Vector2 mousePos = Vector2.zero;
 	Camera viewCamera;
-	
+
+	// �������� �׽�Ʈ
+	Vector3 networkPosi = Vector3.zero;
+	Quaternion networkRotation = Quaternion.identity;
 
 	public enum EDirection
 	{
@@ -50,12 +55,20 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		SetTeamFieldOfView();
 
 		animator.SetPlayerObject(playerObj);
-    }
+
+	}
 
 	private void Start()
 	{
 		if (viewCamera == null)
 			viewCamera = Camera.main;
+
+		supportWeapon = gameObject.AddComponent<DeployableWeapon>();
+
+		if (supportWeapon is DeployableWeapon support)
+			support.SetWeapon(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
+		
+		SetTeamFieldOfView();
 	}
 
 	public void SetCamera(Camera cam)
@@ -211,13 +224,20 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				break;
 		}
 	}
+	public void OnUseAttackConsum(InputValue value)
+	{
+		if (!playerData.pv.IsMine) return;
+		supportWeapon.Use(new UseDeployableWeaponInfo(1, transform.position));
+	}
+
 	public void OnInteract(InputValue value)
 	{
         inputs[EKey.F] = value.isPressed;
     }
+
     public int ConvertToThreeValues(float value)
 	{
-		if (value > 0)
+		if (value > 0)  
 			return 1;
 		else if (value < 0)
 			return -1;

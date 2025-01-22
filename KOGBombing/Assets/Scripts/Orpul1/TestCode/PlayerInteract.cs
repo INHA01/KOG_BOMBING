@@ -34,6 +34,7 @@ public class PlayerInteract
 
     public void AbortInteract()
     {
+        if (interactObj == null) return;
         Debug.Log("상호작용 중단");
         interactObj.AbortInteract();
         canInteract = true;

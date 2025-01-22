@@ -209,9 +209,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 	public void OnInteract(InputValue value)
 	{
-		//inputs[EKey.F]
-		Debug.Log($"interactKey : {value}");
-
+        inputs[EKey.F] = value.isPressed;
     }
     public int ConvertToThreeValues(float value)
 	{

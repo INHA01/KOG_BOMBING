@@ -12,10 +12,7 @@ public class DeployableWeapon : SupportWeaponBase
 		if (consum == null)
 			return;
 
-		if (info is DeployableWeaponInfo attackInfo)
-		{
-			position = attackInfo.Position;
-		}
+		position = info.Position;
 	}
 
 	public override void Use()

@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class SupportWeaponInfo 
 {
-	public int UseCount;
+	public Vector3 Position;
 
-	public SupportWeaponInfo(int useCount)
+
+	public SupportWeaponInfo(Vector3 position)
 	{
-		UseCount = useCount;
+		Position = position;
 	}
 }
 
-public class DeployableWeaponInfo : SupportWeaponInfo
+public class ThrowableWeaponInfo : SupportWeaponInfo
 {
-	public Vector3 Position;
+	public Vector3 CurPosition;
 
-	public DeployableWeaponInfo(int useCount, Vector3 position) : base(useCount)
+	public ThrowableWeaponInfo(Vector3 curPosition, Vector3 targetPosition) : base(targetPosition)
 	{
-		Position = position;
+		CurPosition = curPosition;
 	}
 }

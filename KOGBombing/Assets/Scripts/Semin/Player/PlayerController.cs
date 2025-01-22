@@ -63,9 +63,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		supportWeapon = gameObject.AddComponent<DeployableWeapon>();
+		supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
 
-		if (supportWeapon is DeployableWeapon support)
+		if (supportWeapon is SupportWeaponBase support)
 			support.SetConsum(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
 		
 		SetTeamFieldOfView();
@@ -157,13 +157,26 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public INode.ENodeState SetSupportWeapon()
 	{
-		supportWeapon.SetWeapon(new DeployableWeaponInfo(1, transform.position));
 
-		if (supportWeapon is DeployableWeapon weapon)
+		if (supportWeapon is DeployableWeapon)
 		{
+			supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
 			supportWeapon.Use();
 			inputs[EKey.NUM_2] = false;
 			return INode.ENodeState.Success;
+		}
+
+		else if (supportWeapon is ThrowableWeapon)
+		{
+			supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerObj.transform.position, playerData.mousePos));
+			if (inputs[EKey.LMOUSEBUTTON])
+			{
+				supportWeapon.Use();
+				inputs[EKey.NUM_2] = false;
+				inputs[EKey.LMOUSEBUTTON] = false;
+				return INode.ENodeState.Success;
+			}
+			return INode.ENodeState.Running;
 		}
 
 		return INode.ENodeState.Running;

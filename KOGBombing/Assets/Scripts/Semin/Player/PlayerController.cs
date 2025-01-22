@@ -7,7 +7,6 @@ using Semin;
 using Photon.Pun.Demo.Cockpit;
 
 
-
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField] 
@@ -126,6 +125,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		return INode.ENodeState.Success;
 	}
 
+	public INode.ENodeState ShootBullet()
+	{
+        playerShooting.Shoot();
+        return INode.ENodeState.Success;
+    }
+
 
 	#endregion
 
@@ -138,8 +143,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     #region Input System
     public void OnAttack(InputValue value)
 	{
-		if (!playerData.pv.IsMine) return;
-		playerShooting.Shoot();
+		inputs[EKey.LMOUSEBUTTON] = value.isPressed;
 	}
     bool CheckMouseOutScreen(Vector2 mousePos)
     {
@@ -147,7 +151,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
     }
 	public void OnRotate(InputValue value)
 	{
-        if (!playerData.pv.IsMine) return;
 		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         mousePos = value.Get<Vector2>();
     }

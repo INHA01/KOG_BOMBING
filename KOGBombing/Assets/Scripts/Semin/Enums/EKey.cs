@@ -8,6 +8,7 @@ public enum EKey
 	A,
 	S,
 	D,
+	LMOUSEBUTTON,
 	MAX
 }
 

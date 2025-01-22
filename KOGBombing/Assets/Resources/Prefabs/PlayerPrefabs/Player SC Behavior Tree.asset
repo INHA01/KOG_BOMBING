@@ -77,23 +77,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d1f242c9e580e240a288170eece7728, type: 3}
+  m_Script: {fileID: 11500000, guid: 944122a116b9af342bd02f8f287fc027, type: 3}
   m_Name: Player SC Behavior Tree
   m_EditorClassIdentifier: 
-  rootNode: {fileID: -2499939484404964562}
-  state: 2
-  nodes:
-  - {fileID: -2499939484404964562}
-  - {fileID: 2434004268787652550}
-  - {fileID: 4902193812734569458}
-  - {fileID: 1611147295211626105}
-  - {fileID: 3018357059920909211}
-  - {fileID: 5067302664874811843}
-  - {fileID: -2868367699037132009}
-  - {fileID: 7656592042732011275}
-  - {fileID: -3193710120549180571}
-  - {fileID: 2487800795331844692}
-  - {fileID: -7223880528987552353}
+  guid: 
+  position: {x: 0, y: 0}
+  child: {fileID: -2499939484404964562}
 --- !u!114 &1611147295211626105
 MonoBehaviour:
   m_ObjectHideFlags: 0

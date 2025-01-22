@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	PlayerAnimation animator;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
+	PlayerInteract playerInteract = new PlayerInteract();
 	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
 	public float moveSpeed = 6;
 	Vector2 speedValue = Vector2.zero;
@@ -37,10 +38,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
-        attackRange.Init(playerObj.transform, playerData);
         playerShooting = GetComponent<PlayerShooting>();
+        attackRange.Init(playerObj.transform, playerData);
+		playerInteract.Init(transform);
 		playerShooting.Init(animator,attackRange);
-
 
         for (int i = 0; i < (int)EKey.MAX; i++)
 			inputs.Add((EKey)i, false);
@@ -107,6 +108,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		return INode.ENodeState.Success;
 	}
 
+	public INode.ENodeState ProcessInteractive()
+	{
+		playerInteract.ProcessInteract();
+        return INode.ENodeState.Success;
+	}
+	public INode.ENodeState AbortInteract()
+	{
+        playerInteract.AbortInteract();
+        return INode.ENodeState.Success;
+    }
 	public INode.ENodeState RotatePlayer()
 	{
 		Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
@@ -138,6 +149,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool CheckInput(EKey key)
 	{
 		return inputs[key];
+	}
+	public bool CanInteract()
+	{
+		return !playerInteract.isInteracting;
+	}
+	public bool IsInteracting()
+	{
+		return playerInteract.isInteracting;
 	}
     #endregion
     #region Input System
@@ -192,8 +211,11 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				break;
 		}
 	}
-
-	public int ConvertToThreeValues(float value)
+	public void OnInteract(InputValue value)
+	{
+        inputs[EKey.F] = value.isPressed;
+    }
+    public int ConvertToThreeValues(float value)
 	{
 		if (value > 0)
 			return 1;
@@ -219,4 +241,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         }
     }
+    private void OnDrawGizmos()
+    {
+		Gizmos.DrawWireSphere(transform.position, 1);
+    }
+
 }

@@ -34,14 +34,20 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		Left,
 		Right,
 	}
-	PlayerShooting playerShooting;
+    AttackRange attackRange;
+    PlayerShooting playerShooting;
+    PlayerData playerData;
 
-	void Awake()
+    void Awake()
 	{
-		playerShooting = GetComponent<PlayerShooting>();
-		playerShooting.Init(playerObj.transform);
+        playerData = GetComponent<PlayerData>();
+        attackRange = GetComponent<AttackRange>();
+        attackRange.Init(playerObj.transform);
+        playerShooting = GetComponent<PlayerShooting>();
+		playerShooting.Init(animator);
 
-		for (int i = 0; i < (int)EKey.MAX; i++)
+
+        for (int i = 0; i < (int)EKey.MAX; i++)
 			inputs.Add((EKey)i, false);
 
 		rigidBody = GetComponent<Rigidbody>();
@@ -82,6 +88,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (animator != null)
 			animator.UpdateAnimation(speedValue);
 	}
+	void FixedUpdate()
+	{
+		attackRange.ShowAttackArea(playerData);
+    }
 
 	#region Attack Node
 	public INode.ENodeState Move(EDirection direction)
@@ -114,7 +124,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (GroupPlane.Raycast(cameraRay, out rayLength))
 		{
 			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-			playerShooting.attackPoint = pointTolook;
+			playerData.mousePos = pointTolook;
 			animator.Rotation(pointTolook, speedValue);
 
 			playerObj.transform.LookAt(pointTolook);
@@ -136,7 +146,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     public void OnAttack(InputValue value)
 	{
 		if (!pv.IsMine) return;
-		playerShooting.Shoot(animator);
+		playerShooting.Shoot();
 	}
     bool CheckMouseOutScreen(Vector2 mousePos)
     {

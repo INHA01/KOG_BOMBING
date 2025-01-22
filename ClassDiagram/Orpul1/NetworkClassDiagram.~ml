@@ -2159,8 +2159,8 @@
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">968</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">876</XPD:ATTR>
-<XPD:ATTR name="Width" type="integer">188</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">69</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">189</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">82</XPD:ATTR>
 <XPD:REF name="Model">wzwyXbkpn0ix8hFYXA+BmgAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="b20jMn8MPEevdFzj9CM8jwAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="WtMjiwOookakD4umwLw9SQAA">
@@ -5475,13 +5475,18 @@
 <XPD:REF name="TypedFeatures[0]">BvgDCZMY30O7DgfVo8RfeAAA</XPD:REF>
 <XPD:ATTR name="#Associations" type="integer">1</XPD:ATTR>
 <XPD:REF name="Associations[0]">+5D2KoYSrU2zdbXQZ+vP5wAA</XPD:REF>
-<XPD:ATTR name="#Attributes" type="integer">2</XPD:ATTR>
+<XPD:ATTR name="#Attributes" type="integer">3</XPD:ATTR>
 <XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="r0H+NEHbgUKp/A5VpTy6zgAA">
-<XPD:ATTR name="Name" type="string">tmpInputNickname</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">tmpInputId</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">TMP_InputField</XPD:ATTR>
 <XPD:REF name="Owner">wzwyXbkpn0ix8hFYXA+BmgAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Attributes[1]" type="UMLAttribute" guid="A2mpopL3xkOokunHAmWBMwAA">
+<XPD:OBJ name="Attributes[1]" type="UMLAttribute" guid="h6BArDufwkaoYivI7KEIFAAA">
+<XPD:ATTR name="Name" type="string">tmpInputPassword</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">TMP_InputField</XPD:ATTR>
+<XPD:REF name="Owner">wzwyXbkpn0ix8hFYXA+BmgAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Attributes[2]" type="UMLAttribute" guid="A2mpopL3xkOokunHAmWBMwAA">
 <XPD:ATTR name="Name" type="string">btnLogin</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">Button</XPD:ATTR>
 <XPD:REF name="Owner">wzwyXbkpn0ix8hFYXA+BmgAA</XPD:REF>

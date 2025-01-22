@@ -20,6 +20,7 @@ MonoBehaviour:
   - {fileID: -2564680646511739078}
   - {fileID: 4549044918267445955}
   - {fileID: -5288419803410853016}
+  - {fileID: -3704719262176938618}
 --- !u!114 &-6430694936911059803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,6 +89,24 @@ MonoBehaviour:
   position: {x: 334, y: 146.99998}
   paramName: Left
   method: Move
+  className: PlayerController
+--- !u!114 &-3704719262176938618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 2efde3255fa92d04fa03e837b6f59906
+  position: {x: 193, y: 455}
+  child: {fileID: 4045335123508867569}
+  method: CheckInput
+  paramName: F
   className: PlayerController
 --- !u!114 &-2714862213305048360
 MonoBehaviour:
@@ -165,6 +184,44 @@ MonoBehaviour:
   - {fileID: -3995514849858621972}
   - {fileID: -6430694936911059803}
   - {fileID: -1482104750248519893}
+  - {fileID: -3704719262176938618}
+  - {fileID: 2381097818974102332}
+  - {fileID: 4045335123508867569}
+--- !u!114 &2381097818974102332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: df683c26caada074d924fefa11479752
+  position: {x: 527, y: 455}
+  paramName: 
+  method: Interactive
+  className: PlayerController
+--- !u!114 &4045335123508867569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 8ef30574b0f3d60458ed19104057a4c5
+  position: {x: 357, y: 455}
+  child: {fileID: 2381097818974102332}
+  method: IsInteracting
+  paramName: 
+  className: PlayerController
 --- !u!114 &4549044918267445955
 MonoBehaviour:
   m_ObjectHideFlags: 0

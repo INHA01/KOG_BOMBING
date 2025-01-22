@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	PlayerAnimation animator;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
+	PlayerInteract playerInteract = new PlayerInteract();
 	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
 	public float moveSpeed = 6;
 	Vector2 speedValue = Vector2.zero;
@@ -42,8 +43,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
         attackRange = GetComponent<AttackRange>();
         attackRange.Init(playerObj.transform);
         playerShooting = GetComponent<PlayerShooting>();
+		playerInteract.Init(transform);
 		playerShooting.Init(animator);
-
 
         for (int i = 0; i < (int)EKey.MAX; i++)
 			inputs.Add((EKey)i, false);
@@ -112,6 +113,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		return INode.ENodeState.Success;
 	}
 
+	public INode.ENodeState Interactive()
+	{
+		playerInteract.ProcessInteract();
+		playerInteract.AbortInteract();
+
+        return INode.ENodeState.Success;
+	}
+
 	public INode.ENodeState RotatePlayer()
 	{
 		Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
@@ -137,6 +146,11 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool CheckInput(EKey key)
 	{
 		return inputs[key];
+	}
+	public bool IsInteracting()
+	{
+		Debug.Log("상호작용 체크");
+		return playerInteract.CanInteract;
 	}
     #endregion
     #region Input System
@@ -193,8 +207,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				break;
 		}
 	}
+	public void OnInteract(InputValue value)
+	{
+		//inputs[EKey.F]
+		Debug.Log($"interactKey : {value}");
 
-	public int ConvertToThreeValues(float value)
+    }
+    public int ConvertToThreeValues(float value)
 	{
 		if (value > 0)
 			return 1;

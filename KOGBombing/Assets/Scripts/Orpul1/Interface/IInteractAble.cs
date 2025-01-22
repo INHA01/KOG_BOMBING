@@ -6,6 +6,7 @@ namespace Orpul1
 {
     public interface IInteractAble
     {
-        public void Interact();
+        public void ProcessInteract();
+        public void AbortInteract();
     }
 }

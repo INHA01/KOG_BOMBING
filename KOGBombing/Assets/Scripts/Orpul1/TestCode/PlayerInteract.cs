@@ -9,7 +9,7 @@ public class PlayerInteract
     Transform trPlayer;
     IInteractAble interactObj;
     private bool canInteract = true;
-    public bool CanInteract {  get { return canInteract; } }
+    public bool isInteracting = false;
     // >> TODO : Blackboard를 사용하여 값을 따로 설정해 주는 작업을 줄이는 방안 검토해보기
     public void Init(Transform transform)
     {
@@ -29,6 +29,7 @@ public class PlayerInteract
         }
         if (interactObj == null) return;
         canInteract = false;
+        isInteracting = true;
         interactObj.ProcessInteract();
     }
 
@@ -37,6 +38,7 @@ public class PlayerInteract
         if (interactObj == null) return;
         interactObj.AbortInteract();
         canInteract = true;
+        isInteracting = false;
         interactObj = null;
     }
 

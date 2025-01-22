@@ -109,14 +109,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		return INode.ENodeState.Success;
 	}
 
-	public INode.ENodeState Interactive()
+	public INode.ENodeState ProcessInteractive()
 	{
 		playerInteract.ProcessInteract();
-		playerInteract.AbortInteract();
-
         return INode.ENodeState.Success;
 	}
-
+	public INode.ENodeState AbortInteract()
+	{
+        playerInteract.AbortInteract();
+        return INode.ENodeState.Success;
+    }
 	public INode.ENodeState RotatePlayer()
 	{
 		Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
@@ -143,9 +145,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		return inputs[key];
 	}
+	public bool CanInteract()
+	{
+		return !playerInteract.isInteracting;
+	}
 	public bool IsInteracting()
 	{
-		return playerInteract.CanInteract;
+		return playerInteract.isInteracting;
 	}
     #endregion
     #region Input System

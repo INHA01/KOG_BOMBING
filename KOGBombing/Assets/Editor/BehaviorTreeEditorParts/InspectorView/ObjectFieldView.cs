@@ -13,7 +13,7 @@ public class ObjectFieldView : ObjectField
 
     public ObjectFieldView()
     {
-        this.value = GameObject.FindWithTag("Player");
+        this.value = Resources.Load("Prefabs/PlayerPrefabs/SinglePlayer");
     }
 
     protected override void UpdateMixedValueContent()

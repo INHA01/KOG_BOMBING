@@ -21,6 +21,15 @@ public class KeyParameterView : DropdownField
             choices.Add(enumValues[i].ToString());
     }
 
+    public void Init()
+    {
+        choices.Clear();
+		var enumValues = System.Enum.GetNames(typeof(EKey));
+
+		for (int i = 0; i < enumValues.Length; i++)
+			choices.Add(enumValues[i].ToString());
+	}
+
     public override void SetValueWithoutNotify(string newValue)
     {
         base.SetValueWithoutNotify(newValue);
@@ -34,5 +43,5 @@ public class KeyParameterView : DropdownField
         }
         if (OnSelected != null)
             OnSelected.Invoke(this);
-    }
+	}
 }

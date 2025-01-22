@@ -52,6 +52,7 @@ public class BehaviorTreeEditor : EditorWindow
         funcDropdownView = root.Q<FuncDropdownFieldView>();
         classDropdownView = root.Q<ClassDropdownFieldView>();
         keyParameterView = root.Q<KeyParameterView>();
+        keyParameterView.Init();
         directionParameterView = root.Q<DirectionParameterView>();
 
         treeView.OnNodeSelected = OnNodeSelectionChanged;
@@ -67,7 +68,7 @@ public class BehaviorTreeEditor : EditorWindow
         directionParameterView.OnSelected = OnDirectionSelectionChanged;
         keyParameterView.OnSelected = OnKeySelectionChanged;
 
-        fieldView.SetEnabled(false);
+        fieldView.SetEnabled(true);
         funcDropdownView.SetEnabled(false);
         classDropdownView.SetEnabled(false);
         keyParameterView.SetEnabled(false);
@@ -166,7 +167,7 @@ public class BehaviorTreeEditor : EditorWindow
 
         ParameterInfo[] parameters = null;
 
-        PlayerController controller = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
         methods = controller.GetType().GetDeclaredMethods();
 
         for (int i = 0; i < methods.Length; i++)

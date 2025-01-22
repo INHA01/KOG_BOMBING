@@ -10,6 +10,7 @@ public enum EKey
 	D,
 	F,
 	LMOUSEBUTTON,
+	NUM_2,
 	MAX
 }
 

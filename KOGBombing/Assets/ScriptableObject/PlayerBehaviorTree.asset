@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: b657134a57c64114e9acef68e0836e18
-  position: {x: 193, y: 589}
+  position: {x: 346, y: 534.5}
   child: {fileID: 6882639984666204211}
   method: CheckInput
   paramName: LMOUSEBUTTON
@@ -38,8 +38,7 @@ MonoBehaviour:
   - {fileID: -2564680646511739078}
   - {fileID: 4549044918267445955}
   - {fileID: -5288419803410853016}
-  - {fileID: -1657674516172925830}
-  - {fileID: -8805397999584832426}
+  - {fileID: -4514392043386280663}
 --- !u!114 &-6430694936911059803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +91,23 @@ MonoBehaviour:
   method: CheckInput
   paramName: W
   className: PlayerController
+--- !u!114 &-4514392043386280663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7819f9402f8c5e469e0a1cc257d8e19, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  guid: 3d026fb80d0f38a4daba217030f4e364
+  position: {x: 193, y: 483}
+  children:
+  - {fileID: -1635299602817459131}
+  - {fileID: -8805397999584832426}
 --- !u!114 &-3995514849858621972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +138,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 2efde3255fa92d04fa03e837b6f59906
-  position: {x: 376.5, y: 406}
+  position: {x: 204.00005, y: -129}
   child: {fileID: 4045335123508867569}
   method: CheckInput
   paramName: F
@@ -140,8 +156,8 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   guid: 2372331e3ee48ff489ddf6c1ea5edccd
-  position: {x: -51.5, y: 70}
-  child: {fileID: -6981434794934456990}
+  position: {x: -328.939, y: 4.9024568}
+  child: {fileID: 6568065853755470361}
 --- !u!114 &-2564680646511739078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +176,23 @@ MonoBehaviour:
   method: CheckInput
   paramName: S
   className: PlayerController
+--- !u!114 &-1883112191212467541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 542be09463a035c428f2fb1084f3a64d
+  position: {x: 487, y: 444.5}
+  paramName: 
+  method: SetSupportWeapon
+  className: PlayerController
 --- !u!114 &-1657674516172925830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,10 +206,28 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: c3e3234156df11c4184edb715c0917a0
-  position: {x: 193, y: 455}
+  position: {x: 52.000046, y: -71.99999}
   children:
   - {fileID: -3704719262176938618}
   - {fileID: 327535805608488999}
+--- !u!114 &-1635299602817459131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: e87c3dd3c51f4e448899bace7f8861e4
+  position: {x: 346, y: 444.5}
+  child: {fileID: -1883112191212467541}
+  method: CheckInput
+  paramName: NUM_2
+  className: PlayerController
 --- !u!114 &-1482104750248519893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +279,10 @@ MonoBehaviour:
   - {fileID: 5499220917565172958}
   - {fileID: -8805397999584832426}
   - {fileID: 6882639984666204211}
+  - {fileID: 6568065853755470361}
+  - {fileID: -4514392043386280663}
+  - {fileID: -1635299602817459131}
+  - {fileID: -1883112191212467541}
 --- !u!114 &327535805608488999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +296,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 429a24365a6422543b3f1a807fac993b
-  position: {x: 377, y: 512}
+  position: {x: 204.00005, y: -23}
   child: {fileID: 5499220917565172958}
   method: IsInteracting
   paramName: 
@@ -259,7 +314,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: df683c26caada074d924fefa11479752
-  position: {x: 701, y: 406}
+  position: {x: 528, y: -129}
   paramName: 
   method: ProcessInteractive
   className: PlayerController
@@ -276,7 +331,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 8ef30574b0f3d60458ed19104057a4c5
-  position: {x: 541, y: 406}
+  position: {x: 368, y: -129}
   child: {fileID: 2381097818974102332}
   method: CanInteract
   paramName: 
@@ -312,7 +367,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 876e5aa7fbda8014caab232d39034a0a
-  position: {x: 540.5, y: 512}
+  position: {x: 368, y: -23}
   paramName: 
   method: AbortInteract
   className: PlayerController
@@ -333,6 +388,23 @@ MonoBehaviour:
   paramName: Up
   method: Move
   className: PlayerController
+--- !u!114 &6568065853755470361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7819f9402f8c5e469e0a1cc257d8e19, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  guid: def55c5a4ffe3ca44a914d4242b6a617
+  position: {x: -167.22002, y: 4.999964}
+  children:
+  - {fileID: -6981434794934456990}
+  - {fileID: -1657674516172925830}
 --- !u!114 &6882639984666204211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +418,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 32a724eb36e0a614e8e9d72196e443e3
-  position: {x: 377, y: 589}
+  position: {x: 487, y: 535}
   paramName: 
   method: ShootBullet
   className: PlayerController

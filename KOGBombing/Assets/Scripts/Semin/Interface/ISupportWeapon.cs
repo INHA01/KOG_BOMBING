@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface ISupportWeapon 
 {
-	public void Use(UseSupportWeaponInfo info);
+	public void SetWeapon(SupportWeaponInfo info);
+	public void Use();
 }

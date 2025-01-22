@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		supportWeapon = gameObject.AddComponent<DeployableWeapon>();
 
 		if (supportWeapon is DeployableWeapon support)
-			support.SetWeapon(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
+			support.SetConsum(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
 		
 		SetTeamFieldOfView();
 	}
@@ -155,6 +155,25 @@ public class PlayerController : MonoBehaviour, IPunObservable
         return INode.ENodeState.Success;
     }
 
+	public INode.ENodeState SetSupportWeapon()
+	{
+		supportWeapon.SetWeapon(new DeployableWeaponInfo(1, transform.position));
+
+		if (supportWeapon is DeployableWeapon weapon)
+		{
+			supportWeapon.Use();
+			inputs[EKey.NUM_2] = false;
+			return INode.ENodeState.Success;
+		}
+
+		return INode.ENodeState.Running;
+	}
+
+	public INode.ENodeState UseSupportWeapon()
+	{
+		supportWeapon.Use();
+		return INode.ENodeState.Success;
+	}
 
 	#endregion
 
@@ -224,10 +243,11 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				break;
 		}
 	}
+
 	public void OnUseAttackConsum(InputValue value)
 	{
 		if (!playerData.pv.IsMine) return;
-		supportWeapon.Use(new UseDeployableWeaponInfo(1, transform.position));
+		inputs[EKey.NUM_2] = !inputs[EKey.NUM_2];
 	}
 
 	public void OnInteract(InputValue value)

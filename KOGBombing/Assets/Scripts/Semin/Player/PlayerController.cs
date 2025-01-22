@@ -226,7 +226,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 	public void OnUseAttackConsum(InputValue value)
 	{
-		if (!pv.IsMine) return;
+		if (!playerData.pv.IsMine) return;
 		supportWeapon.Use(new UseDeployableWeaponInfo(1, transform.position));
 	}
 

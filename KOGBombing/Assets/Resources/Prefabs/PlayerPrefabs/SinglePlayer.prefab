@@ -274,8 +274,8 @@ MonoBehaviour:
   InitmagazineCount: 4
   reloadTime: 3.2
   shootingTerm: 1
-  pv: {fileID: 0}
-  canConnectPhoton: 0
+  pv: {fileID: 2047044685979704218}
+  animator: {fileID: 0}
 --- !u!114 &484276212673787525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +307,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: c9f88945e1212cc489527481b67b3835, type: 2}
   pv: {fileID: 2047044685979704218}
-  canConnectPhoton: 0
 --- !u!114 &2047044685979704218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +329,7 @@ MonoBehaviour:
   - {fileID: 6527240402747218028}
   - {fileID: 8894044268401136495}
   - {fileID: 7799719852954471310}
+  - {fileID: 7300479445460102179}
   - {fileID: 9218072504105106236}
   sceneViewId: 0
   InstantiationId: 0
@@ -601,6 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   RotateSpeed: 8
+  pv: {fileID: 2047044685979704218}
 --- !u!4 &8951258544732396872 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 309ef7cd2893d1c43ac007a0f766a9a2,

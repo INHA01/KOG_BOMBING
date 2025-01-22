@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Vector2 mousePos = Vector2.zero;
 	Camera viewCamera;
 
-	// Áö¿¬º¸»ó Å×½ºÆ®
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
 	Vector3 networkPosi = Vector3.zero;
 	Quaternion networkRotation = Quaternion.identity;
 
@@ -50,8 +50,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			inputs.Add((EKey)i, false);
 
 		rigidBody = GetComponent<Rigidbody>();
-		if(canConnectPhoton)
-			SetTeamFieldOfView();
+		//if(canConnectPhoton)
+			//SetTeamFieldOfView();
 
 		animator.SetPlayerObject(playerObj);
 
@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		if (supportWeapon is DeployableWeapon support)
 			support.SetWeapon(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
+		
+		SetTeamFieldOfView();
 	}
 
 	public void SetCamera(Camera cam)
@@ -92,18 +94,24 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		if (animator != null)
 			animator.UpdateAnimation(speedValue);
-		if(!pv.IsMine)
-		{
-			if((transform.position - networkPosi).sqrMagnitude >= 10f)
-			{
-				transform.position = Vector3.Lerp(transform.position, networkPosi, Time.deltaTime);
-			}
-			transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime);
-		}
 	}
+    private void FixedUpdate()
+    {
+        if (!pv.IsMine)
+        {
+            if ((transform.position - networkPosi).sqrMagnitude >= 10f)
+            {
+                transform.position = Vector3.Lerp(transform.position, networkPosi, Time.deltaTime);
+            }
+            if (Mathf.Abs(Quaternion.Angle(transform.rotation, networkRotation)) > 2f)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime);
+            }
+        }
+    }
 
-	#region Attack Node
-	public INode.ENodeState Move(EDirection direction)
+    #region Attack Node
+    public INode.ENodeState Move(EDirection direction)
 	{
 		Vector3 movement;
 		switch (direction)
@@ -235,7 +243,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			networkRotation = (Quaternion)stream.ReceiveNext();
 			rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            transform.position += rigidBody.velocity * lag;
+            networkPosi += rigidBody.velocity * lag;
 
         }
     }

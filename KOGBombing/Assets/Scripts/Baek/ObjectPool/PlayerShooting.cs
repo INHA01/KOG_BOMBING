@@ -40,13 +40,12 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField]
     PhotonView pv;
     [SerializeField]
-    bool canConnectPhoton = true;
 
     PlayerAnimation animator;
 
     private void FixedUpdate()
     {
-        if (canConnectPhoton && !pv.IsMine) return;
+        if (!pv.IsMine) return;
         ShowAttackArea();
     }
     public void Init(Transform model)
@@ -54,7 +53,7 @@ public class PlayerShooting : MonoBehaviour
         bulletCount = InitbulletCount;
         magazineCount = InitmagazineCount;
         magazine = GetComponent<Magazine>();
-        if (!canConnectPhoton || (pv != null && pv.IsMine))
+        if (pv != null && pv.IsMine)
         {
             attackRange = Instantiate(attackRangePrefab);
             lineRenderer1 = attackRange.GetComponent<LineRenderer>();
@@ -158,8 +157,8 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (shootEndPos.position - shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        if (canConnectPhoton)
-            bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
+        
+        bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);
 
         bullet.SetActive(true);
@@ -170,12 +169,9 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             animator.Shoot();
-			//>> 추후 RPC 사용하는거로 변경 예정
-			if (canConnectPhoton)
-                pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
-            else
-                BulletSpawn();
-			bulletCount--;
+            //>> 추후 RPC 사용하는거로 변경 예정
+            pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
+            bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}
         magazineCount--;

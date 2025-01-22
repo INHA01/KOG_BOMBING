@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class PlayerAnimation : MonoBehaviour
+public class PlayerAnimation : MonoBehaviour,IPunObservable
 {
     [SerializeField] public Animator animator;
 	[Range(1f, 20f)] public float RotateSpeed;
@@ -13,7 +13,8 @@ public class PlayerAnimation : MonoBehaviour
 	Vector3 pointToLookAt;
 	Vector3 speedValue;
 
-	void Awake()
+	Vector3 netWorkPointToLookAt;
+    void Awake()
     {
 		if (animator == null)
 			animator = GetComponent<Animator>();
@@ -90,11 +91,30 @@ public class PlayerAnimation : MonoBehaviour
 
 	private void OnAnimatorIK(int layerIndex)
 	{
-		if (animator != null && pv.IsMine)
+		if (animator == null) return;
+		if(pv.IsMine)
 		{
 			animator.SetLookAtPosition(pointToLookAt);
 			animator.SetLookAtWeight(1.0f);
 		}
+		else
+		{
+			animator.SetLookAtPosition(netWorkPointToLookAt);
+			animator.SetLookAtWeight(1.0f);
+
+        }
+		
 	}
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+		if(stream.IsWriting)
+		{
+			stream.SendNext(pointToLookAt);
+		}
+		else if(stream.IsReading)
+		{
+			netWorkPointToLookAt = (Vector3)stream.ReceiveNext();
+        }
+    }
 }

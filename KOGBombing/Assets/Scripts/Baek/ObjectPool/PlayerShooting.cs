@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 public class PlayerShooting : MonoBehaviour
 {
     [Header("Bullet")]
-    [SerializeField] int InitbulletCount = 9;
+    [SerializeField] int InitBulletCount = 9;
     [SerializeField] int InitMagazineCount = 4;
     int bulletCount;
     int magazineCount;
@@ -19,21 +19,18 @@ public class PlayerShooting : MonoBehaviour
     Coroutine reloadCoroutine;
     Magazine magazine;
 
-    [SerializeField]
-    PhotonView pv;
-
     PlayerAnimation animator;
     AttackRange attackRange;
     PlayerData playerData;
 
     #region Shooting
-    public void Init(PlayerAnimation animator)
+    public void Init(PlayerAnimation animator, AttackRange attackRange)
     {
         playerData = GetComponent<PlayerData>();
-        attackRange = GetComponent<AttackRange>();
         magazine = GetComponent<Magazine>();
         magazineCount = InitMagazineCount;
-        bulletCount = InitbulletCount;
+        bulletCount = InitBulletCount;
+        this.attackRange = attackRange;
         this.animator = animator;
     }
     public void Shoot()
@@ -60,7 +57,7 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (playerData.shootEndPos.position - playerData.shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
+        bullet.GetComponent<BulletController>().strTeamBullet = (string)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f) + new Vector3(0, 1, 0);
         bullet.SetActive(true);
     }
@@ -70,14 +67,14 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             animator.Shoot();
-            pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
+            playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}
         magazineCount--;
 		if (magazineCount > 0)
         {
-            bulletCount = InitbulletCount;
+            bulletCount = InitBulletCount;
         }
         attackRange.ShowDistance(false);
 
@@ -91,11 +88,11 @@ public class PlayerShooting : MonoBehaviour
         while (magazineCount < InitMagazineCount)
         {
             yield return new WaitForSeconds(reloadTime);
-            if (magazine.Count > InitbulletCount)
+            if (magazine.Count > InitBulletCount)
             {
                 magazineCount++;
                 if (bulletCount == 0)
-                    bulletCount = InitbulletCount;
+                    bulletCount = InitBulletCount;
             }
         }
         reloadCoroutine = null;

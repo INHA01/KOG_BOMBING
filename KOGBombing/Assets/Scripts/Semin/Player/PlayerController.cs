@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	PhotonView pv;
 	[SerializeField] 
 	public GameObject playerObj;
-	[SerializeField]
-	bool canConnectPhoton = false;
 	[SerializeField] 
 	PlayerAnimation animator;
 	Rigidbody rigidBody;
@@ -51,8 +49,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			inputs.Add((EKey)i, false);
 
 		rigidBody = GetComponent<Rigidbody>();
-		if(canConnectPhoton)
-			SetTeamFieldOfView();
+		SetTeamFieldOfView();
 
 		animator.SetPlayerObject(playerObj);
     }

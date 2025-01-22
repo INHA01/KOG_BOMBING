@@ -126,6 +126,8 @@ GameObject:
   - component: {fileID: 1055956268508796724}
   - component: {fileID: 2047044685979704218}
   - component: {fileID: 8894044268401136495}
+  - component: {fileID: 9216994139945491648}
+  - component: {fileID: 1108442473361432474}
   m_Layer: 0
   m_Name: SinglePlayer
   m_TagString: Player
@@ -214,7 +216,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 2047044685979704218}
   playerObj: {fileID: 772106139481323054}
-  canConnectPhoton: 0
   animator: {fileID: 7300479445460102179}
   moveSpeed: 6
 --- !u!114 &2279248158444923470
@@ -260,22 +261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc126f862506ce24a888c91532e328e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootStartPos: {fileID: 3328951802869612583}
-  shootEndPos: {fileID: 1368636139714485546}
-  attackRangePrefab: {fileID: 4025673733828750908, guid: 4dd30b73c0991f64fbd56857a2ac5a4b,
-    type: 3}
-  noAttackRangePrefab: {fileID: 3848186856526553340, guid: 6c355e73cbe6bc94588d7bc27c5f2a36,
-    type: 3}
-  maxAttackRangePrefab: {fileID: 2170241771327594758, guid: de44e4d607306b540ae720aeb30d6901,
-    type: 3}
-  maxLength: 12
-  attackPoint: {x: 0, y: 0, z: 0}
   InitbulletCount: 9
-  InitmagazineCount: 4
+  InitMagazineCount: 4
   reloadTime: 3.2
   shootingTerm: 1
   pv: {fileID: 2047044685979704218}
-  animator: {fileID: 0}
 --- !u!114 &484276212673787525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +340,41 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &9216994139945491648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a8836bbe8dd8a40863a30b770b45ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootStartPos: {fileID: 3328951802869612583}
+  shootEndPos: {fileID: 1368636139714485546}
+  maxLength: 13
+  mousePos: {x: 0, y: 0, z: 0}
+  hp: 30
+--- !u!114 &1108442473361432474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a72d70ff057c9499bfd47381a9fb5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRangePrefab: {fileID: 4025673733828750908, guid: 4dd30b73c0991f64fbd56857a2ac5a4b,
+    type: 3}
+  noAttackRangePrefab: {fileID: 3848186856526553340, guid: 6c355e73cbe6bc94588d7bc27c5f2a36,
+    type: 3}
+  maxAttackRangePrefab: {fileID: 2170241771327594758, guid: de44e4d607306b540ae720aeb30d6901,
+    type: 3}
 --- !u!1 &2252364712728992346
 GameObject:
   m_ObjectHideFlags: 0

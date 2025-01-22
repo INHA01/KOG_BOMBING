@@ -21,8 +21,6 @@ public class PlayerShooting : MonoBehaviour
 
     [SerializeField]
     PhotonView pv;
-    [SerializeField]
-    bool canConnectPhoton = true;
 
     PlayerAnimation animator;
     AttackRange attackRange;
@@ -62,8 +60,7 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (playerData.shootEndPos.position - playerData.shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        if (canConnectPhoton)
-            bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
+        bullet.GetComponent<BulletController>().strTeamBullet = (string)pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f) + new Vector3(0, 1, 0);
         bullet.SetActive(true);
     }
@@ -73,11 +70,7 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             animator.Shoot();
-			//>> 추후 RPC 사용하는거로 변경 예정
-			if (canConnectPhoton)
-                pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
-            else
-                BulletSpawn();
+            pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}
@@ -87,7 +80,6 @@ public class PlayerShooting : MonoBehaviour
             bulletCount = InitbulletCount;
         }
         attackRange.ShowDistance(false);
-        Debug.Log("magazine count: " + magazineCount);
 
 		yield return new WaitForSeconds(shootingTerm);
         if (reloadCoroutine == null)
@@ -101,13 +93,10 @@ public class PlayerShooting : MonoBehaviour
             yield return new WaitForSeconds(reloadTime);
             if (magazine.Count > InitbulletCount)
             {
-                Debug.Log("Reload");
                 magazineCount++;
                 if (bulletCount == 0)
                     bulletCount = InitbulletCount;
             }
-            else
-                Debug.Log("Not enough bullet");
         }
         reloadCoroutine = null;
     }

@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class DisplayPlayerPresenter : MonoBehaviour
 {
-    public enum ETeamType
-    {
-        REDTEAM,
-        BLUETEAM
-    }
     [SerializeField] DisplayPlayerView view;
     DisplayPlayerModel model = new DisplayPlayerModel();
     

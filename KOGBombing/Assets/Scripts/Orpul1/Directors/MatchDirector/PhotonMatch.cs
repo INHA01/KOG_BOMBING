@@ -24,14 +24,6 @@ namespace Orpul1
                 newPlayer.SetCustomProperties(new PhotonHashTable { { "Team", SetTeam().ToString() } });
             }
         }
-        public override void OnLeftRoom()
-        {
-            Debug.Log("LeftRoom");
-        }
-        public override void OnLeftLobby()
-        {
-            Debug.Log("LeftLobby");
-        }
         public override void OnJoinedRoom()
         {
             if (PhotonNetwork.IsMasterClient)

@@ -76,7 +76,7 @@ public class BehaviorTreeEditor : EditorWindow
 
 	private void OnSelectionChange()
 	{
-		SCBehaviorTree tree = Selection.activeObject as SCBehaviorTree;
+		BehaviorTreeAsset tree = Selection.activeObject as BehaviorTreeAsset;
 
         if (tree)
         {

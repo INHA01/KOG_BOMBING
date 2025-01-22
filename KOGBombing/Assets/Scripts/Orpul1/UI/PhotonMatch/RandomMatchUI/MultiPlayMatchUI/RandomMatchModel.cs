@@ -7,7 +7,7 @@ namespace Orpul1
 {
     public class RandomMatchModel
     {
-        public StringBuilder matchingText = new StringBuilder("Matching...");
-        public StringBuilder matchText = new StringBuilder("Random Match");
+        public StringBuilder stbMatchingText = new StringBuilder("Matching...");
+        public StringBuilder stbMatchText = new StringBuilder("Random Match");
     }
 }

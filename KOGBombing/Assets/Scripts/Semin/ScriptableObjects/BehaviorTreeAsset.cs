@@ -5,8 +5,8 @@ using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CreateAssetMenu()]
-public class SCBehaviorTree : ScriptableObject
+[CreateAssetMenu(fileName = "Behavior Tree", menuName = "Scriptable Object/Behavior Tree", order = int.MaxValue)]
+public class BehaviorTreeAsset : ScriptableObject
 {
 	public Node rootNode;
 	[HideInInspector] public INode.ENodeState state = INode.ENodeState.Running;
@@ -111,9 +111,9 @@ public class SCBehaviorTree : ScriptableObject
 		return children;
 	}
 
-	public SCBehaviorTree Clone()
+	public BehaviorTreeAsset Clone()
 	{
-		SCBehaviorTree tree = Instantiate(this);
+		BehaviorTreeAsset tree = Instantiate(this);
 		tree.rootNode = tree.rootNode.Clone();
 		return tree;
 	}

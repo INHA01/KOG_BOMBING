@@ -13,16 +13,16 @@ namespace Orpul1
         private void Start()
         {
             view.btnMatch.interactable = false;
-            view.tmpMatch.text = model.matchText.ToString();
+            view.tmpMatch.text = model.stbMatchText.ToString();
         }
         public void OnRandomMatching()
         {
             isMatching = !isMatching;
 
             if (isMatching)
-                view.tmpMatch.text = model.matchingText.ToString();
+                view.tmpMatch.text = model.stbMatchingText.ToString();
             else
-                view.tmpMatch.text = model.matchText.ToString();
+                view.tmpMatch.text = model.stbMatchText.ToString();
         }
     }
 }

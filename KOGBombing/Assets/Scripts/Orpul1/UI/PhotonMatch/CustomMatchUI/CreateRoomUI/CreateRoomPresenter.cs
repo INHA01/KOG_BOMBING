@@ -12,19 +12,19 @@ namespace Orpul1
         public void InputFieldSetRoomName()
         {
             model.StbRoomName.Clear();
-            model.StbRoomName.Append(view.InputRoomName.text);
+            model.StbRoomName.Append(view.tmpInputRoomName.text);
         }
         public void DropDownSetPlayerCnt()
         {
             model.StbPlayerCnt.Clear();
-            model.StbPlayerCnt.Append(view.DropDPlayerCnt.value);
+            model.StbPlayerCnt.Append(view.tmpDropDPlayerCnt.value);
         }
 
         public void OnCreateRoomBtn()
         {
             if (!PhotonNetwork.InLobby) return;
             int maxPlayer = 0;
-            int.TryParse(view.DropDPlayerCnt.ToString(), out maxPlayer);
+            int.TryParse(view.tmpDropDPlayerCnt.ToString(), out maxPlayer);
             RoomOptions options = new RoomOptions()
             {
                 MaxPlayers = maxPlayer,
@@ -33,8 +33,8 @@ namespace Orpul1
                 PublishUserId = true,
                 CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
             };
-            PhotonNetwork.CreateRoom(view.InputRoomName.text.ToString(), options);
-            view.InputRoomName.text = "";
+            PhotonNetwork.CreateRoom(view.tmpInputRoomName.text.ToString(), options);
+            view.tmpInputRoomName.text = "";
             view.createRoomPopupPanel.SetActive(false);
         }
 

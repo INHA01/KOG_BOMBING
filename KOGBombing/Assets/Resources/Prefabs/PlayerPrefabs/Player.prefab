@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -92,10 +92,15 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 6653052910028107773}
+      objectReference: {fileID: 1469166799441632479}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[4]
+      value: 
+      objectReference: {fileID: 6653052910028107773}
+    - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[5]
       value: 
       objectReference: {fileID: 1071337817672403904}
     - target: {fileID: 3900849375641417542, guid: 0d02381c6c6de984598d9a59a2b73761,
@@ -112,6 +117,21 @@ PrefabInstance:
         type: 3}
       propertyPath: canConnectPhoton
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300479445460102179, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: pv
+      value: 
+      objectReference: {fileID: 7880054976068676454}
+    - target: {fileID: 7799719852954471310, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799719852954471310, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_SynchronizePosition
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8894044268401136495, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -162,6 +182,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: Rotation
+  - Type: 9
+    SynchronizeType: 2
+    Name: Shoot
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -189,6 +212,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1469166799441632479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7300479445460102179, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 8156867798748147964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450807048061368078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa0c4a07ab60594bae44d75f0f8d6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2093382085591792498 stripped

@@ -11,7 +11,7 @@ public class PhotonLoginPresenter : MonoBehaviour
 
     public void OnLoginBtn()
     {
-        PhotonNetwork.NickName = view.nicknameInput.text;
+        PhotonNetwork.NickName = view.tmpInputNickname.text;
         SceneManager.LoadScene(1);
     }
 }

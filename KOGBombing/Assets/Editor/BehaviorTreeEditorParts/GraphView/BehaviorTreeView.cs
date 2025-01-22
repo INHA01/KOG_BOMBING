@@ -16,7 +16,7 @@ public class BehaviorTreeView : GraphView
 {
 	public Action<NodeView> OnNodeSelected;
 	public new class UxmlFactory : UxmlFactory<BehaviorTreeView, GraphView.UxmlTraits> { }
-	SCBehaviorTree tree;
+	BehaviorTreeAsset tree;
 	public BehaviorTreeView()
 	{
 		Insert(0, new GridBackground());
@@ -36,7 +36,7 @@ public class BehaviorTreeView : GraphView
 		return GetNodeByGuid(node.guid) as NodeView;
 	}
 
-	internal void PopulateView(SCBehaviorTree tree)
+	internal void PopulateView(BehaviorTreeAsset tree)
 	{
 		this.tree = tree;
 

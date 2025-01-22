@@ -3,7 +3,7 @@ Shader "Custom/LitStencilObject"
     Properties
     {
         // Specular vs Metallic workflow
-        _DarkenFactor("Darken Factor", Range(0.0, 1.0)) = 0.9 // 어둡게 할 비율
+        _DarkenFactor("Darken Factor", Range(0.0, 1.0)) = 0.5 // 어둡게 할 비율
         _WorkflowMode("WorkflowMode", Float) = 1.0
         
         [MainTexture] _BaseMap("Albedo", 2D) = "white" {}
@@ -143,7 +143,7 @@ Shader "Custom/LitStencilObject"
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 
-                col.rgb *= (1.0 - 0.98f); // 어둡게 할 비율에 따라 색상 조정
+                col.rgb *= (1.0 - 0.93f); // 어둡게 할 비율에 따라 색상 조정
                 
                 return col;
             }

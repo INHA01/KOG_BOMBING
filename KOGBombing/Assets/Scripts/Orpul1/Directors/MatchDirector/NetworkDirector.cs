@@ -13,14 +13,21 @@ namespace Orpul1
         PhotonMatch randomMatch;
         [SerializeField]
         PhotonMatch customMatch;
-
-        public void onRandomMatch()
+        private void Start()
         {
-            randomMatch.Match();
+            PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName + (Random.Range(0,100)*Time.deltaTime).ToString();
         }
-        public void onCustomMatch()
+        public void Match(int mode)
         {
-            customMatch.Match();
+            Debug.Log("match");
+            if(mode == 0)
+            {
+                randomMatch.Match();
+            }
+            else
+            {
+                customMatch.Match();
+            }
         }
     }
 }

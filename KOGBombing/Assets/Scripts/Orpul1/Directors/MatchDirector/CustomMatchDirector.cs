@@ -19,6 +19,9 @@ namespace Orpul1
         TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
 
         [SerializeField]
+        GameObject roomListPanel;
+
+        [SerializeField]
         GameObject customRoomPopupPanel;
         [SerializeField]
         GameObject customRoomPanel;
@@ -33,6 +36,7 @@ namespace Orpul1
         public override void Match()
         {
             isCustomMatch = true;
+            roomListPanel.SetActive(true);
             base.Match();
         }
         public void OnLeftLobbyBtn()
@@ -151,6 +155,7 @@ namespace Orpul1
         {
             float span = Time.time + updateDelay;
             while (span > Time.time) yield return null;
+            Debug.Log("lobby Match");
             PhotonNetwork.JoinLobby(customLobby);
         }
     }

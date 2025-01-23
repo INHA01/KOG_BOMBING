@@ -88,6 +88,7 @@ namespace Orpul1
         {
             if (isRandomMatch)
             {
+                Debug.Log("failrandomRoom");
                 StringBuilder roomName = new StringBuilder();
                 roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
 

@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (Physics.Raycast(cameraRay, out hit)) // 레이캐스트 실행
 			{
 				Vector3 targetPoint = hit.point;
-				supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, targetPoint));
+				supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, targetPoint, playerObj.transform.eulerAngles.y));
 			}
 
 			if (inputs[EKey.LMOUSEBUTTON])
@@ -192,12 +192,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		}
 
 		return INode.ENodeState.Running;
-	}
-
-	public INode.ENodeState UseSupportWeapon()
-	{
-		supportWeapon.Use();
-		return INode.ENodeState.Success;
 	}
 
 	#endregion

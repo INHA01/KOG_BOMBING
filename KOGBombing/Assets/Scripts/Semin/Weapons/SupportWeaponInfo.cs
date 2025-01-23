@@ -16,9 +16,11 @@ public class SupportWeaponInfo
 public class ThrowableWeaponInfo : SupportWeaponInfo
 {
 	public Vector3 CurPosition;
+	public float angle;
 
-	public ThrowableWeaponInfo(Vector3 curPosition, Vector3 targetPosition) : base(targetPosition)
+	public ThrowableWeaponInfo(Vector3 curPosition, Vector3 targetPosition, float angle) : base(targetPosition)
 	{
 		CurPosition = curPosition;
+		this.angle = angle;
 	}
 }

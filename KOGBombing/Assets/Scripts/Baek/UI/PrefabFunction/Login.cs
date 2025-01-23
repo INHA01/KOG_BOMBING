@@ -13,7 +13,7 @@ public class Login : MonoBehaviour
     }
     public void OnStartClick()
     { 
-        LoadingSceneManager.LoadScene("AttackTest");
+        LoadingSceneManager.LoadScene("LobbyScene");
     }
 
 }

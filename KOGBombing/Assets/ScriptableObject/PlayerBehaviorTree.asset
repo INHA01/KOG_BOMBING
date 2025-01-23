@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: b657134a57c64114e9acef68e0836e18
-  position: {x: 497.7778, y: 278.66666}
+  position: {x: 498.00003, y: 265.99997}
   child: {fileID: 6882639984666204211}
   method: CheckInput
   paramName: LMOUSEBUTTON
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 87c2e36f3c82123438b55f40fbde30c9
-  position: {x: 519, y: -202}
+  position: {x: 521, y: -294.5}
   children:
   - {fileID: 7189016390488239316}
   - {fileID: 2381097818974102332}
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 7baabe8ea7225cd40b49735ad0d8fc66
-  position: {x: 356, y: -309}
+  position: {x: 357, y: -208.5}
   child: {fileID: 9203852556320774010}
   method: IsInteracting
   paramName: 
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: ParallelNode
   m_EditorClassIdentifier: 
   guid: 79342286855fc6649bdf0e8161f0b4f4
-  position: {x: 357, y: -29}
+  position: {x: 357, y: -42.00004}
   children:
   - {fileID: -5215224428827648621}
   - {fileID: 7428477062917207401}
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: f98e44cf9600d5240b4119cd0c6a6eeb
-  position: {x: 638.6666, y: 124.888885}
+  position: {x: 639.00006, y: 112}
   paramName: Down
   method: Move
   className: PlayerController
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c531646cc1b5f9f4e8668128c0e9841e
-  position: {x: 357, y: 48}
+  position: {x: 357, y: -119.50003}
   paramName: 
   method: RotatePlayer
   className: PlayerController
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 955484e767faaef40b8589f8dd543113
-  position: {x: 497.7778, y: -29.333344}
+  position: {x: 498.00003, y: -42.00004}
   child: {fileID: 6193472429586276356}
   method: CheckInput
   paramName: W
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 87c74d0e167f431489038a7dc06d2411
-  position: {x: 638.6666, y: 48}
+  position: {x: 639.00006, y: 34.999954}
   paramName: Left
   method: Move
   className: PlayerController
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 2efde3255fa92d04fa03e837b6f59906
-  position: {x: 355, y: -202}
+  position: {x: 357, y: -294.5}
   child: {fileID: -7833102057359241417}
   method: CheckInput
   paramName: F
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 734c5d71a8fa31b4283ad693faea6f00
-  position: {x: 497.7778, y: 124.888885}
+  position: {x: 498.00003, y: 112}
   child: {fileID: -6430694936911059803}
   method: CheckInput
   paramName: S
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 215100e938cd47347976f6cfa2d9d5dd
-  position: {x: 638.6666, y: 201.77774}
+  position: {x: 639.00006, y: 188.99994}
   paramName: Right
   method: Move
   className: PlayerController
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 429a24365a6422543b3f1a807fac993b
-  position: {x: 357, y: -106}
+  position: {x: 357, y: 353.99997}
   child: {fileID: 5499220917565172958}
   method: IsInteracting
   paramName: 
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: df683c26caada074d924fefa11479752
-  position: {x: 680, y: -155}
+  position: {x: 682, y: -247.5}
   paramName: 
   method: ProcessInteractive
   className: PlayerController
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 30b1aa60a8a55b047ba013da8ffac84e
-  position: {x: 497.33334, y: 201.77774}
+  position: {x: 497.00003, y: 188.99994}
   child: {fileID: -1482104750248519893}
   method: CheckInput
   paramName: D
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 876e5aa7fbda8014caab232d39034a0a
-  position: {x: 505.33337, y: -106.22223}
+  position: {x: 505, y: 354.25}
   paramName: 
   method: AbortInteract
   className: PlayerController
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2daf35ad2c3351a4db5454e837fdcef2
-  position: {x: 638.6666, y: -29.333344}
+  position: {x: 639.00006, y: -42.00004}
   paramName: Up
   method: Move
   className: PlayerController
@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 32a724eb36e0a614e8e9d72196e443e3
-  position: {x: 639.55554, y: 278.66666}
+  position: {x: 640.00006, y: 265.99997}
   paramName: 
   method: ShootBullet
   className: PlayerController
@@ -418,7 +418,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 75da69a6887104f45bb0fc5c9390a3e3
-  position: {x: 680, y: -252}
+  position: {x: 682, y: -344.5}
   paramName: 
   method: FindInteractObj
   className: PlayerController
@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: f5894b817fe765f4ca5ebf0b9318b0e8
-  position: {x: 497.33334, y: 47.555542}
+  position: {x: 497.00003, y: 34.999954}
   child: {fileID: -3995514849858621972}
   method: CheckInput
   paramName: A
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 80f9e6d94b614b24d90413a9619a6acc
-  position: {x: 547, y: -309}
+  position: {x: 521, y: -208}
   paramName: 
   method: AbortInteract
   className: PlayerController

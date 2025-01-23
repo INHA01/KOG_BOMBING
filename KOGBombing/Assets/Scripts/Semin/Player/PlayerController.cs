@@ -168,7 +168,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		else if (supportWeapon is ThrowableWeapon)
 		{
-			supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerObj.transform.position, playerData.mousePos));
+			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos); 
+			RaycastHit hit;
+
+			if (Physics.Raycast(cameraRay, out hit)) // 레이캐스트 실행
+			{
+				Vector3 targetPoint = hit.point;
+				supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, targetPoint));
+			}
+
 			if (inputs[EKey.LMOUSEBUTTON])
 			{
 				supportWeapon.Use();
@@ -260,6 +268,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnUseAttackConsum(InputValue value)
 	{
 		if (!playerData.pv.IsMine) return;
+		
+		if (inputs[EKey.NUM_2])
+			supportWeapon.Disable();
 		inputs[EKey.NUM_2] = !inputs[EKey.NUM_2];
 	}
 

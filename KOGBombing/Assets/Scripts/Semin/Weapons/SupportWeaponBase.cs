@@ -18,9 +18,9 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 			return;
 
 		this.consum = consum.GetComponent<AttackConsum>();
-		Debug.Log(consum);
 	}
 
 	public abstract void SetWeapon(SupportWeaponInfo info);
-	public abstract void Use(); 
+	public abstract void Use();
+	public virtual void Disable() { }
 }

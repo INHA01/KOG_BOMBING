@@ -1,3 +1,4 @@
+using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class Lobby : MonoBehaviour
     [SerializeField] GameObject selectMode;
     [SerializeField] GameObject gameStartButton;
 
-    //UIScene _uiScene;
+    UIScene _uiScene;
     public void OnPlayClick()
     {
         playButton.SetActive(false);
@@ -17,13 +18,13 @@ public class Lobby : MonoBehaviour
     }
     public void OnSelectClick()
     {
-        //if(_uiScene == null)
-        //    _uiScene = Managers.UI.ShowSceneUI<UIScene>("SelectModeCanvas");
-        Managers.UI.ShowSceneUI<UIScene>("SelectModeCanvas");
+        _uiScene = Managers.UI.ShowSceneUI<UIScene>("SelectModeCanvas");
     }
     public void OnGameStartClick()
     {
-        //LoadingSceneManager.LoadScene("AttackTest");
+        //NetworkDirector nDirector = Util.GetOrAddComponent<NetworkDirector>(gameStartButton);
+        //nDirector.onRandomMatch();
         LoadingSceneManager.LoadScene("PhotonLoginScene");
+
     }
 }

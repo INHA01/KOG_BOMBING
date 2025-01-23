@@ -135,6 +135,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public INode.ENodeState AbortInteract()
 	{
         playerInteract.AbortInteract();
+		inputs[EKey.F] = false;
         return INode.ENodeState.Success;
     }
 	public INode.ENodeState RotatePlayer()

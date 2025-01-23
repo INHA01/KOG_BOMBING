@@ -8,6 +8,7 @@ public class Lobby : MonoBehaviour
     [SerializeField] GameObject playButton;
     [SerializeField] GameObject selectMode;
     [SerializeField] GameObject gameStartButton;
+    [SerializeField] NetworkDirector networkDirector;
 
     UIScene _uiScene;
     public void OnPlayClick()
@@ -24,7 +25,8 @@ public class Lobby : MonoBehaviour
     {
         //NetworkDirector nDirector = Util.GetOrAddComponent<NetworkDirector>(gameStartButton);
         //nDirector.onRandomMatch();
-        LoadingSceneManager.LoadScene("PhotonLoginScene");
+        //LoadingSceneManager.LoadScene("PhotonLoginScene");
+        networkDirector.Match(1);
 
     }
 }

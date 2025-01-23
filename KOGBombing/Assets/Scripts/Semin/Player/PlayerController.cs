@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
-using Photon.Pun.Demo.Cockpit;
-using UnityEditor.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour, IPunObservable

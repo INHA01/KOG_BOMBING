@@ -30,7 +30,6 @@ public class PlayerInteract
         if (interactObj == null) return false;
         
         iInteractObj = interactObj;
-        Debug.Log("Find interact Object");
         return true;
     }
 
@@ -43,7 +42,6 @@ public class PlayerInteract
 
     public void AbortInteract()
     {
-        Debug.Log("Abort Interact");
         if (iInteractObj == null) return;
         iInteractObj.AbortInteract();
         isInteracting = false;

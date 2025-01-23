@@ -34,16 +34,15 @@ namespace Orpul1
         public void ProcessInteract()
         {
             EInteractState state = (EInteractState)pv.Owner.CustomProperties["State"];
-            Debug.Log($"process state : {state}");
             if (state == EInteractState.DONE || state == EInteractState.INTERACTING) 
             {
                 return;
             }
             if (coroutine == null)
             {
+                Debug.Log("상호작용 시작");
                 pv.Owner.SetCustomProperties(new PhotonHashtable { { "State", EInteractState.INTERACTING} });
 
-                Debug.Log("상호작용 시작!");
                 coroutine = StartCoroutine(CoInteract());
             }
         }
@@ -69,9 +68,10 @@ namespace Orpul1
             float time = Time.time + interactEventTime;
             while (Time.time < time) 
             {
+                Debug.Log("상호작용 중!");
                 yield return null;
             }
-            Debug.Log("상호작용 이벤트!");
+            Debug.Log("상호작용 완료 이벤트!");
             coroutine = null;
             isDoneInteract = true;
             pv.Owner.SetCustomProperties(new PhotonHashtable { { "State", EInteractState.DONE } });

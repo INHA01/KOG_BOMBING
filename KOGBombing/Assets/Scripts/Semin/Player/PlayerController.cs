@@ -126,7 +126,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 	public INode.ENodeState ProcessInteractive()
 	{
-		Debug.Log("Process interact");
 		playerInteract.ProcessInteract();
         return INode.ENodeState.Success;
 	}

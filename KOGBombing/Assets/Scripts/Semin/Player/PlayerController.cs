@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
-using Photon.Pun.Demo.Cockpit;
-using UnityEditor.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour, IPunObservable
@@ -120,7 +118,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		return INode.ENodeState.Success;
 	}
-
+	public INode.ENodeState FindInteractObj()
+	{
+		if (playerInteract.FindInteractObj() == false)
+			return INode.ENodeState.Fail;
+		return INode.ENodeState.Success;
+	}
 	public INode.ENodeState ProcessInteractive()
 	{
 		playerInteract.ProcessInteract();
@@ -129,6 +132,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public INode.ENodeState AbortInteract()
 	{
         playerInteract.AbortInteract();
+		inputs[EKey.F] = false;
         return INode.ENodeState.Success;
     }
 	public INode.ENodeState RotatePlayer()
@@ -202,10 +206,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool CheckInput(EKey key)
 	{
 		return inputs[key];
-	}
-	public bool CanInteract()
-	{
-		return !playerInteract.isInteracting;
 	}
 	public bool IsInteracting()
 	{

@@ -5,19 +5,38 @@ using UnityEngine;
 
 public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 {
+	public enum WeaponType
+	{
+		Landmine,
+		Molotov,
+		Max
+	}
+
 	[SerializeField] public AttackConsum consum;
+	protected string team;
 	protected float range;
 	protected float damage;
 	protected int count = 10;
 	public float Damage { get { return damage; } }
 	public int Count { get { return count; } }
 
-	public virtual void SetConsum(GameObject consum)
+	public virtual void SetConsum(WeaponType type)
 	{
-		if (!consum.GetComponent<AttackConsum>())
-			return;
+		GameObject consum;
+		switch (type)
+		{
+			case WeaponType.Landmine:
+				consum = Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject;
+				this.consum = consum.GetComponent<AttackConsum>();
+				break;
+			case WeaponType.Molotov:
+				consum = Resources.Load("Prefabs/SupportWeapon/Molotov") as GameObject;
+				this.consum = consum.GetComponent<AttackConsum>();
+				Debug.Log(this.consum);
+				break;
+		}
 
-		this.consum = consum.GetComponent<AttackConsum>();
+		
 	}
 
 	public abstract void SetWeapon(SupportWeaponInfo info);

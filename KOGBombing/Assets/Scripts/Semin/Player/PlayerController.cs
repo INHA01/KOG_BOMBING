@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
+using Unity.VisualScripting;
 
 
 public class PlayerController : MonoBehaviour, IPunObservable
@@ -64,7 +65,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
 
 		if (supportWeapon is SupportWeaponBase support)
-			support.SetConsum(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
+			support.SetConsum(SupportWeaponBase.WeaponType.Molotov);
 		
 		SetTeamFieldOfView();
 	}
@@ -164,7 +165,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		if (supportWeapon is DeployableWeapon)
 		{
-			supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
+			supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position, (string)playerData.pv.Owner.CustomProperties["Team"]));
 			supportWeapon.Use();
 			inputs[EKey.NUM_2] = false;
 			return INode.ENodeState.Success;
@@ -178,7 +179,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (Physics.Raycast(cameraRay, out hit)) // 레이캐스트 실행
 			{
 				Vector3 targetPoint = hit.point;
-				supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, targetPoint, playerObj.transform.eulerAngles.y));
+				supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, targetPoint, 
+					playerObj.transform.eulerAngles.y, (string)playerData.pv.Owner.CustomProperties["Team"]));
 			}
 
 			if (inputs[EKey.LMOUSEBUTTON])
@@ -304,4 +306,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		Gizmos.DrawWireSphere(transform.position, 1);
     }
 
+	public void OnDamaged(float damage)
+	{
+		playerData.hp -= damage;
+		Debug.Log($"플레이어 {damage} 타격, 현재 체력: {playerData.hp}");
+		if (playerData.hp < 0)
+		{
+			Debug.Log("죽음");
+		}
+	}
 }

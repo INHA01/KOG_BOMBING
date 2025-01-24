@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
 
 		if (supportWeapon is SupportWeaponBase support)
-			support.SetConsum(Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject);
+			support.SetConsum(SupportWeaponBase.WeaponType.Molotov);
 		
 		SetTeamFieldOfView();
 	}

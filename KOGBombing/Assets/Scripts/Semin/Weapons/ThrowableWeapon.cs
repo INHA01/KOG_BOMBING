@@ -1,16 +1,13 @@
 using Photon.Pun.Demo.SlotRacer.Utils;
 using Semin;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.HableCurve;
+using UnityEngine.Rendering.Universal;
 
 public class ThrowableWeapon : SupportWeaponBase
 {
-	private GameObject decal;
+	private DecalProjector decal;
 	private LineRenderer lineRendererToTarget;
 	private LineRenderer lineRendererToRange;
 	private Vector3[] points = new Vector3[4];
@@ -27,12 +24,12 @@ public class ThrowableWeapon : SupportWeaponBase
 	public int segments = 20;
 
 
-	private void Start()
+	private void Awake()
 	{
-		decal = Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRagneDecal")) as GameObject;
+		decal = Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRagneDecal")).GetComponent<DecalProjector>();
 		lineRendererToTarget = (Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackLineRenderer")) as GameObject).GetComponent<LineRenderer>();
 		lineRendererToRange = (Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRangeLineRenderer")) as GameObject).GetComponent<LineRenderer>();
-		decal.SetActive(false);
+		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
 		decal.transform.parent = transform;
@@ -41,9 +38,17 @@ public class ThrowableWeapon : SupportWeaponBase
 		lineRendererToTarget.positionCount = lineCnt;
 	}
 
+	public override void SetConsum(WeaponType type)
+	{
+		base.SetConsum(type);
+
+		if (consum is Molotov molotov)
+			decal.size = new Vector3(molotov.Range, molotov.Range, decal.size.z);
+	}
+
 	public override void SetWeapon(SupportWeaponInfo info)
 	{
-		decal.SetActive(true);
+		decal.gameObject.SetActive(true);
 		lineRendererToTarget.gameObject.SetActive(true);
 
 		if (info is ThrowableWeaponInfo throableInfo)
@@ -72,14 +77,14 @@ public class ThrowableWeapon : SupportWeaponBase
 
 	public override void Disable()
 	{
-		decal.SetActive(false);
+		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
 	}
 
 	public override void Use()
 	{
-		decal.SetActive(false);
+		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
 		StartCoroutine(ThrowConsum());
@@ -132,7 +137,7 @@ public class ThrowableWeapon : SupportWeaponBase
 	IEnumerator ThrowConsum()
 	{
 		float elapsedTime = 0f;
-		GameObject grenade = Instantiate(consum, points[0], Quaternion.identity).gameObject;
+		AttackConsum grenade = Instantiate(consum, points[0], Quaternion.identity);
 
 		while (elapsedTime < throwDuration)
 		{
@@ -146,6 +151,6 @@ public class ThrowableWeapon : SupportWeaponBase
 		}
 
 		grenade.transform.position = Bezier(points[0], points[1], points[2], 1f);
-		Destroy(grenade);
+		grenade.Use();
 	}
 }

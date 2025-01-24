@@ -4,8 +4,23 @@ using UnityEngine;
 
 public class LobbyModeSelect : MonoBehaviour
 {
-    public void OnSelectClick()
+    [SerializeField] GameObject matchSelect;
+    public int mode = 0;
+    public void TurnBackScreen()
     {
+        matchSelect.SetActive(false);
         Managers.UI.CloseSceneUI();
+    }
+    public void OnBombModeClick()
+    { 
+        matchSelect.SetActive(true);
+    }
+    public void OnRandomMatchSelect()
+    {
+        mode = 0;
+    }
+    public void OnCustomMatchSelect()
+    {
+        mode = 1;
     }
 }

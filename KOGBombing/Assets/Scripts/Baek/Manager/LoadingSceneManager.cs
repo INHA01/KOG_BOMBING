@@ -20,7 +20,7 @@ public class LoadingSceneManager : MonoBehaviour
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene);
         asyncLoad.allowSceneActivation = false;
-        float time = Time.time + 5.0f; // 5 seconds term
+        float time = Time.time + 1.0f; // 1 seconds term
         while (!asyncLoad.isDone)
         {
             yield return null;

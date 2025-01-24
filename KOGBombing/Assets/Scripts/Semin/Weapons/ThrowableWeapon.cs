@@ -138,6 +138,7 @@ public class ThrowableWeapon : SupportWeaponBase
 	{
 		float elapsedTime = 0f;
 		AttackConsum grenade = Instantiate(consum, points[0], Quaternion.identity);
+		grenade.SetTeam(team);
 
 		while (elapsedTime < throwDuration)
 		{

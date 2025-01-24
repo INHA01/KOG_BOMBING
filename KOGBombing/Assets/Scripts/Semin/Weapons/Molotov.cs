@@ -44,6 +44,14 @@ public class Molotov : AttackConsum
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other.tag == "Player")
+		{
+			PlayerController player = other.GetComponent<PlayerController>();
+			if ( player != null )
+			{
+				player.OnDamaged(Damage);
+			}
+		}
 		Debug.Log(other.name);
 	}
 }

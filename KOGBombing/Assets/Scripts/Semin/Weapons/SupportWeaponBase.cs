@@ -13,6 +13,7 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 	}
 
 	[SerializeField] public AttackConsum consum;
+	protected string team;
 	protected float range;
 	protected float damage;
 	protected int count = 10;

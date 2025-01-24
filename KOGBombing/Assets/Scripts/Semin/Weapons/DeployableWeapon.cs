@@ -18,5 +18,6 @@ public class DeployableWeapon : SupportWeaponBase
 	public override void Use()
 	{
 		AttackConsum obj = Instantiate(consum.gameObject, position, Quaternion.identity).GetComponent<AttackConsum>();
+		obj.SetTeam(team);
 	}
 }

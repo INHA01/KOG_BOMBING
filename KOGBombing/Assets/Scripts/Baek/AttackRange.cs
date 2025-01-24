@@ -39,26 +39,27 @@ public class AttackRange
     }
     public void ShowAttackArea()
     {
-        Vector3 direction = playerData.mousePos - new Vector3(playerData.shootStartPos.position.x, playerData.mousePos.y, playerData.shootStartPos.position.z);
+        Vector3 direction = playerData.mousePos - playerData.shootStartPos.position;
         float mousePosLength = direction.magnitude;
         float attackRangeLength = mousePosLength;
 
         bool rayHit = false;
         Ray shootRay = new Ray(playerData.shootStartPos.position, direction);
-        RaycastHit[] hits = Physics.RaycastAll(shootRay, playerData.maxLength);
         Vector3 hitPoint = Vector3.zero;
+        RaycastHit[] hits = Physics.RaycastAll(shootRay, playerData.maxLength);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].collider.tag != "Bullet")
+            if (hits[i].collider.gameObject.tag != "Bullet" )
             {
-                float distance = (hits[i].point - playerData.shootStartPos.position).magnitude;
+                hitPoint = hits[i].point;
+                float distance = (hitPoint - playerData.shootStartPos.position).magnitude;
                 if (distance < attackRangeLength)
                     attackRangeLength = distance;
                 rayHit = true;
-                hitPoint = hits[i].point;
                 break;
             }
         }
+
         if (attackRangeLength > playerData.maxLength || rayHit)
         {
             if(!rayHit)
@@ -69,7 +70,12 @@ public class AttackRange
             noAttackRange.SetActive(false);
 
         Vector3 canAttackPoint = playerData.shootStartPos.position + direction.normalized * attackRangeLength;
-        SetPoint(lineRenderer1, playerData.shootStartPos.position, canAttackPoint);
+        canAttackPoint.y -= 0.8f;
+
+        Vector3 startPos = playerData.shootStartPos.position;
+        startPos.y -= 0.8f;
+
+        SetPoint(lineRenderer1, startPos, canAttackPoint);
         Vector3 canNotAttackPoint = new Vector3(playerData.mousePos.x, canAttackPoint.y, playerData.mousePos.z);
         SetPoint(lineRenderer2, canAttackPoint, canNotAttackPoint);
     }

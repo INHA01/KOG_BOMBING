@@ -54,11 +54,11 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("bullet is null");
             return;
         }
-        Vector3 direction = (playerData.shootEndPos.position - playerData.shootStartPos.position);
+        Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
         bullet.GetComponent<BulletController>().strTeamBullet = (string)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
-        bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f) + new Vector3(0, 1, 0);
+        bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
         bullet.SetActive(true);
     }
     IEnumerator Shooting()

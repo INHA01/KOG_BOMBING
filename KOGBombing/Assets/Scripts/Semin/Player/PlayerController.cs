@@ -138,19 +138,24 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public INode.ENodeState RotatePlayer()
 	{
 		Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
-		Plane GroupPlane = new Plane(Vector3.up, playerObj.transform.position);
-		float rayLength;
-
-		if (GroupPlane.Raycast(cameraRay, out rayLength))
-		{
-			Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-			playerData.mousePos = pointTolook;
-			animator.Rotation(pointTolook, speedValue);
-
-			playerObj.transform.LookAt(pointTolook);
+        RaycastHit hit;
+		if(Physics.Raycast(cameraRay, out hit , 100f,LayerMask.GetMask("BackGroundObj")))
+        {
+            Vector3 planePos = hit.point;
+			planePos.y += 1.6f;
+			Plane GroupPlane = new Plane(Vector3.up, planePos);
+			float rayLength;
+			if (GroupPlane.Raycast(cameraRay, out rayLength))
+			{
+				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+				playerData.mousePos = pointTolook;
+				animator.Rotation(pointTolook, speedValue);
+				playerObj.transform.LookAt(pointTolook);
+			}
 		}
 
-		return INode.ENodeState.Success;
+
+        return INode.ENodeState.Success;
 	}
 
 	public INode.ENodeState ShootBullet()

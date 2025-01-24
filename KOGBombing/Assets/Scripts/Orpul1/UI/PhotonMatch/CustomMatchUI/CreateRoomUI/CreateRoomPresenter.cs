@@ -22,6 +22,7 @@ namespace Orpul1
 
         public void OnCreateRoomBtn()
         {
+            Debug.Log($"inLobby {PhotonNetwork.InLobby}");
             if (!PhotonNetwork.InLobby) return;
             int maxPlayer = 0;
             int.TryParse(view.tmpDropDPlayerCnt.ToString(), out maxPlayer);

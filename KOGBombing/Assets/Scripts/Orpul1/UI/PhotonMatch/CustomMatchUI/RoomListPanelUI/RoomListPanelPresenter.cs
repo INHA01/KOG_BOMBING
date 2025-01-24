@@ -10,7 +10,7 @@ public class RoomListPanelPresenter : MonoBehaviour
     {
         view.roomListPanelObj.SetActive(false);
     }
-    public void OnActivePopupBtn()
+    public void ActiveUIPanel()
     {
         view.roomListPanelObj.SetActive(true);
     }

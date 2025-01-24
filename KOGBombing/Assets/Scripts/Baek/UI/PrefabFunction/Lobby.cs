@@ -11,6 +11,7 @@ public class Lobby : MonoBehaviour
     [SerializeField] NetworkDirector networkDirector;
 
     UIScene _uiScene;
+    LobbyModeSelect _lobbyModeSelect;
     public void OnPlayClick()
     {
         playButton.SetActive(false);
@@ -20,13 +21,10 @@ public class Lobby : MonoBehaviour
     public void OnSelectClick()
     {
         _uiScene = Managers.UI.ShowSceneUI<UIScene>("SelectModeCanvas");
+        _lobbyModeSelect = _uiScene.GetComponent<LobbyModeSelect>();
     }
     public void OnGameStartClick()
     {
-        //NetworkDirector nDirector = Util.GetOrAddComponent<NetworkDirector>(gameStartButton);
-        //nDirector.onRandomMatch();
-        //LoadingSceneManager.LoadScene("PhotonLoginScene");
-        networkDirector.Match(1);
-
+        networkDirector.Match(_lobbyModeSelect.mode);
     }
 }

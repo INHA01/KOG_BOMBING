@@ -7,4 +7,5 @@ public class RoomListPanelView : MonoBehaviour
 {
     public GameObject createPanelObj;
     public GameObject roomListPanelObj;
+    public GameObject backgroundPanelObj;
 }

@@ -10,6 +10,10 @@ public class CustomRoomPresenter : MonoBehaviour
     {
         view.customRoomPanel.SetActive(false);
     }
+    public void ActiveUIPanel()
+    {
+        view.customRoomPanel.SetActive(true);
+    }
     public void OnLeaveRoomBtn()
     {
         view.customRoomPanel.SetActive(false);

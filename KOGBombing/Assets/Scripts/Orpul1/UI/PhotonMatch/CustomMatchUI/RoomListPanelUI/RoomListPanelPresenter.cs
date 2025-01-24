@@ -8,14 +8,17 @@ public class RoomListPanelPresenter : MonoBehaviour
 
     private void Start()
     {
+        view.backgroundPanelObj.SetActive(false);
         view.roomListPanelObj.SetActive(false);
     }
-    public void OnActivePopupBtn()
+    public void ActiveUIPanel()
     {
+        view.backgroundPanelObj.SetActive(true);
         view.roomListPanelObj.SetActive(true);
     }
     public void OnLeaveMatchBtn()
     {
+        view.backgroundPanelObj.SetActive(false);
         view.roomListPanelObj.SetActive(false);
     }
     public void OnCreatRoomBtn()

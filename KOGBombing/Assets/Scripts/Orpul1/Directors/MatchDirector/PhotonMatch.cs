@@ -34,6 +34,7 @@ namespace Orpul1
         }
         public override void OnJoinedLobby()
         {
+            Debug.Log("JoinLobby");
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "UID", PhotonNetwork.LocalPlayer.UserId } });
         }
         public override void OnPlayerLeftRoom(Player otherPlayer)

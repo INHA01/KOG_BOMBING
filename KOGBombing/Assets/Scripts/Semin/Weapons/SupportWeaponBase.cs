@@ -35,8 +35,10 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 				Debug.Log(this.consum);
 				break;
 		}
-
-		
+	}
+	public void SetTeam(string team)
+	{
+		this.team = team;
 	}
 
 	public abstract void SetWeapon(SupportWeaponInfo info);

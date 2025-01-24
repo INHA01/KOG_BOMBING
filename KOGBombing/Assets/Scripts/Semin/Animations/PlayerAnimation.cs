@@ -33,6 +33,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		{
 			animator.SetFloat("Horizontal", speedValue.x);
 			animator.SetFloat("Vertical", speedValue.y);
+			animator.SetBool("IsMoving", false);
 			return;
 		}
 
@@ -48,6 +49,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 		animator.SetFloat("Horizontal", adjustedHorizontal);
 		animator.SetFloat("Vertical", adjustedVertical);
+		animator.SetBool("IsMoving", true);
 	}
 
 	public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)

@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		if (supportWeapon is SupportWeaponBase support)
 			support.SetConsum(SupportWeaponBase.WeaponType.Molotov);
+		supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 		
 		SetTeamFieldOfView();
 	}

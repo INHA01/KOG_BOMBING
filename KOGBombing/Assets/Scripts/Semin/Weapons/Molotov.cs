@@ -1,7 +1,11 @@
+using Photon.Pun;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Molotov : AttackConsum
 {
@@ -35,10 +39,9 @@ public class Molotov : AttackConsum
 		particle.Play();
 		attackCollider.enabled = true;
 		attackCollider.isTrigger = true;
-		while (particle.isPlaying)
-		{
-			yield return null;
-		}
+		yield return new WaitForSeconds(0.5f);
+		attackCollider.isTrigger = false;
+		yield return new WaitForSeconds(4f);
 		Destroy(gameObject);
 	}
 
@@ -46,12 +49,26 @@ public class Molotov : AttackConsum
 	{
 		if (other.tag == "Player")
 		{
-			PlayerController player = other.GetComponent<PlayerController>();
+			PhotonView pView = other.transform.GetComponent<PhotonView>();
+
+			if (!pView) return;
+			if (!IsOtherTeam(pView)) return;
+			Debug.Log("OtherTeam");
+
+			PlayerController player = other.transform.GetComponent<PlayerController>();
 			if ( player != null )
-			{
 				player.OnDamaged(Damage);
-			}
 		}
 		Debug.Log(other.name);
+	}
+
+	private bool IsOtherTeam(PhotonView pView)
+	{
+		string otherTeam = (string)pView.Owner.CustomProperties["Team"];
+
+		Debug.Log($"mineTeam: {team} : otherTeam: {otherTeam}");
+
+		if (team == otherTeam) return false;
+		return true;
 	}
 }

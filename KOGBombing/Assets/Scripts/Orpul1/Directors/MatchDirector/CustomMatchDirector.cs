@@ -21,7 +21,6 @@ namespace Orpul1
         {
             isCustomMatch = true;
             matchUIController.CustomListUIActive();
-            //customListAction.Invoke();
             base.Match();
         }
         public void OnLeftLobbyBtn()
@@ -53,7 +52,6 @@ namespace Orpul1
                 base.OnJoinedRoom();
                 matchUIController.CustomRoomUIActive();
                 matchUIController.UpdateRoomOwner();
-                //UpdateRoomOwner.Invoke();
             }
         }
 
@@ -63,7 +61,6 @@ namespace Orpul1
             {
                 base.OnPlayerLeftRoom(otherPlayer);
                 matchUIController.UpdateRoomOwner();
-                //UpdateRoomOwner.Invoke();
             }
         }
 

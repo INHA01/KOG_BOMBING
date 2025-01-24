@@ -16,6 +16,7 @@ namespace Orpul1
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            Debug.Log($"Room Update {PhotonNetwork.CurrentLobby.Name}");
             UpdateInfo(roomList);
         }
         public override void OnLeftRoom()

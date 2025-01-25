@@ -5,10 +5,10 @@ using UnityEngine;
 public class BulletController : PooledObject
 {
     [SerializeField] float moveSpeed;
-    public string strTeamBullet;
-    //[SerializeField] int damage = 2;
+    [HideInInspector] public string strTeamBullet;
+    [SerializeField] int damage = 20;
 
-    public Vector3 shootDirection;
+    [HideInInspector] public Vector3 shootDirection;
     float destroyDistance;
     float distance;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }

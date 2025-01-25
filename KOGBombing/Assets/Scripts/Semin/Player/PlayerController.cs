@@ -319,6 +319,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (playerData.hp < 0)
 		{
 			Debug.Log("죽음");
-		}
+        }
 	}
 }

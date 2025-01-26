@@ -22,6 +22,17 @@ public class PlayerData : MonoBehaviour
 
     [Header("Player Info")]
     [SerializeField] public float hp;
+    public Vector2 speedValue = Vector2.zero;
+    public float moveSpeed = 6;
+    public Rigidbody rigidBody;
+
+    [Header("Model Anim")]
+    [SerializeField] public GameObject playerObj;
+    [SerializeField] public PlayerAnimation animator;
+
+    [Header("Weapon")]
+    [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
+    public ISupportWeapon supportWeapon;
 
     public GameObject AttackRange { get { return Instantiate(attackRangePrefab); } }
     public GameObject NoAttackRange { get { return Instantiate(noAttackRangePrefab); } }

@@ -53,13 +53,11 @@ public class Molotov : AttackConsum
 
 			if (!pView) return;
 			if (!IsOtherTeam(pView)) return;
-			Debug.Log("OtherTeam");
 
 			PlayerController player = other.transform.GetComponent<PlayerController>();
 			if ( player != null )
 				player.OnDamaged(Damage);
 		}
-		Debug.Log(other.name);
 	}
 
 	private bool IsOtherTeam(PhotonView pView)

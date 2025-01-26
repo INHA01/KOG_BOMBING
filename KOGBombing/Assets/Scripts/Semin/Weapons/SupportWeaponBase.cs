@@ -5,13 +5,6 @@ using UnityEngine;
 
 public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 {
-	public enum WeaponType
-	{
-		Landmine,
-		Molotov,
-		Max
-	}
-
 	[SerializeField] public AttackConsum consum;
 	protected string team;
 	protected float range;
@@ -22,20 +15,20 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 
 	public virtual void SetConsum(WeaponType type)
 	{
-		GameObject consum;
+		GameObject consumObj;
 		switch (type)
 		{
-			case WeaponType.Landmine:
-				consum = Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject;
-				this.consum = consum.GetComponent<AttackConsum>();
+			case WeaponType.LANDMINE:
+				consumObj = Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject;
+				consum = consumObj.GetComponent<AttackConsum>();
 				break;
-			case WeaponType.Molotov:
-				consum = Resources.Load("Prefabs/SupportWeapon/Molotov") as GameObject;
-				this.consum = consum.GetComponent<AttackConsum>();
-				Debug.Log(this.consum);
+			case WeaponType.MOLOTOV:
+				consumObj = Resources.Load("Prefabs/SupportWeapon/Molotov") as GameObject;
+				consum = consumObj.GetComponent<AttackConsum>();
 				break;
-		}
-	}
+        }
+        consum.type = type;
+    }
 	public void SetTeam(string team)
 	{
 		this.team = team;

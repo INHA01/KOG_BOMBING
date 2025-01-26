@@ -1,11 +1,21 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAnimation : MonoBehaviour,IPunObservable
 {
+	public enum AnimType
+	{
+		Throw,
+		Granade,
+        Cancel,
+		MAX
+	}
+
     [SerializeField] public Animator animator;
 	[Range(1f, 20f)] public float RotateSpeed;
 	[SerializeField] PhotonView pv;
@@ -25,6 +35,28 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		this.playerObj = playerObj;
 	}
 
+	public void SetAnimTrigger(AnimType type)
+	{
+		animator.SetTrigger(type.ToString());
+		if (type == AnimType.Throw)
+			TurnAtForward();
+	}
+
+	public void ResetAnimTrigger(AnimType type)
+	{
+		animator.ResetTrigger(type.ToString());
+	}
+
+	public bool GetAnimBool(AnimType type)
+	{
+		return animator.GetBool(type.ToString());
+	}
+
+	public void SetAnimBool(AnimType type, bool value)
+	{
+		animator.SetBool(type.ToString(), value);
+	}
+
 
 	public void UpdateAnimation(Vector2 speedValue)
 	{
@@ -33,7 +65,6 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		{
 			animator.SetFloat("Horizontal", speedValue.x);
 			animator.SetFloat("Vertical", speedValue.y);
-			animator.SetBool("IsMoving", false);
 			return;
 		}
 
@@ -49,23 +80,37 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 		animator.SetFloat("Horizontal", adjustedHorizontal);
 		animator.SetFloat("Vertical", adjustedVertical);
-		animator.SetBool("IsMoving", true);
-	}
+        animator.SetBool("IsMoving", true);
+    }
+
+	public bool GetCurAnim(AnimType type)
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
+		return stateInfo.IsName(type.ToString());
+    }
 
 	public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)
-	{
-		this.pointToLookAt = pointToLookAt;
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
+		if (stateInfo.IsName("Throw"))
+			return;
+
+        this.pointToLookAt = pointToLookAt;
 		Vector3 direction = pointToLookAt - transform.position;
 		direction.y = 0;
 		float angle = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
 
 		if (speedValue.magnitude < 0.1f)
-		{
-			float deltaAngle = Mathf.Abs(angle);
+        {
+            animator.SetBool("IsMoving", false);
+            float deltaAngle = Mathf.Abs(angle);
 			if (deltaAngle < 0.5f)
 				animator.SetBool("Rotation", false);
 			else if (deltaAngle >= 60.0f)
+			{
+				animator.SetBool("IsMoving", true);
 				animator.SetBool("Rotation", true);
+			}
 			if (animator.GetBool("Rotation") == true)
 			{
 				Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -73,8 +118,9 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			}
 		}
 		else
-		{
-			animator.SetBool("Rotation", false);
+        {
+            animator.SetBool("IsMoving", false);
+            animator.SetBool("Rotation", false);
 			Quaternion targetRotation = Quaternion.LookRotation(direction);
 			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
 		}
@@ -82,14 +128,17 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 	public void Shoot()
 	{
-		Vector3 direction = pointToLookAt - transform.position;
-		direction.y = 0;
-		Quaternion targetRotation = Quaternion.LookRotation(direction);
-		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50f * Time.deltaTime);
-
-
+		TurnAtForward();
 		animator.SetTrigger("Shoot");
 	}
+
+	private void TurnAtForward()
+	{
+        Vector3 direction = pointToLookAt - transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50f * Time.deltaTime);
+    }
 
 	private void OnAnimatorIK(int layerIndex)
 	{
@@ -103,9 +152,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		{
 			animator.SetLookAtPosition(netWorkPointToLookAt);
 			animator.SetLookAtWeight(1.0f);
-
         }
-		
 	}
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

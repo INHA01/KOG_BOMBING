@@ -9,6 +9,7 @@ namespace Semin
 	{
 		public abstract float Damage { get; }
 		protected string team;
+		public WeaponType type;
 
 		public abstract void Attack(GameObject gameObject);
 		public abstract void Use();

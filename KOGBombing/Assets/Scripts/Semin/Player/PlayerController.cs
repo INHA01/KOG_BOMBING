@@ -9,11 +9,29 @@ using System;
 using System.Drawing;
 using UnityEngine.TextCore.Text;
 using System.Collections;
+[Serializable]
+public class PlayerBlackBoard
+{
+    public float hp;
+    public float speed;
+    public Rigidbody rigidBody;
+    public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
+    public Vector2 speedValue;
+    public Vector2 mousePos;
 
+}
 
 public class PlayerController : MonoBehaviour, IPunObservable
 {
     Vector2 mousePos;
+	[SerializeField]
+    PlayerBlackBoard blackBoard;
+    [SerializeField] 
+	public GameObject playerObj;
+	[SerializeField] 
+	PlayerAnimation animator;
+	public ISupportWeapon supportWeapon;
+	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
 

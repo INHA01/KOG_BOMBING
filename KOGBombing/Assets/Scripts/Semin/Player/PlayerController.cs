@@ -5,11 +5,24 @@ using Photon.Pun;
 using System.Text;
 using Semin;
 using Unity.VisualScripting;
+using System;
+[Serializable]
+public class PlayerBlackBoard
+{
+    public float hp;
+    public float speed;
+    public Rigidbody rigidBody;
+    public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
+    public Vector2 speedValue;
+    public Vector2 mousePos;
 
+}
 
 public class PlayerController : MonoBehaviour, IPunObservable
 {
-	[SerializeField] 
+	[SerializeField]
+    PlayerBlackBoard blackBoard;
+    [SerializeField] 
 	public GameObject playerObj;
 	[SerializeField] 
 	PlayerAnimation animator;

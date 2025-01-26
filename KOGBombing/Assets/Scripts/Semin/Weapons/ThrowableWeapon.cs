@@ -18,7 +18,6 @@ public class ThrowableWeapon : SupportWeaponBase
 	private float throwDuration = 0.5f;
 	private float maxDistance = 10f;
 
-	public float radius = 10f;
 	public float angleStart = 55; 
 	public float angleEnd = 125;
 	public int segments = 20;
@@ -54,23 +53,23 @@ public class ThrowableWeapon : SupportWeaponBase
 		if (info is ThrowableWeaponInfo throableInfo)
 		{
 			curPos = throableInfo.CurPosition;
-			float distance = Vector3.Distance(curPos, throableInfo.Position);
-
 			targetPos = throableInfo.Position;
-			Vector3 direction = throableInfo.Position - curPos;
+            Vector3 zeroCurPos = curPos;
+            zeroCurPos.y = 0;
+            float distance = Vector3.Distance(zeroCurPos, targetPos);
+
+			Vector3 direction = targetPos - zeroCurPos;
 			Vector3 normalizedDirection = direction.normalized;
 
-			if (distance > maxDistance * 2 / 3)
-			{
-				lineRendererToRange.gameObject.SetActive(true);
-				if (distance >= maxDistance)
-				{
-					targetPos = curPos + normalizedDirection * maxDistance;
-				}
-			}
-			else lineRendererToRange.gameObject.SetActive(false);
+            if (distance > maxDistance * 2 / 3)
+            {
+                lineRendererToRange.gameObject.SetActive(true);
+                if (distance >= maxDistance)
+                    targetPos = zeroCurPos + normalizedDirection * maxDistance;
+            }
+            else lineRendererToRange.gameObject.SetActive(false);
 
-			SetLineToTarget(normalizedDirection);
+            SetLineToTarget(normalizedDirection);
 			SetLineToRange(throableInfo.angle);
 		}
 	}
@@ -120,8 +119,8 @@ public class ThrowableWeapon : SupportWeaponBase
 		for (int i = 0; i <= segments; i++)
 		{
 			float currentAngle = angle + angleStart + i * angleStep;
-			float x = curPos.x - radius * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
-			float z = curPos.z + radius * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
+			float x = curPos.x - (maxDistance - decal.size.x / 2) * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
+			float z = curPos.z + (maxDistance - decal.size.x / 2) * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
 			lineRendererToRange.SetPosition(i, new Vector3(x, curPos.y, z));
 		}
 	}

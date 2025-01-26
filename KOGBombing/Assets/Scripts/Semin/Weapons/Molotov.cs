@@ -40,8 +40,8 @@ public class Molotov : AttackConsum
 		attackCollider.enabled = true;
 		attackCollider.isTrigger = true;
 		yield return new WaitForSeconds(0.5f);
-		attackCollider.isTrigger = false;
-		yield return new WaitForSeconds(4f);
+        attackCollider.enabled = false;
+        yield return new WaitForSeconds(4f);
 		Destroy(gameObject);
 	}
 

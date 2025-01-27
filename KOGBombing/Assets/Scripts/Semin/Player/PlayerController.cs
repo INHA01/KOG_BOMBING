@@ -4,16 +4,13 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
-using Unity.VisualScripting;
 using System;
-using System.Drawing;
-using UnityEngine.TextCore.Text;
 using System.Collections;
 [Serializable]
 public class PlayerBlackBoard
 {
     public float hp;
-    public float speed;
+    public float moveSpeed;
     public Rigidbody rigidBody;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
     public Vector2 speedValue;
@@ -33,7 +30,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public ISupportWeapon supportWeapon;
 	Rigidbody rigidBody;
 	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
-	public Dictionary<EKey, bool> Inputs { get { return inputs; } }
+	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
 	PlayerInteract playerInteract = new PlayerInteract();
 	Camera viewCamera;
@@ -55,7 +52,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     AttackRange attackRange;
     PlayerShooting playerShooting;
     PlayerData playerData;
-
+	
     void Awake()
 	{
         playerData = GetComponent<PlayerData>();
@@ -66,9 +63,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerShooting.Init(playerData.animator,attackRange);
 
         for (int i = 0; i < (int)EKey.MAX; i++)
-			inputs.Add((EKey)i, false);
+            blackBoard.inputs.Add((EKey)i, false);
+        /*for (int i = 0; i < (int)EKey.MAX; i++)
+			inputs.Add((EKey)i, false);*/
 
         playerData.rigidBody = GetComponent<Rigidbody>();
+        blackBoard.rigidBody = GetComponent<Rigidbody>();
 		SetTeamFieldOfView();
 
         playerData.animator.SetPlayerObject(playerData.playerObj);
@@ -112,7 +112,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	private void Update()
 	{
 		if (playerData.animator != null)
-            playerData.animator.UpdateAnimation(playerData.speedValue);
+            playerData.animator.UpdateAnimation(blackBoard.speedValue);
+            //playerData.animator.UpdateAnimation(playerData.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();
     }
@@ -142,13 +143,17 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			case EDirection.Left:
 			case EDirection.Right:
-				movement = transform.right * Time.deltaTime * playerData.moveSpeed * playerData.speedValue.x;
-				playerData.rigidBody.MovePosition(playerData.rigidBody.position + movement);
+				//movement = transform.right * Time.deltaTime * playerData.moveSpeed * playerData.speedValue.x;
+				movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x;
+				//playerData.rigidBody.MovePosition(playerData.rigidBody.position + movement);
+				blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 			case EDirection.Up:
 			case EDirection.Down:
-				movement = transform.forward * Time.deltaTime * playerData.moveSpeed * playerData.speedValue.y;
-                playerData.rigidBody.MovePosition(playerData.rigidBody.position + movement);
+				//movement = transform.forward * Time.deltaTime * playerData.moveSpeed * playerData.speedValue.y;
+				movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y;
+                //playerData.rigidBody.MovePosition(playerData.rigidBody.position + movement);
+                blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 		}
 
@@ -172,9 +177,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		inputs[EKey.F] = false;
         return INode.ENodeState.Success;
     }
+
+	Vector3 debugRayHit = Vector3.zero;
 	public INode.ENodeState RotatePlayer()
 	{
-		Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
+		Debug.Log($"blackBoard.mousePos: {blackBoard.mousePos}");
+
+        Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos);
         RaycastHit hit;
 		if(Physics.Raycast(cameraRay, out hit , 100f,LayerMask.GetMask("BackGroundObj")))
         {
@@ -185,8 +194,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
 				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-				playerData.mousePos = pointTolook;
+				debugRayHit = pointTolook;
+                /*playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, playerData.speedValue);
+                playerData.playerObj.transform.LookAt(pointTolook);*/
+
+                playerData.mousePos = pointTolook;
+                playerData.animator.Rotation(pointTolook, blackBoard.speedValue);
                 playerData.playerObj.transform.LookAt(pointTolook);
 			}
 		}
@@ -207,13 +221,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
         {
             playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
 			playerData.supportWeapon.Use();
-			inputs[EKey.NUM_2] = false;
+			blackBoard.inputs[EKey.NUM_2] = false;
 			return INode.ENodeState.Success;
 		}
 
 		else if (playerData.supportWeapon is ThrowableWeapon throwable)
 		{
-            Ray cameraRay = viewCamera.ScreenPointToRay(mousePos); 
+            Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos); 
 			RaycastHit hit;
 
 			if (!isChangableAnim)
@@ -223,8 +237,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				else
 				{
 					Debug.Log("End anim");
-					inputs[EKey.LMOUSEBUTTON] = false;
-					inputs[EKey.NUM_2] = false;
+                    blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+					blackBoard.inputs[EKey.NUM_2] = false;
                     ChangeWeapon(WeaponType.GUN);
                     playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
 					playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
@@ -259,7 +273,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	#region If Decorater Node
 	public bool CheckInput(EKey key)
 	{
-		return inputs[key];
+		return blackBoard.inputs[key];
 	}
 	public bool IsInteracting()
 	{
@@ -269,7 +283,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     #region Input System
     public void OnAttack(InputValue value)
 	{
-		inputs[EKey.LMOUSEBUTTON] = value.isPressed;
+        blackBoard.inputs[EKey.LMOUSEBUTTON] = value.isPressed;
 	}
     bool CheckMouseOutScreen(Vector2 mousePos)
     {
@@ -278,43 +292,43 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnRotate(InputValue value)
 	{
 		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
-        mousePos = value.Get<Vector2>();
+        blackBoard.mousePos = value.Get<Vector2>();
     }
 	
 	public void OnMove(InputValue value)
 	{
         if (!playerData.pv.IsMine) return;
         Vector2 inputVector = value.Get<Vector2>();
-		playerData.speedValue.x = inputVector.x;
-        playerData.speedValue.y = inputVector.y;
+        blackBoard.speedValue.x = inputVector.x;
+        blackBoard.speedValue.y = inputVector.y;
 		inputVector.x = ConvertToThreeValues(value.Get<Vector2>().normalized.x);
 		inputVector.y = ConvertToThreeValues(value.Get<Vector2>().normalized.y);
 
 		switch(inputVector.x)
 		{
 			case -1:
-				inputs[EKey.A] = true;
+				blackBoard.inputs[EKey.A] = true;
 				break;
 			case 0:
-				inputs[EKey.A] = false;
-				inputs[EKey.D] = false;
+				blackBoard.inputs[EKey.A] = false;
+				blackBoard.inputs[EKey.D] = false;
 				break;
 			case 1:
-				inputs[EKey.D] = true;
+				blackBoard.inputs[EKey.D] = true;
 				break;
 		}
 
 		switch (inputVector.y)
 		{
 			case -1:
-				inputs[EKey.S] = true;
+				blackBoard.inputs[EKey.S] = true;
 				break;
 			case 0:
-				inputs[EKey.W] = false;
-				inputs[EKey.S] = false;
+				blackBoard.inputs[EKey.W] = false;
+				blackBoard.inputs[EKey.S] = false;
 				break;
 			case 1:
-				inputs[EKey.W] = true;
+				blackBoard.inputs[EKey.W] = true;
 				break;
 		}
 	}
@@ -325,7 +339,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
-        inputs[EKey.NUM_2] = !inputs[EKey.NUM_2];
+        blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
 
         if (inputs[EKey.NUM_2])
         {
@@ -363,27 +377,28 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if(stream.IsWriting)
 		{
 			stream.SendNext(transform.rotation);
-			stream.SendNext(playerData.rigidBody.velocity);
+			stream.SendNext(blackBoard.rigidBody.velocity);
 		}
 		else if(stream.IsReading)
 		{
 			transform.rotation = (Quaternion)stream.ReceiveNext();
-            playerData.rigidBody.velocity = (Vector3)stream.ReceiveNext();
+            blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            transform.position += playerData.rigidBody.velocity * lag;
+            transform.position += blackBoard.rigidBody.velocity * lag;
 
         }
     }
     private void OnDrawGizmos()
     {
-		Gizmos.DrawWireSphere(transform.position, 1);
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(debugRayHit, 0.1f);
     }
 
 	public void OnDamaged(float damage)
 	{
-		playerData.hp -= damage;
-		Debug.Log($"플레이어 {damage} 타격, 현재 체력: {playerData.hp}");
-		if (playerData.hp < 0)
+        blackBoard.hp -= damage;
+		Debug.Log($"플레이어 {damage} 타격, 현재 체력: {blackBoard.hp}");
+		if (blackBoard.hp < 0)
 		{
 			Debug.Log("죽음");
         }

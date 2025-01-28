@@ -29,7 +29,6 @@ public class CustomRoomPresenter : MonoBehaviour
     public void OnSwapTeamBtn()
     {
         StringBuilder curTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
-        int playerTeamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[curTeam.ToString()];
         StringBuilder changeTeam = new StringBuilder(); 
         if (curTeam.ToString() == "RT")
             changeTeam.Append("BT");
@@ -37,7 +36,6 @@ public class CustomRoomPresenter : MonoBehaviour
             changeTeam.Append("RT");
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam.ToString() } });
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", playerTeamIndex + 1 } });
     }
     
     public void SetRoomOwner()

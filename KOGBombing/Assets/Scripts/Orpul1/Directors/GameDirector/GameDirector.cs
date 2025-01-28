@@ -26,10 +26,11 @@ namespace Orpul1
             if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == "BT")
                 spawnIndex = 1;
             Vector3 spawnPosi = teamSpawnPoints[spawnIndex].position;
-            Debug.Log($"teamSpawnSpot : {teamSpawnSpot}");
-            spawnPosi.x += 1 - (teamSpawnSpot % 2) * 0.5f;
-            spawnPosi.y += teamSpawnSpot * 0.5f;
+            spawnPosi.x += (teamSpawnSpot % 2) * 0.5f - 1 * 2;
+            spawnPosi.z += teamSpawnSpot * 0.5f * 2;
 
+            Debug.Log($"teamSpawnSpot : {teamSpawnSpot}");
+            Debug.Log($"spawnPosi : {spawnPosi}");
             GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/Player", spawnPosi, Quaternion.Euler(0, 45, 0));
             GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;

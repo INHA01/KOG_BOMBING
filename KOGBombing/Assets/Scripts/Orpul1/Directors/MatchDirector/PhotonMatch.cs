@@ -17,21 +17,17 @@ namespace Orpul1
         }
         protected abstract IEnumerator CoWaitMatch();
         
-        public override void OnPlayerEnteredRoom(Player newPlayer)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                newPlayer.SetCustomProperties(new PhotonHashTable { { "Team", SetTeam().ToString() } });
-            }
-        }
         public override void OnJoinedRoom()
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("masterJoin!");
-                PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", SetTeam().ToString() } });
-            }
+            Debug.Log("JoinRoom!");
+            StringBuilder stbTeam = SetTeam();
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", stbTeam.ToString() } });
+
+            int teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[stbTeam.ToString()] + 1;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
         }
+
         public override void OnJoinedLobby()
         {
             Debug.Log("JoinLobby");
@@ -39,6 +35,7 @@ namespace Orpul1
         }
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
+            Debug.Log("PlayerLeftRoom");
             if ((string)otherPlayer.CustomProperties["Team"]=="RT")
             {
                 int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
@@ -49,10 +46,25 @@ namespace Orpul1
                 int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam - 1 } });
             }
-            
-        }
+
+            StringBuilder stbTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+
+            int teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[stbTeam.ToString()] + 1;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
+        }/*
+        public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)
+        {
+            if(targetPlayer == PhotonNetwork.LocalPlayer)
+            {
+                StringBuilder stbTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+
+                int teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[stbTeam.ToString()] + 1;
+                PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
+            }
+        }*/
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
+            Debug.Log("RoomUpdate");
             if (propertiesThatChanged.ContainsKey("RoomState"))
             {
                 if ((string)propertiesThatChanged["RoomState"] == "Start")

@@ -33,6 +33,10 @@ namespace Orpul1
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                newPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "RT" } });
+            }
             UpdatePlayer(newPlayer);
         }
         public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -83,14 +87,13 @@ namespace Orpul1
         }
         private void SetPlayerTeam(Player playerInfo)
         {
+            int teamIndex = (int)ETeamType.BLUETEAM;
             if ((string)playerInfo.CustomProperties["Team"] == "RT")
             {
-                dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[(int)ETeamType.REDTEAM]);
+                teamIndex = (int)ETeamType.REDTEAM;
             }
-            else
-            {
-                dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[(int)ETeamType.BLUETEAM]);
-            }
+
+            dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[teamIndex]);
         }
         private int GetTeamIndex()
         {

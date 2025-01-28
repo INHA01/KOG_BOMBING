@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System.Text;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 public class CustomRoomPresenter : MonoBehaviour
@@ -27,16 +28,16 @@ public class CustomRoomPresenter : MonoBehaviour
     }
     public void OnSwapTeamBtn()
     {
-        if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == "RT") 
-        {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "BT" } });
-            Debug.Log("Swap Blue TEAM");
-        }
+        StringBuilder curTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+        int playerTeamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[curTeam.ToString()];
+        StringBuilder changeTeam = new StringBuilder(); 
+        if (curTeam.ToString() == "RT")
+            changeTeam.Append("BT");
         else
-        {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "RT" } });
-            Debug.Log("Swap Red TEAM");
-        }
+            changeTeam.Append("RT");
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam.ToString() } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", playerTeamIndex + 1 } });
     }
     
     public void SetRoomOwner()

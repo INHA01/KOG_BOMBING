@@ -181,7 +181,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Vector3 debugRayHit = Vector3.zero;
 	public INode.ENodeState RotatePlayer()
 	{
-		Debug.Log($"blackBoard.mousePos: {blackBoard.mousePos}");
 
         Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos);
         RaycastHit hit;

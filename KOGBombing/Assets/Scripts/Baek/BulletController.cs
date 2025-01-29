@@ -8,13 +8,15 @@ public class BulletController : PooledObject
     [HideInInspector] public string strTeamBullet;
     [SerializeField] int damage = 20;
 
-    [HideInInspector] public Vector3 shootDirection;
+   //Vector3 shootDirection = Vector3.zero;
+   [HideInInspector] public Vector3 shootDirection;
     float destroyDistance;
     float distance;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
+
     void Update()
     {
-        transform.Translate(shootDirection *moveSpeed * Time.deltaTime);
+        transform.Translate(shootDirection * moveSpeed * Time.deltaTime);
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {
@@ -46,6 +48,13 @@ public class BulletController : PooledObject
             // << :
             Rigidbody rigidbody = collision.collider.GetComponent<Rigidbody>();
             rigidbody.AddForce(shootDirection * 10, ForceMode.Impulse);
+            /*Vector3 collisionDir = (collision.transform.position - transform.position).normalized;
+            Debug.Log($"collisionObjPosi {collision.transform.position}");
+            Debug.Log($"bulletPosi {transform.position}");
+            collisionDir.y = 0;
+            Debug.Log($"CollisionDir {collisionDir}");
+            
+            rigidbody.AddForce(collisionDir * 10, ForceMode.Impulse);*/
             distance = 0;
             Release();
         }

@@ -64,7 +64,7 @@ namespace Orpul1
             {
                 Debug.Log("RadnomJoinRoom");
                 base.OnJoinedRoom();
-                StartCoroutine("CoWaitPlayers");
+                StartCoroutine(CoWaitPlayers());
             }
         }
 

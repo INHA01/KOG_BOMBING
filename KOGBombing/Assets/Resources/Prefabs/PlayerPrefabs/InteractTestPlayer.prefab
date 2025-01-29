@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 1084845064576805521, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_Name
-      value: SinglePlayer
+      value: InteractTestPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 1094112876497018481, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -63,8 +63,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9216994139945491648, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: playerLookObj
+      value: 
+      objectReference: {fileID: 5866233137771889554}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d02381c6c6de984598d9a59a2b73761, type: 3}
+--- !u!4 &5866233137771889554 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1368636139714485546, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 4870454585861693112}
+  m_PrefabAsset: {fileID: 0}

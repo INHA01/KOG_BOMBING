@@ -72,16 +72,7 @@ namespace Orpul1
                 }
             }
         }
-        private IEnumerator CoStartDelay()
-        {
-            float delayTime = Time.time + 3f;
-
-            while(Time.time <delayTime) yield return null;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.IsMessageQueueRunning = true;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(3);
-        }
+       
         protected StringBuilder SetTeam()
         {
             int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
@@ -97,6 +88,15 @@ namespace Orpul1
                 return new StringBuilder("RT");
             }
         }
-        
+        protected virtual IEnumerator CoStartDelay()
+        {
+            float delayTime = Time.time + 3f;
+
+            while (Time.time < delayTime) yield return null;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.IsMessageQueueRunning = true;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LoadLevel(3);
+        }
     }
 }

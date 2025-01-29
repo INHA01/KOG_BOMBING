@@ -69,5 +69,17 @@ namespace Orpul1
             Debug.Log("lobby Match");
             PhotonNetwork.JoinLobby(customLobby);
         }
+
+        protected override IEnumerator CoStartDelay()
+        {
+            matchUIController.DeactiveCustomRoomBtn();
+            float delayTime = Time.time + 3f;
+
+            while (Time.time < delayTime) yield return null;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.IsMessageQueueRunning = true;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LoadLevel(3);
+        }
     }
 }

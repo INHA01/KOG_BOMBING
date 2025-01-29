@@ -21,6 +21,7 @@ namespace Orpul1
         }
         public void DeactiveBtn()
         {
+            StartCoroutine(CoStartCounting());
             view.btnStartGame.interactable = false;
             view.btnQuitRoom.interactable = false;
             view.btnSwapTeam.interactable = false;
@@ -35,7 +36,6 @@ namespace Orpul1
         }
         public void OnStartRoomBtn()
         {
-            StartCoroutine(CoStartCounting());
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
         }
         public void OnSwapTeamBtn()

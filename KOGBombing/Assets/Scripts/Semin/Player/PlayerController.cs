@@ -254,7 +254,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
                     playerData.playerObj.transform.eulerAngles.y));
 			}
 
-			if (inputs[EKey.LMOUSEBUTTON])
+			if (blackBoard.inputs[EKey.LMOUSEBUTTON])
 			{
 				animChange = StartCoroutine(WaitForChangeAnim(0.5f));
                 playerData.supportWeapon.Use();
@@ -340,7 +340,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
 
-        if (inputs[EKey.NUM_2])
+        if (blackBoard.inputs[EKey.NUM_2])
         {
             playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, true);
             if (playerData.supportWeapon is SupportWeaponBase baseWeapon)
@@ -358,7 +358,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public void OnInteract(InputValue value)
 	{
-        inputs[EKey.F] = value.isPressed;
+		blackBoard.inputs[EKey.F] = value.isPressed;
     }
 
     public int ConvertToThreeValues(float value)

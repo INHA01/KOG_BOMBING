@@ -2277,9 +2277,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521044485f8de454ebe2c9e511d16062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 5458196951130243384}
   customRoomPanel: {fileID: 3409126420982512264}
   customRoomListPanel: {fileID: 8825143411013857581}
   btnStartGame: {fileID: 5332391508239544297}
+  btnQuitRoom: {fileID: 4551645193447393622}
+  btnSwapTeam: {fileID: 4473348104093973340}
+  tmpStartBtnText: {fileID: 1389234850688120414}
 --- !u!114 &2480094515827066345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3020,14 +3024,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 48
-    m_Right: 0
+    m_Right: 35
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0

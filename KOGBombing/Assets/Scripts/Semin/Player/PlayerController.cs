@@ -73,14 +73,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		//playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
-		playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
+		playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
+		//playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
 
 		if (playerData.supportWeapon is SupportWeaponBase support)
-			support.SetConsum(WeaponType.LANDMINE);
-        playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-		//playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-		playerData.animator.SetTeam("BT");
+			//support.SetConsum(WeaponType.LANDMINE);
+			support.SetConsum(WeaponType.MOLOTOV);
+        //playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
+		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
+		playerData.animator.SetTeam("RT");
 
 		SetTeamFieldOfView();
 	}
@@ -291,14 +292,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public bool IsAttackTeam()
 	{
-		//return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
-		return false;
+		return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
+		//return false;
 	}
 
 	public bool IsDefenceTeam()
 	{
-		return true;
-		//return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
+		//return true;
+		return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
 	}
 
     #endregion

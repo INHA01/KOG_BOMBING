@@ -95,7 +95,7 @@ Shader "Custom/Lit Max Stencil Object"
             {
                 fixed4 col = tex2D(_BASE_COLOR_MAP, i.uv);
                 
-                col.rgb *= (1.0 - 0.7f); // 어둡게 할 비율에 따라 색상 조정
+                col.rgb *= (1.0 - 0.96f); // 어둡게 할 비율에 따라 색상 조정
                 
                 return col;
             }

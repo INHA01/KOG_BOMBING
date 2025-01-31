@@ -11533,6 +11533,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8687481529937385226, guid: 98b012e4433e9b34892c450121fa94e0,
+        type: 3}
+      propertyPath: uiCanvas
+      value: 
+      objectReference: {fileID: 7311826506875935070, guid: 8a04623d92eaba644bf17a41d952562c,
+        type: 3}
     - target: {fileID: 8971347490359471377, guid: 98b012e4433e9b34892c450121fa94e0,
         type: 3}
       propertyPath: m_Name
@@ -12291,7 +12297,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141300555}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09f9b3507b02b1740bead1639eee63d0, type: 3}
   m_Name: 

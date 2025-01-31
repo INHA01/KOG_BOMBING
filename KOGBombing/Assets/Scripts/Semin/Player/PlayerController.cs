@@ -108,7 +108,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	private void Update()
 	{
-		if (playerData.animator != null)
+        if (!playerData.pv.IsMine) return;
+
+        if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();

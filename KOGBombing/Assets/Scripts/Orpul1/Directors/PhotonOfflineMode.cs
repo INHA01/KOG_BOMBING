@@ -13,6 +13,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     [SerializeField]
     GameObject playerCamera;
 
+    UIScene _uiScene;
+
     private void Awake()
     {
         PhotonNetwork.OfflineMode = true;
@@ -49,5 +51,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
         cameraObj.GetComponent<PlayerCamera>().target = playerObj;
         playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
+        _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+        _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
     }
 }

@@ -11,10 +11,6 @@ namespace Orpul1
         GameObject playerCamera;
         [SerializeField]
         Transform[] teamSpawnPoints;
-        private void Awake()
-        {
-            Application.targetFrameRate = 60;
-        }
         void Start()
         {
             SpawnPlayer();

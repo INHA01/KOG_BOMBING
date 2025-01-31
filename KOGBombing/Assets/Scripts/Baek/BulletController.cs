@@ -28,8 +28,6 @@ public class BulletController : PooledObject
     {
         string mineTeam = (string)pView.Owner.CustomProperties["Team"];
         
-        Debug.Log($"mineTeam: {mineTeam} : otherTeam: {strTeamBullet}");
-        
         if (mineTeam == strTeamBullet) return false;
         return true;
     }

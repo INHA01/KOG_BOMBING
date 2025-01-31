@@ -6,7 +6,6 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
-using UnityEditor.Animations;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -238,8 +237,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public INode.ENodeState SetSupportWeapon()
     {
+		Debug.Log("Run SetSupportWeapon Node");
 		if (playerData.supportWeapon is ThrowableWeapon throwable)
 		{
+            Debug.Log("throwable true");
             Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos); 
 			RaycastHit hit;
 
@@ -269,6 +270,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 			if (blackBoard.inputs[EKey.LMOUSEBUTTON])
 			{
+				Debug.Log("Use Support Weapon");
 				animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
                 playerData.supportWeapon.Use();
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Throw);
@@ -279,7 +281,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		return INode.ENodeState.Running;
 	}
-
 	#endregion
 
 	#region If Decorater Node
@@ -422,6 +423,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnDamaged(float damage)
 	{
         blackBoard.hp -= damage;
+		Debug.Log($"blackBoar: {blackBoard.hp}");
 		if (blackBoard.hp < 0)
 		{
 			this.transform.position = blackBoard.spawnPoint;

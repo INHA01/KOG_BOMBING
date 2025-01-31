@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
     AttackRange attackRange;
     PlayerShooting playerShooting;
     PlayerData playerData;
-	[SerializeField] HpBar hpUi;
 	
     void Awake()
 	{
@@ -88,8 +87,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		
 		playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-
-		hpUi.transform.parent.GetComponent<Canvas>().worldCamera = viewCamera;
 
 		SetTeamFieldOfView();
 	}

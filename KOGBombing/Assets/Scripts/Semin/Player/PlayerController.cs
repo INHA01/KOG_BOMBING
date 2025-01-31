@@ -7,6 +7,7 @@ using Semin;
 using System;
 using System.Collections;
 using UnityEditor.Animations;
+using UnityEngine.UI;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     AttackRange attackRange;
     PlayerShooting playerShooting;
     PlayerData playerData;
+	[SerializeField] HpBar hpUi;
 	
     void Awake()
 	{
@@ -73,15 +75,23 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
-		//playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
-
-		if (playerData.supportWeapon is SupportWeaponBase support)
-			//support.SetConsum(WeaponType.LANDMINE);
-			support.SetConsum(WeaponType.MOLOTOV);
-        //playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
+		if ((string)playerData.pv.Owner.CustomProperties["Team"] == "RT")
+		{
+			playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
+			if (playerData.supportWeapon is SupportWeaponBase support)
+				support.SetConsum(WeaponType.MOLOTOV);
+		}
+		else
+		{
+			playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
+			if (playerData.supportWeapon is SupportWeaponBase support)
+				support.SetConsum(WeaponType.LANDMINE);
+		}
+		
+		playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-		playerData.animator.SetTeam("RT");
+
+		hpUi.transform.parent.GetComponent<Canvas>().worldCamera = viewCamera;
 
 		SetTeamFieldOfView();
 	}

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ public class DeployableWeapon : SupportWeaponBase
 
 	public override void Use()
 	{
-		AttackConsum obj = Instantiate(consum.gameObject, position, Quaternion.identity).GetComponent<AttackConsum>();
+        AttackConsum obj = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
+							.GetComponent<AttackConsum>();
 		obj.SetTeam(team);
 	}
 }

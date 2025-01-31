@@ -6,8 +6,6 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
-using UnityEditor.Animations;
-using UnityEngine.UI;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -95,6 +93,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		SetTeamFieldOfView();
 	}
+
 
 	public void SetCamera(Camera cam)
 	{
@@ -245,8 +244,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		}
 		return INode.ENodeState.Fail;
 	}
-
-	public INode.ENodeState SetSupportWeapon()
+    public INode.ENodeState SetSupportWeapon()
     {
 		Debug.Log("Run SetSupportWeapon Node");
 		if (playerData.supportWeapon is ThrowableWeapon throwable)
@@ -433,12 +431,17 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public void OnDamaged(float damage)
 	{
-        blackBoard.hp -= damage;
-		Debug.Log($"blackBoar: {blackBoard.hp}");
-		if (blackBoard.hp < 0)
-		{
-			this.transform.position = blackBoard.spawnPoint;
-			blackBoard.hp = blackBoard.maxHp;
-        }
+		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 	}
+	[PunRPC]
+	private void Damage(float damage)
+	{
+        blackBoard.hp -= damage;
+        Debug.Log($"blackBoar: {blackBoard.hp}");
+        if (blackBoard.hp < 0)
+        {
+            this.transform.position = blackBoard.spawnPoint;
+            blackBoard.hp = blackBoard.maxHp;
+        }
+    }
 }

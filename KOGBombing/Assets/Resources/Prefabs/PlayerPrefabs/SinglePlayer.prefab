@@ -259,12 +259,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackBoard:
-    hp: 200
+    hp: 0
+    maxHp: 200
     moveSpeed: 6
     rigidBody: {fileID: 1272812946582949491}
     speedValue: {x: 0, y: 0}
     mousePos: {x: 0, y: 0}
-  playerObj: {fileID: 772106139481323054}
+    spawnPoint: {x: 0, y: 0, z: 0}
   animator: {fileID: 7300479445460102179}
 --- !u!114 &9216994139945491648
 MonoBehaviour:

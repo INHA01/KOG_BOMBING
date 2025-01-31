@@ -8,7 +8,6 @@ public class BulletController : PooledObject
     [HideInInspector] public string strTeamBullet;
     [SerializeField] int damage = 20;
 
-   //Vector3 shootDirection = Vector3.zero;
    [HideInInspector] public Vector3 shootDirection;
     float destroyDistance;
     float distance;
@@ -25,7 +24,6 @@ public class BulletController : PooledObject
         }
     }
 
-    // >> : 추가된 코드(다른 팀인지 확인)
     private bool IsOtherTeam(PhotonView pView)
     {
         string mineTeam = (string)pView.Owner.CustomProperties["Team"];
@@ -35,32 +33,25 @@ public class BulletController : PooledObject
         if (mineTeam == strTeamBullet) return false;
         return true;
     }
-    // << :
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.tag == "Player")
+        if (other.tag == "Player")
         {
-            // >> : 추가된 코드
-            PhotonView pView = collision.transform.GetComponent<PhotonView>();
+            // >> : 팀 구분
+            PhotonView pView = other.transform.GetComponent<PhotonView>();
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;
-            Debug.Log("OtherTeam");
             // << :
-            Rigidbody rigidbody = collision.collider.GetComponent<Rigidbody>();
-            rigidbody.AddForce(shootDirection * 10, ForceMode.Impulse);
-            /*Vector3 collisionDir = (collision.transform.position - transform.position).normalized;
-            Debug.Log($"collisionObjPosi {collision.transform.position}");
-            Debug.Log($"bulletPosi {transform.position}");
-            collisionDir.y = 0;
-            Debug.Log($"CollisionDir {collisionDir}");
-            
-            rigidbody.AddForce(collisionDir * 10, ForceMode.Impulse);*/
+            //Rigidbody rigidbody = other.GetComponent<Rigidbody>();
+            //rigidbody.AddForce(shootDirection * 10, ForceMode.Impulse);
+            PlayerController player = other.transform.GetComponent<PlayerController>();
+            if (player != null)
+                player.OnDamaged(damage);
             distance = 0;
             Release();
         }
-        if (collision.collider.tag == "Target")
+        if (other.tag == "Target")
         {
-            //Destroy(collision.gameObject);
             distance = 0;
             Release();
         }

@@ -10,38 +10,30 @@ using System.Collections;
 public class PlayerBlackBoard
 {
     public float hp;
+	public float maxHp;
     public float moveSpeed;
     public Rigidbody rigidBody;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
     public Vector2 speedValue;
     public Vector2 mousePos;
-
+	public Vector3 spawnPoint;
 }
 
 public class PlayerController : MonoBehaviour, IPunObservable
 {
-    Vector2 mousePos;
 	[SerializeField]
     PlayerBlackBoard blackBoard;
-    [SerializeField] 
-	public GameObject playerObj;
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
-	Rigidbody rigidBody;
-	Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
-	PlayerInteract playerInteract = new PlayerInteract();
+	PlayerInteract playerInteract;
 	Camera viewCamera;
 
 	Coroutine animChange;
 	bool isChangableAnim;
-
-    // �������� �׽�Ʈ
-    Vector3 networkPosi = Vector3.zero;
-	Quaternion networkRotation = Quaternion.identity;
-
+	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
 	public enum EDirection
 	{
 		Up,
@@ -57,6 +49,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
+		playerInteract =  new PlayerInteract();
         playerShooting = GetComponent<PlayerShooting>();
         attackRange.Init(playerData.playerObj.transform, playerData);
 		playerInteract.Init(transform);
@@ -64,8 +57,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         for (int i = 0; i < (int)EKey.MAX; i++)
             blackBoard.inputs.Add((EKey)i, false);
-        /*for (int i = 0; i < (int)EKey.MAX; i++)
-			inputs.Add((EKey)i, false);*/
+		blackBoard.hp = blackBoard.maxHp;
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
@@ -113,7 +105,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
-            //playerData.animator.UpdateAnimation(playerData.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();
     }
@@ -143,16 +134,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			case EDirection.Left:
 			case EDirection.Right:
-				//movement = transform.right * Time.deltaTime * playerData.moveSpeed * playerData.speedValue.x;
 				movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x;
-				//playerData.rigidBody.MovePosition(playerData.rigidBody.position + movement);
 				blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 			case EDirection.Up:
 			case EDirection.Down:
-				//movement = transform.forward * Time.deltaTime * playerData.moveSpeed * playerData.speedValue.y;
 				movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y;
-                //playerData.rigidBody.MovePosition(playerData.rigidBody.position + movement);
                 blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 		}
@@ -174,7 +161,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public INode.ENodeState AbortInteract()
 	{
         playerInteract.AbortInteract();
-		inputs[EKey.F] = false;
+		blackBoard.inputs[EKey.F] = false;
         return INode.ENodeState.Success;
     }
 
@@ -396,10 +383,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnDamaged(float damage)
 	{
         blackBoard.hp -= damage;
-		Debug.Log($"플레이어 {damage} 타격, 현재 체력: {blackBoard.hp}");
 		if (blackBoard.hp < 0)
 		{
-			Debug.Log("죽음");
+			this.transform.position = blackBoard.spawnPoint;
+			blackBoard.hp = blackBoard.maxHp;
         }
 	}
 }

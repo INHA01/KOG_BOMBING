@@ -16,6 +16,8 @@ public class AttackRange
 
     public void Init(Transform model , PlayerData playerData)
     {
+        if (!playerData.pv.IsMine) return;
+
         this.playerData = playerData;
 
         attackRange = playerData.AttackRange;

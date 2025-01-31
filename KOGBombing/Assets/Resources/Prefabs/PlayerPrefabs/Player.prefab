@@ -148,6 +148,11 @@ PrefabInstance:
       propertyPath: m_SynchronizeRotation
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9216994139945491648, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: playerLookObj
+      value: 
+      objectReference: {fileID: 7191504624741068246}
     - target: {fileID: 9218072504105106236, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_SynchronizePosition
@@ -195,6 +200,18 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 2
     Name: Shoot
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsMoving
+  - Type: 9
+    SynchronizeType: 0
+    Name: Throw
+  - Type: 9
+    SynchronizeType: 0
+    Name: Cancel
+  - Type: 4
+    SynchronizeType: 0
+    Name: Granade
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -260,6 +277,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8176e5b06974834468513915feb84a74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &7191504624741068246 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1368636139714485546, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 8156867798748147964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7880054976068676454 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,

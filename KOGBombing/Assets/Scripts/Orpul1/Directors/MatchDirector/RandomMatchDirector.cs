@@ -55,7 +55,6 @@ namespace Orpul1
                 Debug.Log($"randomMatch {isRandomMatch}");
                 base.OnJoinedLobby();
                 PhotonNetwork.JoinRandomRoom();
-                //PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.FillRoom,randomMatchLobby,null,null, SetRoomOption());
             }
         }
 
@@ -65,7 +64,7 @@ namespace Orpul1
             {
                 Debug.Log("RadnomJoinRoom");
                 base.OnJoinedRoom();
-                StartCoroutine("CoWaitPlayers");
+                StartCoroutine(CoWaitPlayers());
             }
         }
 

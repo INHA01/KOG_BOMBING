@@ -1,53 +1,79 @@
 using Photon.Pun;
+using System.Text;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
-public class CustomRoomPresenter : MonoBehaviour
-{
-    [SerializeField]
-    CustomRoomView view;
+using System.Collections;
 
-    private void Start()
+namespace Orpul1
+{
+    public class CustomRoomPresenter : MonoBehaviour
     {
-        view.customRoomPanel.SetActive(false);
-    }
-    public void ActiveUIPanel()
-    {
-        view.customRoomPanel.SetActive(true);
-    }
-    public void OnLeaveRoomBtn()
-    {
-        view.customRoomPanel.SetActive(false);
-        view.customRoomListPanel.SetActive(false);
-        Debug.Log("Click Leave Room Button");
-        PhotonNetwork.LeaveRoom();
-    }
-    public void OnStartRoomBtn()
-    {
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
-    }
-    public void OnSwapTeamBtn()
-    {
-        if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == "RT") 
+        [SerializeField]
+        CustomRoomView view;
+
+        private void Start()
         {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "BT" } });
-            Debug.Log("Swap Blue TEAM");
+            view.customRoomPanel.SetActive(false);
         }
-        else
+        public void ActiveUIPanel()
         {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "RT" } });
-            Debug.Log("Swap Red TEAM");
+            view.customRoomPanel.SetActive(true);
+        }
+        public void DeactiveBtn()
+        {
+            StartCoroutine(CoStartCounting());
+            view.btnStartGame.interactable = false;
+            view.btnQuitRoom.interactable = false;
+            view.btnSwapTeam.interactable = false;
+            
+        }
+        public void OnLeaveRoomBtn()
+        {
+            view.customRoomPanel.SetActive(false);
+            view.customRoomListPanel.SetActive(false);
+            view.background.SetActive(false);
+            PhotonNetwork.LeaveRoom();
+        }
+        public void OnStartRoomBtn()
+        {
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
+        }
+        public void OnSwapTeamBtn()
+        {
+            StringBuilder curTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+            StringBuilder changeTeam = new StringBuilder();
+            if (curTeam.ToString() == "RT")
+                changeTeam.Append("BT");
+            else
+                changeTeam.Append("RT");
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam.ToString() } });
+        }
+
+        public void SetRoomOwner()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                view.btnStartGame.interactable = true;
+            }
+            else
+            {
+                view.btnStartGame.interactable = false;
+            }
+        }
+        private IEnumerator CoStartCounting()
+        {
+            int delayCnt = 3;
+            
+            view.btnStartGame.interactable = false;
+            for (int count = delayCnt;  count > 0; count--)
+            {
+                view.tmpStartBtnText.text = "Waiting for " + count.ToString();
+                yield return new WaitForSeconds(1);
+            }
+            view.tmpStartBtnText.text = "Starting...";
         }
     }
     
-    public void SetRoomOwner()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            view.btnStartGame.interactable = true;
-        }
-        else
-        {
-            view.btnStartGame.interactable = false;
-        }
-    }
+
 }

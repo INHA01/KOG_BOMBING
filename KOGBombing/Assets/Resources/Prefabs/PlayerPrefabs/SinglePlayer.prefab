@@ -261,11 +261,11 @@ MonoBehaviour:
   blackBoard:
     hp: 200
     moveSpeed: 6
-    rigidBody: {fileID: 0}
+    rigidBody: {fileID: 1272812946582949491}
     speedValue: {x: 0, y: 0}
     mousePos: {x: 0, y: 0}
-  playerObj: {fileID: 0}
-  animator: {fileID: 0}
+  playerObj: {fileID: 772106139481323054}
+  animator: {fileID: 7300479445460102179}
 --- !u!114 &9216994139945491648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +294,7 @@ MonoBehaviour:
   moveSpeed: 6
   rigidBody: {fileID: 0}
   playerObj: {fileID: 772106139481323054}
+  playerLookObj: {fileID: 1368636139714485546}
   animator: {fileID: 7300479445460102179}
   weapons:
   - Name: Gun

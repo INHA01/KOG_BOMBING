@@ -24,6 +24,10 @@ namespace Orpul1
         public override void OnJoinedRoom()
         {
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "RT" } });
+            }
             Player[] players = PhotonNetwork.PlayerList;
             for(int i=0; i<players.Length; i++)
             {
@@ -48,7 +52,7 @@ namespace Orpul1
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
             if (targetPlayer.CustomProperties.ContainsKey("Team"))
             {
-                SetPlayerTeam(targetPlayer);
+                SwapPlayerTeam(targetPlayer);
             }
         }
         
@@ -66,31 +70,21 @@ namespace Orpul1
                     teamIndex = GetTeamIndex();
                 }
                 GameObject playerPanelObj = Instantiate(playerPanelPref, trTeamPanel[teamIndex]);
-                DisplayPlayerPresenter presenter = playerPanelObj.GetComponent<DisplayPlayerPresenter>();
-                presenter.Init(new StringBuilder(playerInfo.NickName), new StringBuilder("0"));
-                dicPlayerInfo.Add(playerInfo.NickName, presenter);
+                DisplayPlayerPresenter panel = playerPanelObj.GetComponent<DisplayPlayerPresenter>();
+                panel.Init(new StringBuilder(playerInfo.NickName), new StringBuilder("0"));
+                dicPlayerInfo.Add(playerInfo.NickName, panel);
             }
         }
 
-        public void RemoveAllInfo()
+        private void SwapPlayerTeam(Player playerInfo)
         {
-            List<string> keyList = new List<string>(dicPlayerInfo.Keys);
-            for (int i=0; i< keyList.Count; i++)
-            {
-                Destroy(dicPlayerInfo[keyList[i]].gameObject);
-                dicPlayerInfo.Remove(keyList[i]);
-            }
-        }
-        private void SetPlayerTeam(Player playerInfo)
-        {
+            int teamIndex = (int)ETeamType.BLUETEAM;
             if ((string)playerInfo.CustomProperties["Team"] == "RT")
             {
-                dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[(int)ETeamType.REDTEAM]);
+                teamIndex = (int)ETeamType.REDTEAM;
             }
-            else
-            {
-                dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[(int)ETeamType.BLUETEAM]);
-            }
+
+            dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[teamIndex]);
         }
         private int GetTeamIndex()
         {
@@ -99,7 +93,7 @@ namespace Orpul1
             {
                 return (int)ETeamType.REDTEAM;
             }
-
+            Debug.Log("GetTeamIndex()");
             return (int)ETeamType.BLUETEAM;
         }
         private int GetTeamIndex(StringBuilder stbTeam)
@@ -108,6 +102,7 @@ namespace Orpul1
             {
                 return (int)ETeamType.REDTEAM;
             }
+            Debug.Log("GetTeamIndex(Param)");
             return (int)ETeamType.BLUETEAM;
         }
 

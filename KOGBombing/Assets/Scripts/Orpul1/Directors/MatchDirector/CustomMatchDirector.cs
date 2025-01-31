@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
 {
@@ -70,6 +68,18 @@ namespace Orpul1
             while (span > Time.time) yield return null;
             Debug.Log("lobby Match");
             PhotonNetwork.JoinLobby(customLobby);
+        }
+
+        protected override IEnumerator CoStartDelay()
+        {
+            matchUIController.DeactiveCustomRoomBtn();
+            float delayTime = Time.time + 3f;
+
+            while (Time.time < delayTime) yield return null;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.IsMessageQueueRunning = true;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LoadLevel(3);
         }
     }
 }

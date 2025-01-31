@@ -28,6 +28,7 @@ public class PlayerData : MonoBehaviour
 
     [Header("Model Anim")]
     [SerializeField] public GameObject playerObj;
+    [SerializeField] public Transform playerLookObj;
     [SerializeField] public PlayerAnimation animator;
 
     [Header("Weapon")]

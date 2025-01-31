@@ -13,6 +13,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Throw,
 		Granade,
         Cancel,
+		Landmine,
 		MAX
 	}
 
@@ -22,8 +23,8 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	GameObject playerObj;
 	Vector3 pointToLookAt;
 	Vector3 speedValue;
-
 	Vector3 netWorkPointToLookAt;
+
     void Awake()
     {
 		if (animator == null)
@@ -33,6 +34,15 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	public void SetPlayerObject(GameObject playerObj)
 	{
 		this.playerObj = playerObj;
+	}
+
+	public void SetTeam(string team)
+	{
+		if (team == "RT")
+			animator.SetBool("IsAttackTeam", true);
+		else if (team == "BT")
+			animator.SetBool("IsAttackTeam", false);
+
 	}
 
 	public void SetAnimTrigger(AnimType type)

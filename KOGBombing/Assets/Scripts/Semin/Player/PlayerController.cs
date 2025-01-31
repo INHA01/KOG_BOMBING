@@ -6,6 +6,7 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
+using UnityEditor.Animations;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -80,12 +81,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
+		//playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
+		playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
 
 		if (playerData.supportWeapon is SupportWeaponBase support)
-			support.SetConsum(WeaponType.MOLOTOV);
+			support.SetConsum(WeaponType.LANDMINE);
         playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-		
+		//playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
+		playerData.animator.SetTeam("BT");
+
 		SetTeamFieldOfView();
 	}
 
@@ -128,11 +132,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
         }
     }
 
-	IEnumerator WaitForChangeAnim(float waitTime)
+	IEnumerator WaitForChangeAnim(float waitTime, WeaponType type)
 	{
 		isChangableAnim = false;
         yield return new WaitForSeconds(waitTime);
         animChange = null;
+		ChangeWeapon(type);
 	}
 
     #region Attack Node
@@ -214,17 +219,36 @@ public class PlayerController : MonoBehaviour, IPunObservable
         return INode.ENodeState.Success;
     }
 
+	public INode.ENodeState LayingLandmine()
+	{
+		if (playerData.supportWeapon is DeployableWeapon deploy)
+		{
+			if (isChangableAnim)
+			{
+				ChangeWeapon(WeaponType.NONE);
+				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
+				playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
+				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Landmine);
+				playerData.supportWeapon.Use();
+			}
+			if (animChange != null)
+			{
+				return INode.ENodeState.Running;
+			}
+			else
+			{
+				isChangableAnim = true;
+				blackBoard.inputs[EKey.NUM_2] = false;
+				playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Landmine);
+				return INode.ENodeState.Success;
+			}
+		}
+		return INode.ENodeState.Fail;
+	}
+
 	public INode.ENodeState SetSupportWeapon()
     {
-        if (playerData.supportWeapon is DeployableWeapon deploy)
-        {
-            playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
-			playerData.supportWeapon.Use();
-			blackBoard.inputs[EKey.NUM_2] = false;
-			return INode.ENodeState.Success;
-		}
-
-		else if (playerData.supportWeapon is ThrowableWeapon throwable)
+		if (playerData.supportWeapon is ThrowableWeapon throwable)
 		{
             Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos); 
 			RaycastHit hit;
@@ -238,7 +262,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 					Debug.Log("End anim");
                     blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 					blackBoard.inputs[EKey.NUM_2] = false;
-                    ChangeWeapon(WeaponType.GUN);
                     playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
 					playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                     playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
@@ -256,7 +279,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 			if (blackBoard.inputs[EKey.LMOUSEBUTTON])
 			{
-				animChange = StartCoroutine(WaitForChangeAnim(0.5f));
+				animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
                 playerData.supportWeapon.Use();
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Throw);
                 return INode.ENodeState.Success;
@@ -278,6 +301,19 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		return playerInteract.isInteracting;
 	}
+
+	public bool IsAttackTeam()
+	{
+		//return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
+		return false;
+	}
+
+	public bool IsDefenceTeam()
+	{
+		return true;
+		//return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
+	}
+
     #endregion
     #region Input System
     public void OnAttack(InputValue value)

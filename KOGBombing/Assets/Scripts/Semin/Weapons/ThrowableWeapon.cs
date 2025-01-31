@@ -4,9 +4,12 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class ThrowableWeapon : SupportWeaponBase
 {
+	private PlayerData playerData;
 	private DecalProjector decal;
 	private LineRenderer lineRendererToTarget;
 	private LineRenderer lineRendererToRange;
@@ -22,9 +25,10 @@ public class ThrowableWeapon : SupportWeaponBase
 	public float angleEnd = 125;
 	public int segments = 20;
 
-
 	private void Awake()
 	{
+		playerData = GetComponent<PlayerData>();
+
 		decal = Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRagneDecal")).GetComponent<DecalProjector>();
 		lineRendererToTarget = (Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackLineRenderer")) as GameObject).GetComponent<LineRenderer>();
 		lineRendererToRange = (Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRangeLineRenderer")) as GameObject).GetComponent<LineRenderer>();
@@ -37,7 +41,7 @@ public class ThrowableWeapon : SupportWeaponBase
 		lineRendererToTarget.positionCount = lineCnt;
 	}
 
-	public override void SetConsum(WeaponType type)
+    public override void SetConsum(WeaponType type)
 	{
 		base.SetConsum(type);
 
@@ -86,9 +90,19 @@ public class ThrowableWeapon : SupportWeaponBase
 		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
-		StartCoroutine(ThrowConsum());
-	}
-
+        StartCoroutine(ThrowConsum());
+		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
+		
+    }
+	[PunRPC]
+	private void SpawnThrowWeapon()
+	{
+        decal.gameObject.SetActive(false);
+        lineRendererToTarget.gameObject.SetActive(false);
+        lineRendererToRange.gameObject.SetActive(false);
+        StartCoroutine(ThrowConsum());
+    }
+	
 	private void SetLineToTarget(Vector3 direction)
 	{
 		points[0] = curPos;
@@ -136,8 +150,10 @@ public class ThrowableWeapon : SupportWeaponBase
 	IEnumerator ThrowConsum()
 	{
 		float elapsedTime = 0f;
-		AttackConsum grenade = Instantiate(consum, points[0], Quaternion.identity);
-		grenade.SetTeam(team);
+        GameObject molotov = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Molotov", points[0], Quaternion.identity);
+		AttackConsum grenade = molotov.GetComponent<AttackConsum>();// Instantiate(consum, points[0], Quaternion.identity);
+
+        grenade.SetTeam(team);
 
 		while (elapsedTime < throwDuration)
 		{

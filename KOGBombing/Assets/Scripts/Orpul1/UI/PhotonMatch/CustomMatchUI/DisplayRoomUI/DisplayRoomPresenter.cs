@@ -11,7 +11,7 @@ namespace Orpul1
         DisplayRoomView view;
         DisplayRoomModel model = new DisplayRoomModel();
 
-        public void SetServerInfo(RoomInfo roomInfo)
+        public void Init(RoomInfo roomInfo)
         {
             model.roomInfo = roomInfo;
             view.tmpServerName.text = roomInfo.Name;

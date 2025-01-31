@@ -7,7 +7,7 @@ using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
 {
-    public abstract class PhotonMatch : MonoBehaviourPunCallbacks, IMatchAble
+    public abstract class PhotonMatch : MonoBehaviourPunCallbacks
     {
         [SerializeField]
         protected float updateDelay;

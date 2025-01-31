@@ -11,13 +11,13 @@ namespace Orpul1
         CreateRoomModel model = new CreateRoomModel();
         public void InputFieldSetRoomName()
         {
-            model.StbRoomName.Clear();
-            model.StbRoomName.Append(view.tmpInputRoomName.text);
+            model.stbRoomName.Clear();
+            model.stbRoomName.Append(view.tmpInputRoomName.text);
         }
         public void DropDownSetPlayerCnt()
         {
-            model.StbPlayerCnt.Clear();
-            model.StbPlayerCnt.Append(view.tmpDropDPlayerCnt.value);
+            model.stbPlayerCnt.Clear();
+            model.stbPlayerCnt.Append(view.tmpDropDPlayerCnt.value);
         }
 
         public void OnCreateRoomBtn()

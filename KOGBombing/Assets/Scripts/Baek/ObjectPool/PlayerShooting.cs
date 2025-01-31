@@ -61,7 +61,6 @@ public class PlayerShooting : MonoBehaviour
         }
         //Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
         Vector3 direction = (playerData.playerLookObj.transform.position - playerData.playerObj.transform.position);
-        Debug.Log($"dir: {direction}");
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
         bullet.GetComponent<BulletController>().strTeamBullet = (string)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)

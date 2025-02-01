@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
@@ -11,8 +12,16 @@ namespace Orpul1
     {
         [SerializeField]
         protected float updateDelay;
+        protected bool isStopMatch = false;
+        [SerializeField]
+        Button btnMatch;
+        private void Start()
+        {
+            btnMatch.interactable = true;
+        }
         public virtual void Match()
         {
+            isStopMatch = false;
             StartCoroutine(CoWaitMatch());
         }
         protected abstract IEnumerator CoWaitMatch();
@@ -31,7 +40,6 @@ namespace Orpul1
         public override void OnJoinedLobby()
         {
             Debug.Log("JoinLobby");
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "UID", PhotonNetwork.LocalPlayer.UserId } });
         }
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
@@ -55,6 +63,7 @@ namespace Orpul1
             {
                 if ((string)propertiesThatChanged["RoomState"] == "Start")
                 {
+                    btnMatch.interactable = false;
                     Player[] players = PhotonNetwork.PlayerList;
                     StringBuilder stbTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
                     int playerTeamIndex = 0;
@@ -80,22 +89,29 @@ namespace Orpul1
             if (redTeam > blueTeam)
             {
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam + 1 } });
+                Debug.Log("SetTeam BT");
                 return new StringBuilder("BT");
             }
             else
             {
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam + 1 } });
+                Debug.Log("SetTeam RT");
                 return new StringBuilder("RT");
             }
         }
         protected virtual IEnumerator CoStartDelay()
         {
             float delayTime = Time.time + 3f;
-
+            Debug.Log($"Prev Delay {Time.time}");
             while (Time.time < delayTime) yield return null;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.IsMessageQueueRunning = true;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
+            Debug.Log($"After delay {Time.time}");
+            if(PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                PhotonNetwork.IsMessageQueueRunning = true;
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+            }
+            
             PhotonNetwork.LoadLevel(3);
         }
     }

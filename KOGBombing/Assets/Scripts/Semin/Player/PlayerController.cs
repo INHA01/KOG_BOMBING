@@ -26,6 +26,11 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
+	[SerializeField]
+	List<GameObject> changeMaterialMeshs = new List<GameObject>();
+	[SerializeField]
+	List<Material> materials = new List<Material>();
+
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
 	PlayerInteract playerInteract;
@@ -84,13 +89,43 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (playerData.supportWeapon is SupportWeaponBase support)
 				support.SetConsum(WeaponType.LANDMINE);
 		}
-		
+
+		if (PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerData.pv.Owner.CustomProperties["Team"])
+		{
+			if (!playerData.pv.IsMine)
+				SetMaterialToHide();
+		}
+
 		playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 
 		SetTeamFieldOfView();
 	}
 
+	public void SetMaterialToHide()
+	{
+		int index = 0;
+		Debug.Log($"Meterial: {materials.Count}");
+		for (int i = 0; i < changeMaterialMeshs.Count; i++)
+		{
+			SkinnedMeshRenderer skin = changeMaterialMeshs[i].GetComponent<SkinnedMeshRenderer>();
+			MeshRenderer mesh = changeMaterialMeshs[i].GetComponent<MeshRenderer>();
+			Material[] currentMaterials = null;
+			if (skin)
+				currentMaterials = skin.materials;
+			else if (mesh)
+				currentMaterials = mesh.materials;
+			Material[] changeMaterials = new Material[currentMaterials.Length];
+
+			for (int j = 0; j < currentMaterials.Length; j++)
+				changeMaterials[j] = materials[index++];
+
+			if (skin)
+				skin.materials = changeMaterials;
+			else if (mesh)
+				mesh.materials = changeMaterials;
+		}
+	}
 
 	public void SetCamera(Camera cam)
 	{

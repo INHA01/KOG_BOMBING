@@ -22,7 +22,7 @@ public class PlayerBlackBoard
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
-    PlayerBlackBoard blackBoard;
+    public PlayerBlackBoard blackBoard;
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;

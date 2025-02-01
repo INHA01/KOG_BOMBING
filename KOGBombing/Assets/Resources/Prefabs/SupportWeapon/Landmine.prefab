@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3760219330505423870}
   - component: {fileID: 9143231483034674756}
+  - component: {fileID: 3103181033314296392}
   m_Layer: 0
   m_Name: Landmine
   m_TagString: Untagged
@@ -45,10 +46,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f279952d86edaa40ae0f883a38cf5e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   attackRange: 10
   interval: 0.5
   damage: 30
   time: 3
+--- !u!114 &3103181033314296392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076389301880976140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &6453185609055580389
 PrefabInstance:
   m_ObjectHideFlags: 0

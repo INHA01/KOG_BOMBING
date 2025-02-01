@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Semin
@@ -25,7 +26,8 @@ namespace Semin
 		IEnumerator SetTimer()
 		{
 			yield return new WaitForSeconds(time);
-			Destroy(gameObject);
+			PhotonNetwork.Destroy(gameObject);
+			//Destroy(gameObject);
 		}
 	}
 

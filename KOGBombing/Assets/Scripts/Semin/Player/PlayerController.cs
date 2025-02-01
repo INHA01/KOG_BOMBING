@@ -6,8 +6,6 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
-using UnityEditor.Animations;
-using UnityEngine.UI;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -46,7 +44,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
     AttackRange attackRange;
     PlayerShooting playerShooting;
     PlayerData playerData;
-	[SerializeField] HpBar hpUi;
 	
     void Awake()
 	{
@@ -91,10 +88,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 
-		hpUi.transform.parent.GetComponent<Canvas>().worldCamera = viewCamera;
-
 		SetTeamFieldOfView();
 	}
+
 
 	public void SetCamera(Camera cam)
 	{
@@ -183,7 +179,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
         return INode.ENodeState.Success;
     }
 
-	Vector3 debugRayHit = Vector3.zero;
 	public INode.ENodeState RotatePlayer()
 	{
 
@@ -198,7 +193,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
 				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-				debugRayHit = pointTolook;
                 /*playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, playerData.speedValue);
                 playerData.playerObj.transform.LookAt(pointTolook);*/
@@ -245,8 +239,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		}
 		return INode.ENodeState.Fail;
 	}
-
-	public INode.ENodeState SetSupportWeapon()
+    public INode.ENodeState SetSupportWeapon()
     {
 		Debug.Log("Run SetSupportWeapon Node");
 		if (playerData.supportWeapon is ThrowableWeapon throwable)
@@ -425,20 +418,20 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         }
     }
-    private void OnDrawGizmos()
-    {
-		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(debugRayHit, 0.1f);
-    }
 
 	public void OnDamaged(float damage)
 	{
-        blackBoard.hp -= damage;
-		Debug.Log($"blackBoar: {blackBoard.hp}");
-		if (blackBoard.hp < 0)
-		{
-			this.transform.position = blackBoard.spawnPoint;
-			blackBoard.hp = blackBoard.maxHp;
-        }
+		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 	}
+	[PunRPC]
+	private void Damage(float damage)
+	{
+        blackBoard.hp -= damage;
+        Debug.Log($"blackBoar: {blackBoard.hp}");
+        if (blackBoard.hp < 0)
+        {
+            this.transform.position = blackBoard.spawnPoint;
+            blackBoard.hp = blackBoard.maxHp;
+        }
+    }
 }

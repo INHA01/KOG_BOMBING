@@ -1,11 +1,7 @@
 using Photon.Pun;
 using Semin;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Molotov : AttackConsum
 {
@@ -36,13 +32,11 @@ public class Molotov : AttackConsum
 
 	public override void Use()
 	{
-		if (!pView.IsMine) return;
 		StartCoroutine(PlayParticle());
 	}
 
 	IEnumerator PlayParticle()
 	{
-		//particle.Play();
 		pView.RPC("ShowParticle", RpcTarget.AllBuffered);
 		attackCollider.enabled = true;
 		attackCollider.isTrigger = true;
@@ -50,7 +44,6 @@ public class Molotov : AttackConsum
         attackCollider.enabled = false;
         yield return new WaitForSeconds(4f);
 		PhotonNetwork.Destroy(gameObject);
-		//Destroy(gameObject);
 	}
 	[PunRPC]
 	private void ShowParticle()
@@ -60,7 +53,6 @@ public class Molotov : AttackConsum
 
 	private void OnTriggerEnter(Collider other)
 	{
-        if (!pView.IsMine) return;
         if (other.tag == "Player")
 		{
 			PhotonView pView = other.transform.GetComponent<PhotonView>();
@@ -69,7 +61,7 @@ public class Molotov : AttackConsum
 			if (!IsOtherTeam(pView)) return;
 
 			PlayerController player = other.transform.GetComponent<PlayerController>();
-			if ( player != null )
+			if (player != null)
 				player.OnDamaged(Damage);
 		}
 	}

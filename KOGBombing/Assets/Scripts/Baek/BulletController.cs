@@ -36,7 +36,7 @@ public class BulletController : PooledObject
         if (other.tag == "Player")
         {
             // >> : ÆÀ ±¸ºÐ
-            PhotonView pView = other.transform.GetComponent<PhotonView>();
+            PhotonView pView = other.GetComponent<PhotonView>();
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;
             // << :

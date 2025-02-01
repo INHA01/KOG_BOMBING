@@ -8,10 +8,10 @@ namespace Orpul1
 {
     public class RoomListController : MonoBehaviourPunCallbacks
     {
-        Dictionary<string, DisplayRoomPresenter> dicRoomInfo = new Dictionary<string, DisplayRoomPresenter>();
-        
         [SerializeField] GameObject roomPanelPref;
         [SerializeField] Transform trRoomListPanel;
+
+        Dictionary<string, DisplayRoomPresenter> dicRoomInfo = new Dictionary<string, DisplayRoomPresenter>();
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
@@ -31,7 +31,7 @@ namespace Orpul1
                 if (!dicRoomInfo.ContainsKey(roomList[i].Name))
                 {
                     DisplayRoomPresenter presenter = Instantiate(roomPanelPref, trRoomListPanel).GetComponent<DisplayRoomPresenter>();
-                    presenter.SetServerInfo(roomList[i]);
+                    presenter.Init(roomList[i]);
                     dicRoomInfo.Add(roomList[i].Name, presenter);
                 }
                 else

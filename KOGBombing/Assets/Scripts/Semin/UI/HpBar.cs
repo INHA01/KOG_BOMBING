@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HpBar : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Image hp;
+    [SerializeField] Image defence;
+    float maxHp;
+    float hpValue;
+    float maxDefenece;
+    float defenceValue;
+
+    public void SetDefenceValue(float defenceValue)
     {
-        
+		this.defenceValue = defenceValue;
+        defence.fillAmount = this.defenceValue / maxDefenece;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetHpValue(float hpValue)
     {
-        
+        this.hpValue = hpValue;
+        hp.fillAmount = this.hpValue / maxHp;
     }
 }

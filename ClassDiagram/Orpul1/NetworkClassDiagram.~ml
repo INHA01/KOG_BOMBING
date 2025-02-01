@@ -89,9 +89,9 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">2056</XPD:ATTR>
-<XPD:ATTR name="Top" type="integer">1812</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">1804</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">193</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">56</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">69</XPD:ATTR>
 <XPD:REF name="Model">XT2asfH260WIraumspqEuQAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="F4Hlb0tvh0Gg1zGTwF7SSgAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="fDfTNvekZ0iE2ZErT5WcbwAA">
@@ -3045,15 +3045,15 @@
 <XPD:REF name="Views[3]">Q5/6rapKa0+m90pEWkZ5qQAA</XPD:REF>
 <XPD:ATTR name="#Operations" type="integer">2</XPD:ATTR>
 <XPD:OBJ name="Operations[0]" type="UMLOperation" guid="AQ0rj26jjEm7pyfpN1zqQgAA">
-<XPD:ATTR name="Name" type="string">SetServerInfo</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">Init</XPD:ATTR>
 <XPD:REF name="Owner">o9ToF6AK9UuXicqrcL28bgAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="waUzgyN97UeTstpAZVRekQAA">
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="3JwRdjlHVU6H3yATzfU6bAAA">
 <XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">AQ0rj26jjEm7pyfpN1zqQgAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="ojHm9hhc70uYhWBdxDIs7gAA">
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="tJH+uQYnPE2ajXNIrF30AwAA">
 <XPD:ATTR name="Name" type="string">RoomInfo</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">AQ0rj26jjEm7pyfpN1zqQgAA</XPD:REF>
 </XPD:OBJ>
@@ -3104,10 +3104,15 @@
 <XPD:ATTR name="#Associations" type="integer">2</XPD:ATTR>
 <XPD:REF name="Associations[0]">l45Poa6LiESJb8fgSzNHwAAA</XPD:REF>
 <XPD:REF name="Associations[1]">y1oGaf0wT0ye/0/kO+OilwAA</XPD:REF>
-<XPD:ATTR name="#Attributes" type="integer">1</XPD:ATTR>
+<XPD:ATTR name="#Attributes" type="integer">2</XPD:ATTR>
 <XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="IiXMBOACDkOoHPFBzsPH2AAA">
-<XPD:ATTR name="Name" type="string">roomInfo</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">RoomInfo</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">tmpServerName</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">TextMeshProUGUI</XPD:ATTR>
+<XPD:REF name="Owner">XT2asfH260WIraumspqEuQAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Attributes[1]" type="UMLAttribute" guid="nDgV0BuIy0OadbvXJpiw3gAA">
+<XPD:ATTR name="Name" type="string">tmpPlayerCount</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">TextMeshProUGUI</XPD:ATTR>
 <XPD:REF name="Owner">XT2asfH260WIraumspqEuQAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>

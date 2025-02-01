@@ -179,7 +179,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
         return INode.ENodeState.Success;
     }
 
-	Vector3 debugRayHit = Vector3.zero;
 	public INode.ENodeState RotatePlayer()
 	{
 
@@ -194,7 +193,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
 				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-				debugRayHit = pointTolook;
                 /*playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, playerData.speedValue);
                 playerData.playerObj.transform.LookAt(pointTolook);*/
@@ -419,11 +417,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             transform.position += blackBoard.rigidBody.velocity * lag;
 
         }
-    }
-    private void OnDrawGizmos()
-    {
-		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(debugRayHit, 0.1f);
     }
 
 	public void OnDamaged(float damage)

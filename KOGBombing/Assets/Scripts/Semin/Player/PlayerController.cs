@@ -6,6 +6,7 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -77,7 +78,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		if ((string)playerData.pv.Owner.CustomProperties["Team"] == "RT")
+		string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+
+        if (team == "RT")
 		{
 			playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
 			if (playerData.supportWeapon is SupportWeaponBase support)
@@ -90,14 +93,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				support.SetConsum(WeaponType.LANDMINE);
 		}
 
-		if (PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerData.pv.Owner.CustomProperties["Team"])
+		if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
 		{
 			if (!playerData.pv.IsMine)
 				SetMaterialToHide();
 		}
 
-		playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
+		playerData.supportWeapon.SetTeam(team);
+		playerData.animator.SetTeam(team);
 
 		SetTeamFieldOfView();
 	}
@@ -276,10 +279,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
     public INode.ENodeState SetSupportWeapon()
     {
-		Debug.Log("Run SetSupportWeapon Node");
 		if (playerData.supportWeapon is ThrowableWeapon throwable)
 		{
-            Debug.Log("throwable true");
             Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos); 
 			RaycastHit hit;
 
@@ -309,7 +310,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 			if (blackBoard.inputs[EKey.LMOUSEBUTTON])
 			{
-				Debug.Log("Use Support Weapon");
 				animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
                 playerData.supportWeapon.Use();
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Throw);
@@ -462,9 +462,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
     public void OnRigidity(float time)
     {
-        Debug.Log($"°æÁ÷");
-		playerData.speedDebuffPercent = 0.5f;
-		StartCoroutine(ResetRigidity(time));
+        playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
     }
 
 	IEnumerator ResetRigidity(float time)
@@ -484,5 +482,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
             this.transform.position = blackBoard.spawnPoint;
             blackBoard.hp = blackBoard.maxHp;
         }
+    }
+
+    [PunRPC]
+    private void Rigidity(float time)
+	{
+        playerData.speedDebuffPercent = 0.5f;
+        StartCoroutine(ResetRigidity(time));
     }
 }

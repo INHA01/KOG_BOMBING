@@ -16,14 +16,17 @@ namespace Semin
 
         public abstract void Use();
 
-		public void SetTeam(string team)
+		public virtual void SetTeam(string team)
 		{
 			this.team = team;
+            Debug.Log($"team: {team}");
         }
 
         protected bool IsOtherTeam(PhotonView pView)
         {
             string otherTeam = (string)pView.Owner.CustomProperties["Team"];
+
+            Debug.Log($"otherTeam: {otherTeam}, mine: {team}");
 
             if (team == otherTeam) return false;
             return true;

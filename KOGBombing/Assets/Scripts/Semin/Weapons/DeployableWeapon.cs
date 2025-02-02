@@ -1,3 +1,4 @@
+using Knife.Effects.SimpleController;
 using Photon.Pun;
 using Semin;
 using System.Collections;
@@ -18,8 +19,9 @@ public class DeployableWeapon : SupportWeaponBase
 
 	public override void Use()
 	{
-        AttackConsum obj = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
-							.GetComponent<AttackConsum>();
-		obj.SetTeam(team);
-	}
+        Landmine landmine = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
+							.GetComponent<Landmine>();
+		landmine.SetTeam(team);
+        landmine.Use();
+    }
 }

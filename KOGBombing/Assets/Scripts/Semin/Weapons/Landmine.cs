@@ -14,6 +14,7 @@ namespace Semin
 		[Range(0f, 100f), SerializeField] private float activeTime;
         public override float Damage { get { return damage; } }
         PhotonView pView;
+        Coroutine destroyCoroutine;
 
         private void Awake()
         {
@@ -22,16 +23,28 @@ namespace Semin
 
         private void Start()
         {
-            attackCollider = gameObject.GetComponent<SphereCollider>();
-            attackCollider.isTrigger = true;
+            if (attackCollider == null)
+            {
+                attackCollider = gameObject.GetComponent<SphereCollider>();
+                attackCollider.isTrigger = false;
+            }
         }
 
         public override void Use()
 		{
-			StartCoroutine(SetTimerToDestroy());
+            destroyCoroutine = StartCoroutine(SetTimerToDestroy());
 		}
 
-		IEnumerator SetTimerToDestroy()
+        public override void SetTeam(string team)
+        {
+            base.SetTeam(team);
+            if (attackCollider == null)
+                attackCollider = gameObject.GetComponent<SphereCollider>();
+            attackCollider.isTrigger = true;
+        }
+
+
+        IEnumerator SetTimerToDestroy()
 		{
 			yield return new WaitForSeconds(activeTime);
 			PhotonNetwork.Destroy(gameObject);
@@ -41,36 +54,40 @@ namespace Semin
         {
             if (other.tag == "Player")
             {
-                PhotonView pView = other.transform.GetComponent<PhotonView>();
+                PhotonView otherPv = other.transform.GetComponent<PhotonView>();
 
-                if (!pView) return;
-                if (!IsOtherTeam(pView)) return;
+                if (!otherPv) return;
+                if (!IsOtherTeam(otherPv)) return;
 
-                StartCoroutine(Bomb());
+                StartCoroutine(Bomb(otherPv));
             }
         }
 
-        IEnumerator Bomb()
+        IEnumerator Bomb(PhotonView otherPv)
         {
             if (!pView) yield break;
             yield return new WaitForSeconds(interval);
             pView.RPC("ShowParticle", RpcTarget.AllBuffered);
+            Debug.Log("터지냐");
 
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].CompareTag("Player"))
                 {
-                    if (!IsOtherTeam(pView)) continue;
+                    if (!IsOtherTeam(otherPv)) continue;
                     PlayerController player = hitColliders[i].transform.GetComponent<PlayerController>();
                     if (player != null)
                     {
+                        Debug.Log("맞음");
                         player.OnDamaged(Damage);
                         player.OnRigidity(rigidityTime);
                     }
                 }
             }
 
+            if (destroyCoroutine != null) 
+                StopCoroutine(destroyCoroutine);
             yield return new WaitForSeconds(0.5f);
             PhotonNetwork.Destroy(gameObject);
         }

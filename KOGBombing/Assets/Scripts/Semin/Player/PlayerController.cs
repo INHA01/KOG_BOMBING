@@ -183,12 +183,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			case EDirection.Left:
 			case EDirection.Right:
-				movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x;
+				movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
 				blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 			case EDirection.Up:
 			case EDirection.Down:
-				movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y;
+				movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
                 blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 		}
@@ -458,8 +458,23 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnDamaged(float damage)
 	{
 		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
+    }
+
+    public void OnRigidity(float time)
+    {
+        Debug.Log($"경직");
+		playerData.speedDebuffPercent = 0.5f;
+		StartCoroutine(ResetRigidity(time));
+    }
+
+	IEnumerator ResetRigidity(float time)
+	{
+		yield return new WaitForSeconds(time);
+		Debug.Log("경직 상태 해제");
+		playerData.speedDebuffPercent = 1.0f;
 	}
-	[PunRPC]
+
+    [PunRPC]
 	private void Damage(float damage)
 	{
         blackBoard.hp -= damage;

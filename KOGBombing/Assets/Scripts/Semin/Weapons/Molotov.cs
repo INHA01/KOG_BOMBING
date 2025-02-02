@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class Molotov : AttackConsum
 {
-	[SerializeField] ParticleSystem particle;
 	[Range(1f, 100f), SerializeField] private float range;
 	[Range(1f, 100f), SerializeField] private float damage;
 	[Range(0f, 100f), SerializeField] private float effectTime;
-	private SphereCollider attackCollider;
 	public override float Damage { get { return damage; } }
 	public float Range { get { return range; } }
 	PhotonView pView;
+
     private void Awake()
     {
         pView = GetComponent<PhotonView>();
@@ -23,11 +22,6 @@ public class Molotov : AttackConsum
 		attackCollider = gameObject.GetComponent<SphereCollider>();
 		attackCollider.radius = range / 2;
 		attackCollider.enabled = false;
-	}
-
-	public override void Attack(GameObject gameObject)
-	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void Use()
@@ -45,11 +39,6 @@ public class Molotov : AttackConsum
         yield return new WaitForSeconds(4f);
 		PhotonNetwork.Destroy(gameObject);
 	}
-	[PunRPC]
-	private void ShowParticle()
-	{
-        particle.Play();
-    }
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -64,15 +53,5 @@ public class Molotov : AttackConsum
 			if (player != null)
 				player.OnDamaged(Damage);
 		}
-	}
-
-	private bool IsOtherTeam(PhotonView pView)
-	{
-		string otherTeam = (string)pView.Owner.CustomProperties["Team"];
-
-		Debug.Log($"mineTeam: {team} : otherTeam: {otherTeam}");
-
-		if (team == otherTeam) return false;
-		return true;
 	}
 }

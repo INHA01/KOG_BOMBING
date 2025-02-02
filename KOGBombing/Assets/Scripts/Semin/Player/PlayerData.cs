@@ -21,10 +21,8 @@ public class PlayerData : MonoBehaviour
     [SerializeField] public PhotonView pv;
 
     [Header("Player Info")]
-    [SerializeField] public float hp;
-    public Vector2 speedValue = Vector2.zero;
-    public float moveSpeed = 6;
     public Rigidbody rigidBody;
+    public float speedDebuffPercent = 1;
 
     [Header("Model Anim")]
     [SerializeField] public GameObject playerObj;

@@ -27,10 +27,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
-	[SerializeField]
-	List<GameObject> changeMaterialMeshs = new List<GameObject>();
-	[SerializeField]
-	List<Material> materials = new List<Material>();
 	[SerializeField] HpBar hpBar;
 
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
@@ -126,7 +122,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			Material[] changeMaterials = new Material[currentMaterials.Length];
 
 			for (int j = 0; j < currentMaterials.Length; j++)
-				changeMaterials[j] = materials[index++];
+				changeMaterials[j] = playerData.materials[index++];
 
 			if (skin)
 				skin.materials = changeMaterials;

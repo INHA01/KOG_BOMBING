@@ -12,8 +12,6 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     Transform spawnPosi;
     [SerializeField]
     GameObject playerCamera;
-    [SerializeField]
-    GameObject uiCanvas;
 
     private void Awake()
     {
@@ -49,9 +47,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     {
         GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/SinglePlayer", spawnPosi.position, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
-		GameObject canvasObj = Instantiate(uiCanvas);
 		cameraObj.GetComponent<PlayerCamera>().target = playerObj;
         playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
-        canvasObj.GetComponent<HpBarDirector>().SetCamera(cameraObj.GetComponent<Camera>());  
     }
 }

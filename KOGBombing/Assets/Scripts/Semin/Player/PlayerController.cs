@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	List<GameObject> changeMaterialMeshs = new List<GameObject>();
 	[SerializeField]
 	List<Material> materials = new List<Material>();
+	[SerializeField] HpBar hpBar;
 
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Coroutine animChange;
 	bool isChangableAnim;
 	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
+
 	public enum EDirection
 	{
 		Up,
@@ -97,22 +99,25 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			if (!playerData.pv.IsMine)
 				SetMaterialToHide();
-		}
+			hpBar.SetTeam(true);
+        }
+		else hpBar.SetTeam(false);
 
 		playerData.supportWeapon.SetTeam(team);
 		playerData.animator.SetTeam(team);
 
+		hpBar.Init(viewCamera, blackBoard.maxHp);
 		SetTeamFieldOfView();
 	}
 
 	public void SetMaterialToHide()
 	{
 		int index = 0;
-		Debug.Log($"Meterial: {materials.Count}");
-		for (int i = 0; i < changeMaterialMeshs.Count; i++)
+		Debug.Log($"Meterial: {playerData.materials.Count}");
+		for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
 		{
-			SkinnedMeshRenderer skin = changeMaterialMeshs[i].GetComponent<SkinnedMeshRenderer>();
-			MeshRenderer mesh = changeMaterialMeshs[i].GetComponent<MeshRenderer>();
+			SkinnedMeshRenderer skin = playerData.changeMaterialMeshs[i].GetComponent<SkinnedMeshRenderer>();
+			MeshRenderer mesh = playerData.changeMaterialMeshs[i].GetComponent<MeshRenderer>();
 			Material[] currentMaterials = null;
 			if (skin)
 				currentMaterials = skin.materials;
@@ -158,6 +163,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();
+        //canvas.transform.LookAt(Camera.main.transform);
     }
 
     void ChangeWeapon(WeaponType type)
@@ -475,6 +481,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	private void Damage(float damage)
 	{
         blackBoard.hp -= damage;
+		hpBar.SetHpValue(blackBoard.hp);
         Debug.Log($"blackBoar: {blackBoard.hp}");
         if (blackBoard.hp < 0)
         {

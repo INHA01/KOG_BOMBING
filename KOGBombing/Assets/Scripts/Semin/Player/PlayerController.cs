@@ -468,7 +468,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	IEnumerator ResetRigidity(float time)
 	{
 		yield return new WaitForSeconds(time);
-		Debug.Log("경직 상태 해제");
 		playerData.speedDebuffPercent = 1.0f;
 	}
 

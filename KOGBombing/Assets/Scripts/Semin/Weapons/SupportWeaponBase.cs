@@ -19,11 +19,11 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 		switch (type)
 		{
 			case WeaponType.LANDMINE:
-				consumObj = Resources.Load("Prefabs/SupportWeapon/Landmine") as GameObject;
+                consumObj = Managers.Resource.Instantiate("SupportWeapon/Landmine");
 				consum = consumObj.GetComponent<AttackConsum>();
 				break;
 			case WeaponType.MOLOTOV:
-				consumObj = Resources.Load("Prefabs/SupportWeapon/Molotov") as GameObject;
+				consumObj = Managers.Resource.Instantiate("SupportWeapon/Molotov");
 				consum = consumObj.GetComponent<AttackConsum>();
 				break;
         }

@@ -68,7 +68,6 @@ namespace Semin
             if (!pView) yield break;
             yield return new WaitForSeconds(interval);
             pView.RPC("ShowParticle", RpcTarget.AllBuffered);
-            Debug.Log("터지냐");
 
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
             for (int i = 0; i < hitColliders.Length; i++)
@@ -79,7 +78,6 @@ namespace Semin
                     PlayerController player = hitColliders[i].transform.GetComponent<PlayerController>();
                     if (player != null)
                     {
-                        Debug.Log("맞음");
                         player.OnDamaged(Damage);
                         player.OnRigidity(rigidityTime);
                     }

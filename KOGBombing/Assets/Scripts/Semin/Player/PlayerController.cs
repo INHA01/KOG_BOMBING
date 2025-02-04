@@ -7,6 +7,7 @@ using Semin;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using Orpul1;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -484,7 +485,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		yield return new WaitForSeconds(time);
 		playerData.speedDebuffPercent = 1.0f;
 	}
-
+    public GameDirector gameDirector;
     [PunRPC]
 	private void Damage(float damage)
 	{
@@ -495,11 +496,30 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
         if (blackBoard.hp <= 0)
         {
-            this.transform.position = blackBoard.spawnPoint;
+            if (playerData.pv.IsMine)
+			{
+                string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+                if (team == "RT")
+                    GameDirector.blueScore++;
+                else
+                    GameDirector.redScore++;
+
+                gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+
+                StartCoroutine(RespawnDelay(3.0f));
+			}
+
             blackBoard.hp = blackBoard.maxHp;
 			blackBoard.defence = blackBoard.maxDefence;
 			hpBar.InitializeValues();
+            this.transform.position = blackBoard.spawnPoint;
 		}
+    }
+	IEnumerator RespawnDelay(float time)
+	{
+        _uiScene = Managers.UI.ShowSceneUI<UIScene>("DieCanvas");
+        yield return new WaitForSeconds(time);
+        Managers.UI.CloseSceneUI();
     }
 
     [PunRPC]

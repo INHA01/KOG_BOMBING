@@ -13,11 +13,37 @@ namespace Orpul1
         [SerializeField]
         Transform[] teamSpawnPoints;
 
+        [Header("Photon")]
+        [SerializeField] public PhotonView pv;
+
         UIScene _uiScene;
+
+        public float time = 180;
+        public static int blueScore = 0;
+        public static int redScore = 0;
 
         void Start()
         {
             SpawnPlayer();
+            StartCoroutine(TimeCount());
+        }
+        [PunRPC]
+        public void UpdateScores(int newBlueScore, int newRedScore)
+        {
+            blueScore = newBlueScore;
+            redScore = newRedScore;
+        }
+        IEnumerator TimeCount()
+        {
+            while (true)
+            {
+                if ((time < 0 || blueScore > 9 || redScore > 9))
+                    break;
+                yield return null;
+                time -= Time.deltaTime;
+            }
+            Debug.Log("Time Over");
+            Managers.UI.ShowSceneUI<UIScene>("WinnerCanvas");
         }
         void SpawnPlayer()
         {
@@ -36,8 +62,10 @@ namespace Orpul1
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
             playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
             playerObj.GetComponent<PlayerController>().SpawnPoint = spawnPosi;
+            playerObj.GetComponent<PlayerController>().gameDirector = this;
 
             _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+            _uiScene.GetComponent<PlayScene>().gameDirector = this;
             _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
 
             Player[] p = PhotonNetwork.PlayerListOthers;

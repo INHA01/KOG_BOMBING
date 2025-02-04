@@ -1,3 +1,4 @@
+using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,7 +12,8 @@ public class PlayScene : MonoBehaviour
     [SerializeField] Image chargeBar;
     [SerializeField] GameObject teamProfile;
     [Header("ScoreIcon")]
-    [HideInInspector] public PhotonOfflineMode gameDirector;
+    //[HideInInspector] public PhotonOfflineMode gameDirector;
+    [HideInInspector] public GameDirector gameDirector;
     [SerializeField] TextMeshProUGUI timer;
     [SerializeField] Sprite[] blueScoreImages;
     [SerializeField] Sprite[] redScoreImages;
@@ -33,10 +35,10 @@ public class PlayScene : MonoBehaviour
             sec = "0" + sec;
         timer.text = min + ":" + sec;
 
-        if(gameDirector.redScore < 10)
-            redScoreIcon.sprite = redScoreImages[gameDirector.redScore];
-        if (gameDirector.blueScore < 10)
-            blueScoreIcon.sprite = blueScoreImages[gameDirector.blueScore];
+        if(GameDirector.redScore < 10)
+            redScoreIcon.sprite = redScoreImages[GameDirector.redScore];
+        if (GameDirector.blueScore < 10)
+            blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];
     }
     public void SetTeam(float hp)
     {

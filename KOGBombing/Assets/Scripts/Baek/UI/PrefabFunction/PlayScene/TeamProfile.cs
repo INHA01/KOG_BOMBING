@@ -8,13 +8,16 @@ using UnityEngine.UI;
 public class TeamProfile : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI nickName;
-    public Image hp;
-    public void Init()
+    public Image hpBar;
+    float maxHp;
+    public void Init(float hp)
     {
+        maxHp = hp;
+        hpBar.fillAmount = 1;
         nickName.text = Managers.UserData.userData.nickName;
     }
-    public void UpdateUI()
+    public void UpdateUI(float hp)
     {
-        
+        hpBar.fillAmount = hp / maxHp;
     }
 }

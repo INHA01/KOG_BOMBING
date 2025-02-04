@@ -12,9 +12,19 @@ public class PlayScene : MonoBehaviour
     [SerializeField] GameObject teamProfile;
     [Header("Model")]
     [HideInInspector] public PlayerShooting weapon;
+    List<TeamProfile> teamProfiles = new List<TeamProfile>();
     void Update()
     {
         magazineCount.text = weapon.MagazineCount + "/4";
         chargeBar.fillAmount = weapon.ReloadTime;
+    }
+    public void SetTeam(float hp)
+    {
+        GameObject go = null;
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        go.transform.SetParent(teamProfile.transform);
+        TeamProfile profile = go.GetComponent<TeamProfile>();
+        profile.Init(hp);
+        teamProfiles.Add(profile);
     }
 }

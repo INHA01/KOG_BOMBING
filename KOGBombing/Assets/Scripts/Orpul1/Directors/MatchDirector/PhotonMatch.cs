@@ -111,7 +111,6 @@ namespace Orpul1
                 PhotonNetwork.IsMessageQueueRunning = true;
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
-            
             PhotonNetwork.LoadLevel(3);
         }
     }

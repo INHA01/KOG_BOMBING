@@ -445,7 +445,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			stream.SendNext(transform.rotation);
 			stream.SendNext(blackBoard.rigidBody.velocity);
-			stream.SendNext(blackBoard.hp);
 		}
 		else if(stream.IsReading)
 		{
@@ -453,7 +452,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             transform.position += blackBoard.rigidBody.velocity * lag;
-			blackBoard.hp = (float)stream.ReceiveNext();
         }
     }
 

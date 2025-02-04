@@ -16,6 +16,7 @@ public class PlayerShooting : MonoBehaviour
     int magazineCount;
     [SerializeField] float reloadTime;
     [SerializeField] float shootingTerm;
+    float time;
 
     [SerializeField][Tooltip("Shot emitters array")] private ParticleGroupEmitter[] shotEmitters;
     [SerializeField] private GameObject projectilePrefab;
@@ -27,6 +28,9 @@ public class PlayerShooting : MonoBehaviour
     PlayerAnimation animator;
     AttackRange attackRange;
     PlayerData playerData;
+
+    public int MagazineCount { get { return magazineCount; } }
+    public float ReloadTime { get { return time / reloadTime; } }
 
     #region Shooting
     public void Init(PlayerAnimation animator, AttackRange attackRange)
@@ -98,11 +102,14 @@ public class PlayerShooting : MonoBehaviour
     }
     IEnumerator Reload()
     {
+        time = 0;
         while (magazineCount < InitMagazineCount)
         {
-            yield return new WaitForSeconds(reloadTime);
-            if (magazine.Count > InitBulletCount)
+            yield return null;
+            time += Time.deltaTime;
+            if((time > reloadTime) && (magazine.Count > InitBulletCount))
             {
+                time = 0;
                 magazineCount++;
                 if (bulletCount == 0)
                     bulletCount = InitBulletCount;

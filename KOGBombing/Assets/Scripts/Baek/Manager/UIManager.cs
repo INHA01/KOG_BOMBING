@@ -52,7 +52,10 @@ public class UIManager
         GameObject go = null;
         for (int i = 0; i < _scenes.Count; i++)
         {
-            if (_scenes[i].name == name) { go = _scenes[i]; }
+            if (_scenes[i].name == name) 
+            {
+                go = _scenes[i]; 
+            }
         }
         if (go == null)
         {
@@ -85,6 +88,15 @@ public class UIManager
         {
             CloseSceneUI();
         }
+    }
+    public void DestroyAllSceneUI()
+    {
+        CloseAllSceneUI();
+        for (int i = 0; i < _scenes.Count; i++)
+        {
+            Managers.Resource.Destroy(_scenes[i]);
+        }
+        _scenes.Clear();
     }
 
     public void SetCanvas(GameObject go, bool sort = true)

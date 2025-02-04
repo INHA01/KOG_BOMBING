@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
 
 namespace Orpul1
 {
@@ -11,6 +12,9 @@ namespace Orpul1
         GameObject playerCamera;
         [SerializeField]
         Transform[] teamSpawnPoints;
+
+        UIScene _uiScene;
+
         void Start()
         {
             SpawnPlayer();
@@ -32,6 +36,19 @@ namespace Orpul1
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
             playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
             playerObj.GetComponent<PlayerController>().SpawnPoint = spawnPosi;
+
+            _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+            _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
+
+            Player[] p = PhotonNetwork.PlayerListOthers;
+            for (int i = 0; i < p.Length; i++)
+            {
+                if ((string)p[i].CustomProperties["Team"] == (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"])
+                {
+                    // hp ³Ö±â
+                    //_uiScene.GetComponent<PlayScene>().SetTeam(p[i].hp);
+                }
+            }
         }
     }
 }

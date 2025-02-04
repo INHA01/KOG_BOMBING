@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     AttackRange attackRange;
     PlayerShooting playerShooting;
     PlayerData playerData;
+	PlayerMaterialController playerMaterialController;
 	
     void Awake()
 	{
@@ -55,11 +56,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		attackRange = new AttackRange();
 		playerInteract =  new PlayerInteract();
         playerShooting = GetComponent<PlayerShooting>();
-        attackRange.Init(playerData.playerObj.transform, playerData);
+		playerMaterialController = GetComponent<PlayerMaterialController>();
+
+		attackRange.Init(playerData.playerObj.transform, playerData);
 		playerInteract.Init(transform);
 		playerShooting.Init(playerData.animator,attackRange);
+		playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
 
-        for (int i = 0; i < (int)EKey.MAX; i++)
+		for (int i = 0; i < (int)EKey.MAX; i++)
             blackBoard.inputs.Add((EKey)i, false);
 		blackBoard.hp = blackBoard.maxHp;
 
@@ -68,7 +72,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		SetTeamFieldOfView();
 
         playerData.animator.SetPlayerObject(playerData.playerObj);
-
 	}
 
 	private void Start()
@@ -94,47 +97,33 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
 		{
 			if (!playerData.pv.IsMine)
-				SetMaterialToHide();
-			hpBar.SetTeam(true);
+				playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials);
+			hpBar.SetIsMyTeam(true);
         }
-		else hpBar.SetTeam(false);
+		else hpBar.SetIsMyTeam(false);
 
 		playerData.supportWeapon.SetTeam(team);
 		playerData.animator.SetTeam(team);
 
-		hpBar.Init(viewCamera, blackBoard.maxHp);
+		hpBar.Init(blackBoard.maxHp);
 		SetTeamFieldOfView();
-	}
-
-	public void SetMaterialToHide()
-	{
-		int index = 0;
-		Debug.Log($"Meterial: {playerData.materials.Count}");
-		for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
-		{
-			SkinnedMeshRenderer skin = playerData.changeMaterialMeshs[i].GetComponent<SkinnedMeshRenderer>();
-			MeshRenderer mesh = playerData.changeMaterialMeshs[i].GetComponent<MeshRenderer>();
-			Material[] currentMaterials = null;
-			if (skin)
-				currentMaterials = skin.materials;
-			else if (mesh)
-				currentMaterials = mesh.materials;
-			Material[] changeMaterials = new Material[currentMaterials.Length];
-
-			for (int j = 0; j < currentMaterials.Length; j++)
-				changeMaterials[j] = playerData.materials[index++];
-
-			if (skin)
-				skin.materials = changeMaterials;
-			else if (mesh)
-				mesh.materials = changeMaterials;
-		}
+		playerMaterialController.SaveCurrentMaterial();
+		//StartCoroutine(DamageTest(0.5f, 10));
 	}
 
 	public void SetCamera(Camera cam)
 	{
 		viewCamera = cam;
 	}
+
+	//public IEnumerator DamageTest(float time, float damage)
+	//{
+	//	while (true )
+	//	{
+	//		yield return new WaitForSeconds(time);
+	//		OnDamaged(damage);
+	//	}
+	//}
 
 	void SetTeamFieldOfView()
 	{
@@ -460,6 +449,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnDamaged(float damage)
 	{
 		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
+		playerMaterialController.Hit();
     }
 
     public void OnRigidity(float time)

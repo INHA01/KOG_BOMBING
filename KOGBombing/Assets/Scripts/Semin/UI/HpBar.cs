@@ -34,19 +34,20 @@ public class HpBar : MonoBehaviour
 
     }
 
-    public void Init(Camera camera, float maxHp)
+    public void Init(float maxHp)
     {
-        mainCamera = camera;
+        mainCamera = Camera.main;
         this.maxHp = maxHp;
-        transform.GetComponent<Canvas>().worldCamera = camera;
+        transform.GetComponent<Canvas>().worldCamera = GetComponent<Camera>();
     }
 
     private void Update()
     {
-        transform.rotation = mainCamera.transform.rotation;
+        if (mainCamera != null)
+            transform.rotation = mainCamera.transform.rotation;
     }
 
-    public void SetTeam(bool isOtherTeam)
+    public void SetIsMyTeam(bool isOtherTeam)
     {
         GameObject team;
         if (isOtherTeam)

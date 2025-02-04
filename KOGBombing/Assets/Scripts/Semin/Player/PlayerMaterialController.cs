@@ -21,6 +21,7 @@ public class PlayerMaterialController : MonoBehaviour
 	{
 		this.changeMaterials = changeMaterials;
 		SetMaterialToHide();
+		hitMaterial = Managers.Resource.Load<Material>("Materials/HitHideMaterial");
 	}
 
 	public void SetMaterialToHide()

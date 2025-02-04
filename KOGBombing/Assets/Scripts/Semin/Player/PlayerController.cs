@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	//public IEnumerator DamageTest(float time, float damage)
 	//{
-	//	while (true )
+	//	while (true)
 	//	{
 	//		yield return new WaitForSeconds(time);
 	//		OnDamaged(damage);
@@ -148,7 +148,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();
-        //canvas.transform.LookAt(Camera.main.transform);
     }
 
     void ChangeWeapon(WeaponType type)
@@ -448,7 +447,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 		playerMaterialController.Hit();
-    }
+		if (playerData.pv.IsMine)
+			viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
+	}
 
     public void OnRigidity(float time)
     {

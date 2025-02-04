@@ -14,6 +14,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Granade,
         Cancel,
 		Landmine,
+		Shoot,
 		MAX
 	}
 
@@ -24,6 +25,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	Vector3 pointToLookAt;
 	Vector3 speedValue;
 	Vector3 netWorkPointToLookAt;
+	Transform bulletPoint;
 
     void Awake()
     {
@@ -31,18 +33,14 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			animator = GetComponent<Animator>();
     }
 
-	public void SetPlayerObject(GameObject playerObj)
+	public void Init(GameObject playerObj, string team, Transform bulletPoint)
 	{
 		this.playerObj = playerObj;
-	}
-
-	public void SetTeam(string team)
-	{
 		if (team == "RT")
 			animator.SetBool("IsAttackTeam", true);
 		else if (team == "BT")
 			animator.SetBool("IsAttackTeam", false);
-
+		this.bulletPoint = bulletPoint;
 	}
 
 	public void SetAnimTrigger(AnimType type)
@@ -153,7 +151,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	private void OnAnimatorIK(int layerIndex)
 	{
 		if (animator == null) return;
-		if(pv.IsMine)
+		if (pv.IsMine)
 		{
 			animator.SetLookAtPosition(pointToLookAt);
 			animator.SetLookAtWeight(1.0f);
@@ -162,7 +160,12 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		{
 			animator.SetLookAtPosition(netWorkPointToLookAt);
 			animator.SetLookAtWeight(1.0f);
-        }
+		}
+		if (GetCurAnim(AnimType.Shoot))
+		{
+			animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+			animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
+		}
 	}
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -174,6 +177,6 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		else if(stream.IsReading)
 		{
 			netWorkPointToLookAt = (Vector3)stream.ReceiveNext();
-        }
+		}
     }
 }

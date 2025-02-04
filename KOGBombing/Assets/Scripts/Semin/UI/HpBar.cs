@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class HpBar : MonoBehaviour
 {
@@ -13,32 +14,49 @@ public class HpBar : MonoBehaviour
     [SerializeField] GameObject otherTeam;
     float maxHp;
     float hpValue;
-    float maxDefenece;
+    float maxDefence;
     float defenceValue;
     float decreaseTime = 0.5f;
+    float damageValue;
+    float targetHp, targetDefence;
     Camera mainCamera;
     Coroutine decrease;
 
-    public void SetDefenceValue(float defenceValue)
-    {
-		this.defenceValue = defenceValue;
-        defence.fillAmount = this.defenceValue / maxDefenece;
-    }
-
-    public void SetHpValue(float hpValue)
+    public void SetHpValue(float hpValue, float defenceValue)
     {
         if (decrease != null)
             StopCoroutine(decrease);
-        this.hpValue = hpValue;
+        hp.fillAmount = targetHp;
+        defence.fillAmount = targetDefence;
+        this.hpValue = hpValue / maxHp;
+        this.defenceValue = defenceValue / maxDefence;
         decrease = StartCoroutine(DecreaseHP());
-
     }
 
-    public void Init(float maxHp)
+    public void InitializeValues()
+    {
+        if (decrease != null)
+            StopCoroutine(decrease);
+		hp.fillAmount = 1f;
+		defence.fillAmount = 1f;
+        hpValue = 1f;
+        defenceValue = 1f;
+		targetHp = 1f;
+		targetDefence = 1f;
+	}
+
+    public void Init(float maxHp, float maxDefence)
     {
         mainCamera = Camera.main;
         this.maxHp = maxHp;
-        transform.GetComponent<Canvas>().worldCamera = GetComponent<Camera>();
+        this.maxDefence = maxDefence;
+        hpValue = 1f;
+        defenceValue = 1f;
+        hp.fillAmount = 1f;
+        defence.fillAmount = 1f;
+		targetHp = 1f;
+		targetDefence = 1f;
+		transform.GetComponent<Canvas>().worldCamera = GetComponent<Camera>();
     }
 
     private void Update()
@@ -63,19 +81,24 @@ public class HpBar : MonoBehaviour
 
     private IEnumerator DecreaseHP()
     {
-        float targetHP = Mathf.Max(hpValue / maxHp, 0);
         float startHP = hp.fillAmount;
-        float elapsedTime = 0f; 
+        float startDefence = defence.fillAmount;
+        float elapsedTime = 0f;
+		targetHp = Mathf.Max(hpValue, 0);
+        targetDefence = Mathf.Max(defenceValue, 0);
 
-        while (elapsedTime < decreaseTime)
+		while (elapsedTime < decreaseTime)
         {
-            hpValue = Mathf.Lerp(startHP, targetHP, elapsedTime / decreaseTime);
+            hpValue = Mathf.Lerp(startHP, targetHp, elapsedTime / decreaseTime);
+            defenceValue = Mathf.Lerp(startDefence, targetDefence, elapsedTime / decreaseTime);
             hp.fillAmount = hpValue;
+            defence.fillAmount = defenceValue;
             elapsedTime += Time.deltaTime;
-            yield return null; 
+            yield return null;
         }
 
-        hp.fillAmount = targetHP;
+        hp.fillAmount = targetHp;
+        defence.fillAmount = targetDefence; 
         decrease = null;
     }
 }

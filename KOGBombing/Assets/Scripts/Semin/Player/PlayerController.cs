@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		for (int i = 0; i < (int)EKey.MAX; i++)
             blackBoard.inputs.Add((EKey)i, false);
 		blackBoard.hp = blackBoard.maxHp;
+		blackBoard.defence = blackBoard.maxDefence;
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
@@ -119,9 +120,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		else hpBar.SetIsMyTeam(false);
 
 		playerData.supportWeapon.SetTeam(team);
-		playerData.animator.SetTeam(team);
+		playerData.animator.Init(playerData.playerObj, team, playerData.shootStartPos);
 
-		hpBar.Init(blackBoard.maxHp);
+		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
         //StartCoroutine(DamageTest(0.5f, 10));
@@ -131,6 +132,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
         }
         else
             blackBoard.nickname = playerData.pv.Owner.NickName;
+		//StartCoroutine(DamageTest(0.5f, 40));
+	}
 
         if (playerData.pv.IsMine)
 			StartCoroutine(CoWaitStart());
@@ -150,7 +153,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	//public IEnumerator DamageTest(float time, float damage)
 	//{
-	//	while (true )
+	//	while (true)
 	//	{
 	//		yield return new WaitForSeconds(time);
 	//		OnDamaged(damage);
@@ -180,7 +183,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();
-        //canvas.transform.LookAt(Camera.main.transform);
     }
 
     void ChangeWeapon(WeaponType type)
@@ -480,7 +482,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 		playerMaterialController.Hit();
-    }
+		if (playerData.pv.IsMine)
+			viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
+	}
 
     public void OnRigidity(float time)
     {
@@ -496,19 +500,27 @@ public class PlayerController : MonoBehaviour, IPunObservable
     [PunRPC]
 	private void Damage(float damage)
 	{
-        blackBoard.hp -= damage;
-		hpBar.SetHpValue(blackBoard.hp);
-		Player[] players = PhotonNetwork.PlayerList;
-        for (int i = 0; i < players.Length; i++)
-        {
-			string dicId = players[i].NickName;
-            updateProfile(dicId, PhotonDataManager.Instance.GetPlayerBlackBoard(dicId).hp);
-        }
-        if (blackBoard.hp < 0)
+        // blackBoard.hp -= damage;
+		// hpBar.SetHpValue(blackBoard.hp);
+		// Player[] players = PhotonNetwork.PlayerList;
+        // for (int i = 0; i < players.Length; i++)
+        // {
+		// 	string dicId = players[i].NickName;
+        //     updateProfile(dicId, PhotonDataManager.Instance.GetPlayerBlackBoard(dicId).hp);
+        // }
+        // if (blackBoard.hp < 0)
+		float decreaseHp = blackBoard.defence - damage;
+		blackBoard.defence = Mathf.Max(decreaseHp, 0);
+		if ( decreaseHp < 0)
+			blackBoard.hp += decreaseHp;
+		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        if (blackBoard.hp <= 0)
         {
             this.transform.position = blackBoard.spawnPoint;
             blackBoard.hp = blackBoard.maxHp;
-        }
+			blackBoard.defence = blackBoard.maxDefence;
+			hpBar.InitializeValues();
+		}
     }
 
     [PunRPC]

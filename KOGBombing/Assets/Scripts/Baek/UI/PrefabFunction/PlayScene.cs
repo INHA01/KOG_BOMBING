@@ -21,7 +21,6 @@ public class PlayScene : MonoBehaviour
     [HideInInspector] public PlayerShooting weapon;
     List<TeamProfile> teamProfiles = new List<TeamProfile>();
 
-    bool optionOpen = false;
     void Update()
     {
         magazineCount.text = weapon.MagazineCount + "/4";
@@ -38,17 +37,6 @@ public class PlayScene : MonoBehaviour
             redScoreIcon.sprite = redScoreImages[gameDirector.redScore];
         if (gameDirector.blueScore < 10)
             blueScoreIcon.sprite = blueScoreImages[gameDirector.blueScore];
-        if(Input.GetKeyDown(KeyCode.Escape))
-            if(optionOpen)
-            {
-                Managers.UI.CloseSceneUI();
-                optionOpen = false;
-            }
-            else
-            {
-                Managers.UI.ShowSceneUI<UIScene>("OptionCanvas");
-                optionOpen = true;
-            }
     }
     public void SetTeam(float hp)
     {

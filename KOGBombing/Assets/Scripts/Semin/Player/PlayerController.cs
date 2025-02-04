@@ -181,6 +181,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 
     #region Attack Node
+	public INode.ENodeState CanBehavior()
+	{
+        if (blackBoard.inputs[EKey.Escape])
+			return INode.ENodeState.Success;
+        return INode.ENodeState.Fail;
+    }	
     public INode.ENodeState Move(EDirection direction)
 	{
 		Vector3 movement;
@@ -325,7 +331,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	#endregion
 
 	#region If Decorater Node
-	public bool CheckInput(EKey key)
+    public bool CheckInput(EKey key)
 	{
 		return blackBoard.inputs[key];
 	}
@@ -347,7 +353,23 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 
     #endregion
+    UIScene _uiScene;
     #region Input System
+    public void OnCanBehavior(InputValue value)
+	{
+		blackBoard.inputs[EKey.Escape] = !blackBoard.inputs[EKey.Escape];
+		if(blackBoard.inputs[EKey.Escape])
+		{
+			_uiScene = Managers.UI.ShowSceneUI<UIScene>("OptionCanvas");
+            if (_uiScene.GetComponent<Option>().playerBlackBoard == null)
+            {
+                _uiScene.GetComponent<Option>().playerBlackBoard = blackBoard;
+            }
+        }
+        else
+            Managers.UI.CloseSceneUI();
+    }
+
     public void OnAttack(InputValue value)
 	{
         blackBoard.inputs[EKey.LMOUSEBUTTON] = value.isPressed;

@@ -5,9 +5,15 @@ using UnityEngine;
 public class Option : MonoBehaviour
 {
     [SerializeField] GameObject reCheckLobby;
+    [HideInInspector] public PlayerBlackBoard playerBlackBoard;
+    private void Awake()
+    {
+        playerBlackBoard = null;
+    }
     public void Cancel()
     {
-        this.gameObject.SetActive(false);
+        playerBlackBoard.inputs[EKey.Escape] = false;
+        Managers.UI.CloseSceneUI();
     }
     public void ReturnLobby()
     { 

@@ -26,7 +26,6 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	Vector3 speedValue;
 	Vector3 netWorkPointToLookAt;
 	Transform bulletPoint;
-	Transform networkBulletPoint;
 
     void Awake()
     {
@@ -156,21 +155,16 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		{
 			animator.SetLookAtPosition(pointToLookAt);
 			animator.SetLookAtWeight(1.0f);
-			if (GetCurAnim(AnimType.Shoot))
-			{
-				animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-				animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
-			}
 		}
 		else
 		{
 			animator.SetLookAtPosition(netWorkPointToLookAt);
 			animator.SetLookAtWeight(1.0f);
-			if (GetCurAnim(AnimType.Shoot))
-			{
-				animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-				animator.SetIKRotation(AvatarIKGoal.RightHand, networkBulletPoint.rotation);
-			}
+		}
+		if (GetCurAnim(AnimType.Shoot))
+		{
+			animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+			animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
 		}
 	}
 
@@ -179,13 +173,10 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		if(stream.IsWriting)
 		{
 			stream.SendNext(pointToLookAt);
-			stream.SendNext(networkBulletPoint);
 		}
 		else if(stream.IsReading)
 		{
 			netWorkPointToLookAt = (Vector3)stream.ReceiveNext();
-			networkBulletPoint = (Transform)stream.ReceiveNext();
-
 		}
     }
 }

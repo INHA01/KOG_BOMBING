@@ -54,6 +54,8 @@ public class HpBar : MonoBehaviour
         defenceValue = 1f;
         hp.fillAmount = 1f;
         defence.fillAmount = 1f;
+		targetHp = 1f;
+		targetDefence = 1f;
 		transform.GetComponent<Canvas>().worldCamera = GetComponent<Camera>();
     }
 

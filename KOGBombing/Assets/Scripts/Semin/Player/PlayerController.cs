@@ -70,8 +70,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
 		SetTeamFieldOfView();
-
-        playerData.animator.SetPlayerObject(playerData.playerObj);
 	}
 
 	private void Start()
@@ -103,7 +101,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		else hpBar.SetIsMyTeam(false);
 
 		playerData.supportWeapon.SetTeam(team);
-		playerData.animator.SetTeam(team);
+		playerData.animator.Init(playerData.playerObj, team, playerData.shootStartPos);
 
 		hpBar.Init(blackBoard.maxHp);
 		SetTeamFieldOfView();

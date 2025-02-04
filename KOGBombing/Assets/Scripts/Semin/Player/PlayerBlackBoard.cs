@@ -8,6 +8,8 @@ public class PlayerBlackBoard : MonoBehaviour
     public float hp;
     public float maxHp;
     public float moveSpeed;
+    public float defence;
+    public float maxDefence;
     public Rigidbody rigidBody;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
     public Vector2 speedValue;

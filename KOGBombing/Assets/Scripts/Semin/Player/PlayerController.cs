@@ -65,9 +65,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
 
 		SetTeamFieldOfView();
-
-        playerData.animator.SetPlayerObject(playerData.playerObj);
-		
 	}
 	[PunRPC]
 	private void SendBlackBoard()
@@ -133,7 +130,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
         else
             blackBoard.nickname = playerData.pv.Owner.NickName;
 		//StartCoroutine(DamageTest(0.5f, 40));
-	}
+	
 
         if (playerData.pv.IsMine)
 			StartCoroutine(CoWaitStart());

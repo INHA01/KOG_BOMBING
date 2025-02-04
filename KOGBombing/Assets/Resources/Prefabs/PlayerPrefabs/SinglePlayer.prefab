@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 2047044685979704218}
   - component: {fileID: 8894044268401136495}
   - component: {fileID: 4574309590161329535}
+  - component: {fileID: -9204510425917051466}
   m_Layer: 8
   m_Name: SinglePlayer
   m_TagString: Player
@@ -260,18 +261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8176e5b06974834468513915feb84a74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackBoard:
-    hp: 0
-    maxHp: 200
-    defence: 0
-    maxDefence: 200
-    moveSpeed: 6
-    rigidBody: {fileID: 1272812946582949491}
-    speedValue: {x: 0, y: 0}
-    mousePos: {x: 0, y: 0}
-    spawnPoint: {x: 0, y: 0, z: 0}
+  blackBoard: {fileID: -9204510425917051466}
   animator: {fileID: 7300479445460102179}
   hpBar: {fileID: 2206209511068946223}
+  teamIndex: 0
 --- !u!114 &9216994139945491648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +418,28 @@ MonoBehaviour:
   changeMaterials: []
   hitMaterial: {fileID: 0}
   curMaterial: []
+--- !u!114 &-9204510425917051466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb76a47e11aa3ce418b751ae22c498b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nickname: 
+  hp: 0
+  maxHp: 200
+  moveSpeed: 6
+  defence: 0
+  maxDefence: 100
+  rigidBody: {fileID: 1272812946582949491}
+  speedValue: {x: 0, y: 0}
+  mousePos: {x: 0, y: 0}
+  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &2252364712728992346
 GameObject:
   m_ObjectHideFlags: 0

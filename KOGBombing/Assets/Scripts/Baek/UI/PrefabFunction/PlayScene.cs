@@ -14,7 +14,6 @@ public class PlayScene : MonoBehaviour
     [SerializeField] GameObject teamProfile;
     [Header("Model")]
     [HideInInspector] public PlayerShooting weapon;
-    List<TeamProfile> teamProfiles = new List<TeamProfile>();
     Dictionary<string,TeamProfile> dicTeamProfiles = new Dictionary<string, TeamProfile> ();
     TeamProfile profileUI;
     public PlayerBlackBoard blackboard;
@@ -31,23 +30,20 @@ public class PlayScene : MonoBehaviour
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         profileUI = go.GetComponent<TeamProfile>();
-        profileUI.Init(blackBoard.hp, blackBoard);
+        profileUI.Init(blackBoard);
     }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         this.blackboard = blackBoard;
         GameObject go = null;
-        go = PhotonNetwork.Instantiate("Prefabs/UIPrefabs/Scene/PlayScene/Profile",Vector3.zero,Quaternion.identity);// Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        go =  Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         TeamProfile profile = go.GetComponent<TeamProfile>();
-        profile.Init(blackboard.hp,blackBoard);
+        profile.Init(blackBoard);
         dicTeamProfiles.Add(blackBoard.nickname, profile);
-        //teamProfiles.Add(profile);
     }
     public void UpdateProfile(string dicID, float hp)
     {
         dicTeamProfiles[dicID].UpdateUI(hp);
-        //profileUI.UpdateUI(blackboard.hp);
-        //teamProfiles[index-1].UpdateUI(blackboard.hp);
     }
 }

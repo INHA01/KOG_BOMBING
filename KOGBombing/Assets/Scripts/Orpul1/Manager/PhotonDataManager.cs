@@ -35,6 +35,7 @@ public class PhotonDataManager : MonoBehaviour, IPunObservable
     List<string> nicknameList = new List<string>();
     string sendId = "";
     public bool IsDataAllGet = false;
+    [SerializeField]
     PlayerBlackBoard sendBlackBoard;
 
     private void Awake()
@@ -52,7 +53,7 @@ public class PhotonDataManager : MonoBehaviour, IPunObservable
     }
     public void AddPlayerBlackBoard(string nickname, PlayerBlackBoard blackBoard)
     {
-        Debug.Log($"add ID {nickname}");
+        Debug.Log($"add ID {blackBoard.nickname}");
         dicPlayerBlackBoard.Add(nickname, blackBoard);
         sendId = nickname;
         sendBlackBoard = blackBoard;
@@ -64,6 +65,7 @@ public class PhotonDataManager : MonoBehaviour, IPunObservable
     {
         if(!dicPlayerBlackBoard.ContainsKey(nickname))
         {
+            Debug.Log("NULL blackBoard!");
             return null;
         }
         return dicPlayerBlackBoard[nickname];

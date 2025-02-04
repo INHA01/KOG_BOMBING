@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using Photon.Realtime;
 using Unity.VisualScripting;
+using ExitGames.Client.Photon;
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	
     void Awake()
 	{
+		PhotonNetwork.NetworkingClient.EventReceived += UpdateUI;
+
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
 		playerInteract =  new PlayerInteract();
@@ -61,34 +64,22 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
+       
+        if (playerData.pv.IsMine)
+        {
+            blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
+        }
+        else
+            blackBoard.nickname = playerData.pv.Owner.NickName;
+
+        SetTeamFieldOfView();
+	}
+	
+    private void Start()
+	{
         if (playerData.pv.IsMine)
             playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
 
-		SetTeamFieldOfView();
-	}
-	[PunRPC]
-	private void SendBlackBoard()
-	{
-		PhotonDataManager.Instance.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
-	}
-
-	[PunRPC]
-    private void SetProfileUI()
-    {
-		Player[] players = PhotonNetwork.PlayerList;
-		UIScene _uiScene = null;
-
-        for (int i=0; i<players.Length; i++)
-		{
-            _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
-            _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
-			_uiScene.GetComponent<PlayScene>().SetTeam(PhotonDataManager.Instance.GetPlayerBlackBoard(players[i].NickName));
-        }
-		if (_uiScene != null) 
-			updateProfile = _uiScene.GetComponent<PlayScene>().UpdateProfile;
-    }
-    private void Start()
-	{
         if (viewCamera == null)
 			viewCamera = Camera.main;
 		teamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
@@ -123,20 +114,39 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
         //StartCoroutine(DamageTest(0.5f, 10));
-        if (playerData.pv.IsMine)
-        {
-            blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
-        }
-        else
-            blackBoard.nickname = playerData.pv.Owner.NickName;
+        
 		//StartCoroutine(DamageTest(0.5f, 40));
 	
 
-        if (playerData.pv.IsMine)
-			StartCoroutine(CoWaitStart());
-        
+		StartCoroutine(CoWaitStart());
+
     }
-	IEnumerator CoWaitStart()
+    [PunRPC]
+    private void SendBlackBoard()
+    {
+        PhotonDataManager.Instance.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
+    }
+
+    private void SetProfileUI()
+    {
+        Player[] players = PhotonNetwork.PlayerList;
+        UIScene _uiScene = null;
+		string selfPlayerTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+		string otherPlayerTeam = "";
+        for (int i = 0; i < players.Length; i++)
+        {
+			otherPlayerTeam = (string)players[i].CustomProperties["Team"];
+			if(selfPlayerTeam == otherPlayerTeam)
+			{
+				_uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+				_uiScene.GetComponent<PlayScene>().weapon = playerShooting;
+				_uiScene.GetComponent<PlayScene>().SetTeam(PhotonDataManager.Instance.GetPlayerBlackBoard(players[i].NickName));
+			}
+        }
+        if (_uiScene != null)
+            updateProfile = _uiScene.GetComponent<PlayScene>().UpdateProfile;
+    }
+    IEnumerator CoWaitStart()
 	{
 		while(!PhotonDataManager.Instance.IsDataAllGet)
 			yield return null;
@@ -474,14 +484,22 @@ public class PlayerController : MonoBehaviour, IPunObservable
             transform.position += blackBoard.rigidBody.velocity * lag;
         }
     }
-
+	
 	public void OnDamaged(float damage)
 	{
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 		playerMaterialController.Hit();
-		if (playerData.pv.IsMine)
+
+		//포톤 RaiseEvent 발생
+		RaiseEventOptions options = new RaiseEventOptions();
+		options.Receivers = ReceiverGroup.All;
+		PhotonNetwork.RaiseEvent(0, null, options,SendOptions.SendReliable);
+        if (playerData.pv.IsMine)
+		{
 			viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
-	}
+        }
+		Debug.Log("Ondamage Callback Test");
+    }
 
     public void OnRigidity(float time)
     {
@@ -493,24 +511,17 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		yield return new WaitForSeconds(time);
 		playerData.speedDebuffPercent = 1.0f;
 	}
-
+	
     [PunRPC]
 	private void Damage(float damage)
 	{
-        // blackBoard.hp -= damage;
-		// hpBar.SetHpValue(blackBoard.hp);
-		// Player[] players = PhotonNetwork.PlayerList;
-        // for (int i = 0; i < players.Length; i++)
-        // {
-		// 	string dicId = players[i].NickName;
-        //     updateProfile(dicId, PhotonDataManager.Instance.GetPlayerBlackBoard(dicId).hp);
-        // }
-        // if (blackBoard.hp < 0)
-		float decreaseHp = blackBoard.defence - damage;
+        float decreaseHp = blackBoard.defence - damage;
 		blackBoard.defence = Mathf.Max(decreaseHp, 0);
 		if ( decreaseHp < 0)
 			blackBoard.hp += decreaseHp;
 		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+
+        
         if (blackBoard.hp <= 0)
         {
             this.transform.position = blackBoard.spawnPoint;
@@ -519,7 +530,31 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			hpBar.InitializeValues();
 		}
     }
+	
+	//포톤 RaiseEvent 발생 시 실행( eventcode = 실행 코드)
+	private void UpdateUI(EventData photonEvent)
+	{
+		int eventcode = photonEvent.Code;
+		if(eventcode == 0)
+		{
+			Player[] players = PhotonNetwork.PlayerList;
+			string selfTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+			string otherTeam = "";
+			for(int i=0; i<players.Length; i++)
+			{
+				otherTeam = (string)players[i].CustomProperties["Team"];
 
+                if (selfTeam == otherTeam)
+				{
+					float hp = PhotonDataManager.Instance.GetPlayerBlackBoard(players[i].NickName).hp;
+
+					if (updateProfile != null)
+						updateProfile(players[i].NickName, hp);
+				}
+			}
+		}
+
+	}
     [PunRPC]
     private void Rigidity(float time)
 	{

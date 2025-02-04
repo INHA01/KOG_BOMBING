@@ -10,13 +10,14 @@ public class TeamProfile : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI nickName;
     public Image hpBar;
+    public Image defenceBar;
     float maxHp;
-    [SerializeField]
-    PlayerBlackBoard blackBoard;
-    public void Init(float hp, PlayerBlackBoard blackBoard)
+    float maxDefence;
+    public void Init(PlayerBlackBoard blackBoard)
     {
-        this.blackBoard = blackBoard;
-        maxHp = hp;
+        maxHp = blackBoard.maxHp;
+        maxDefence = blackBoard.maxDefence;
+        defenceBar.fillAmount = 1;
         hpBar.fillAmount = 1;
         nickName.text = blackBoard.nickname;
     }

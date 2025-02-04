@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,14 +11,18 @@ public class TeamProfile : MonoBehaviour
     [SerializeField] TextMeshProUGUI nickName;
     public Image hpBar;
     float maxHp;
-    public void Init(float hp)
+    [SerializeField]
+    PlayerBlackBoard blackBoard;
+    public void Init(float hp, PlayerBlackBoard blackBoard)
     {
+        this.blackBoard = blackBoard;
         maxHp = hp;
         hpBar.fillAmount = 1;
-        nickName.text = Managers.UserData.userData.nickName;
+        nickName.text = blackBoard.nickname;
     }
     public void UpdateUI(float hp)
     {
         hpBar.fillAmount = hp / maxHp;
     }
+
 }

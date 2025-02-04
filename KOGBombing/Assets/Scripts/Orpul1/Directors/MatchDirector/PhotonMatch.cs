@@ -58,7 +58,6 @@ namespace Orpul1
 
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
-            Debug.Log("RoomUpdate");
             if (propertiesThatChanged.ContainsKey("RoomState"))
             {
                 if ((string)propertiesThatChanged["RoomState"] == "Start")

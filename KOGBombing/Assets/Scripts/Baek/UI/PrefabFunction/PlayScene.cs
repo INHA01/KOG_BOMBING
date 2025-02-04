@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.UI;
 
 public class PlayScene : MonoBehaviour
@@ -13,18 +15,39 @@ public class PlayScene : MonoBehaviour
     [Header("Model")]
     [HideInInspector] public PlayerShooting weapon;
     List<TeamProfile> teamProfiles = new List<TeamProfile>();
+    Dictionary<string,TeamProfile> dicTeamProfiles = new Dictionary<string, TeamProfile> ();
+    TeamProfile profileUI;
+    public PlayerBlackBoard blackboard;
     void Update()
     {
         magazineCount.text = weapon.MagazineCount + "/4";
         chargeBar.fillAmount = weapon.ReloadTime;
     }
-    public void SetTeam(float hp)
+    public void SetMine(PlayerBlackBoard blackBoard)
     {
+        this.blackboard = blackBoard;
         GameObject go = null;
+        //PhotonNetwork.Instantiate("Prefabs/UIPrefabs/Scene/PlayScene/Profile", Vector3.zero, Quaternion.identity);
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
+        profileUI = go.GetComponent<TeamProfile>();
+        profileUI.Init(blackBoard.hp, blackBoard);
+    }
+    public void SetTeam(PlayerBlackBoard blackBoard)
+    {
+        this.blackboard = blackBoard;
+        GameObject go = null;
+        go = PhotonNetwork.Instantiate("Prefabs/UIPrefabs/Scene/PlayScene/Profile",Vector3.zero,Quaternion.identity);// Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        go.transform.SetParent(teamProfile.transform);
         TeamProfile profile = go.GetComponent<TeamProfile>();
-        profile.Init(hp);
-        teamProfiles.Add(profile);
+        profile.Init(blackboard.hp,blackBoard);
+        dicTeamProfiles.Add(blackBoard.nickname, profile);
+        //teamProfiles.Add(profile);
+    }
+    public void UpdateProfile(string dicID, float hp)
+    {
+        dicTeamProfiles[dicID].UpdateUI(hp);
+        //profileUI.UpdateUI(blackboard.hp);
+        //teamProfiles[index-1].UpdateUI(blackboard.hp);
     }
 }

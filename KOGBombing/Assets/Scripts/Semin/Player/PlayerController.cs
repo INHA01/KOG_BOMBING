@@ -6,20 +6,8 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
+using Photon.Realtime;
 using Unity.VisualScripting;
-[Serializable]
-public class PlayerBlackBoard
-{
-    public float hp;
-	public float maxHp;
-    public float moveSpeed;
-    public Rigidbody rigidBody;
-    public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
-    public Vector2 speedValue;
-    public Vector2 mousePos;
-	public Vector3 spawnPoint;
-}
-
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
@@ -28,6 +16,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
 	[SerializeField] HpBar hpBar;
+
+    public Action<string,float> updateProfile;
+	public int teamIndex;
 
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
@@ -69,17 +60,42 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
+        if (playerData.pv.IsMine)
+            playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+
 		SetTeamFieldOfView();
 
         playerData.animator.SetPlayerObject(playerData.playerObj);
+		
+	}
+	[PunRPC]
+	private void SendBlackBoard()
+	{
+		PhotonDataManager.Instance.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
 	}
 
-	private void Start()
-	{
-		if (viewCamera == null)
-			viewCamera = Camera.main;
+	[PunRPC]
+    private void SetProfileUI()
+    {
+		Player[] players = PhotonNetwork.PlayerList;
+		UIScene _uiScene = null;
 
-		string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+        for (int i=0; i<players.Length; i++)
+		{
+            _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+            _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
+			_uiScene.GetComponent<PlayScene>().SetTeam(PhotonDataManager.Instance.GetPlayerBlackBoard(players[i].NickName));
+        }
+		if (_uiScene != null) 
+			updateProfile = _uiScene.GetComponent<PlayScene>().UpdateProfile;
+    }
+    private void Start()
+	{
+        if (viewCamera == null)
+			viewCamera = Camera.main;
+		teamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
+
+        string team = (string)playerData.pv.Owner.CustomProperties["Team"];
 
         if (team == "RT")
 		{
@@ -108,9 +124,25 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		hpBar.Init(blackBoard.maxHp);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-		//StartCoroutine(DamageTest(0.5f, 10));
-	}
+        //StartCoroutine(DamageTest(0.5f, 10));
+        if (playerData.pv.IsMine)
+        {
+            blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
+        }
+        else
+            blackBoard.nickname = playerData.pv.Owner.NickName;
 
+        if (playerData.pv.IsMine)
+			StartCoroutine(CoWaitStart());
+        
+    }
+	IEnumerator CoWaitStart()
+	{
+		while(!PhotonDataManager.Instance.IsDataAllGet)
+			yield return null;
+        if (playerData.pv.IsMine)
+            SetProfileUI();
+    }
 	public void SetCamera(Camera cam)
 	{
 		viewCamera = cam;
@@ -446,7 +478,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public void OnDamaged(float damage)
 	{
-		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
+        playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 		playerMaterialController.Hit();
     }
 
@@ -466,7 +498,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         blackBoard.hp -= damage;
 		hpBar.SetHpValue(blackBoard.hp);
-        Debug.Log($"blackBoar: {blackBoard.hp}");
+		Player[] players = PhotonNetwork.PlayerList;
+        for (int i = 0; i < players.Length; i++)
+        {
+			string dicId = players[i].NickName;
+            updateProfile(dicId, PhotonDataManager.Instance.GetPlayerBlackBoard(dicId).hp);
+        }
         if (blackBoard.hp < 0)
         {
             this.transform.position = blackBoard.spawnPoint;

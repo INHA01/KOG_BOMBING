@@ -53,6 +53,5 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
         _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
         _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
-        _uiScene.GetComponent<PlayScene>().SetTeam();
     }
 }

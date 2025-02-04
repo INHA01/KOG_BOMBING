@@ -23,7 +23,7 @@ public class PlayerBlackBoard
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
-    PlayerBlackBoard blackBoard;
+    public PlayerBlackBoard blackBoard;
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
@@ -434,7 +434,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			stream.SendNext(transform.rotation);
 			stream.SendNext(blackBoard.rigidBody.velocity);
-			stream.SendNext(blackBoard.hp);
 		}
 		else if(stream.IsReading)
 		{
@@ -442,7 +441,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             transform.position += blackBoard.rigidBody.velocity * lag;
-			blackBoard.hp = (float)stream.ReceiveNext();
         }
     }
 

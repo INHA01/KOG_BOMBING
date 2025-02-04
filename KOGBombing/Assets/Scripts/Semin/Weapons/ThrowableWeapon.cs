@@ -28,10 +28,9 @@ public class ThrowableWeapon : SupportWeaponBase
 	private void Awake()
 	{
 		playerData = GetComponent<PlayerData>();
-
-		decal = Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRagneDecal")).GetComponent<DecalProjector>();
-		lineRendererToTarget = (Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackLineRenderer")) as GameObject).GetComponent<LineRenderer>();
-		lineRendererToRange = (Instantiate(Resources.Load("Prefabs/SupportWeapon/AttackRangeLineRenderer")) as GameObject).GetComponent<LineRenderer>();
+        decal = Managers.Resource.Instantiate("SupportWeapon/AttackRagneDecal").GetComponent<DecalProjector>();
+		lineRendererToTarget = Managers.Resource.Instantiate("SupportWeapon/AttackLineRenderer").GetComponent<LineRenderer>();
+		lineRendererToRange = Managers.Resource.Instantiate("SupportWeapon/AttackRangeLineRenderer").GetComponent<LineRenderer>();
 		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
@@ -151,7 +150,7 @@ public class ThrowableWeapon : SupportWeaponBase
 	{
 		float elapsedTime = 0f;
         GameObject molotov = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Molotov", points[0], Quaternion.identity);
-		AttackConsum grenade = molotov.GetComponent<AttackConsum>();// Instantiate(consum, points[0], Quaternion.identity);
+		AttackConsum grenade = molotov.GetComponent<AttackConsum>();
 
         grenade.SetTeam(team);
 

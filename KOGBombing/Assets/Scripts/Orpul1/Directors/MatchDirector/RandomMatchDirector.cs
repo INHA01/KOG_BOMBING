@@ -13,13 +13,8 @@ namespace Orpul1
         int maxPlayer = 2;
 
         TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
-
         bool isMatching = false;
         bool isRandomMatch = false;
-        public void SetMaxPlayer(int value)
-        {
-            maxPlayer = value;
-        } 
         public override void Match()
         {
             if (isMatching)
@@ -60,12 +55,13 @@ namespace Orpul1
 
         public override void OnJoinedRoom()
         {
-            if (isRandomMatch && PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("RadnomJoinRoom");
-                base.OnJoinedRoom();
+            if (!isRandomMatch) return;
+
+            Debug.Log("RandomJoinRoom");
+            base.OnJoinedRoom();
+            if(PhotonNetwork.IsMasterClient)
                 StartCoroutine(CoWaitPlayers());
-            }
+
         }
 
         public override void OnLeftRoom()

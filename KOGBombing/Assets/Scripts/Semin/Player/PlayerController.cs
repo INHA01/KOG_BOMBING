@@ -6,6 +6,7 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 [Serializable]
 public class PlayerBlackBoard
 {
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	[SerializeField] 
 	PlayerAnimation animator;
 	public ISupportWeapon supportWeapon;
+	[SerializeField] HpBar hpBar;
+
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
 	PlayerInteract playerInteract;
@@ -34,6 +37,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Coroutine animChange;
 	bool isChangableAnim;
 	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
+
 	public enum EDirection
 	{
 		Up,
@@ -72,7 +76,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		if ((string)playerData.pv.Owner.CustomProperties["Team"] == "RT")
+		string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+
+        if (team == "RT")
 		{
 			playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
 			if (playerData.supportWeapon is SupportWeaponBase support)
@@ -84,13 +90,46 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (playerData.supportWeapon is SupportWeaponBase support)
 				support.SetConsum(WeaponType.LANDMINE);
 		}
-		
-		playerData.supportWeapon.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
-		playerData.animator.SetTeam((string)playerData.pv.Owner.CustomProperties["Team"]);
 
+		if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
+		{
+			if (!playerData.pv.IsMine)
+				SetMaterialToHide();
+			hpBar.SetTeam(true);
+        }
+		else hpBar.SetTeam(false);
+
+		playerData.supportWeapon.SetTeam(team);
+		playerData.animator.SetTeam(team);
+
+		hpBar.Init(viewCamera, blackBoard.maxHp);
 		SetTeamFieldOfView();
 	}
 
+	public void SetMaterialToHide()
+	{
+		int index = 0;
+		Debug.Log($"Meterial: {playerData.materials.Count}");
+		for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
+		{
+			SkinnedMeshRenderer skin = playerData.changeMaterialMeshs[i].GetComponent<SkinnedMeshRenderer>();
+			MeshRenderer mesh = playerData.changeMaterialMeshs[i].GetComponent<MeshRenderer>();
+			Material[] currentMaterials = null;
+			if (skin)
+				currentMaterials = skin.materials;
+			else if (mesh)
+				currentMaterials = mesh.materials;
+			Material[] changeMaterials = new Material[currentMaterials.Length];
+
+			for (int j = 0; j < currentMaterials.Length; j++)
+				changeMaterials[j] = playerData.materials[index++];
+
+			if (skin)
+				skin.materials = changeMaterials;
+			else if (mesh)
+				mesh.materials = changeMaterials;
+		}
+	}
 
 	public void SetCamera(Camera cam)
 	{
@@ -120,6 +159,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
 		if(attackRange != null)
             attackRange.ShowAttackArea();
+        //canvas.transform.LookAt(Camera.main.transform);
     }
 
     void ChangeWeapon(WeaponType type)
@@ -148,12 +188,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			case EDirection.Left:
 			case EDirection.Right:
-				movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x;
+				movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
 				blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 			case EDirection.Up:
 			case EDirection.Down:
-				movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y;
+				movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
                 blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
 				break;
 		}
@@ -241,10 +281,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
     public INode.ENodeState SetSupportWeapon()
     {
-		Debug.Log("Run SetSupportWeapon Node");
 		if (playerData.supportWeapon is ThrowableWeapon throwable)
 		{
-            Debug.Log("throwable true");
             Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos); 
 			RaycastHit hit;
 
@@ -274,7 +312,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 			if (blackBoard.inputs[EKey.LMOUSEBUTTON])
 			{
-				Debug.Log("Use Support Weapon");
 				animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
                 playerData.supportWeapon.Use();
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Throw);
@@ -408,6 +445,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			stream.SendNext(transform.rotation);
 			stream.SendNext(blackBoard.rigidBody.velocity);
+			stream.SendNext(blackBoard.hp);
 		}
 		else if(stream.IsReading)
 		{
@@ -415,23 +453,43 @@ public class PlayerController : MonoBehaviour, IPunObservable
             blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             transform.position += blackBoard.rigidBody.velocity * lag;
-
+			blackBoard.hp = (float)stream.ReceiveNext();
         }
     }
 
 	public void OnDamaged(float damage)
 	{
 		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
+    }
+
+    public void OnRigidity(float time)
+    {
+        playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
+    }
+
+	IEnumerator ResetRigidity(float time)
+	{
+		yield return new WaitForSeconds(time);
+		playerData.speedDebuffPercent = 1.0f;
 	}
-	[PunRPC]
+
+    [PunRPC]
 	private void Damage(float damage)
 	{
         blackBoard.hp -= damage;
+		hpBar.SetHpValue(blackBoard.hp);
         Debug.Log($"blackBoar: {blackBoard.hp}");
         if (blackBoard.hp < 0)
         {
             this.transform.position = blackBoard.spawnPoint;
             blackBoard.hp = blackBoard.maxHp;
         }
+    }
+
+    [PunRPC]
+    private void Rigidity(float time)
+	{
+        playerData.speedDebuffPercent = 0.5f;
+        StartCoroutine(ResetRigidity(time));
     }
 }

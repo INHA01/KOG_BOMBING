@@ -3,6 +3,7 @@ using System.Text;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using System.Collections;
+using static Orpul1.PlayerListController;
 
 namespace Orpul1
 {
@@ -42,14 +43,21 @@ namespace Orpul1
         {
             StringBuilder curTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
             StringBuilder changeTeam = new StringBuilder();
+            SetRoomTeamCount(curTeam, -1);
             if (curTeam.ToString() == "RT")
                 changeTeam.Append("BT");
             else
                 changeTeam.Append("RT");
 
+            SetRoomTeamCount(changeTeam, 1);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam.ToString() } });
         }
+        private void SetRoomTeamCount(StringBuilder teamType, int count)
+        {
+            int teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[teamType.ToString()];
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { teamType.ToString(), teamCnt + count } });
 
+        }
         public void SetRoomOwner()
         {
             if (PhotonNetwork.IsMasterClient)

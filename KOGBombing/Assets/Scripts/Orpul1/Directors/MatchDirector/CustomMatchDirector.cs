@@ -22,23 +22,19 @@ namespace Orpul1
         }
         public void OnLeftLobbyBtn()
         {
-            if(PhotonNetwork.InLobby)
+            isStopMatch = true;
+            isCustomMatch = false;
+            if (PhotonNetwork.InLobby)
                 PhotonNetwork.LeaveLobby();
         }
        
         public override void OnLeftLobby()
         {
-            if(isCustomMatch)
-            {
-                isCustomMatch = false;
-            }
+            Debug.Log("LeftLobby");
         }
         public override void OnLeftRoom()
         {
-            if(isCustomMatch)
-            {
-                isCustomMatch = false;
-            }
+            Debug.Log("LeftRoom");
         }
 
         public override void OnJoinedRoom()
@@ -63,8 +59,13 @@ namespace Orpul1
 
         protected override IEnumerator CoWaitMatch()
         {
+            Debug.Log($"isStopMatch {isStopMatch}");
             float span = Time.time + updateDelay;
-            while (span > Time.time) yield return null;
+            while (span > Time.time)
+            {
+                if (isStopMatch) yield break;
+                yield return null;
+            }
             Debug.Log("lobby Match");
             PhotonNetwork.JoinLobby(customLobby);
         }

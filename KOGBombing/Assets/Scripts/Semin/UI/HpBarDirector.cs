@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,21 +23,38 @@ public class HpBarDirector : MonoBehaviour
 
     IEnumerator ReadyToStart()
     {
-        yield return new WaitForEndOfFrame();
-		GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-		for (int i = 0; i < playerObjects.Length; i++)
-		{
-			players.Add(playerObjects[i].GetComponent<PlayerController>());
-			GameObject hpBar = Instantiate(hpUiPrefab, playerObjects[i].transform.position, Quaternion.identity, transform);
-			hpBars.Add(hpBar.GetComponent<HpBar>());
+        yield return new WaitForFixedUpdate();
+
+        Player[] playersTemp = PhotonNetwork.PlayerList;
+		for (int i = 0; i < playersTemp.Length; i++)
+        {
+            PhotonView photonView = PhotonView.Find(playersTemp[i].ActorNumber);
+            if (photonView != null)
+            {
+                GameObject playerObject = photonView.gameObject;
+                players.Add(playerObject.GetComponent<PlayerController>());
+                GameObject hpBar = Instantiate(hpUiPrefab, playerObject.transform.position, Quaternion.identity, transform);
+                hpBars.Add(hpBar.GetComponent<HpBar>());
+            }
+
 		}
-	}
+        Debug.Log($"플레이어 수 : {playersTemp.Length}");
+
+    }
 
     void Update()
     {
-        for (int i = 0; i < players.Count; i++)
+
+        // 모든 플레이어를 순회
+        Player[] playersTemp = PhotonNetwork.PlayerList;
+		for (int i = 0; i < playersTemp.Length; i++)
         {
-            hpBars[i].transform.position = cam.WorldToScreenPoint(players[i].transform.position + new Vector3(0, 2.5f, 0));
-        }
+            PhotonView photonView = PhotonView.Find(playersTemp[i].ActorNumber);
+            if (photonView != null)
+            {
+                GameObject playerObject = photonView.gameObject;
+                hpBars[i].transform.position = cam.WorldToScreenPoint(playerObject.transform.position + new Vector3(0, 2.5f, 0));
+            }
+		}
     }
 }

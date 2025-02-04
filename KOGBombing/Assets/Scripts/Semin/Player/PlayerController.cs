@@ -12,6 +12,8 @@ public class PlayerBlackBoard
 {
     public float hp;
 	public float maxHp;
+	public float defence;
+	public float maxDefence;
     public float moveSpeed;
     public Rigidbody rigidBody;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -66,6 +68,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		for (int i = 0; i < (int)EKey.MAX; i++)
             blackBoard.inputs.Add((EKey)i, false);
 		blackBoard.hp = blackBoard.maxHp;
+		blackBoard.defence = blackBoard.maxDefence;
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
@@ -103,10 +106,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerData.supportWeapon.SetTeam(team);
 		playerData.animator.Init(playerData.playerObj, team, playerData.shootStartPos);
 
-		hpBar.Init(blackBoard.maxHp);
+		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-		//StartCoroutine(DamageTest(0.5f, 10));
+		//StartCoroutine(DamageTest(0.5f, 40));
 	}
 
 	public void SetCamera(Camera cam)
@@ -463,14 +466,18 @@ public class PlayerController : MonoBehaviour, IPunObservable
     [PunRPC]
 	private void Damage(float damage)
 	{
-        blackBoard.hp -= damage;
-		hpBar.SetHpValue(blackBoard.hp);
-        Debug.Log($"blackBoar: {blackBoard.hp}");
-        if (blackBoard.hp < 0)
+		float decreaseHp = blackBoard.defence - damage;
+		blackBoard.defence = Mathf.Max(decreaseHp, 0);
+		if ( decreaseHp < 0)
+			blackBoard.hp += decreaseHp;
+		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        if (blackBoard.hp <= 0)
         {
             this.transform.position = blackBoard.spawnPoint;
             blackBoard.hp = blackBoard.maxHp;
-        }
+			blackBoard.defence = blackBoard.maxDefence;
+			hpBar.InitializeValues();
+		}
     }
 
     [PunRPC]

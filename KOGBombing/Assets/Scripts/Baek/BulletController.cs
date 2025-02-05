@@ -40,15 +40,13 @@ public class BulletController : PooledObject
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;
             // << :
-            //Rigidbody rigidbody = other.GetComponent<Rigidbody>();
-            //rigidbody.AddForce(shootDirection * 10, ForceMode.Impulse);
             PlayerController player = other.transform.GetComponent<PlayerController>();
             if (player != null)
                 player.OnDamaged(damage);
             distance = 0;
             Release();
         }
-        if (other.tag == "Target")
+        if (other.tag == "Wall")
         {
             distance = 0;
             Release();

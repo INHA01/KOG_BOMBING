@@ -16,8 +16,8 @@ public class UIManager
         }
     }
     int _order = 0;
-    Stack<UIScene> _sceneStack = new Stack<UIScene>();
-    List<GameObject> _scenes = new List<GameObject>();
+    public Stack<UIScene> _sceneStack = new Stack<UIScene>();
+    public List<GameObject> _scenes = new List<GameObject>();
 
     #region ShowSceneUI (Original)
     //public T ShowSceneUI<T>(string name = null) where T : UIScene

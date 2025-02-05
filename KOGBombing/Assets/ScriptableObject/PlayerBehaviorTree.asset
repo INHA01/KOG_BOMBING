@@ -344,6 +344,7 @@ MonoBehaviour:
   - {fileID: 8366443915547346038}
   - {fileID: -3281831052019774864}
   - {fileID: 225296470337349713}
+  - {fileID: 6600464113284892490}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +413,7 @@ MonoBehaviour:
   guid: 8dc3e1a7f585c514fa2ba12ece6a19e3
   position: {x: 49.777775, y: -157.77779}
   children:
+  - {fileID: 6600464113284892490}
   - {fileID: 1194003659082968326}
   - {fileID: 225296470337349713}
   - {fileID: -7834396176166106668}
@@ -501,6 +503,23 @@ MonoBehaviour:
   position: {x: 639.00006, y: 85.65002}
   paramName: Up
   method: Move
+  className: PlayerController
+--- !u!114 &6600464113284892490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: a5823d0448a98dd4a9b5f5f36f4f9fa2
+  position: {x: 200, y: -398}
+  paramName: 
+  method: CanBehavior
   className: PlayerController
 --- !u!114 &6882639984666204211
 MonoBehaviour:

@@ -11,7 +11,8 @@ public enum EKey
 	F,
 	LMOUSEBUTTON,
 	NUM_2,
-	MAX
+    Escape,
+    MAX
 }
 
 public class EKeyComparer : IEqualityComparer<EKey>

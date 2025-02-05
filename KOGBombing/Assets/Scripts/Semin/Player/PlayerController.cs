@@ -6,9 +6,8 @@ using System.Text;
 using Semin;
 using System;
 using System.Collections;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
-
+using Unity.VisualScripting;
+using Orpul1;
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
@@ -18,9 +17,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public ISupportWeapon supportWeapon;
 	[SerializeField] HpBar hpBar;
 
-    public Action<string,float> updateProfile;
-	public int teamIndex;
-
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 
 	PlayerInteract playerInteract;
@@ -29,8 +25,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Coroutine animChange;
 	bool isChangableAnim;
 	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
-	TeamUIController teamUIController = new TeamUIController();
-    public enum EDirection
+
+	public enum EDirection
 	{
 		Up,
 		Down,
@@ -41,11 +37,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
-	
+	TeamUIController teamUIController = new TeamUIController();
     void Awake()
 	{
-		PhotonNetwork.NetworkingClient.EventReceived += UpdateUI;
-
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
 		playerInteract =  new PlayerInteract();
@@ -64,27 +58,20 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
-       
-        if (playerData.pv.IsMine)
-        {
-            blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
-        }
-        else
-            blackBoard.nickname = playerData.pv.Owner.NickName;
+		SetTeamFieldOfView();
 
-        SetTeamFieldOfView();
-	}
-	
-    private void Start()
+		if (playerData.pv.IsMine)
+			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
+		else
+			blackBoard.nickname = playerData.pv.Owner.NickName;
+    }
+
+	private void Start()
 	{
-        if (playerData.pv.IsMine)
-            playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
-
-        if (viewCamera == null)
+		if (viewCamera == null)
 			viewCamera = Camera.main;
-		teamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
 
-        string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+		string team = (string)playerData.pv.Owner.CustomProperties["Team"];
 
         if (team == "RT")
 		{
@@ -113,26 +100,24 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-        //StartCoroutine(DamageTest(0.5f, 10));
-        
-		//StartCoroutine(DamageTest(0.5f, 40));
-	
 
-		StartCoroutine(CoWaitSetTeamUI());
 
+		if(playerData.pv.IsMine)
+		{
+			playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+			StartCoroutine(WaitSetTeamUI());
+		}
     }
-    [PunRPC]
-    private void SendBlackBoard()
-    {
+	[PunRPC]
+	private void SendBlackBoard()
+	{
         Managers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
     }
-
-    IEnumerator CoWaitSetTeamUI()
+    IEnumerator WaitSetTeamUI()
 	{
-		while(!Managers.PunData.IsDataAllGet)
-			yield return null;
-		if (playerData.pv.IsMine)
-			teamUIController.SetTeamUI(playerShooting);
+        while (!Managers.PunData.IsDataAllGet) yield return null;
+		teamUIController.SetTeamUI(playerShooting);
+
     }
 	public void SetCamera(Camera cam)
 	{
@@ -192,6 +177,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 
     #region Attack Node
+	public INode.ENodeState CanBehavior()
+	{
+        if (blackBoard.inputs[EKey.Escape])
+			return INode.ENodeState.Success;
+        return INode.ENodeState.Fail;
+    }	
     public INode.ENodeState Move(EDirection direction)
 	{
 		Vector3 movement;
@@ -336,7 +327,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	#endregion
 
 	#region If Decorater Node
-	public bool CheckInput(EKey key)
+    public bool CheckInput(EKey key)
 	{
 		return blackBoard.inputs[key];
 	}
@@ -358,7 +349,23 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 
     #endregion
+    UIScene _uiScene;
     #region Input System
+    public void OnCanBehavior(InputValue value)
+	{
+		blackBoard.inputs[EKey.Escape] = !blackBoard.inputs[EKey.Escape];
+		if(blackBoard.inputs[EKey.Escape])
+		{
+			_uiScene = Managers.UI.ShowSceneUI<UIScene>("OptionCanvas");
+            if (_uiScene.GetComponent<Option>().playerBlackBoard == null)
+            {
+                _uiScene.GetComponent<Option>().playerBlackBoard = blackBoard;
+            }
+        }
+        else
+            Managers.UI.CloseSceneUI();
+    }
+
     public void OnAttack(InputValue value)
 	{
         blackBoard.inputs[EKey.LMOUSEBUTTON] = value.isPressed;
@@ -465,20 +472,17 @@ public class PlayerController : MonoBehaviour, IPunObservable
             transform.position += blackBoard.rigidBody.velocity * lag;
         }
     }
-	
+
 	public void OnDamaged(float damage)
 	{
-        playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
+		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 		playerMaterialController.Hit();
 
-		//포톤 RaiseEvent 발생
 		teamUIController.UpdateTeamUI();
+
         if (playerData.pv.IsMine)
-		{
 			viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
-        }
-		Debug.Log("Ondamage Callback Test");
-    }
+	}
 
     public void OnRigidity(float time)
     {
@@ -490,50 +494,43 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		yield return new WaitForSeconds(time);
 		playerData.speedDebuffPercent = 1.0f;
 	}
-	
+    public GameDirector gameDirector;
     [PunRPC]
 	private void Damage(float damage)
 	{
-        float decreaseHp = blackBoard.defence - damage;
+		float decreaseHp = blackBoard.defence - damage;
 		blackBoard.defence = Mathf.Max(decreaseHp, 0);
 		if ( decreaseHp < 0)
 			blackBoard.hp += decreaseHp;
 		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
-
-        
         if (blackBoard.hp <= 0)
         {
-            this.transform.position = blackBoard.spawnPoint;
+            if (playerData.pv.IsMine)
+			{
+                string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+                if (team == "RT")
+                    GameDirector.blueScore++;
+                else
+                    GameDirector.redScore++;
+
+                gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+
+                StartCoroutine(RespawnDelay(3.0f));
+			}
+
             blackBoard.hp = blackBoard.maxHp;
 			blackBoard.defence = blackBoard.maxDefence;
 			hpBar.InitializeValues();
+            this.transform.position = blackBoard.spawnPoint;
 		}
     }
-	
-	//포톤 RaiseEvent 발생 시 실행( eventcode = 실행 코드)
-	private void UpdateUI(EventData photonEvent)
+	IEnumerator RespawnDelay(float time)
 	{
-		int eventcode = photonEvent.Code;
-		if(eventcode == 0)
-		{
-			Player[] players = PhotonNetwork.PlayerList;
-			string selfTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-			string otherTeam = "";
-			for(int i=0; i<players.Length; i++)
-			{
-				otherTeam = (string)players[i].CustomProperties["Team"];
+        _uiScene = Managers.UI.ShowSceneUI<UIScene>("DieCanvas");
+        yield return new WaitForSeconds(time);
+        Managers.UI.CloseSceneUI();
+    }
 
-                if (selfTeam == otherTeam)
-				{
-					float hp = Managers.PunData.GetPlayerBlackBoard(players[i].NickName).hp;
-
-					if (updateProfile != null)
-						updateProfile(players[i].NickName, hp);
-				}
-			}
-		}
-
-	}
     [PunRPC]
     private void Rigidity(float time)
 	{

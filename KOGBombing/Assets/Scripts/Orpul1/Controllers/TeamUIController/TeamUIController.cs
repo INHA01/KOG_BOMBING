@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class TeamUIController
 {
-    public Action<string, float,float> updateProfile;
+    private Action<string, float,float> updateProfile;
     List<Player> teamPlayerList  = new List<Player>();
     public void SetTeamUI(PlayerShooting playerShooting)
     {

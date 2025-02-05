@@ -14,6 +14,10 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     GameObject playerCamera;
 
     UIScene _uiScene;
+    
+    public float time = 180;
+    public int blueScore = 0;
+    public int redScore = 0;
 
     private void Awake()
     {
@@ -21,6 +25,16 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "RT" } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
+        StartCoroutine(TimeCount());
+    }
+    IEnumerator TimeCount()
+    {
+        while (time > 0)
+        {
+            yield return null;
+            time -= Time.deltaTime;
+        }
+        Debug.Log("Time Over");
     }
     public override void OnConnectedToMaster()
     {
@@ -52,6 +66,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
 		cameraObj.GetComponent<PlayerCamera>().target = playerObj;
         playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
         _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+        //_uiScene.GetComponent<PlayScene>().gameDirector = this;
         _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
     }
 }

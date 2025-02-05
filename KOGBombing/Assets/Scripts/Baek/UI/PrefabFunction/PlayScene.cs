@@ -1,9 +1,9 @@
+using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.UI;
 
 public class PlayScene : MonoBehaviour
@@ -12,38 +12,47 @@ public class PlayScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI magazineCount;
     [SerializeField] Image chargeBar;
     [SerializeField] GameObject teamProfile;
+    [Header("ScoreIcon")]
+    //[HideInInspector] public PhotonOfflineMode gameDirector;
+    [HideInInspector] public GameDirector gameDirector;
+    [SerializeField] TextMeshProUGUI timer;
+    [SerializeField] Sprite[] blueScoreImages;
+    [SerializeField] Sprite[] redScoreImages;
+    [SerializeField] Image blueScoreIcon;
+    [SerializeField] Image redScoreIcon;
     [Header("Model")]
     [HideInInspector] public PlayerShooting weapon;
-    Dictionary<string,TeamProfile> dicTeamProfiles = new Dictionary<string, TeamProfile> ();
-    TeamProfile profileUI;
-    public PlayerBlackBoard blackboard;
+    Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
+
     void Update()
     {
         magazineCount.text = weapon.MagazineCount + "/4";
         chargeBar.fillAmount = weapon.ReloadTime;
-    }
-    public void SetMine(PlayerBlackBoard blackBoard)
-    {
-        this.blackboard = blackBoard;
-        GameObject go = null;
-        //PhotonNetwork.Instantiate("Prefabs/UIPrefabs/Scene/PlayScene/Profile", Vector3.zero, Quaternion.identity);
-        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
-        go.transform.SetParent(teamProfile.transform);
-        profileUI = go.GetComponent<TeamProfile>();
-        profileUI.Init(blackBoard);
+        string min = ((int)gameDirector.time / 60).ToString();
+        if(min.Length == 1)
+            min = "0" + min;
+        string sec = ((int)gameDirector.time % 60).ToString();
+        if (sec.Length == 1)
+            sec = "0" + sec;
+        timer.text = min + ":" + sec;
+
+        if(GameDirector.redScore < 10)
+            redScoreIcon.sprite = redScoreImages[GameDirector.redScore];
+        if (GameDirector.blueScore < 10)
+            blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];
     }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
-        this.blackboard = blackBoard;
         GameObject go = null;
-        go =  Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         TeamProfile profile = go.GetComponent<TeamProfile>();
         profile.Init(blackBoard);
-        dicTeamProfiles.Add(blackBoard.nickname, profile);
+        dicTeamProfile.Add(blackBoard.nickname, profile);
     }
-    public void UpdateProfile(string dicID, float hp, float defence)
+    public void UpdateProfile(string nickname, float hp, float defence)
     {
-        dicTeamProfiles[dicID].UpdateUI(hp, defence);
+        if (!dicTeamProfile.ContainsKey(nickname)) return;
+        dicTeamProfile[nickname].UpdateUI(hp, defence);
     }
 }

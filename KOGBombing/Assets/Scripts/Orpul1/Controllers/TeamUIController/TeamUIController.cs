@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class TeamUIController
 {
-    private Action<string, float,float> updateProfile;
+    private Action<string, float,float ,bool> updateProfile;
     List<Player> teamPlayerList  = new List<Player>();
     public void SetTeamUI(PlayerShooting playerShooting)
     {
@@ -45,7 +45,7 @@ public class TeamUIController
                 PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(teamPlayerList[i].NickName);
 
                 if (updateProfile != null)
-                    updateProfile(teamPlayerList[i].NickName, blackBoard.hp, blackBoard.defence);
+                    updateProfile(teamPlayerList[i].NickName, blackBoard.hp, blackBoard.defence , blackBoard.isLive);
             }
         }
     }

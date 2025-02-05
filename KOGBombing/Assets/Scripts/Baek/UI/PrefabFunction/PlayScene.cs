@@ -49,9 +49,9 @@ public class PlayScene : MonoBehaviour
         profile.Init(blackBoard);
         dicTeamProfile.Add(blackBoard.nickname, profile);
     }
-    public void UpdateProfile(string nickname, float hp, float defence)
+    public void UpdateProfile(string nickname, float hp, float defence , bool isLive)
     {
         if (!dicTeamProfile.ContainsKey(nickname)) return;
-        dicTeamProfile[nickname].UpdateUI(hp, defence);
+        dicTeamProfile[nickname].UpdateUI(hp, defence , isLive);
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class TeamProfile : MonoBehaviour
 {
+    [SerializeField] GameObject dieIcon;
     [SerializeField] TextMeshProUGUI nickName;
     public Image hpBar;
     public Image defenceBar;
@@ -21,10 +22,10 @@ public class TeamProfile : MonoBehaviour
         hpBar.fillAmount = 1;
         nickName.text = blackBoard.nickname;
     }
-    public void UpdateUI(float hp, float defence)
+    public void UpdateUI(float hp, float defence , bool isLive)
     {
+        dieIcon.SetActive(!isLive);
         hpBar.fillAmount = hp / maxHp;
         defenceBar.fillAmount = defence / maxDefence;
     }
-
 }

@@ -4,9 +4,7 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using Orpul1;
 public class PlayerController : MonoBehaviour, IPunObservable
 {
@@ -40,6 +38,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	TeamUIController teamUIController = new TeamUIController();
     void Awake()
 	{
+		blackBoard.isLive = true;
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
 		playerInteract =  new PlayerInteract();
@@ -58,7 +57,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
-		SetTeamFieldOfView();
+		//SetTeamFieldOfView();
 
 		if (playerData.pv.IsMine)
 			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
@@ -143,7 +142,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
             if (mineTeam.ToString() != otherTeam.ToString())
 			{
-				GetComponentInChildren<FieldOfView>().enabled = false;
+				blackBoard.fieldOfView.enabled = false;
+				//GetComponentInChildren<FieldOfView>().enabled = false;
 			}
 		}
 	}
@@ -463,11 +463,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			stream.SendNext(transform.rotation);
 			stream.SendNext(blackBoard.rigidBody.velocity);
-		}
+			stream.SendNext(blackBoard.isLive);
+        }
 		else if(stream.IsReading)
 		{
 			transform.rotation = (Quaternion)stream.ReceiveNext();
             blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
+			bool isLive = (bool)stream.ReceiveNext();
+			SetActiveState(isLive);
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             transform.position += blackBoard.rigidBody.velocity * lag;
         }
@@ -495,6 +498,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerData.speedDebuffPercent = 1.0f;
 	}
     public GameDirector gameDirector;
+
     [PunRPC]
 	private void Damage(float damage)
 	{
@@ -503,10 +507,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if ( decreaseHp < 0)
 			blackBoard.hp += decreaseHp;
 		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+
         if (blackBoard.hp <= 0)
         {
+            blackBoard.hp = blackBoard.maxHp;
+            blackBoard.defence = blackBoard.maxDefence;
+            hpBar.InitializeValues();
+
+            this.transform.position = blackBoard.spawnPoint;
             if (playerData.pv.IsMine)
-			{
+            {
                 string team = (string)playerData.pv.Owner.CustomProperties["Team"];
                 if (team == "RT")
                     GameDirector.blueScore++;
@@ -516,19 +526,30 @@ public class PlayerController : MonoBehaviour, IPunObservable
                 gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
 
                 StartCoroutine(RespawnDelay(3.0f));
-			}
-
-            blackBoard.hp = blackBoard.maxHp;
-			blackBoard.defence = blackBoard.maxDefence;
-			hpBar.InitializeValues();
-            this.transform.position = blackBoard.spawnPoint;
-		}
+            }
+           
+        }
     }
 	IEnumerator RespawnDelay(float time)
 	{
         _uiScene = Managers.UI.ShowSceneUI<UIScene>("DieCanvas");
+
+        hpBar.SetStopHpUI(true);
+        blackBoard.isLive = false;
+		SetActiveState(false);
         yield return new WaitForSeconds(time);
+        hpBar.SetStopHpUI(false);
+        blackBoard.isLive = true;
+        SetActiveState(true);
         Managers.UI.CloseSceneUI();
+    }
+	private void SetActiveState(bool isDie)
+	{
+        for (int i = 0; i < blackBoard.playerModels.Count; i++)
+            blackBoard.playerModels[i].SetActive(isDie);
+
+        blackBoard.rigidBody.isKinematic = !isDie;
+        blackBoard.playerCollider.enabled = isDie;
     }
 
     [PunRPC]

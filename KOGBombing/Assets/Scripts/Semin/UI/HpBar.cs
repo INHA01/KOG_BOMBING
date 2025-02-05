@@ -21,9 +21,10 @@ public class HpBar : MonoBehaviour
     float targetHp, targetDefence;
     Camera mainCamera;
     Coroutine decrease;
-
+    bool stopHpUI = false;
     public void SetHpValue(float hpValue, float defenceValue)
     {
+        if (stopHpUI) return;
         if (decrease != null)
             StopCoroutine(decrease);
         hp.fillAmount = targetHp;
@@ -33,6 +34,10 @@ public class HpBar : MonoBehaviour
         decrease = StartCoroutine(DecreaseHP());
     }
 
+    public void SetStopHpUI(bool value)
+    {
+        stopHpUI = value;
+    }
     public void InitializeValues()
     {
         if (decrease != null)
@@ -89,6 +94,7 @@ public class HpBar : MonoBehaviour
 
 		while (elapsedTime < decreaseTime)
         {
+            if (stopHpUI) yield break;
             hpValue = Mathf.Lerp(startHP, targetHp, elapsedTime / decreaseTime);
             defenceValue = Mathf.Lerp(startDefence, targetDefence, elapsedTime / decreaseTime);
             hp.fillAmount = hpValue;

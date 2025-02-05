@@ -4,27 +4,8 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using System.Text;
 using Semin;
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using Orpul1;
-[Serializable]
-public class PlayerBlackBoard
-{
-    public float hp;
-	public float maxHp;
-	public float defence;
-	public float maxDefence;
-    public float moveSpeed;
-    public Rigidbody rigidBody;
-    public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
-    public Vector2 speedValue;
-    public Vector2 mousePos;
-	public Vector3 spawnPoint;
-	public bool isGroggy;
-	public bool groggyable;
-}
-
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
@@ -54,9 +35,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
-	
+	TeamUIController teamUIController = new TeamUIController();
     void Awake()
 	{
+		blackBoard.isLive = true;
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
 		playerInteract =  new PlayerInteract();
@@ -75,8 +57,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
-		SetTeamFieldOfView();
-	}
+		//SetTeamFieldOfView();
+
+		if (playerData.pv.IsMine)
+			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
+		else
+			blackBoard.nickname = playerData.pv.Owner.NickName;
+    }
 
 	private void Start()
 	{
@@ -112,20 +99,38 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-		//StartCoroutine(DamageTest(10f, 400));
-	}
 
+
+		if(playerData.pv.IsMine)
+		{
+			playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+			StartCoroutine(WaitSetTeamUI());
+		}
+    }
+	[PunRPC]
+	private void SendBlackBoard()
+	{
+        Managers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
+    }
+    IEnumerator WaitSetTeamUI()
+	{
+        while (!Managers.PunData.IsDataAllGet) yield return null;
+		teamUIController.SetTeamUI(playerShooting);
+
+    }
 	public void SetCamera(Camera cam)
 	{
 		viewCamera = cam;
 	}
 
-	public IEnumerator DamageTest(float time, float damage)
-	{
-		OnDamaged(damage);
-		yield return new WaitForSeconds(time);
-		OnResurrect();
-	}
+	//public IEnumerator DamageTest(float time, float damage)
+	//{
+	//	while (true)
+	//	{
+	//		yield return new WaitForSeconds(time);
+	//		OnDamaged(damage);
+	//	}
+	//}
 
 	void SetTeamFieldOfView()
 	{
@@ -137,7 +142,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
             if (mineTeam.ToString() != otherTeam.ToString())
 			{
-				GetComponentInChildren<FieldOfView>().enabled = false;
+				blackBoard.fieldOfView.enabled = false;
+				//GetComponentInChildren<FieldOfView>().enabled = false;
 			}
 		}
 	}
@@ -333,16 +339,13 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool IsAttackTeam()
 	{
 		return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
+		//return false;
 	}
 
 	public bool IsDefenceTeam()
 	{
+		//return true;
 		return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
-	}
-
-	public bool IsNotGroggy()
-	{
-		return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
 	}
 
     #endregion
@@ -418,7 +421,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnUseAttackConsum(InputValue value)
 	{
 		if (!playerData.pv.IsMine) return;
-        if (IsNotGroggy() == false) return;
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -461,11 +463,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		{
 			stream.SendNext(transform.rotation);
 			stream.SendNext(blackBoard.rigidBody.velocity);
-		}
+			stream.SendNext(blackBoard.isLive);
+        }
 		else if(stream.IsReading)
 		{
 			transform.rotation = (Quaternion)stream.ReceiveNext();
             blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
+			bool isLive = (bool)stream.ReceiveNext();
+			SetActiveState(isLive);
 			float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             transform.position += blackBoard.rigidBody.velocity * lag;
         }
@@ -475,7 +480,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
 		playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 		playerMaterialController.Hit();
-		if (playerData.pv.IsMine)
+
+		teamUIController.UpdateTeamUI();
+
+        if (playerData.pv.IsMine)
 			viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
 	}
 
@@ -490,50 +498,58 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerData.speedDebuffPercent = 1.0f;
 	}
     public GameDirector gameDirector;
+
     [PunRPC]
 	private void Damage(float damage)
 	{
 		float decreaseHp = blackBoard.defence - damage;
 		blackBoard.defence = Mathf.Max(decreaseHp, 0);
 		if ( decreaseHp < 0)
-			blackBoard.hp = MathF.Max(blackBoard.hp + decreaseHp, 0);
+			blackBoard.hp += decreaseHp;
 		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+
         if (blackBoard.hp <= 0)
         {
-			if (blackBoard.groggyable)	// Groggy
-			{
-				blackBoard.groggyable = false;
-				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
-				playerData.speedDebuffPercent = 0.1f;
-				ChangeWeapon(WeaponType.NONE);
-			}
-			else // Death
-			{
-				if (playerData.pv.IsMine)
-				{
-					string team = (string)playerData.pv.Owner.CustomProperties["Team"];
-					if (team == "RT")
-						GameDirector.blueScore++;
-					else
-						GameDirector.redScore++;
+            blackBoard.hp = blackBoard.maxHp;
+            blackBoard.defence = blackBoard.maxDefence;
+            hpBar.InitializeValues();
 
-					gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-					StartCoroutine(RespawnDelay(3.0f));
-				}
-				blackBoard.hp = blackBoard.maxHp;
-				blackBoard.defence = blackBoard.maxDefence;
-				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-				blackBoard.groggyable = true;
-				hpBar.InitializeValues();
-				this.transform.position = blackBoard.spawnPoint;
-			}
-		}
+            this.transform.position = blackBoard.spawnPoint;
+            if (playerData.pv.IsMine)
+            {
+                string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+                if (team == "RT")
+                    GameDirector.blueScore++;
+                else
+                    GameDirector.redScore++;
+
+                gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+
+                StartCoroutine(RespawnDelay(3.0f));
+            }
+           
+        }
     }
 	IEnumerator RespawnDelay(float time)
 	{
         _uiScene = Managers.UI.ShowSceneUI<UIScene>("DieCanvas");
+
+        hpBar.SetStopHpUI(true);
+        blackBoard.isLive = false;
+		SetActiveState(false);
         yield return new WaitForSeconds(time);
+        hpBar.SetStopHpUI(false);
+        blackBoard.isLive = true;
+        SetActiveState(true);
         Managers.UI.CloseSceneUI();
+    }
+	private void SetActiveState(bool isDie)
+	{
+        for (int i = 0; i < blackBoard.playerModels.Count; i++)
+            blackBoard.playerModels[i].SetActive(isDie);
+
+        blackBoard.rigidBody.isKinematic = !isDie;
+        blackBoard.playerCollider.enabled = isDie;
     }
 
     [PunRPC]
@@ -541,16 +557,5 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         playerData.speedDebuffPercent = 0.5f;
         StartCoroutine(ResetRigidity(time));
-	}
-
-	[PunRPC]
-	public void OnResurrect()
-	{
-		Debug.Log("ºÎÈ°");
-		blackBoard.hp = 50f;
-		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
-		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-		ChangeWeapon(WeaponType.GUN);
-		playerData.speedDebuffPercent = 1f;
-	}
+    }
 }

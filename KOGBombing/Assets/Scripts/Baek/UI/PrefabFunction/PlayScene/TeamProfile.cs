@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,17 +8,24 @@ using UnityEngine.UI;
 
 public class TeamProfile : MonoBehaviour
 {
+    [SerializeField] GameObject dieIcon;
     [SerializeField] TextMeshProUGUI nickName;
     public Image hpBar;
+    public Image defenceBar;
     float maxHp;
-    public void Init(float hp)
+    float maxDefence;
+    public void Init(PlayerBlackBoard blackBoard)
     {
-        maxHp = hp;
+        maxHp = blackBoard.maxHp;
+        maxDefence = blackBoard.maxDefence;
+        defenceBar.fillAmount = 1;
         hpBar.fillAmount = 1;
-        nickName.text = Managers.UserData.userData.nickName;
+        nickName.text = blackBoard.nickname;
     }
-    public void UpdateUI(float hp)
+    public void UpdateUI(float hp, float defence , bool isLive)
     {
+        dieIcon.SetActive(!isLive);
         hpBar.fillAmount = hp / maxHp;
+        defenceBar.fillAmount = defence / maxDefence;
     }
 }

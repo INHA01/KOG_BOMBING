@@ -21,7 +21,7 @@ public class PlayScene : MonoBehaviour
     [SerializeField] Image redScoreIcon;
     [Header("Model")]
     [HideInInspector] public PlayerShooting weapon;
-    List<TeamProfile> teamProfiles = new List<TeamProfile>();
+    Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
 
     void Update()
     {
@@ -40,13 +40,18 @@ public class PlayScene : MonoBehaviour
         if (GameDirector.blueScore < 10)
             blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];
     }
-    public void SetTeam(float hp)
+    public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         TeamProfile profile = go.GetComponent<TeamProfile>();
-        profile.Init(hp);
-        teamProfiles.Add(profile);
+        profile.Init(blackBoard);
+        dicTeamProfile.Add(blackBoard.nickname, profile);
+    }
+    public void UpdateProfile(string nickname, float hp, float defence , bool isLive)
+    {
+        if (!dicTeamProfile.ContainsKey(nickname)) return;
+        dicTeamProfile[nickname].UpdateUI(hp, defence , isLive);
     }
 }

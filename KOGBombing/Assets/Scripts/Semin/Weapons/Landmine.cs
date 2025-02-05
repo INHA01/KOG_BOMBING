@@ -59,11 +59,11 @@ namespace Semin
                 if (!otherPv) return;
                 if (!IsOtherTeam(otherPv)) return;
 
-                StartCoroutine(Bomb(otherPv));
+                StartCoroutine(Bomb());
             }
         }
 
-        IEnumerator Bomb(PhotonView otherPv)
+        IEnumerator Bomb()
         {
             if (!pView) yield break;
             yield return new WaitForSeconds(interval);
@@ -74,7 +74,7 @@ namespace Semin
             {
                 if (hitColliders[i].CompareTag("Player"))
                 {
-                    if (!IsOtherTeam(otherPv)) continue;
+                    if (!IsOtherTeam(hitColliders[i].transform.GetComponent<PhotonView>())) continue;
                     PlayerController player = hitColliders[i].transform.GetComponent<PlayerController>();
                     if (player != null)
                     {

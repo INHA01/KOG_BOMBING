@@ -87,22 +87,22 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 2093382085591792498}
+      objectReference: {fileID: 1071337817672403904}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 1469166799441632479}
+      objectReference: {fileID: 2093382085591792498}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 6653052910028107773}
+      objectReference: {fileID: 1469166799441632479}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 1071337817672403904}
+      objectReference: {fileID: 6653052910028107773}
     - target: {fileID: 3900849375641417542, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: pv
@@ -137,6 +137,26 @@ PrefabInstance:
         type: 3}
       propertyPath: blackBoard.moveSpeed
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782088153960012666, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: maxHp
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782088153960012666, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782088153960012666, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: rigidBody
+      value: 
+      objectReference: {fileID: 6961145186423209615}
+    - target: {fileID: 6782088153960012666, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: maxDefence
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7300479445460102179, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -287,6 +307,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8176e5b06974834468513915feb84a74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &6961145186423209615 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 1272812946582949491, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 8156867798748147964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7191504624741068246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1368636139714485546, guid: 0d02381c6c6de984598d9a59a2b73761,

@@ -7,8 +7,8 @@ using Semin;
 using System;
 using System.Collections;
 using Photon.Realtime;
-using Unity.VisualScripting;
 using ExitGames.Client.Photon;
+
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	Coroutine animChange;
 	bool isChangableAnim;
 	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
-
-	public enum EDirection
+	TeamUIController teamUIController = new TeamUIController();
+    public enum EDirection
 	{
 		Up,
 		Down,
@@ -118,40 +118,21 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		//StartCoroutine(DamageTest(0.5f, 40));
 	
 
-		StartCoroutine(CoWaitStart());
+		StartCoroutine(CoWaitSetTeamUI());
 
     }
     [PunRPC]
     private void SendBlackBoard()
     {
-        PhotonDataManager.Instance.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
+        Managers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
     }
 
-    private void SetProfileUI()
-    {
-        Player[] players = PhotonNetwork.PlayerList;
-        UIScene _uiScene = null;
-		string selfPlayerTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-		string otherPlayerTeam = "";
-        for (int i = 0; i < players.Length; i++)
-        {
-			otherPlayerTeam = (string)players[i].CustomProperties["Team"];
-			if(selfPlayerTeam == otherPlayerTeam)
-			{
-				_uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
-				_uiScene.GetComponent<PlayScene>().weapon = playerShooting;
-				_uiScene.GetComponent<PlayScene>().SetTeam(PhotonDataManager.Instance.GetPlayerBlackBoard(players[i].NickName));
-			}
-        }
-        if (_uiScene != null)
-            updateProfile = _uiScene.GetComponent<PlayScene>().UpdateProfile;
-    }
-    IEnumerator CoWaitStart()
+    IEnumerator CoWaitSetTeamUI()
 	{
-		while(!PhotonDataManager.Instance.IsDataAllGet)
+		while(!Managers.PunData.IsDataAllGet)
 			yield return null;
-        if (playerData.pv.IsMine)
-            SetProfileUI();
+		if (playerData.pv.IsMine)
+			teamUIController.SetTeamUI(playerShooting);
     }
 	public void SetCamera(Camera cam)
 	{
@@ -491,9 +472,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerMaterialController.Hit();
 
 		//Æ÷Åæ RaiseEvent ¹ß»ý
-		RaiseEventOptions options = new RaiseEventOptions();
-		options.Receivers = ReceiverGroup.All;
-		PhotonNetwork.RaiseEvent(0, null, options,SendOptions.SendReliable);
+		teamUIController.UpdateTeamUI();
         if (playerData.pv.IsMine)
 		{
 			viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
@@ -546,7 +525,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
                 if (selfTeam == otherTeam)
 				{
-					float hp = PhotonDataManager.Instance.GetPlayerBlackBoard(players[i].NickName).hp;
+					float hp = Managers.PunData.GetPlayerBlackBoard(players[i].NickName).hp;
 
 					if (updateProfile != null)
 						updateProfile(players[i].NickName, hp);

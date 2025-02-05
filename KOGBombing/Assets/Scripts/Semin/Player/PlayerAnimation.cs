@@ -16,6 +16,8 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Landmine,
 		Shoot,
 		Groggy,
+		Right,
+		Left,
 		MAX
 	}
 
@@ -58,7 +60,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 	public bool GetAnimBool(AnimType type)
 	{
-		return animator.GetBool(type.ToString());
+		return animator.GetBool("Is" + type.ToString());
 	}
 
 	public void SetAnimBool(AnimType type, bool value)
@@ -124,6 +126,17 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			{
 				Quaternion targetRotation = Quaternion.LookRotation(direction);
 				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
+				if (angle > 0)
+				{
+					SetAnimBool(AnimType.Right, true);
+					SetAnimBool(AnimType.Left, false);
+				}
+				else
+				{
+					SetAnimBool(AnimType.Right, false);
+					SetAnimBool(AnimType.Left, true);
+				}
+
 			}
 		}
 		else
@@ -153,20 +166,20 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	{
 		if (animator == null) return;
 		if (pv.IsMine)
-		{
 			animator.SetLookAtPosition(pointToLookAt);
-			animator.SetLookAtWeight(1.0f);
-		}
 		else
-		{
 			animator.SetLookAtPosition(netWorkPointToLookAt);
-			animator.SetLookAtWeight(1.0f);
-		}
-		if (GetCurAnim(AnimType.Shoot))
+		if (GetAnimBool(AnimType.Groggy))
 		{
-			animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-			animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
+			animator.SetLookAtWeight(0f);
+			animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
 		}
+		else animator.SetLookAtWeight(0.5f);
+		//if (GetCurAnim(AnimType.Shoot))
+		//{
+		//	animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+		//	animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
+		//}
 	}
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

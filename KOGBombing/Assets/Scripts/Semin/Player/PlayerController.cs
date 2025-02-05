@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-		StartCoroutine(DamageTest(30f, 400));
+		//StartCoroutine(DamageTest(10f, 400));
 	}
 
 	public void SetCamera(Camera cam)
@@ -122,11 +122,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public IEnumerator DamageTest(float time, float damage)
 	{
-		while (true)
-		{
-			OnDamaged(damage);
-			yield return new WaitForSeconds(time);
-		}
+		OnDamaged(damage);
+		yield return new WaitForSeconds(time);
+		OnResurrect();
 	}
 
 	void SetTeamFieldOfView()
@@ -335,13 +333,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool IsAttackTeam()
 	{
 		return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
-		//return false;
 	}
 
 	public bool IsDefenceTeam()
 	{
-		//return true;
 		return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
+	}
+
+	public bool IsNotGroggy()
+	{
+		return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
 	}
 
     #endregion
@@ -417,6 +418,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnUseAttackConsum(InputValue value)
 	{
 		if (!playerData.pv.IsMine) return;
+        if (IsNotGroggy() == false) return;
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -502,6 +504,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			{
 				blackBoard.groggyable = false;
 				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
+				playerData.speedDebuffPercent = 0.1f;
+				ChangeWeapon(WeaponType.NONE);
 			}
 			else // Death
 			{
@@ -518,6 +522,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				}
 				blackBoard.hp = blackBoard.maxHp;
 				blackBoard.defence = blackBoard.maxDefence;
+				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+				blackBoard.groggyable = true;
 				hpBar.InitializeValues();
 				this.transform.position = blackBoard.spawnPoint;
 			}
@@ -535,5 +541,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	{
         playerData.speedDebuffPercent = 0.5f;
         StartCoroutine(ResetRigidity(time));
-    }
+	}
+
+	[PunRPC]
+	public void OnResurrect()
+	{
+		Debug.Log("∫Œ»∞");
+		blackBoard.hp = 50f;
+		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		ChangeWeapon(WeaponType.GUN);
+		playerData.speedDebuffPercent = 1f;
+	}
 }

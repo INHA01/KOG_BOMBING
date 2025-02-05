@@ -21,6 +21,8 @@ public class PlayerBlackBoard
     public Vector2 speedValue;
     public Vector2 mousePos;
 	public Vector3 spawnPoint;
+	public bool isGroggy;
+	public bool groggyable;
 }
 
 public class PlayerController : MonoBehaviour, IPunObservable
@@ -110,7 +112,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-		//StartCoroutine(DamageTest(0.5f, 40));
+		StartCoroutine(DamageTest(30f, 400));
 	}
 
 	public void SetCamera(Camera cam)
@@ -118,14 +120,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		viewCamera = cam;
 	}
 
-	//public IEnumerator DamageTest(float time, float damage)
-	//{
-	//	while (true)
-	//	{
-	//		yield return new WaitForSeconds(time);
-	//		OnDamaged(damage);
-	//	}
-	//}
+	public IEnumerator DamageTest(float time, float damage)
+	{
+		while (true)
+		{
+			OnDamaged(damage);
+			yield return new WaitForSeconds(time);
+		}
+	}
 
 	void SetTeamFieldOfView()
 	{
@@ -492,27 +494,33 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		float decreaseHp = blackBoard.defence - damage;
 		blackBoard.defence = Mathf.Max(decreaseHp, 0);
 		if ( decreaseHp < 0)
-			blackBoard.hp += decreaseHp;
+			blackBoard.hp = MathF.Max(blackBoard.hp + decreaseHp, 0);
 		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
         if (blackBoard.hp <= 0)
         {
-            if (playerData.pv.IsMine)
+			if (blackBoard.groggyable)	// Groggy
 			{
-                string team = (string)playerData.pv.Owner.CustomProperties["Team"];
-                if (team == "RT")
-                    GameDirector.blueScore++;
-                else
-                    GameDirector.redScore++;
-
-                gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-
-                StartCoroutine(RespawnDelay(3.0f));
+				blackBoard.groggyable = false;
+				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
 			}
+			else // Death
+			{
+				if (playerData.pv.IsMine)
+				{
+					string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+					if (team == "RT")
+						GameDirector.blueScore++;
+					else
+						GameDirector.redScore++;
 
-            blackBoard.hp = blackBoard.maxHp;
-			blackBoard.defence = blackBoard.maxDefence;
-			hpBar.InitializeValues();
-            this.transform.position = blackBoard.spawnPoint;
+					gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+					StartCoroutine(RespawnDelay(3.0f));
+				}
+				blackBoard.hp = blackBoard.maxHp;
+				blackBoard.defence = blackBoard.maxDefence;
+				hpBar.InitializeValues();
+				this.transform.position = blackBoard.spawnPoint;
+			}
 		}
     }
 	IEnumerator RespawnDelay(float time)

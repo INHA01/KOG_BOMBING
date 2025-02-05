@@ -15,6 +15,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
         Cancel,
 		Landmine,
 		Shoot,
+		Groggy,
 		MAX
 	}
 
@@ -62,7 +63,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 	public void SetAnimBool(AnimType type, bool value)
 	{
-		animator.SetBool(type.ToString(), value);
+		animator.SetBool("Is" + type.ToString(), value);
 	}
 
 

@@ -42,8 +42,8 @@ public class PlayScene : MonoBehaviour
         profile.Init(blackBoard);
         dicTeamProfiles.Add(blackBoard.nickname, profile);
     }
-    public void UpdateProfile(string dicID, float hp)
+    public void UpdateProfile(string dicID, float hp, float defence)
     {
-        dicTeamProfiles[dicID].UpdateUI(hp);
+        dicTeamProfiles[dicID].UpdateUI(hp, defence);
     }
 }

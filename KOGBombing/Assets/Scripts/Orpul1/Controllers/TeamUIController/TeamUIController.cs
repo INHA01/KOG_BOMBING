@@ -2,10 +2,12 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using System.Collections.Generic;
 
 public class TeamUIController
 {
-    public Action<string, float> updateProfile;
+    public Action<string, float,float> updateProfile;
+    List<Player> teamPlayerList  = new List<Player>();
     public void SetTeamUI(PlayerShooting playerShooting)
     {
         PhotonNetwork.NetworkingClient.EventReceived += UpdateUI;
@@ -18,6 +20,7 @@ public class TeamUIController
             otherPlayerTeam = (string)players[i].CustomProperties["Team"];
             if (selfPlayerTeam == otherPlayerTeam)
             {
+                teamPlayerList.Add(players[i]);
                 _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
                 _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
                 _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(players[i].NickName));
@@ -37,20 +40,12 @@ public class TeamUIController
         int eventcode = photonEvent.Code;
         if (eventcode == 0)
         {
-            Player[] players = PhotonNetwork.PlayerList;
-            string selfTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-            string otherTeam = "";
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < teamPlayerList.Count; i++)
             {
-                otherTeam = (string)players[i].CustomProperties["Team"];
+                PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(teamPlayerList[i].NickName);
 
-                if (selfTeam == otherTeam)
-                {
-                    float hp = Managers.PunData.GetPlayerBlackBoard(players[i].NickName).hp;
-
-                    if (updateProfile != null)
-                        updateProfile(players[i].NickName, hp);
-                }
+                if (updateProfile != null)
+                    updateProfile(teamPlayerList[i].NickName, blackBoard.hp, blackBoard.defence);
             }
         }
     }

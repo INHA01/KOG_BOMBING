@@ -21,9 +21,10 @@ public class TeamProfile : MonoBehaviour
         hpBar.fillAmount = 1;
         nickName.text = blackBoard.nickname;
     }
-    public void UpdateUI(float hp)
+    public void UpdateUI(float hp, float defence)
     {
         hpBar.fillAmount = hp / maxHp;
+        defenceBar.fillAmount = defence / maxDefence;
     }
 
 }

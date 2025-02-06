@@ -89,9 +89,9 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">1228</XPD:ATTR>
-<XPD:ATTR name="Top" type="integer">160</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">128</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">179</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">212</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">225</XPD:ATTR>
 <XPD:REF name="Model">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="HCeSFDfAB0qc1hQCRLpp4wAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="LuRDRMttyESXIjaF7G9VKwAA">
@@ -1750,24 +1750,24 @@
 <XPD:ATTR name="TypeExpression" type="string">Dictionary&lt;EKey, bool&gt;</XPD:ATTR>
 <XPD:REF name="Owner">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Attributes[9]" type="UMLAttribute" guid="OhpgUh9osU2PSf0AtZXhvQAA">
-<XPD:ATTR name="Name" type="string">fieldOfView</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">FieldOfView</XPD:ATTR>
-<XPD:REF name="Owner">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Attributes[10]" type="UMLAttribute" guid="eS2S0JsEpUmMYzr+tmzXlAAA">
+<XPD:OBJ name="Attributes[9]" type="UMLAttribute" guid="eS2S0JsEpUmMYzr+tmzXlAAA">
 <XPD:ATTR name="Name" type="string">speedValue</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">Vector2</XPD:ATTR>
 <XPD:REF name="Owner">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Attributes[11]" type="UMLAttribute" guid="lYM1LSXmQEuBDgDuDpr2kAAA">
+<XPD:OBJ name="Attributes[10]" type="UMLAttribute" guid="lYM1LSXmQEuBDgDuDpr2kAAA">
 <XPD:ATTR name="Name" type="string">mousePos</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">Vector2</XPD:ATTR>
 <XPD:REF name="Owner">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Attributes[12]" type="UMLAttribute" guid="0dnEdJiKS0uzCN2IpWtDXwAA">
+<XPD:OBJ name="Attributes[11]" type="UMLAttribute" guid="0dnEdJiKS0uzCN2IpWtDXwAA">
 <XPD:ATTR name="Name" type="string">spawnPoint</XPD:ATTR>
 <XPD:ATTR name="TypeExpression" type="string">Vector3</XPD:ATTR>
+<XPD:REF name="Owner">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Attributes[12]" type="UMLAttribute" guid="ppelkAIMQEOoRB4xAT0CFgAA">
+<XPD:ATTR name="Name" type="string">camera</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">Camera</XPD:ATTR>
 <XPD:REF name="Owner">WaIOV9SoeUemdpW9YEDpdwAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>

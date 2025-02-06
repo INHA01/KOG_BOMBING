@@ -37,8 +37,6 @@ public class HpBar : MonoBehaviour
     public void SetStopHpUI(bool value)
     {
         stopHpUI = value;
-        if (decrease != null)
-            StopCoroutine(decrease);
     }
     public void InitializeValues()
     {

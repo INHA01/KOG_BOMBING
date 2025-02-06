@@ -175,7 +175,11 @@ public class PlayerController : MonoBehaviour, IPunObservable
         if (blackBoard.inputs[EKey.Escape])
 			return INode.ENodeState.Success;
         return INode.ENodeState.Fail;
-    }	
+    }
+	public INode.ENodeState SuccessNode()
+	{
+		return INode.ENodeState.Success;
+	}
     public INode.ENodeState Move(EDirection direction)
 	{
 		Vector3 movement;
@@ -201,16 +205,19 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public INode.ENodeState SetLookTarget()
 	{
 		List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
+		Debug.Log($"TeamPlayer {blackBoards.Count}");
         for(int i=0; i<blackBoards.Count; i++)
 		{
 			if (blackBoards[i].isLive)
 			{
+				Debug.Log("Find Target");
 				blackBoard.gmlookTarget = blackBoards[i].rigidBody.gameObject;
-				return INode.ENodeState.Success;
+                return INode.ENodeState.Success;
 			}
 		}
-
-		return INode.ENodeState.Fail;
+        Debug.Log("All Team Player Die");
+		blackBoard.gmlookTarget = null;
+        return INode.ENodeState.Fail;
     }
     public INode.ENodeState SetCameraTarget()
 	{
@@ -356,10 +363,11 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 	public bool IsTargetDie()
 	{
-		if (blackBoard.gmlookTarget == null) return true;
+        if (blackBoard.gmlookTarget == null) return true;
 		string name = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
-		if (!Managers.PunData.GetPlayerBlackBoard(name).isLive) return true;
-		return false;
+        if (Managers.PunData.GetPlayerBlackBoard(name).isLive) return true;
+        Debug.Log("IsTargetDie Return False");
+        return false;
 	}
     public bool CheckInput(EKey key)
 	{
@@ -584,9 +592,10 @@ public class PlayerController : MonoBehaviour, IPunObservable
         blackBoard.isLive = false;
 		SetActiveState(false);
         yield return new WaitForSeconds(time);
-        hpBar.SetStopHpUI(false);
         blackBoard.isLive = true;
+        hpBar.SetStopHpUI(false);
         SetActiveState(true);
+        viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         Managers.UI.ClosePopupUI();
     }
 	private void SetActiveState(bool isDie)

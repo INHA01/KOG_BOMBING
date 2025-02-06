@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
 			StartCoroutine(WaitSetTeamUI());
 		}
-		StartCoroutine(DamageTest(10f, 350));
+		//StartCoroutine(DamageTest(10f, 350));
 	}
 	[PunRPC]
 	private void SendBlackBoard()

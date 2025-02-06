@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		playerInteract.Init(transform);
 		playerShooting.Init(playerData.animator,attackRange);
 		playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
+		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 
 		for (int i = 0; i < (int)EKey.MAX; i++)
             blackBoard.inputs.Add((EKey)i, false);
@@ -63,7 +64,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
 		else
 			blackBoard.nickname = playerData.pv.Owner.NickName;
-    }
+	}
+
+	public IEnumerator DamageTest(float time, float damage)
+	{
+		OnDamaged(damage);
+		yield return new WaitForSeconds(time);
+		OnResurrect();
+	}
 
 	private void Start()
 	{
@@ -71,19 +79,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			viewCamera = Camera.main;
 
 		string team = (string)playerData.pv.Owner.CustomProperties["Team"];
-
-        if (team == "RT")
-		{
-			playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
-			if (playerData.supportWeapon is SupportWeaponBase support)
-				support.SetConsum(WeaponType.MOLOTOV);
-		}
-		else
-		{
-			playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
-			if (playerData.supportWeapon is SupportWeaponBase support)
-				support.SetConsum(WeaponType.LANDMINE);
-		}
+		SetSupportWeapon(team);
 
 		if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
 			SetOtherTeamInfo();
@@ -91,8 +87,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		playerData.supportWeapon.SetTeam(team);
 		playerData.animator.Init(playerData.playerObj, team, playerData.shootStartPos);
-
-		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		playerMaterialController.SaveCurrentMaterial();
 
 		if(playerData.pv.IsMine)
@@ -100,7 +94,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
 			StartCoroutine(WaitSetTeamUI());
 		}
-    }
+		//StartCoroutine(DamageTest(10f, 350));
+	}
 	[PunRPC]
 	private void SendBlackBoard()
 	{
@@ -117,6 +112,21 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		viewCamera = cam;
 	}
 
+	void SetSupportWeapon(string team)
+	{
+		if (team == "RT")
+		{
+			playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
+			if (playerData.supportWeapon is SupportWeaponBase support)
+				support.SetConsum(WeaponType.MOLOTOV);
+		}
+		else
+		{
+			playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
+			if (playerData.supportWeapon is SupportWeaponBase support)
+				support.SetConsum(WeaponType.LANDMINE);
+		}
+	}
 	
 	void SetOtherTeamInfo()
 	{
@@ -319,17 +329,19 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public bool IsAttackTeam()
 	{
 		return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
-		//return false;
 	}
 
 	public bool IsDefenceTeam()
 	{
-		//return true;
 		return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
 	}
+	public bool IsNotGroggy()
+	{
+		return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
+	}
 
-    #endregion
-    UIPopup _uiScene;
+	#endregion
+	UIPopup _uiScene;
     #region Input System
     public void OnCanBehavior(InputValue value)
 	{
@@ -401,8 +413,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	public void OnUseAttackConsum(InputValue value)
 	{
 		if (!playerData.pv.IsMine) return;
+		if (IsNotGroggy() == false) return;
 
-        isChangableAnim = true;
+		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
 
@@ -490,23 +503,33 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
         if (blackBoard.hp <= 0)
         {
-            blackBoard.hp = blackBoard.maxHp;
-            blackBoard.defence = blackBoard.maxDefence;
-            hpBar.InitializeValues();
+			if (blackBoard.groggyable)  // Groggy
+			{
+				blackBoard.groggyable = false;
+				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
+				playerData.speedDebuffPercent = 0.1f;
+				ChangeWeapon(WeaponType.NONE);
+			}
+			else // Death
+			{
+				if (playerData.pv.IsMine)
+				{
+					string team = (string)playerData.pv.Owner.CustomProperties["Team"];
+					if (team == "RT")
+						GameDirector.blueScore++;
+					else
+						GameDirector.redScore++;
 
-            this.transform.position = blackBoard.spawnPoint;
-            if (playerData.pv.IsMine)
-            {
-                string team = (string)playerData.pv.Owner.CustomProperties["Team"];
-                if (team == "RT")
-                    GameDirector.blueScore++;
-                else
-                    GameDirector.redScore++;
-
-                gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-
-                StartCoroutine(RespawnDelay(3.0f));
-            }
+					gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+					StartCoroutine(RespawnDelay(3.0f));
+				}
+				blackBoard.hp = blackBoard.maxHp;
+				blackBoard.defence = blackBoard.maxDefence;
+				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+				blackBoard.groggyable = true;
+				hpBar.InitializeValues();
+				this.transform.position = blackBoard.spawnPoint;
+			}
         }
     }
 	IEnumerator RespawnDelay(float time)
@@ -537,4 +560,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
         playerData.speedDebuffPercent = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
+
+	[PunRPC]
+	public void OnResurrect()
+	{
+		blackBoard.hp = 50f;
+		hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		ChangeWeapon(WeaponType.GUN);
+		playerData.speedDebuffPercent = 1f;
+	}
 }

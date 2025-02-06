@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
 namespace Semin
@@ -35,12 +36,6 @@ namespace Semin
             this.paramName = paramName;
             this.className = className;
         }
-
-		public override void SetTarget(GameObject target)
-		{
-			base.SetTarget(target); 
-			child.SetTarget(target);
-		}
 
 		public override void Start()
         {

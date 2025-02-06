@@ -43,7 +43,8 @@ namespace Semin
 		public override void SetTarget(GameObject target)
 		{
 			base.SetTarget(target);
-			child.SetTarget(target);
+            if (child != null)
+			    child.SetTarget(target);
 		}
 	}
 

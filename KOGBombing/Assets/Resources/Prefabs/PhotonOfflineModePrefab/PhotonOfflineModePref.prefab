@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 7625849555344672014}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.52, y: 0, z: 3.02}
+  m_LocalPosition: {x: 4.76, y: 0, z: 3.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79,5 +79,8 @@ MonoBehaviour:
   spawnPosi: {fileID: 1844514579324603138}
   playerCamera: {fileID: 765872088010769705, guid: 0a097aab33c99b74f8c1e822180a4334,
     type: 3}
-  hpUiCanvas: {fileID: 7202012173628612817, guid: 62ba84575324a0f44a670027873e825a,
+  minimapCamera: {fileID: 4415545071260989796, guid: bc263b49e528dc34ead1616c5f691de0,
     type: 3}
+  time: 180
+  blueScore: 0
+  redScore: 0

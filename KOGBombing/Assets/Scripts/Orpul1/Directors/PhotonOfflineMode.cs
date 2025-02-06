@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UIElements;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 public class PhotonOfflineMode : MonoBehaviourPunCallbacks
@@ -12,6 +13,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     Transform spawnPosi;
     [SerializeField]
     GameObject playerCamera;
+    [SerializeField]
+    GameObject minimapCamera;
 
     UIPopup _uiScene;
     
@@ -63,6 +66,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     {
         GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/SinglePlayer", spawnPosi.position, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
+        GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi.position + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
+        minimapCamera.GetComponent<MinimapCamera>().target = playerObj;
 		cameraObj.GetComponent<PlayerCamera>().target = playerObj;
         playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");

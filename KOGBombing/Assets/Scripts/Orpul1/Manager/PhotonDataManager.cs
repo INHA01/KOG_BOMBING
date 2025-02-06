@@ -32,5 +32,10 @@ public class PhotonDataManager
         }
         return dicPlayerBlackBoard[nickname];
     }
+    public void Init()
+    {
+        dicPlayerBlackBoard.Clear();
+        dicPlayerKDA.Clear();
+    }
 
 }

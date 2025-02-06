@@ -2,7 +2,7 @@ using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class Winner : MonoBehaviour
 {
     [SerializeField] GameObject redWin;
@@ -22,6 +22,8 @@ public class Winner : MonoBehaviour
     }
     public void ReturnLobby()
     {
+        PhotonNetwork.LeaveRoom();
+        Managers.PunData.Init();
         LoadingSceneManager.LoadScene("LobbyScene");
     }
 }

@@ -34,7 +34,10 @@ public class PlayerCamera : MonoBehaviour
 
 		transform.position = Vector3.Lerp(transform.position, TargetPos, Time.deltaTime * CameraSpeed);
 	}
-
+	public void SetTarget(GameObject target)
+	{
+		this.target = target;
+	}
 	public void Shake(float duration, float magnitude)
 	{
 		if (shake != null)

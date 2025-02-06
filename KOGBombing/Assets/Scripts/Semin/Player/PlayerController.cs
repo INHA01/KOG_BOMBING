@@ -6,6 +6,9 @@ using System.Text;
 using Semin;
 using System.Collections;
 using Orpul1;
+using System;
+using Photon.Realtime;
+using Unity.VisualScripting;
 public class PlayerController : MonoBehaviour, IPunObservable
 {
 	[SerializeField]
@@ -134,7 +137,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
             if (mineTeam.ToString() != otherTeam.ToString())
 			{
-				blackBoard.fieldOfView.enabled = false;
+				transform.GetComponentInChildren<FieldOfView>().enabled = false;
+				//blackBoard.fieldOfView.enabled = false;
 			}
 		}
 	}
@@ -194,6 +198,35 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 		return INode.ENodeState.Success;
 	}
+
+	//TODO : Set Camera Target
+	public INode.ENodeState SetLookTarget()
+	{
+		List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
+        for(int i=0; i<blackBoards.Count; i++)
+		{
+			if (blackBoards[i].isLive)
+			{
+				blackBoard.gmlookTarget = blackBoards[i].rigidBody.gameObject;
+				return INode.ENodeState.Success;
+			}
+		}
+
+		return INode.ENodeState.Fail;
+    }
+    public INode.ENodeState SetCameraTarget()
+	{
+		string nickname = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
+
+        if (Managers.PunData.GetPlayerBlackBoard(nickname).isLive)
+		{
+			viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.gmlookTarget);
+			return INode.ENodeState.Success;
+		}
+		blackBoard.gmlookTarget = null;
+        return INode.ENodeState.Fail;
+    }
+
 	public INode.ENodeState FindInteractObj()
 	{
 		if (playerInteract.FindInteractObj() == false)
@@ -318,6 +351,18 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	#endregion
 
 	#region If Decorater Node
+	
+	public bool IsDie()
+	{
+		return !blackBoard.isLive;
+	}
+	public bool IsTargetDie()
+	{
+		if (blackBoard.gmlookTarget == null) return true;
+		string name = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
+		if (!Managers.PunData.GetPlayerBlackBoard(name).isLive) return true;
+		return false;
+	}
     public bool CheckInput(EKey key)
 	{
 		return blackBoard.inputs[key];

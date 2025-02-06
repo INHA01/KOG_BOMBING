@@ -63,14 +63,19 @@ public class HpBar : MonoBehaviour
         defence.fillAmount = 1f;
 		targetHp = 1f;
 		targetDefence = 1f;
-		transform.GetComponent<Canvas>().worldCamera = GetComponent<Camera>();
+		transform.GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     private void Update()
     {
         if (mainCamera != null)
-            transform.rotation = mainCamera.transform.rotation;
-    }
+            transform.GetComponent<RectTransform>().rotation = mainCamera.transform.rotation;
+        else
+		{
+			transform.GetComponent<Canvas>().worldCamera = Camera.main;
+			mainCamera = Camera.main;
+        }
+	}
 
     public void SetIsMyTeam(bool isMyTeam)
     {

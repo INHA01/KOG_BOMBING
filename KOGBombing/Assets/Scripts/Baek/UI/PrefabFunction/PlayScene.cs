@@ -15,6 +15,7 @@ public class PlayScene : MonoBehaviour
     //[HideInInspector] public PhotonOfflineMode gameDirector;
     [HideInInspector] public GameDirector gameDirector;
     [SerializeField] TextMeshProUGUI timer;
+    // ResourceManager 사용할지 고민 중
     [SerializeField] Sprite[] blueScoreImages;
     [SerializeField] Sprite[] redScoreImages;
     [SerializeField] Image blueScoreIcon;
@@ -49,9 +50,9 @@ public class PlayScene : MonoBehaviour
         profile.Init(blackBoard);
         dicTeamProfile.Add(blackBoard.nickname, profile);
     }
-    public void UpdateProfile(string nickname, float hp, float defence , bool isLive)
+    public void UpdateProfile(string nickname)
     {
         if (!dicTeamProfile.ContainsKey(nickname)) return;
-        dicTeamProfile[nickname].UpdateUI(hp, defence , isLive);
+        dicTeamProfile[nickname].UpdateUI();
     }
 }

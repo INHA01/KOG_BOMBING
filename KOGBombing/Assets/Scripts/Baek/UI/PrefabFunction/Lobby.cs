@@ -10,7 +10,7 @@ public class Lobby : MonoBehaviour
     [SerializeField] GameObject gameStartButton;
     [SerializeField] NetworkDirector networkDirector;
 
-    UIScene _uiScene;
+    UIPopup _uiScene;
     LobbyModeSelect _lobbyModeSelect;
     public void OnPlayClick()
     {
@@ -20,7 +20,7 @@ public class Lobby : MonoBehaviour
     }
     public void OnSelectClick()
     {
-        _uiScene = Managers.UI.ShowSceneUI<UIScene>("SelectModeCanvas");
+        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("SelectModeCanvas");
         _lobbyModeSelect = _uiScene.GetComponent<LobbyModeSelect>();
     }
     public void OnGameStartClick()

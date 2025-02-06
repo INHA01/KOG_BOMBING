@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class Option : MonoBehaviour
     public void Cancel()
     {
         playerBlackBoard.inputs[EKey.Escape] = false;
-        Managers.UI.CloseSceneUI();
+        Managers.UI.ClosePopupUI();
     }
     public void ReturnLobby()
     { 
@@ -22,7 +23,11 @@ public class Option : MonoBehaviour
     public void ExitGame(bool yes)
     {
         if (yes)
+        {
+            PhotonNetwork.LeaveRoom();
+            Managers.PunData.Init();
             LoadingSceneManager.LoadScene("LobbyScene");
+        }
         else
             reCheckLobby.SetActive(false);
     }

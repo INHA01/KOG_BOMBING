@@ -12,7 +12,7 @@ public class TeamUIController
     {
         PhotonNetwork.NetworkingClient.EventReceived += UpdateUI;
         Player[] players = PhotonNetwork.PlayerList;
-        UIScene _uiScene = null;
+        UIPopup _uiScene = null;
         string selfPlayerTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         string otherPlayerTeam = "";
         for (int i = 0; i < players.Length; i++)
@@ -21,7 +21,7 @@ public class TeamUIController
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);
-                _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+                _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
                 _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
                 _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(players[i].NickName));
             }

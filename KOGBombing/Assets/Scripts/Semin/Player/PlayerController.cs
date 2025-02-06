@@ -349,21 +349,21 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 
     #endregion
-    UIScene _uiScene;
+    UIPopup _uiScene;
     #region Input System
     public void OnCanBehavior(InputValue value)
 	{
 		blackBoard.inputs[EKey.Escape] = !blackBoard.inputs[EKey.Escape];
 		if(blackBoard.inputs[EKey.Escape])
 		{
-			_uiScene = Managers.UI.ShowSceneUI<UIScene>("OptionCanvas");
+			_uiScene = Managers.UI.ShowPopupUI<UIPopup>("OptionCanvas");
             if (_uiScene.GetComponent<Option>().playerBlackBoard == null)
             {
                 _uiScene.GetComponent<Option>().playerBlackBoard = blackBoard;
             }
         }
         else
-            Managers.UI.CloseSceneUI();
+            Managers.UI.ClosePopupUI();
     }
 
     public void OnAttack(InputValue value)
@@ -532,7 +532,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     }
 	IEnumerator RespawnDelay(float time)
 	{
-        _uiScene = Managers.UI.ShowSceneUI<UIScene>("DieCanvas");
+        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
 
         hpBar.SetStopHpUI(true);
         blackBoard.isLive = false;
@@ -541,7 +541,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
         hpBar.SetStopHpUI(false);
         blackBoard.isLive = true;
         SetActiveState(true);
-        Managers.UI.CloseSceneUI();
+        Managers.UI.ClosePopupUI();
     }
 	private void SetActiveState(bool isDie)
 	{

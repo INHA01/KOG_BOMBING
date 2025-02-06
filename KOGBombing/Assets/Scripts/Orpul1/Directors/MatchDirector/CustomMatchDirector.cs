@@ -79,7 +79,7 @@ namespace Orpul1
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            Managers.UI.DestroyAllSceneUI();
+            Managers.UI.DestroyAllPopupUI();
             PhotonNetwork.LoadLevel(3);
             //LoadingSceneManager.LoadScene("TestGame");
 

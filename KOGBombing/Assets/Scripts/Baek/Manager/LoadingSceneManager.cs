@@ -13,7 +13,7 @@ public class LoadingSceneManager : MonoBehaviour
     }
     public static void LoadScene(string sceneName)
     {
-        Managers.UI.DestroyAllSceneUI();
+        Managers.UI.DestroyAllPopupUI();
         nextScene = sceneName;
         SceneManager.LoadScene("LoadingScene");
     }

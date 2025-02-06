@@ -16,8 +16,8 @@ public class UIManager
         }
     }
     int _order = 0;
-    public Stack<UIScene> _sceneStack = new Stack<UIScene>();
-    public List<GameObject> _scenes = new List<GameObject>();
+    public Stack<UIPopup> _popupStack = new Stack<UIPopup>();
+    public List<GameObject> _uiList = new List<GameObject>();
 
     #region ShowSceneUI (Original)
     //public T ShowSceneUI<T>(string name = null) where T : UIScene
@@ -45,58 +45,58 @@ public class UIManager
     //}
     #endregion
 
-    public T ShowSceneUI<T>(string name = null) where T : UIScene
+    public T ShowPopupUI<T>(string name = null) where T : UIPopup
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
         GameObject go = null;
-        for (int i = 0; i < _scenes.Count; i++)
+        for (int i = 0; i < _uiList.Count; i++)
         {
-            if (_scenes[i].name == name) 
+            if (_uiList[i].name == name) 
             {
-                go = _scenes[i]; 
+                go = _uiList[i]; 
             }
         }
         if (go == null)
         {
             go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
-            _scenes.Add(go); 
+            _uiList.Add(go); 
             go.transform.SetParent(Root.transform);
         }
         else { go.SetActive(true); }
 
         T sceneUI = Util.GetOrAddComponent<T>(go);
         sceneUI.Init();
-        _sceneStack.Push(sceneUI);
+        _popupStack.Push(sceneUI);
 
         return sceneUI;
     }
-    public void CloseSceneUI()
+    public void ClosePopupUI()
     {
-        if (_sceneStack.Count == 0)
+        if (_popupStack.Count == 0)
         {
             return;
         }
-        _scenes[_scenes.Count - 1].SetActive(false);
-        UIScene sceneUI = _sceneStack.Pop();
+        _uiList[_uiList.Count - 1].SetActive(false);
+        UIPopup sceneUI = _popupStack.Pop();
         sceneUI = null;
         _order--;
     }
-    public void CloseAllSceneUI()
+    public void CloseAllPopupUI()
     {
-        while (_sceneStack.Count > 0)
+        while (_popupStack.Count > 0)
         {
-            CloseSceneUI();
+            ClosePopupUI();
         }
     }
-    public void DestroyAllSceneUI()
+    public void DestroyAllPopupUI()
     {
-        CloseAllSceneUI();
-        for (int i = 0; i < _scenes.Count; i++)
+        CloseAllPopupUI();
+        for (int i = 0; i < _uiList.Count; i++)
         {
-            Managers.Resource.Destroy(_scenes[i]);
+            Managers.Resource.Destroy(_uiList[i]);
         }
-        _scenes.Clear();
+        _uiList.Clear();
     }
 
     public void SetCanvas(GameObject go, bool sort = true)

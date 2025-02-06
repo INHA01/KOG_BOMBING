@@ -16,7 +16,7 @@ namespace Orpul1
         [Header("Photon")]
         [SerializeField] public PhotonView pv;
 
-        UIScene _uiScene;
+        UIPopup _uiScene;
 
         public float time = 180;
         public static int blueScore = 0;
@@ -43,7 +43,7 @@ namespace Orpul1
                 time -= Time.deltaTime;
             }
             Debug.Log("Time Over");
-            Managers.UI.ShowSceneUI<UIScene>("WinnerCanvas");
+            Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas");
         }
         void SpawnPlayer()
         {
@@ -64,7 +64,7 @@ namespace Orpul1
             playerObj.GetComponent<PlayerController>().SpawnPoint = spawnPosi;
             playerObj.GetComponent<PlayerController>().gameDirector = this;
 
-            _uiScene = Managers.UI.ShowSceneUI<UIScene>("PlayCanvas");
+            _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
             _uiScene.GetComponent<PlayScene>().gameDirector = this;
             _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
 

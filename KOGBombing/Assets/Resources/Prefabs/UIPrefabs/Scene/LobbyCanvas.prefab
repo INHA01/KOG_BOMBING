@@ -1577,6 +1577,7 @@ MonoBehaviour:
   createPanelObj: {fileID: 2977805872963783710}
   roomListPanelObj: {fileID: 8825143411013857581}
   backgroundPanelObj: {fileID: 5458196951130243384}
+  btnSelectMode: {fileID: 0}
 --- !u!114 &3880252994583979467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3313,14 +3314,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 724589ae56e1da84ab4aa70bdac74d44, type: 2}
+  m_sharedMaterial: {fileID: 3514089410596274822, guid: 724589ae56e1da84ab4aa70bdac74d44,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4278247423
   m_fontColor: {r: 1, g: 0.8745098, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3338,7 +3340,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 72
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3936,7 +3938,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 20
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1

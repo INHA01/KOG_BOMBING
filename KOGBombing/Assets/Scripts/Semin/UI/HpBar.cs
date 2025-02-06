@@ -70,12 +70,12 @@ public class HpBar : MonoBehaviour
             transform.rotation = mainCamera.transform.rotation;
     }
 
-    public void SetIsMyTeam(bool isOtherTeam)
+    public void SetIsMyTeam(bool isMyTeam)
     {
         GameObject team;
-        if (isOtherTeam)
-            team = otherTeam;
-        else team = myTeam;
+        if (isMyTeam)
+            team = myTeam;
+        else team = otherTeam;
 
         team.SetActive(true);
         Debug.Log(team.transform.GetChild(0).gameObject);  

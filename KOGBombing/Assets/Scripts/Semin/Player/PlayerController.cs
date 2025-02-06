@@ -86,20 +86,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		}
 
 		if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
-		{
-			if (!playerData.pv.IsMine)
-				playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials);
-			hpBar.SetIsMyTeam(true);
-        }
-		else hpBar.SetIsMyTeam(false);
+			SetOtherTeamInfo();
+		else hpBar.SetIsMyTeam(true);
 
 		playerData.supportWeapon.SetTeam(team);
 		playerData.animator.Init(playerData.playerObj, team, playerData.shootStartPos);
 
 		hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
-		SetTeamFieldOfView();
 		playerMaterialController.SaveCurrentMaterial();
-
 
 		if(playerData.pv.IsMine)
 		{
@@ -124,19 +118,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	}
 
 	
-	void SetTeamFieldOfView()
+	void SetOtherTeamInfo()
 	{
-		StringBuilder mineTeam = new StringBuilder((string)playerData.pv.Owner.CustomProperties["Team"]);
-
-        if (!playerData.pv.IsMine)
+		if (!playerData.pv.IsMine)
 		{
-			StringBuilder otherTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
-
-            if (mineTeam.ToString() != otherTeam.ToString())
-			{
-				blackBoard.fieldOfView.enabled = false;
-			}
+			playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials);
+			blackBoard.fieldOfView.SetActive(false);
 		}
+		hpBar.SetIsMyTeam(false);
 	}
 
 	private void Update()
@@ -518,7 +507,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
                 StartCoroutine(RespawnDelay(3.0f));
             }
-           
         }
     }
 	IEnumerator RespawnDelay(float time)

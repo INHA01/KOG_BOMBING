@@ -22,6 +22,7 @@ public class Winner : MonoBehaviour
     }
     public void ReturnLobby()
     {
+        Managers.UI.DestroyAllPopupUI();
         PhotonNetwork.LeaveRoom();
         Managers.PunData.Init();
         LoadingSceneManager.LoadScene("LobbyScene");

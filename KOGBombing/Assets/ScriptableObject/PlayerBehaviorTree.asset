@@ -66,11 +66,28 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: f60b1d4b76311bf45b8c4bb2df3b5b54
-  position: {x: 200, y: -573.10016}
-  child: {fileID: 0}
+  position: {x: 200, y: -432}
+  child: {fileID: -7170902545123407570}
   method: IsDie
   paramName: 
   className: PlayerController
+--- !u!114 &-7170902545123407570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7819f9402f8c5e469e0a1cc257d8e19, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  guid: ba3de5e932228a846ba878b12bcb23a2
+  position: {x: 358, y: -432}
+  children:
+  - {fileID: 649707792052996928}
+  - {fileID: -975095478299540825}
 --- !u!114 &-7147036626057015698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,6 +352,23 @@ MonoBehaviour:
   method: IsNotGroggy
   paramName: Interaction
   className: PlayerController
+--- !u!114 &-975095478299540825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 90fe78d4596405847881b1e226417bd4
+  position: {x: 524, y: -537}
+  paramName: 
+  method: SuccessNode
+  className: PlayerController
 --- !u!114 &-240715722926024634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +436,10 @@ MonoBehaviour:
   - {fileID: -7802083987999387392}
   - {fileID: 6077192041609901196}
   - {fileID: 1613006539770928240}
+  - {fileID: 1584241473073964167}
+  - {fileID: -975095478299540825}
+  - {fileID: -7170902545123407570}
+  - {fileID: 649707792052996928}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,6 +476,23 @@ MonoBehaviour:
   method: IsInteracting
   paramName: 
   className: PlayerController
+--- !u!114 &649707792052996928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1299a4a6d6a544fbab688e2cf99a08, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  guid: 656fe56fce444bd42a36a3cbf6c2e546
+  position: {x: 521, y: -432}
+  children:
+  - {fileID: 1613006539770928240}
+  - {fileID: 1584241473073964167}
 --- !u!114 &1194003659082968326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,6 +510,23 @@ MonoBehaviour:
   children:
   - {fileID: -3704719262176938618}
   - {fileID: -7147036626057015698}
+--- !u!114 &1584241473073964167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 9631d5fe104d79c4ab6eb48bc55efc0f
+  position: {x: 682, y: -526}
+  paramName: 
+  method: SetCameraTarget
+  className: PlayerController
 --- !u!114 &1613006539770928240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,11 +540,11 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 151e5b5d541a37a448f78535d4b0eb4f
-  position: {x: 555, y: -573}
+  position: {x: 682, y: -433}
   child: {fileID: 6077192041609901196}
-  method: 
+  method: IsTargetDie
   paramName: 
-  className: 
+  className: PlayerController
 --- !u!114 &1624584447135552367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,10 +561,10 @@ MonoBehaviour:
   position: {x: 49.777775, y: -157.77779}
   children:
   - {fileID: 6600464113284892490}
+  - {fileID: -7802083987999387392}
   - {fileID: 1194003659082968326}
   - {fileID: 225296470337349713}
   - {fileID: -7834396176166106668}
-  - {fileID: -7802083987999387392}
 --- !u!114 &1713173759231001354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,10 +666,10 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c05b2d6b371aad7499246dd349a37006
-  position: {x: 736, y: -573}
+  position: {x: 843, y: -433}
   paramName: 
-  method: 
-  className: 
+  method: SetLookTarget
+  className: PlayerController
 --- !u!114 &6193472429586276356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,7 +700,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: a5823d0448a98dd4a9b5f5f36f4f9fa2
-  position: {x: 200, y: -665.92}
+  position: {x: 200, y: -537}
   paramName: 
   method: CanBehavior
   className: PlayerController

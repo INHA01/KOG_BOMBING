@@ -20,6 +20,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public Vector2 speedValue;
     public Vector2 mousePos;
     public Vector3 spawnPoint;
+    public GameObject gmlookTarget;
 	public bool isGroggy;
 	public bool groggyable;
 }

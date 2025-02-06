@@ -53,6 +53,24 @@ MonoBehaviour:
   children:
   - {fileID: 7189016390488239316}
   - {fileID: 2381097818974102332}
+--- !u!114 &-7802083987999387392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: f60b1d4b76311bf45b8c4bb2df3b5b54
+  position: {x: 200, y: -573.10016}
+  child: {fileID: 0}
+  method: IsDie
+  paramName: 
+  className: PlayerController
 --- !u!114 &-7147036626057015698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +399,9 @@ MonoBehaviour:
   - {fileID: -3281831052019774864}
   - {fileID: 225296470337349713}
   - {fileID: 6600464113284892490}
+  - {fileID: -7802083987999387392}
+  - {fileID: 6077192041609901196}
+  - {fileID: 1613006539770928240}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +455,24 @@ MonoBehaviour:
   children:
   - {fileID: -3704719262176938618}
   - {fileID: -7147036626057015698}
+--- !u!114 &1613006539770928240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 151e5b5d541a37a448f78535d4b0eb4f
+  position: {x: 555, y: -573}
+  child: {fileID: 6077192041609901196}
+  method: 
+  paramName: 
+  className: 
 --- !u!114 &1624584447135552367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +492,7 @@ MonoBehaviour:
   - {fileID: 1194003659082968326}
   - {fileID: 225296470337349713}
   - {fileID: -7834396176166106668}
+  - {fileID: -7802083987999387392}
 --- !u!114 &1713173759231001354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,6 +581,23 @@ MonoBehaviour:
   paramName: 
   method: AbortInteract
   className: PlayerController
+--- !u!114 &6077192041609901196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: c05b2d6b371aad7499246dd349a37006
+  position: {x: 736, y: -573}
+  paramName: 
+  method: 
+  className: 
 --- !u!114 &6193472429586276356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +628,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: a5823d0448a98dd4a9b5f5f36f4f9fa2
-  position: {x: 200, y: -398}
+  position: {x: 200, y: -665.92}
   paramName: 
   method: CanBehavior
   className: PlayerController

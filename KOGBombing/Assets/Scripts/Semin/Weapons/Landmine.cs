@@ -14,10 +14,10 @@ namespace Semin
 		[Range(0f, 10f), SerializeField] private float rigidityTime;
 		[Range(1f, 100f), SerializeField] private float damage;
 		[Range(0f, 100f), SerializeField] private float activeTime;
+		[SerializeField] DecalProjector decal;
 		public override float Damage { get { return damage; } }
 		PhotonView pView;
 		Coroutine destroyCoroutine;
-		private DecalProjector decal;
 
 		private void Awake()
 		{
@@ -26,11 +26,8 @@ namespace Semin
 
 		private void Start()
 		{
-			decal = Managers.Resource.Instantiate("SupportWeapon/AttackRagneDecal").GetComponent<DecalProjector>();
-			decal.gameObject.SetActive(false);
 			decal.transform.parent = transform;
 			decal.size = new Vector3(attackRange, attackRange, decal.size.z);
-			decal.transform.position = Vector3.zero;
 			if (attackCollider == null)
 			{
 				attackCollider = gameObject.GetComponent<SphereCollider>();
@@ -65,7 +62,6 @@ namespace Semin
 		[PunRPC]
 		private void ActiveDecal()
 		{
-			decal.gameObject.transform.position = Vector3.zero;
 			decal.gameObject.SetActive(true);
 		}
 
@@ -78,11 +74,11 @@ namespace Semin
 				//if (!otherPv) return;
 				//if (!IsOtherTeam(otherPv)) return;
 
-				StartCoroutine(Bomb(otherPv));
+				StartCoroutine(Bomb());
 			}
 		}
 
-		IEnumerator Bomb(PhotonView otherPv)
+		IEnumerator Bomb()
 		{
 			if (!pView) yield break;
 			yield return new WaitForSeconds(2f);
@@ -92,7 +88,7 @@ namespace Semin
 			{
 				if (hitColliders[i].CompareTag("Player"))
 				{
-					if (!IsOtherTeam(otherPv)) continue;
+					if (!IsOtherTeam(hitColliders[i].transform.GetComponent<PhotonView>())) continue;
 					PlayerController player = hitColliders[i].transform.GetComponent<PlayerController>();
 					if (player != null)
 					{

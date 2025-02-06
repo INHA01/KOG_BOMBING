@@ -20,6 +20,7 @@ public class RoomListPanelPresenter : MonoBehaviour
     {
         view.backgroundPanelObj.SetActive(false);
         view.roomListPanelObj.SetActive(false);
+        view.btnSelectMode.interactable = true;
     }
     public void OnCreatRoomBtn()
     {

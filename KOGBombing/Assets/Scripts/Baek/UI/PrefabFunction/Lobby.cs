@@ -1,7 +1,9 @@
 using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Lobby : MonoBehaviour
 {
@@ -25,6 +27,7 @@ public class Lobby : MonoBehaviour
     }
     public void OnGameStartClick()
     {
+        selectMode.GetComponent<Button>().interactable = !selectMode.GetComponent<Button>().interactable;
         networkDirector.Match(_lobbyModeSelect.mode);
     }
 }

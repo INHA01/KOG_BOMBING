@@ -123,15 +123,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		viewCamera = cam;
 	}
 
-	//public IEnumerator DamageTest(float time, float damage)
-	//{
-	//	while (true)
-	//	{
-	//		yield return new WaitForSeconds(time);
-	//		OnDamaged(damage);
-	//	}
-	//}
-
+	
 	void SetTeamFieldOfView()
 	{
 		StringBuilder mineTeam = new StringBuilder((string)playerData.pv.Owner.CustomProperties["Team"]);
@@ -143,7 +135,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
             if (mineTeam.ToString() != otherTeam.ToString())
 			{
 				blackBoard.fieldOfView.enabled = false;
-				//GetComponentInChildren<FieldOfView>().enabled = false;
 			}
 		}
 	}

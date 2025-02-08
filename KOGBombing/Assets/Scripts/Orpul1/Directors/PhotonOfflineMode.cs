@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
@@ -25,7 +27,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PhotonNetwork.OfflineMode = true;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", "BT" } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", ETeam.BLUETEAM } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
         StartCoroutine(TimeCount());

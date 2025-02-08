@@ -81,15 +81,15 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		if (viewCamera == null)
 			viewCamera = Camera.main;
 
-		string team = (string)playerData.pv.Owner.CustomProperties["Team"];
-		SetSupportWeapon(team);
+        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+		SetSupportWeapon((int)playerTeam);
 
-		if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
+		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
 			SetOtherTeamInfo();
 		else hpBar.SetIsMyTeam(true);
 
-		playerData.supportWeapon.SetTeam(team);
-		playerData.animator.Init(playerData.playerObj, team, playerData.shootStartPos);
+		playerData.supportWeapon.SetTeam(playerTeam);
+		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos);
 		playerMaterialController.SaveCurrentMaterial();
 
 		if(playerData.pv.IsMine)
@@ -115,9 +115,9 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		viewCamera = cam;
 	}
 
-	void SetSupportWeapon(string team)
+	void SetSupportWeapon(int team)
 	{
-		if (team == "RT")
+		if (team == (int)ETeam.REDTEAM)
 		{
 			playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
 			if (playerData.supportWeapon is SupportWeaponBase support)
@@ -380,12 +380,12 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public bool IsAttackTeam()
 	{
-		return (string)playerData.pv.Owner.CustomProperties["Team"] == "RT";
+		return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM;
 	}
 
 	public bool IsDefenceTeam()
 	{
-		return (string)playerData.pv.Owner.CustomProperties["Team"] == "BT";
+		return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.BLUETEAM;
 	}
 	public bool IsNotGroggy()
 	{
@@ -566,8 +566,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			{
 				if (playerData.pv.IsMine)
 				{
-					string team = (string)playerData.pv.Owner.CustomProperties["Team"];
-					if (team == "RT")
+                    ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+					if (playerTeam == ETeam.REDTEAM)
 						GameDirector.blueScore++;
 					else
 						GameDirector.redScore++;
@@ -579,7 +579,8 @@ public class PlayerController : MonoBehaviour, IPunObservable
 				blackBoard.defence = blackBoard.maxDefence;
 				animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
 				blackBoard.groggyable = true;
-				hpBar.InitializeValues();
+                playerData.speedDebuffPercent = 1f;
+                hpBar.InitializeValues();
 				this.transform.position = blackBoard.spawnPoint;
 			}
         }

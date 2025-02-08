@@ -21,7 +21,7 @@ public class DeployableWeapon : SupportWeaponBase
 	{
         Landmine landmine = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
 							.GetComponent<Landmine>();
-		landmine.SetTeam(team);
+		landmine.SetTeam((int)team);
         landmine.Use();
     }
 }

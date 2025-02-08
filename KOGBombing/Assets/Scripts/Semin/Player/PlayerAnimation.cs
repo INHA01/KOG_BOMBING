@@ -174,12 +174,12 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			animator.SetLookAtWeight(0f);
 			animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
 		}
+		else if (GetCurAnim(AnimType.Shoot))
+		{
+			animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+			animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
+		}
 		else animator.SetLookAtWeight(0.5f);
-		//if (GetCurAnim(AnimType.Shoot))
-		//{
-		//	animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-		//	animator.SetIKRotation(AvatarIKGoal.RightHand, bulletPoint.rotation);
-		//}
 	}
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

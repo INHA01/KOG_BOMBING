@@ -2449,6 +2449,12 @@ Shader "Custom/Lit Max Stencil Object"
                 "LightMode" = "DepthNormals"
             }
         
+        ZWrite On
+        Stencil
+        {
+            Ref 1
+            Comp Always
+        }
         // Render State
         Cull Back
         ZTest LEqual

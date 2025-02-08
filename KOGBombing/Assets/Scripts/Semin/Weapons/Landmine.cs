@@ -4,6 +4,8 @@ using JetBrains.Annotations;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using DTT.AreaOfEffectRegions;
+using Unity.IO.LowLevel.Unsafe;
 
 namespace Semin
 {
@@ -14,7 +16,7 @@ namespace Semin
 		[Range(0f, 10f), SerializeField] private float rigidityTime;
 		[Range(1f, 100f), SerializeField] private float damage;
 		[Range(0f, 100f), SerializeField] private float activeTime;
-		[SerializeField] DecalProjector decal;
+		[SerializeField] SRPCircleRegionProjector decal;
 		public override float Damage { get { return damage; } }
 		PhotonView pView;
 		Coroutine destroyCoroutine;
@@ -27,7 +29,8 @@ namespace Semin
 		private void Start()
 		{
 			decal.transform.parent = transform;
-			decal.size = new Vector3(attackRange, attackRange, decal.size.z);
+			decal.Radius = attackRange;
+			decal.GenerateProjector();
 			if (attackCollider == null)
 			{
 				attackCollider = gameObject.GetComponent<SphereCollider>();
@@ -51,6 +54,23 @@ namespace Semin
 			attackCollider.gameObject.SetActive(true);
 		}
 
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.tag == "Player")
+			{
+				PhotonView otherPv = other.transform.GetComponent<PhotonView>();
+				//if (!otherPv) return;
+				//if (!IsOtherTeam(otherPv)) return;
+
+				pView.RPC("ActiveWarringArea", RpcTarget.AllBuffered);
+			}
+		}
+
+		[PunRPC]
+		private void ActiveWarringArea()
+		{
+			StartCoroutine(ShowDecal());
+		}
 
 		IEnumerator SetTimerToDestroy()
 		{
@@ -58,30 +78,25 @@ namespace Semin
 			PhotonNetwork.Destroy(gameObject);
 		}
 
-
-		[PunRPC]
-		private void ActiveDecal()
+		IEnumerator ShowDecal()
 		{
+			float time = 0;
 			decal.gameObject.SetActive(true);
-		}
 
-		private void OnTriggerEnter(Collider other)
-		{
-			if (other.tag == "Player")
+			while (time < interval)
 			{
-				PhotonView otherPv = other.transform.GetComponent<PhotonView>();
-				ActiveDecal();
-				//if (!otherPv) return;
-				//if (!IsOtherTeam(otherPv)) return;
-
-				StartCoroutine(Bomb());
+				time += Time.deltaTime;
+				decal.FillProgress = time / interval;
+				decal.GenerateProjector();
+				yield return null;
 			}
+			StartCoroutine(Bomb());
 		}
 
 		IEnumerator Bomb()
 		{
+			Debug.Log("ASDFSD");
 			if (!pView) yield break;
-			yield return new WaitForSeconds(2f);
 			pView.RPC("ShowParticle", RpcTarget.AllBuffered);
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
 			for (int i = 0; i < hitColliders.Length; i++)
@@ -100,7 +115,7 @@ namespace Semin
 
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.5f);	// particle 출력 이후 destroy
 			PhotonNetwork.Destroy(gameObject);
 		}
 

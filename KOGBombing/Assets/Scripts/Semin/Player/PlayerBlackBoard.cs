@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Semin;
+using Orpul1;
 
 public class PlayerBlackBoard : MonoBehaviour
 {
     public string nickname;
+    public ETeam eTeam;
     public float hp;
     public float maxHp;
     public float moveSpeed;
@@ -24,3 +26,4 @@ public class PlayerBlackBoard : MonoBehaviour
 	public bool isGroggy;
 	public bool groggyable;
 }
+

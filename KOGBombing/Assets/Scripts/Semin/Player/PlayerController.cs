@@ -64,9 +64,16 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		//SetTeamFieldOfView();
 
 		if (playerData.pv.IsMine)
+		{
 			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
+			blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+
+        }
 		else
+		{
 			blackBoard.nickname = playerData.pv.Owner.NickName;
+            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+        }
 	}
 
 	public IEnumerator DamageTest(float time, float damage)
@@ -208,6 +215,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 		Debug.Log($"TeamPlayer {blackBoards.Count}");
         for(int i=0; i<blackBoards.Count; i++)
 		{
+			if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
 			if (blackBoards[i].isLive)
 			{
 				Debug.Log("Find Target");

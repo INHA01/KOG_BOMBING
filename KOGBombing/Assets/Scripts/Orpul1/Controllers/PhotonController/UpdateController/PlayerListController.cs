@@ -56,17 +56,17 @@ namespace Orpul1
         {
             if(!dicPlayerInfo.ContainsKey(playerInfo.NickName))
             {
-                int teamIndex = 0;
+                ETeam teamIndex = 0;
                 if (playerInfo.CustomProperties["Team"]!=null)
                 {
                     //teamIndex = GetTeamIndex(new StringBuilder(playerInfo.CustomProperties["Team"].ToString()));
-                    teamIndex = (int)playerInfo.CustomProperties["Team"];
+                    teamIndex = (ETeam)playerInfo.CustomProperties["Team"];
                 }
                 else
                 {
                     teamIndex = GetTeamIndex();
                 }
-                GameObject playerPanelObj = Instantiate(playerPanelPref, trTeamPanel[teamIndex]);
+                GameObject playerPanelObj = Instantiate(playerPanelPref, trTeamPanel[(int)teamIndex]);
                 DisplayPlayerPresenter panel = playerPanelObj.GetComponent<DisplayPlayerPresenter>();
                 panel.Init(new StringBuilder(playerInfo.NickName), new StringBuilder("0"));
                 dicPlayerInfo.Add(playerInfo.NickName, panel);
@@ -83,15 +83,15 @@ namespace Orpul1
 
             dicPlayerInfo[playerInfo.NickName].SetTeam(trTeamPanel[teamIndex]);
         }
-        private int GetTeamIndex()
+        private ETeam GetTeamIndex()
         {
             Room curRoom = PhotonNetwork.CurrentRoom;
             if ((int)curRoom.CustomProperties["RT"] > (int)curRoom.CustomProperties["BT"])
             {
-                return (int)ETeam.REDTEAM;
+                return ETeam.REDTEAM;
             }
             Debug.Log("GetTeamIndex()");
-            return (int)ETeam.BLUETEAM;
+            return ETeam.BLUETEAM;
         }
         private int GetTeamIndex(StringBuilder stbTeam)
         {

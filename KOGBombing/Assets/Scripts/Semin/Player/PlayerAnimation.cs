@@ -1,3 +1,4 @@
+using Orpul1;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,12 +37,12 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			animator = GetComponent<Animator>();
     }
 
-	public void Init(GameObject playerObj, string team, Transform bulletPoint)
+	public void Init(GameObject playerObj, ETeam team, Transform bulletPoint)
 	{
 		this.playerObj = playerObj;
-		if (team == "RT")
+		if (team == ETeam.REDTEAM)
 			animator.SetBool("IsAttackTeam", true);
-		else if (team == "BT")
+		else if (team == ETeam.BLUETEAM)
 			animator.SetBool("IsAttackTeam", false);
 		this.bulletPoint = bulletPoint;
 	}

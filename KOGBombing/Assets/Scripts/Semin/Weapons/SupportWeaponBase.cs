@@ -1,3 +1,4 @@
+using Orpul1;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 {
 	[SerializeField] public AttackConsum consum;
-	protected string team;
+	protected ETeam team;
 	protected float range;
 	protected float damage;
 	protected int count = 10;
@@ -29,7 +30,7 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
         }
         consum.type = type;
     }
-	public void SetTeam(string team)
+	public void SetTeam(ETeam team)
 	{
 		this.team = team;
 	}

@@ -44,10 +44,10 @@ public class Molotov : AttackConsum
 	{
         if (other.tag == "Player")
 		{
-			PhotonView pView = other.transform.GetComponent<PhotonView>();
+			PhotonView pv = other.transform.GetComponent<PhotonView>();
 
 			if (!pView) return;
-			if (!IsOtherTeam(pView)) return;
+			if (!IsOtherTeam(pv)) return;
 
 			PlayerController player = other.transform.GetComponent<PlayerController>();
 			if (player != null)

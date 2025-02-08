@@ -26,24 +26,12 @@ namespace Semin
 			pView = GetComponent<PhotonView>();
 		}
 
-		private void Start()
-		{
-			decal.transform.parent = transform;
-			decal.Radius = attackRange;
-			decal.GenerateProjector();
-			if (attackCollider == null)
-			{
-				attackCollider = gameObject.GetComponent<SphereCollider>();
-				attackCollider.gameObject.SetActive(false);
-				attackCollider.radius = attackRange / 2f;
-			}
-		}
-
 		public override void Use()
 		{
 			destroyCoroutine = StartCoroutine(SetTimerToDestroy());
 		}
 
+		[PunRPC]
 		public override void SetTeam(int team)
 		{
 			base.SetTeam(team);
@@ -52,17 +40,20 @@ namespace Semin
 			attackCollider.radius = attackRange / 2f;
 			attackCollider.isTrigger = true;
 			attackCollider.gameObject.SetActive(true);
+			pView.RPC("SetDecal", RpcTarget.AllBuffered);
 		}
+
 
 		private void OnTriggerEnter(Collider other)
 		{
 			if (other.tag == "Player")
 			{
 				PhotonView otherPv = other.transform.GetComponent<PhotonView>();
-				//if (!otherPv) return;
-				//if (!IsOtherTeam(otherPv)) return;
+				if (!otherPv) return;
+				if (!IsOtherTeam(otherPv)) return;
 
 				pView.RPC("ActiveWarringArea", RpcTarget.AllBuffered);
+				StartCoroutine(Bomb());
 			}
 		}
 
@@ -70,6 +61,17 @@ namespace Semin
 		private void ActiveWarringArea()
 		{
 			StartCoroutine(ShowDecal());
+		}
+
+
+		[PunRPC]
+		private void SetDecal()
+		{
+			decal.transform.parent = transform;
+			decal.Radius = attackRange;
+			decal.GenerateProjector();
+			decal.UpdateProjectors();
+			decal.gameObject.SetActive(false);
 		}
 
 		IEnumerator SetTimerToDestroy()
@@ -90,23 +92,27 @@ namespace Semin
 				decal.GenerateProjector();
 				yield return null;
 			}
-			StartCoroutine(Bomb());
 		}
 
 		IEnumerator Bomb()
 		{
-			Debug.Log("ASDFSD");
 			if (!pView) yield break;
 			pView.RPC("ShowParticle", RpcTarget.AllBuffered);
+			yield return new WaitForSeconds(interval);
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
 			for (int i = 0; i < hitColliders.Length; i++)
 			{
 				if (hitColliders[i].CompareTag("Player"))
 				{
-					if (!IsOtherTeam(hitColliders[i].transform.GetComponent<PhotonView>())) continue;
-					PlayerController player = hitColliders[i].transform.GetComponent<PlayerController>();
+					PhotonView pView = hitColliders[i].GetComponent<PhotonView>();
+					if (!pView) continue;
+					if (!IsOtherTeam(pView)) continue;
+
+					Debug.Log("플레이어 태그, " + hitColliders[i].name);
+					PlayerController player = hitColliders[i].GetComponent<PlayerController>();
 					if (player != null)
 					{
+						Debug.Log("플레이어 landmine damage");
 						player.OnDamaged(Damage);
 						player.OnRigidity(rigidityTime);
 					}

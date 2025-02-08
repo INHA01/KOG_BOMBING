@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,11 +30,18 @@ namespace Orpul1
         public override void OnJoinedRoom()
         {
             Debug.Log("JoinRoom!");
-            StringBuilder stbTeam = SetTeam();
-            int teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[stbTeam.ToString()] + 1;
-            Debug.Log($"joinTeam {stbTeam.ToString()}");
-
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", stbTeam.ToString() } });
+            int playerTeam = SetTeam();
+            int teamIndex = 0;
+            if (playerTeam == (int)ETeam.REDTEAM)
+            {
+                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"] + 1;
+            }
+            else
+            {
+                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"] + 1;
+            }
+            
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", (ETeam)playerTeam } });
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
         }
 
@@ -44,7 +52,7 @@ namespace Orpul1
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log("PlayerLeftRoom");
-            if ((string)otherPlayer.CustomProperties["Team"]=="RT")
+            if ((int)otherPlayer.CustomProperties["Team"] == (int)ETeam.REDTEAM) 
             {
                 int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam - 1 } });
@@ -63,25 +71,14 @@ namespace Orpul1
                 if ((string)propertiesThatChanged["RoomState"] == "Start")
                 {
                     btnMatch.interactable = false;
-                    Player[] players = PhotonNetwork.PlayerList;
-                    StringBuilder stbTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
-                    int playerTeamIndex = 0;
-                    for (int i = 0; i < players.Length; i++)
-                    {
-                        if (stbTeam.ToString() != (string)players[i].CustomProperties["Team"]) continue;
-                        playerTeamIndex++;
-                        if (PhotonNetwork.LocalPlayer == players[i]) break;
-                    }
-
-                    Debug.Log($"teamIndex {playerTeamIndex}");
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", playerTeamIndex} });
+                    
                     StartCoroutine(CoStartDelay());
                    
                 }
             }
         }
        
-        protected StringBuilder SetTeam()
+        protected int SetTeam()
         {
             int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
             int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
@@ -89,20 +86,38 @@ namespace Orpul1
             {
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam + 1 } });
                 Debug.Log("SetTeam BT");
-                return new StringBuilder("BT");
+                return (int)ETeam.BLUETEAM;
             }
             else
             {
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam + 1 } });
                 Debug.Log("SetTeam RT");
-                return new StringBuilder("RT");
+                return (int)ETeam.REDTEAM;
             }
+        }
+        private void SetPlayerIndex()
+        {
+            Player[] players = PhotonNetwork.PlayerList;
+            //StringBuilder stbTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
+            ETeam playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+            Debug.Log($"team : {playerTeam}");
+            int playerTeamIndex = 0;
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (playerTeam != (ETeam)players[i].CustomProperties["Team"]) continue;
+                playerTeamIndex++;
+                if (PhotonNetwork.LocalPlayer == players[i]) break;
+            }
+
+            Debug.Log($"teamIndex {playerTeamIndex}");
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", playerTeamIndex } });
         }
         protected virtual IEnumerator CoStartDelay()
         {
             float delayTime = Time.time + 3f;
             Debug.Log($"Prev Delay {Time.time}");
             while (Time.time < delayTime) yield return null;
+            SetPlayerIndex();
             Debug.Log($"After delay {Time.time}");
             if(PhotonNetwork.IsMasterClient)
             {

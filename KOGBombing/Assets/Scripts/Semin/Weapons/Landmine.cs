@@ -44,7 +44,7 @@ namespace Semin
 			destroyCoroutine = StartCoroutine(SetTimerToDestroy());
 		}
 
-		public override void SetTeam(string team)
+		public override void SetTeam(int team)
 		{
 			base.SetTeam(team);
 			if (attackCollider == null)

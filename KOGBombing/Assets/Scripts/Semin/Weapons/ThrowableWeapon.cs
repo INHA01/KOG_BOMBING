@@ -152,7 +152,7 @@ public class ThrowableWeapon : SupportWeaponBase
         GameObject molotov = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Molotov", points[0], Quaternion.identity);
 		AttackConsum grenade = molotov.GetComponent<AttackConsum>();
 
-        grenade.SetTeam(team);
+        grenade.SetTeam((int)team);
 
 		while (elapsedTime < throwDuration)
 		{

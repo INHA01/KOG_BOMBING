@@ -1,4 +1,5 @@
 using Knife.Effects;
+using Orpul1;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = (playerData.playerLookObj.transform.position - playerData.playerObj.transform.position);
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        bullet.GetComponent<BulletController>().strTeamBullet = (string)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
+        bullet.GetComponent<BulletController>().strTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
         bullet.SetActive(true);
     }

@@ -1,3 +1,4 @@
+using Orpul1;
 using Photon.Pun;
 using System.Collections;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class BulletController : PooledObject
 {
     [SerializeField] float moveSpeed;
-    [HideInInspector] public string strTeamBullet;
+    [HideInInspector] public ETeam strTeamBullet;
     [SerializeField] int damage = 20;
 
    [HideInInspector] public Vector3 shootDirection;
@@ -26,7 +27,7 @@ public class BulletController : PooledObject
 
     private bool IsOtherTeam(PhotonView pView)
     {
-        string mineTeam = (string)pView.Owner.CustomProperties["Team"];
+        ETeam mineTeam = (ETeam)pView.Owner.CustomProperties["Team"];
         
         if (mineTeam == strTeamBullet) return false;
         return true;

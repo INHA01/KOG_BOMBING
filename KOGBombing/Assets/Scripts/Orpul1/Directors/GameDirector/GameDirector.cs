@@ -51,7 +51,7 @@ namespace Orpul1
         {
             int spawnIndex = 0;
             int teamSpawnSpot = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
-            if ((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == "BT")
+            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == ETeam.BLUETEAM)
                 spawnIndex = 1;
             Vector3 spawnPosi = teamSpawnPoints[spawnIndex].position;
             spawnPosi.x += (teamSpawnSpot % 2) * 0.5f - 1 * 2;
@@ -71,16 +71,6 @@ namespace Orpul1
             _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
             _uiScene.GetComponent<PlayScene>().gameDirector = this;
             _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
-
-            Player[] p = PhotonNetwork.PlayerListOthers;
-            for (int i = 0; i < p.Length; i++)
-            {
-                if ((string)p[i].CustomProperties["Team"] == (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"])
-                {
-                    // hp ³Ö±â
-                    //_uiScene.GetComponent<PlayScene>().SetTeam(p[i].hp);
-                }
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using ExitGames.Client.Photon;
+using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
@@ -13,11 +14,11 @@ public class TeamUIController
         PhotonNetwork.NetworkingClient.EventReceived += UpdateUI;
         Player[] players = PhotonNetwork.PlayerList;
         UIPopup _uiScene = null;
-        string selfPlayerTeam = (string)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-        string otherPlayerTeam = "";
+        ETeam selfPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        ETeam otherPlayerTeam;
         for (int i = 0; i < players.Length; i++)
         {
-            otherPlayerTeam = (string)players[i].CustomProperties["Team"];
+            otherPlayerTeam = (ETeam)players[i].CustomProperties["Team"];
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);

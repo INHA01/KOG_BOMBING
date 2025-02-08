@@ -41,20 +41,23 @@ namespace Orpul1
         }
         public void OnSwapTeamBtn()
         {
-            StringBuilder curTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
-            StringBuilder changeTeam = new StringBuilder();
+            ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+            ETeam changeTeam = ETeam.REDTEAM;
             SetRoomTeamCount(curTeam, -1);
-            if (curTeam.ToString() == "RT")
-                changeTeam.Append("BT");
-            else
-                changeTeam.Append("RT");
+            if (curTeam == ETeam.REDTEAM)
+                changeTeam = ETeam.BLUETEAM;
 
             SetRoomTeamCount(changeTeam, 1);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam.ToString() } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam } });
         }
-        private void SetRoomTeamCount(StringBuilder teamType, int count)
+        private void SetRoomTeamCount(ETeam teamType, int count)
         {
-            int teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[teamType.ToString()];
+            int teamCnt = 0;
+            if (teamType == ETeam.BLUETEAM)
+                teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+            else
+                teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { teamType.ToString(), teamCnt + count } });
 
         }

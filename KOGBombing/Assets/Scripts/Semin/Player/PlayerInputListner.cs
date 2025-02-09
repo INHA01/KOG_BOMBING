@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -97,4 +96,5 @@ public class PlayerInputListner : MonoBehaviour
     {
         blackBoard.inputs[EKey.F] = value.isPressed;
     }
+
 }

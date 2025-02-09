@@ -61,14 +61,6 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
 
         return INode.ENodeState.Success;
     }
-    void SetTeamFieldOfView()
-    {
-
-    }
-    void SetCamera(Camera camera)
-    {
-
-    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

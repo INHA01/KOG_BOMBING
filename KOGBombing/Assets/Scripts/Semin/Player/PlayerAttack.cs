@@ -25,6 +25,12 @@ public class PlayerAttack : PlayerBehavior
         SetSupportWeapon((int)playerTeam);
         playerData.supportWeapon.SetTeam(playerTeam);
     }
+    private void Update()
+    {
+        if (!playerData.pv.IsMine) return;
+        if (attackRange != null)
+            attackRange.ShowAttackArea();
+    }
     public bool IsAttackTeam()
     {
         return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM;
@@ -138,7 +144,6 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.groggyable == false) return;
-        //if (IsNotGroggy() == false) return;
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;

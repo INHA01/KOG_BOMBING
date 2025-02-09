@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Orpul1;
 using Photon.Pun;
-using UnityEngine.InputSystem;
 using Semin;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble

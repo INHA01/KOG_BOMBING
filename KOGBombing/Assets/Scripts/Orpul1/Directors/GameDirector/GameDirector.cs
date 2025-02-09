@@ -66,7 +66,7 @@ namespace Orpul1
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
             playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
             playerObj.GetComponent<PlayerController>().SpawnPoint = spawnPosi;
-            playerObj.GetComponent<PlayerController>().gameDirector = this;
+            //playerObj.GetComponent<PlayerController>().gameDirector = this;
 
             _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
             _uiScene.GetComponent<PlayScene>().gameDirector = this;

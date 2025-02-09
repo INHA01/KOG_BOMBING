@@ -41,7 +41,7 @@ public class BulletController : PooledObject
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;
             // << :
-            PlayerController player = other.transform.GetComponent<PlayerController>();
+            IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
                 player.OnDamaged(damage);
             distance = 0;

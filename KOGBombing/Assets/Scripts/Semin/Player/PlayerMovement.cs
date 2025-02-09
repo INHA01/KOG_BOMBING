@@ -1,0 +1,89 @@
+using Photon.Pun;
+using Semin;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static PlayerController;
+
+public class PlayerMovement : PlayerBehavior, IPunObservable
+{
+    public bool IsNotGroggy()
+    {
+        return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
+    }
+
+    public INode.ENodeState Move(EDirection direction)
+    {
+        Vector3 movement;
+        switch (direction)
+        {
+            case EDirection.Left:
+            case EDirection.Right:
+                movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
+                blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
+                break;
+            case EDirection.Up:
+            case EDirection.Down:
+                movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
+                blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
+                break;
+        }
+
+
+        return INode.ENodeState.Success;
+    }
+
+    //TODO : Set Camera Target
+    public INode.ENodeState RotatePlayer()
+    {
+
+        Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
+        RaycastHit hit;
+        if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
+        {
+            Vector3 planePos = hit.point;
+            planePos.y += 1.6f;
+            Plane GroupPlane = new Plane(Vector3.up, planePos);
+            float rayLength;
+            if (GroupPlane.Raycast(cameraRay, out rayLength))
+            {
+                Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+                /*playerData.mousePos = pointTolook;
+                playerData.animator.Rotation(pointTolook, playerData.speedValue);
+                playerData.playerObj.transform.LookAt(pointTolook);*/
+
+                playerData.mousePos = pointTolook;
+                playerData.animator.Rotation(pointTolook, blackBoard.speedValue);
+                playerData.playerObj.transform.LookAt(pointTolook);
+            }
+        }
+
+
+        return INode.ENodeState.Success;
+    }
+    void SetTeamFieldOfView()
+    {
+
+    }
+    void SetCamera(Camera camera)
+    {
+
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.rotation);
+            stream.SendNext(blackBoard.rigidBody.velocity);
+        }
+        else if (stream.IsReading)
+        {
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
+            
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+            transform.position += blackBoard.rigidBody.velocity * lag;
+        }
+    }
+}

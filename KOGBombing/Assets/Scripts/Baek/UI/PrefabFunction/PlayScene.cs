@@ -28,7 +28,7 @@ public class PlayScene : MonoBehaviour
     {
         magazineCount.text = weapon.MagazineCount + "/4";
         chargeBar.fillAmount = weapon.ReloadTime;
-        string min = ((int)gameDirector.time / 60).ToString();
+       /* string min = ((int)gameDirector.time / 60).ToString();
         if(min.Length == 1)
             min = "0" + min;
         string sec = ((int)gameDirector.time % 60).ToString();
@@ -39,7 +39,7 @@ public class PlayScene : MonoBehaviour
         if(GameDirector.redScore < 10)
             redScoreIcon.sprite = redScoreImages[GameDirector.redScore];
         if (GameDirector.blueScore < 10)
-            blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];
+            blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];*/
     }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {

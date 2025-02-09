@@ -109,7 +109,7 @@ namespace Semin
 					if (!IsOtherTeam(pView)) continue;
 
 					Debug.Log("플레이어 태그, " + hitColliders[i].name);
-					PlayerController player = hitColliders[i].GetComponent<PlayerController>();
+					IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
 					if (player != null)
 					{
 						Debug.Log("플레이어 landmine damage");

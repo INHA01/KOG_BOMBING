@@ -41,12 +41,14 @@ public class AttackRange
     }
     public void ShowAttackArea()
     {
+        if (!playerData.pv.IsMine) return;
         Vector3 direction = playerData.mousePos - playerData.shootStartPos.position;
         float mousePosLength = direction.magnitude;
         float attackRangeLength = mousePosLength;
 
         bool rayHit = false;
         Ray shootRay = new Ray(playerData.shootStartPos.position, direction);
+        Debug.DrawRay(shootRay.origin, shootRay.direction * playerData.maxLength,Color.green);
         Vector3 hitPoint = Vector3.zero;
         RaycastHit[] hits = Physics.RaycastAll(shootRay, playerData.maxLength);
         for (int i = 0; i < hits.Length; i++)

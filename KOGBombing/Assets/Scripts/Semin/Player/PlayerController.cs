@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
         if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
-        if (attackRange != null)
-            attackRange.ShowAttackArea();
+        /*if (attackRange != null)
+            attackRange.ShowAttackArea();*/
     }
 }

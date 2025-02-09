@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class PlayerInteract : PlayerBehavior
 {
-    Transform trPlayer;
     IInteractAble iInteractObj;
     public bool isInteracting = false;
     public INode.ENodeState CanBehavior()

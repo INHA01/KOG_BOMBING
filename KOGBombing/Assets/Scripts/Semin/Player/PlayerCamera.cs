@@ -10,8 +10,8 @@ public class PlayerCamera : MonoBehaviour
 	public GameObject minimapCamera;
 
 	public float offsetX = -3.0f;            
-	public float offsetY = 7.0f;           
-	public float offsetZ = -3f;
+	public float offsetY = 6.0f;           
+	public float offsetZ = -3.0f;
 	float shakeX = 0;
 	float shakeY = 0;
 

@@ -46,6 +46,11 @@ namespace Semin
 
 		private void OnTriggerEnter(Collider other)
 		{
+			Molotov molotov = other.GetComponent<Molotov>();
+			if (molotov != null)
+			{
+				pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
+			}
 			if (other.tag == "Player")
 			{
 				PhotonView otherPv = other.transform.GetComponent<PhotonView>();
@@ -77,8 +82,8 @@ namespace Semin
 		IEnumerator SetTimerToDestroy()
 		{
 			yield return new WaitForSeconds(activeTime);
-			PhotonNetwork.Destroy(gameObject);
-		}
+            PhotonNetwork.Destroy(gameObject);
+        }
 
 		IEnumerator ShowDecal()
 		{
@@ -121,10 +126,19 @@ namespace Semin
 
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
-			yield return new WaitForSeconds(0.5f);	// particle 출력 이후 destroy
-			PhotonNetwork.Destroy(gameObject);
-		}
+			yield return new WaitForSeconds(0.5f);  // particle 출력 이후 destroy
+            PhotonNetwork.Destroy(gameObject);
+        }
 
+		public void DestroyLandmine()
+		{
+			pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
+		}
+		[PunRPC]
+		private void RPCDestroy()
+		{
+            Destroy(gameObject);
+        }
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.red;

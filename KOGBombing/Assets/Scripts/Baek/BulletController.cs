@@ -1,5 +1,6 @@
 using Orpul1;
 using Photon.Pun;
+using Semin;
 using System.Collections;
 using UnityEngine;
 
@@ -34,6 +35,7 @@ public class BulletController : PooledObject
     }
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.tag == "Player")
         {
             // >> : ÆÀ ±¸ºÐ
@@ -52,5 +54,6 @@ public class BulletController : PooledObject
             distance = 0;
             Release();
         }
+        
     }
 }

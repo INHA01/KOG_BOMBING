@@ -83,7 +83,6 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     [PunRPC]
     private void RPCProcess()
     {
-        if (blackBoard.isLive) return;
         Debug.Log("RPC Process Interact");
         StartCoroutine(CoRevive());
     }

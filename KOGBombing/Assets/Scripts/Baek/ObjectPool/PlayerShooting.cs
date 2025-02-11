@@ -19,8 +19,8 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] float shootingTerm;
     float time;
 
-    [SerializeField][Tooltip("Shot emitters array")] private ParticleGroupEmitter[] shotEmitters;
-    [SerializeField] private GameObject projectilePrefab;
+    //[SerializeField][Tooltip("Shot emitters array")] private ParticleGroupEmitter[] shotEmitters;
+    //[SerializeField] private GameObject projectilePrefab;
 
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
@@ -65,11 +65,12 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         //Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
-        Vector3 direction = (playerData.playerLookObj.transform.position - playerData.playerObj.transform.position);
+        //Vector3 direction = (playerData.playerLookObj.transform.position - playerData.playerObj.transform.position);
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
-        bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
-        bullet.GetComponent<BulletController>().strTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
+        //bullet.GetComponent<BulletController>().shootDirection = direction.normalized;
+        bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties["Team"];  // << : 추가된 코드(다른 팀만 공격하기 위한 설정)
         bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
+        bullet.transform.rotation = playerData.playerObj.transform.rotation;
         bullet.SetActive(true);
     }
     IEnumerator Shooting()
@@ -77,13 +78,13 @@ public class PlayerShooting : MonoBehaviour
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
-            if(shotEmitters != null)
-            {
-                foreach (var emitter in shotEmitters)
-                {
-                    emitter.Emit(1);
-                }
-            }
+            //if(shotEmitters != null)
+            //{
+            //    foreach (var emitter in shotEmitters)
+            //    {
+            //        emitter.Emit(1);
+            //    }
+            //}
             animator.Shoot();
             playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
 			bulletCount--;

@@ -6,8 +6,8 @@ namespace Semin
 {
 	public class FieldOfView : MonoBehaviour
 	{
-
-		public float viewRadius;
+		public bool playerSight = false;
+        public float viewRadius;
 		[Range(0, 360)]
 		public float viewAngle;
 
@@ -24,22 +24,38 @@ namespace Semin
 		public MeshFilter viewMeshFilter;
 		Mesh viewMesh;
 
-		void Start()
+        void Start()
 		{
 			viewMesh = new Mesh();
 			viewMesh.name = "View Mesh";
 			viewMeshFilter.mesh = viewMesh;
 
-			StartCoroutine("FindTargetsWithDelay", .2f);
+            StartCoroutine("FindTargetsWithDelay", .2f);
 		}
 
-
-		IEnumerator FindTargetsWithDelay(float delay)
+        private void Update()
+        {
+			if(playerSight)
+			{
+				if (Input.GetKeyDown(KeyCode.LeftShift))
+				{
+					viewAngle /= 2;
+					viewRadius *= 2;
+				}
+				else if (Input.GetKeyUp(KeyCode.LeftShift))
+				{
+					viewAngle *= 2;
+					viewRadius /= 2;
+				}
+			}
+        }
+        IEnumerator FindTargetsWithDelay(float delay)
 		{
 			while (true)
 			{
 				yield return new WaitForSeconds(delay);
-				FindVisibleTargets();
+				
+                FindVisibleTargets();
 			}
 		}
 

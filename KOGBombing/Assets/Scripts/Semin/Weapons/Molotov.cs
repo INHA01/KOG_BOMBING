@@ -49,7 +49,7 @@ public class Molotov : AttackConsum
 			if (!pView) return;
 			if (!IsOtherTeam(pv)) return;
 
-			PlayerController player = other.transform.GetComponent<PlayerController>();
+			IDamageAble player = other.transform.GetComponent<IDamageAble>();
 			if (player != null)
 				player.OnDamaged(Damage);
 		}

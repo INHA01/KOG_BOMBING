@@ -108,11 +108,11 @@ namespace Semin
 					if (!pView) continue;
 					if (!IsOtherTeam(pView)) continue;
 
-					Debug.Log("ÇÃ·¹ÀÌ¾î ÅÂ±×, " + hitColliders[i].name);
-					PlayerController player = hitColliders[i].GetComponent<PlayerController>();
+					Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Â±ï¿½, " + hitColliders[i].name);
+					IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
 					if (player != null)
 					{
-						Debug.Log("ÇÃ·¹ÀÌ¾î landmine damage");
+						Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ landmine damage");
 						player.OnDamaged(Damage);
 						player.OnRigidity(rigidityTime);
 					}
@@ -121,7 +121,7 @@ namespace Semin
 
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
-			yield return new WaitForSeconds(0.5f);	// particle Ãâ·Â ÀÌÈÄ destroy
+			yield return new WaitForSeconds(0.5f);	// particle ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ destroy
 			PhotonNetwork.Destroy(gameObject);
 		}
 

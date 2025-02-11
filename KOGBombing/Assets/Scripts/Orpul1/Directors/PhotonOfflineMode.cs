@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
@@ -49,15 +50,23 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("JoinRoom");
+        InitEvent();
         SpawnPlayer();
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+        InitEvent();
         SpawnPlayer();
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("FailRoom");
+    }
+    private void InitEvent()
+    {
+        RaiseEventOptions options = new RaiseEventOptions();
+        options.Receivers = ReceiverGroup.All;
+        PhotonNetwork.RaiseEvent(3, null, options, SendOptions.SendReliable);
     }
     void CreateRoom()
     {
@@ -71,6 +80,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi.position + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
         minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;
 		cameraObj.GetComponent<PlayerCamera>().target = playerObj;
+        cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
+        cameraObj.transform.SetParent(playerObj.transform);
         playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
         //_uiScene.GetComponent<PlayScene>().gameDirector = this;

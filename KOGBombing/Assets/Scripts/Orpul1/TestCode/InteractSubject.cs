@@ -1,4 +1,5 @@
 using System.Collections;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -27,9 +28,11 @@ namespace Orpul1
         {
             pv = GetComponent<PhotonView>();
         }
+
         private void Start()
         {
-            pv.Owner.SetCustomProperties(new PhotonHashtable { { "State", EInteractState.WAIT } });
+            //pv.Owner.SetCustomProperties(new PhotonHashtable { { "State", EInteractState.WAIT } });
+
         }
         public void ProcessInteract()
         {

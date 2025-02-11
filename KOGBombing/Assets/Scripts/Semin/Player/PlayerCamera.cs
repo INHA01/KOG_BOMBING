@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
-	public GameObject target;               
+	public GameObject target;
+	public GameObject minimapCamera;
 
 	public float offsetX = -3.0f;            
-	public float offsetY = 7.0f;           
-	public float offsetZ = -3f;
+	public float offsetY = 6.0f;           
+	public float offsetZ = -3.0f;
 	float shakeX = 0;
 	float shakeY = 0;
 
@@ -17,24 +19,43 @@ public class PlayerCamera : MonoBehaviour
 	Vector3 TargetPos;
 	Coroutine shake;
 
-	private void Start()
+    [SerializeField] float sensitivity = 300.0f;
+
+    private void Start()
 	{
 		if (target == null)
+		{
 			target = GameObject.FindWithTag("Player");
-	}
+        }
+        TargetPos = new Vector3(
+                    target.transform.position.x + offsetX + shakeX,
+                    target.transform.position.y + offsetY + shakeY,
+                    target.transform.position.z + offsetZ
+                    );
+        transform.position = TargetPos;
+		//Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Vector3 cursorPosition = new Vector3(Screen.width / 2, 50, 0); // 50은 위쪽 위치 (y 좌표)
+        //Cursor.SetCursor(null, cursorPosition, CursorMode.Auto);
 
-	// Update is called once per frame
-	void FixedUpdate()
+    }
+    void FixedUpdate()
 	{
-		TargetPos = new Vector3(
-			target.transform.position.x + offsetX + shakeX,
-			target.transform.position.y + offsetY + shakeY,
-			target.transform.position.z + offsetZ
-			);
+		if(Input.GetMouseButton(1))
+		{
+			TargetRotation();
+		}
+    }
 
-		transform.position = Vector3.Lerp(transform.position, TargetPos, Time.deltaTime * CameraSpeed);
-	}
-	public void SetTarget(GameObject target)
+    void TargetRotation()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+		target.transform.Rotate(Vector3.up * mouseX);
+		//target.transform.rotation = Quaternion.Lerp(target.transform.rotation, Quaternion.Euler(target.transform.eulerAngles.x, target.transform.eulerAngles.y + mouseX, target.transform.eulerAngles.z), Time.deltaTime * CameraSpeed);
+        minimapCamera.transform.rotation = Quaternion.Euler(90, target.transform.eulerAngles.y, 0);
+
+    }
+    public void SetTarget(GameObject target)
 	{
 		this.target = target;
 	}

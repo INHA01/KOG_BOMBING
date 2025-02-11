@@ -64,12 +64,11 @@ namespace Orpul1
             GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
             minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
+            cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
+            cameraObj.transform.SetParent(playerObj.transform);
             playerObj.GetComponent<PlayerController>().SetCamera(cameraObj.GetComponent<Camera>());
-            playerObj.GetComponent<PlayerController>().SpawnPoint = spawnPosi;
-            //playerObj.GetComponent<PlayerController>().gameDirector = this;
-
             _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
-            _uiScene.GetComponent<PlayScene>().gameDirector = this;
+            //_uiScene.GetComponent<PlayScene>().gameDirector = this;
             _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         }
     }

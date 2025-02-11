@@ -6,18 +6,17 @@ using UnityEngine;
 
 public class BulletController : PooledObject
 {
-    [SerializeField] float moveSpeed;
-    [HideInInspector] public ETeam strTeamBullet;
-    [SerializeField] int damage = 20;
+    [SerializeField] protected float moveSpeed;
+    [HideInInspector] public ETeam eTeamBullet;
+    [SerializeField] protected int damage = 20;
 
-   [HideInInspector] public Vector3 shootDirection;
-    float destroyDistance;
-    float distance;
+   [SerializeField] protected Rigidbody rb;
+    protected float destroyDistance;
+    protected float distance;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
-
-    void Update()
+    protected virtual void FixedUpdate()
     {
-        transform.Translate(shootDirection * moveSpeed * Time.deltaTime);
+        rb.velocity = transform.forward * moveSpeed;
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {
@@ -26,34 +25,27 @@ public class BulletController : PooledObject
         }
     }
 
-    private bool IsOtherTeam(PhotonView pView)
+    protected bool IsOtherTeam(PhotonView pView)
     {
         ETeam mineTeam = (ETeam)pView.Owner.CustomProperties["Team"];
         
-        if (mineTeam == strTeamBullet) return false;
+        if (mineTeam == eTeamBullet) return false;
         return true;
     }
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
-        
-        if (other.tag == "Player")
+        if (collision.collider.tag == "Player")
         {
-            // >> : ÆÀ ±¸ºÐ
-            PhotonView pView = other.GetComponent<PhotonView>();
+            // >> : ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            PhotonView pView = collision.collider.GetComponent<PhotonView>();
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;
             // << :
-            IDamageAble player = other.transform.GetComponent<IDamageAble>();
+            IDamageAble player = collision.collider.transform.GetComponent<IDamageAble>();
             if (player != null)
                 player.OnDamaged(damage);
-            distance = 0;
-            Release();
         }
-        if (other.tag == "Wall")
-        {
-            distance = 0;
-            Release();
-        }
-        
+        distance = 0;
+        Release();
     }
 }

@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-		
+
 		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos);
 		playerMaterialController.SaveCurrentMaterial();
 
@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
 	{
         blackBoard.viewCamera = cam;
 	}
+
     private void Update()
     {
         if (!playerData.pv.IsMine) return;

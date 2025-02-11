@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
-	public GameObject target;               
+	public GameObject target;
+	public GameObject minimapCamera;
 
 	public float offsetX = -3.0f;            
 	public float offsetY = 7.0f;           
@@ -17,24 +19,40 @@ public class PlayerCamera : MonoBehaviour
 	Vector3 TargetPos;
 	Coroutine shake;
 
-	private void Start()
+    [SerializeField] float sensitivity = 300.0f;
+
+    private void Start()
 	{
 		if (target == null)
+		{
 			target = GameObject.FindWithTag("Player");
-	}
-
-	// Update is called once per frame
-	void FixedUpdate()
+        }
+        TargetPos = new Vector3(
+                    target.transform.position.x + offsetX + shakeX,
+                    target.transform.position.y + offsetY + shakeY,
+                    target.transform.position.z + offsetZ
+                    );
+        transform.position = TargetPos;
+    }
+    void FixedUpdate()
 	{
-		TargetPos = new Vector3(
-			target.transform.position.x + offsetX + shakeX,
-			target.transform.position.y + offsetY + shakeY,
-			target.transform.position.z + offsetZ
-			);
+		if (Input.GetMouseButton(1))
+		{
+			TargetRotation();
+		}
+		else
+			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(50, target.transform.eulerAngles.y, 0), Time.deltaTime * CameraSpeed);
+    }
 
-		transform.position = Vector3.Lerp(transform.position, TargetPos, Time.deltaTime * CameraSpeed);
-	}
-	public void SetTarget(GameObject target)
+    void TargetRotation()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+		target.transform.Rotate(Vector3.up * mouseX);
+        minimapCamera.transform.rotation = Quaternion.Euler(90, target.transform.eulerAngles.y, 0);
+
+        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(30, target.transform.eulerAngles.y, 0), Time.deltaTime * CameraSpeed);
+    }
+    public void SetTarget(GameObject target)
 	{
 		this.target = target;
 	}

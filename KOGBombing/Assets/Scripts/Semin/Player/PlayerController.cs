@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
 	TeamUIController teamUIController = new TeamUIController();
     void Awake()
 	{
-		blackBoard.isLive = true;
+        blackBoard.isLive = true;
         playerData = GetComponent<PlayerData>();
 		attackRange = new AttackRange();
 		playerInteract =  new PlayerInteract();
@@ -252,7 +252,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 
 	public INode.ENodeState RotatePlayer()
 	{
-
         Ray cameraRay = viewCamera.ScreenPointToRay(blackBoard.mousePos);
         RaycastHit hit;
 		if(Physics.Raycast(cameraRay, out hit , 100f,LayerMask.GetMask("BackGroundObj")))
@@ -264,9 +263,6 @@ public class PlayerController : MonoBehaviour, IPunObservable
 			if (GroupPlane.Raycast(cameraRay, out rayLength))
 			{
 				Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-                /*playerData.mousePos = pointTolook;
-                playerData.animator.Rotation(pointTolook, playerData.speedValue);
-                playerData.playerObj.transform.LookAt(pointTolook);*/
 
                 playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, blackBoard.speedValue);
@@ -418,7 +414,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     {
         return (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height);
     }
-	public void OnRotate(InputValue value)
+    public void OnRotate(InputValue value)
 	{
 		if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         blackBoard.mousePos = value.Get<Vector2>();

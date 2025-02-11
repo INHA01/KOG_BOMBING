@@ -33,28 +33,25 @@ public class PlayerCamera : MonoBehaviour
                     target.transform.position.z + offsetZ
                     );
         transform.position = TargetPos;
-		Cursor.lockState = CursorLockMode.Locked;
+		//Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
-        Vector3 cursorPosition = new Vector3(Screen.width / 2, 50, 0); // 50은 위쪽 위치 (y 좌표)
-        Cursor.SetCursor(null, cursorPosition, CursorMode.Auto);
+        //Vector3 cursorPosition = new Vector3(Screen.width / 2, 50, 0); // 50은 위쪽 위치 (y 좌표)
+        //Cursor.SetCursor(null, cursorPosition, CursorMode.Auto);
 
     }
     void FixedUpdate()
 	{
-		if (Input.GetMouseButton(1))
+		if(Input.GetMouseButton(1))
 		{
-			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(30, target.transform.eulerAngles.y, 0), Time.deltaTime * CameraSpeed);
+			TargetRotation();
 		}
-		else
-			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(50, target.transform.eulerAngles.y, 0), Time.deltaTime * CameraSpeed);
-		TargetRotation();
     }
 
     void TargetRotation()
     {
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-		//target.transform.Rotate(Vector3.up * mouseX);
-		target.transform.rotation = Quaternion.Lerp(target.transform.rotation, Quaternion.Euler(target.transform.eulerAngles.x, target.transform.eulerAngles.y + mouseX, target.transform.eulerAngles.z), Time.deltaTime * CameraSpeed);
+		target.transform.Rotate(Vector3.up * mouseX);
+		//target.transform.rotation = Quaternion.Lerp(target.transform.rotation, Quaternion.Euler(target.transform.eulerAngles.x, target.transform.eulerAngles.y + mouseX, target.transform.eulerAngles.z), Time.deltaTime * CameraSpeed);
         minimapCamera.transform.rotation = Quaternion.Euler(90, target.transform.eulerAngles.y, 0);
 
     }

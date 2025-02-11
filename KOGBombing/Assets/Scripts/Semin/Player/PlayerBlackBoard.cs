@@ -28,5 +28,6 @@ public class PlayerBlackBoard : MonoBehaviour
     public bool isLive;
 	public bool isGroggy;
 	public bool groggyable;
+    public float reviveInterval;
 }
 

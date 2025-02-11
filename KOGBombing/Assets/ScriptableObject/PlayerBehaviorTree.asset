@@ -617,9 +617,9 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: df683c26caada074d924fefa11479752
-  position: {x: 828.00006, y: -281.60004}
+  position: {x: 828, y: -282.5}
   paramName: 
-  method: ProcessInteractive
+  method: ProcessInteractNode
   className: PlayerInteract
 --- !u!114 &4549044918267445955
 MonoBehaviour:
@@ -775,7 +775,7 @@ MonoBehaviour:
   guid: 75da69a6887104f45bb0fc5c9390a3e3
   position: {x: 828.0001, y: -378.9801}
   paramName: 
-  method: FindInteractObj
+  method: FindInteractObjNode
   className: PlayerInteract
 --- !u!114 &7428477062917207401
 MonoBehaviour:
@@ -845,5 +845,5 @@ MonoBehaviour:
   guid: 80f9e6d94b614b24d90413a9619a6acc
   position: {x: 667.0001, y: -242.98009}
   paramName: 
-  method: AbortInteract
+  method: AbortInteractNode
   className: PlayerInteract

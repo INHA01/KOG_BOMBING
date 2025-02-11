@@ -713,10 +713,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  minimapCamera: {fileID: 0}
   offsetX: -3
   offsetY: 10
   offsetZ: -3
   CameraSpeed: 10
+  sensitivity: 300
 --- !u!1 &335175790
 GameObject:
   m_ObjectHideFlags: 0
@@ -2412,6 +2414,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_001_V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8447609573421118237, guid: 010348e31eb63904298dda4f6de31c56,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

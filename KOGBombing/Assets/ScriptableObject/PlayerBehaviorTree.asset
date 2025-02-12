@@ -689,7 +689,7 @@ MonoBehaviour:
   guid: c05b2d6b371aad7499246dd349a37006
   position: {x: 836, y: -479.12128}
   paramName: 
-  method: SetLookTarget
+  method: FindAlivePlayer
   className: PlayerHitBehavior
 --- !u!114 &6193472429586276356
 MonoBehaviour:
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 0413aaa3f3d687a47868ad7751a5da6f
-  position: {x: 200, y: -291}
+  position: {x: 205, y: -291}
   child: {fileID: 1194003659082968326}
   method: IsNotGroggy
   paramName: 

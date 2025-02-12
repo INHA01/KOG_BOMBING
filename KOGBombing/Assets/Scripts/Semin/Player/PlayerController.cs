@@ -74,9 +74,10 @@ public class PlayerController : MonoBehaviour
 		teamUIController.SetTeamUI(playerShooting);
 
     }
-	public void SetCamera(Camera cam)
+	public void Init(Camera camera, Vector3 spawnPosi)
 	{
-        blackBoard.viewCamera = cam;
+        blackBoard.viewCamera = camera;
+		blackBoard.spawnPoint = spawnPosi;
 	}
 
     private void Update()

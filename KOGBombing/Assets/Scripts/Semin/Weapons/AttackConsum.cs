@@ -13,6 +13,7 @@ namespace Semin
         protected SphereCollider attackCollider;
         public abstract float Damage { get; }
 		protected ETeam team;
+        public ETeam Team { get { return team; } }
 		public WeaponType type;
 
         public abstract void Use();

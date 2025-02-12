@@ -53,5 +53,6 @@ public class Molotov : AttackConsum
 			if (player != null)
 				player.OnDamaged(Damage);
 		}
+		
 	}
 }

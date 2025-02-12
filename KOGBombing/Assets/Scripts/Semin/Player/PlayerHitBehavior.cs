@@ -156,16 +156,17 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         StartCoroutine(ResetRigidity(time));
     }
 
-    public INode.ENodeState SetLookTarget()
+    public INode.ENodeState FindAlivePlayer()
     {
         List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         Debug.Log($"TeamPlayer {blackBoards.Count}");
         for (int i = 0; i < blackBoards.Count; i++)
         {
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
+            if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
             if (blackBoards[i].isLive)
             {
-                Debug.Log("Find Target");
+                Debug.Log($"Find Target {blackBoards[i].nickname}");
                 blackBoard.gmlookTarget = blackBoards[i].rigidBody.gameObject;
                 return INode.ENodeState.Success;
             }
@@ -181,6 +182,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (Managers.PunData.GetPlayerBlackBoard(nickname).isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.gmlookTarget);
+            Debug.Log("Set Camera Look Alive Player");
             return INode.ENodeState.Success;
         }
         blackBoard.gmlookTarget = null;

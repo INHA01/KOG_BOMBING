@@ -1,5 +1,6 @@
 using Orpul1;
 using Photon.Pun;
+using Semin;
 using System.Collections;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ public class BulletController : PooledObject
     {
         if (other.tag == "Player")
         {
-            // >> : ÆÀ ±¸ºÐ
+            // >> : ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             PhotonView pView = other.GetComponent<PhotonView>();
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;

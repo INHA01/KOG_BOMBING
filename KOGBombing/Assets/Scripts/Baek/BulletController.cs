@@ -31,16 +31,16 @@ public class BulletController : PooledObject
         if (mineTeam == eTeamBullet) return false;
         return true;
     }
-    protected virtual void OnCollisionEnter(Collision collision)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.tag == "Player")
+        if (other.tag == "Player")
         {
             // >> : ÆÀ ±¸ºÐ
-            PhotonView pView = collision.collider.GetComponent<PhotonView>();
+            PhotonView pView = other.GetComponent<PhotonView>();
             if (!pView) return;
             if (!IsOtherTeam(pView)) return;
             // << :
-            IDamageAble player = collision.collider.transform.GetComponent<IDamageAble>();
+            IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
                 player.OnDamaged(damage);
         }

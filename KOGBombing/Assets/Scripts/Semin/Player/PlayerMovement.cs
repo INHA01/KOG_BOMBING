@@ -29,7 +29,6 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
                 break;
         }
 
-
         return INode.ENodeState.Success;
     }
 
@@ -48,16 +47,11 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
             if (GroupPlane.Raycast(cameraRay, out rayLength))
             {
                 Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-                /*playerData.mousePos = pointTolook;
-                playerData.animator.Rotation(pointTolook, playerData.speedValue);
-                playerData.playerObj.transform.LookAt(pointTolook);*/
-
                 playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, blackBoard.speedValue);
                 playerData.playerObj.transform.LookAt(pointTolook);
             }
         }
-
 
         return INode.ENodeState.Success;
     }

@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAnimation : MonoBehaviour,IPunObservable
 {
@@ -70,7 +70,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	}
 
 
-	public void UpdateAnimation(Vector2 speedValue)
+	public void UpdateAnimation(Vector2 speedValue, Transform tr)
 	{
 		this.speedValue = speedValue;
 		if (speedValue.magnitude <= 0.1f)
@@ -80,7 +80,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			return;
 		}
 
-		Quaternion rotation = Quaternion.Euler(0, -45, 0);
+		Quaternion rotation = Quaternion.Euler(0, -tr.localEulerAngles.y, 0);
 		Vector3 forward = playerObj.transform.forward;
 		forward = rotation * forward;
 

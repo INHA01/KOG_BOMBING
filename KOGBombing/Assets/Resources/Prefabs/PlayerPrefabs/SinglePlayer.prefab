@@ -437,6 +437,7 @@ MonoBehaviour:
   pv: {fileID: 2047044685979704218}
   rigidBody: {fileID: 1272812946582949491}
   speedDebuffPercent: 1
+  timeWithoutDamage: 0
   playerObj: {fileID: 772106139481323054}
   playerLookObj: {fileID: 1368636139714485546}
   animator: {fileID: 7300479445460102179}
@@ -589,11 +590,11 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 0, z: 0}
   eTeam: 0
   nickname: 
-  hp: 0
+  hp: 200
   maxHp: 200
   moveSpeed: 6
   defence: 150
-  maxDefence: 6
+  maxDefence: 150
   reviveInterval: 0
   isLive: 1
   isGroggy: 0

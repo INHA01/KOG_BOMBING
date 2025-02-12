@@ -34,7 +34,7 @@ namespace Orpul1
             //pv.Owner.SetCustomProperties(new PhotonHashtable { { "State", EInteractState.WAIT } });
 
         }
-        public void ProcessInteract()
+        public void ProcessInteract(PhotonView pView)
         {
             EInteractState state = (EInteractState)pv.Owner.CustomProperties["State"];
             if (state == EInteractState.DONE || state == EInteractState.INTERACTING) 

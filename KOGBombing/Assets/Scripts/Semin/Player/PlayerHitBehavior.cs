@@ -130,7 +130,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 blackBoard.groggyable = true;
                 playerData.speedDebuffPercent = 1f;
                 blackBoard.hpBar.InitializeValues();
-                this.transform.position = blackBoard.spawnPoint;
             }
         }
     }
@@ -146,7 +145,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
         SetActiveState(true);
+        this.transform.position = blackBoard.spawnPoint;
+        this.transform.rotation = blackBoard.initRotation;
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+
         Managers.UI.ClosePopupUI();
     }
     private void SetActiveState(bool isDie)

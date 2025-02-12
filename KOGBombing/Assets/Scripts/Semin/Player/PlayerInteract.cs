@@ -38,13 +38,13 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject == gameObject) continue;
-            PhotonView pView = colliders[i].GetComponent<PhotonView>();
-            if(pView == null) continue;
+            /*if(pView == null) continue;
             ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
             if (otherTeam != blackBoard.eTeam) continue;
             interactObj = colliders[i].GetComponent<IInteractAble>();
             if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) continue;
-            objName = colliders[i].name;
+            objName = colliders[i].name;*/
+            interactObj = colliders[i].GetComponent<IInteractAble>();
             if (interactObj != null) break;
         }
         if (interactObj == null) return false;
@@ -57,7 +57,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     {
         Debug.Log("Process Interact");
         isInteracting = true;
-        iInteractObj.ProcessInteract();
+        iInteractObj.ProcessInteract(playerData.pv);
         return INode.ENodeState.Success;
 
     }
@@ -72,8 +72,12 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         return INode.ENodeState.Success;
     }
 
-    void IInteractAble.ProcessInteract()
+    void IInteractAble.ProcessInteract(PhotonView pView)
     {
+        if (pView == null) return;
+        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
+        if (otherTeam != blackBoard.eTeam) return;
+        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) return;
         playerData.pv.RPC("RPCProcess", RpcTarget.AllBuffered);
     }
     void IInteractAble.AbortInteract()

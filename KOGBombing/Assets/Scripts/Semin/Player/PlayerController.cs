@@ -25,27 +25,9 @@ public class PlayerController : MonoBehaviour
 	TeamUIController teamUIController = new TeamUIController();
     void Awake()
 	{
-        blackBoard.isLive = true;
-        playerData = GetComponent<PlayerData>();
-        playerShooting = GetComponent<PlayerShooting>();
-		playerMaterialController = GetComponent<PlayerMaterialController>();
-		playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
-		blackBoard.hp = blackBoard.maxHp;
-		blackBoard.defence = blackBoard.maxDefence;
+        InitPlayerData();
 
-        playerData.rigidBody = GetComponent<Rigidbody>();
-        blackBoard.rigidBody = GetComponent<Rigidbody>();
-		if (playerData.pv.IsMine)
-		{
-			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
-			blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-        }
-		else
-		{
-			blackBoard.nickname = playerData.pv.Owner.NickName;
-            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-        }
-		if(playerData.pv.IsMine)
+        if (playerData.pv.IsMine)
             playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
     }
 
@@ -61,6 +43,29 @@ public class PlayerController : MonoBehaviour
 			StartCoroutine(WaitSetTeamUI());
 		}
 	}
+
+	private void InitPlayerData()
+	{
+        blackBoard.isLive = true;
+        playerData = GetComponent<PlayerData>();
+        playerShooting = GetComponent<PlayerShooting>();
+        playerMaterialController = GetComponent<PlayerMaterialController>();
+        playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
+        blackBoard.hp = blackBoard.maxHp;
+        blackBoard.defence = blackBoard.maxDefence;
+        playerData.rigidBody = GetComponent<Rigidbody>();
+        blackBoard.rigidBody = GetComponent<Rigidbody>();
+        if (playerData.pv.IsMine)
+        {
+            blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
+            blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        }
+        else
+        {
+            blackBoard.nickname = playerData.pv.Owner.NickName;
+            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+        }
+    }
 	[PunRPC]
 	private void SendBlackBoard()
 	{

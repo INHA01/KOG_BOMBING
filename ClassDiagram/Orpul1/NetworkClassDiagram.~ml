@@ -416,7 +416,7 @@
 <XPD:ATTR name="Left" type="integer">952</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">124</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">253</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">108</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">147</XPD:ATTR>
 <XPD:REF name="Model">uk/G15ZkzU6gNMQIS4d1IwAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="nDGFqyrQ1UStstgrCTl1vAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="FB+p1ApyiU2/sI4tfsMYjwAA">
@@ -2107,8 +2107,8 @@
 <XPD:OBJ name="OwnedViews[44]" type="UMLClassView" guid="S14/vNkURE2xxZDIFvOSHQAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Left" type="integer">936</XPD:ATTR>
-<XPD:ATTR name="Top" type="integer">484</XPD:ATTR>
+<XPD:ATTR name="Left" type="integer">1732</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">68</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">174</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">95</XPD:ATTR>
 <XPD:REF name="Model">R0SV+ry6W0uJGL9eX/3HnQAA</XPD:REF>
@@ -3237,7 +3237,7 @@
 <XPD:REF name="Views[3]">EfvB3DgnIU6c0lLSMoJk+AAA</XPD:REF>
 <XPD:ATTR name="#ClientDependencies" type="integer">1</XPD:ATTR>
 <XPD:REF name="ClientDependencies[0]">RHYf5xOd70OjfBlbfeFWbQAA</XPD:REF>
-<XPD:ATTR name="#Operations" type="integer">3</XPD:ATTR>
+<XPD:ATTR name="#Operations" type="integer">6</XPD:ATTR>
 <XPD:OBJ name="Operations[0]" type="UMLOperation" guid="jwxlHht4bUKXI9Q96l8v/gAA">
 <XPD:ATTR name="Name" type="string">Awake</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
@@ -3260,14 +3260,52 @@
 <XPD:REF name="BehavioralFeature">4C8IOYCXe02oC0cgGralqAAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[2]" type="UMLOperation" guid="Lilw0UDWn0KChg0/CBkEvQAA">
-<XPD:ATTR name="Name" type="string">OnRoomPropertiesUpdate</XPD:ATTR>
+<XPD:OBJ name="Operations[2]" type="UMLOperation" guid="whovwoKC2UGd0sr3W+bVoQAA">
+<XPD:ATTR name="Name" type="string">PhotonEvent</XPD:ATTR>
+<XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
+<XPD:REF name="Owner">uk/G15ZkzU6gNMQIS4d1IwAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="Ouvh5k8I8EOJSy5TzI5shAAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">whovwoKC2UGd0sr3W+bVoQAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="G9RL9crexUO/DgFHnUoBDgAA">
+<XPD:ATTR name="Name" type="string">EventData punEvent</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">whovwoKC2UGd0sr3W+bVoQAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[3]" type="UMLOperation" guid="ErltNlgM9USMxq8rWwiF2AAA">
+<XPD:ATTR name="Name" type="string">ProcessCharcterSelect</XPD:ATTR>
+<XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
 <XPD:REF name="Owner">uk/G15ZkzU6gNMQIS4d1IwAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="RqYKnVVJbUaHj3bm2LnbSQAA">
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="K3tmZi79h0qXxQLJn1zHpgAA">
 <XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">overrid void</XPD:ATTR>
-<XPD:REF name="BehavioralFeature">Lilw0UDWn0KChg0/CBkEvQAA</XPD:REF>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">ErltNlgM9USMxq8rWwiF2AAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[4]" type="UMLOperation" guid="7d9Na7nCDE+mwNRN0gNEHgAA">
+<XPD:ATTR name="Name" type="string">ProcessGameStart</XPD:ATTR>
+<XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
+<XPD:REF name="Owner">uk/G15ZkzU6gNMQIS4d1IwAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="EXfIiCcu3ESfvEgidUMPXwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">7d9Na7nCDE+mwNRN0gNEHgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[5]" type="UMLOperation" guid="ijBRVbA4a0CAXXHyfyj0XAAA">
+<XPD:ATTR name="Name" type="string">ProcessGameEnd</XPD:ATTR>
+<XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
+<XPD:REF name="Owner">uk/G15ZkzU6gNMQIS4d1IwAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="b0qX5xb41E2n4KnXx3rvbgAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">ijBRVbA4a0CAXXHyfyj0XAAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:ATTR name="#Associations" type="integer">2</XPD:ATTR>

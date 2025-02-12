@@ -8,6 +8,7 @@ public class PlayerBlackBoard : MonoBehaviour
 {
     public Collider playerCollider;
     public Rigidbody rigidBody;
+    public Quaternion initRotation;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
     public Camera viewCamera;
     public UIPopup _uiScene;

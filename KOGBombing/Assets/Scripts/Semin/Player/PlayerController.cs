@@ -45,7 +45,9 @@ public class PlayerController : MonoBehaviour
 			blackBoard.nickname = playerData.pv.Owner.NickName;
             blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
         }
-	}
+		if(playerData.pv.IsMine)
+            playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+    }
 
 	private void Start()
 	{
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
 		if(playerData.pv.IsMine)
 		{
-			playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+			
 			StartCoroutine(WaitSetTeamUI());
 		}
 	}
@@ -66,7 +68,8 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator WaitSetTeamUI()
 	{
-        while (!Managers.PunData.IsDataAllGet) yield return null;
+		while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
+		Debug.Log($"isDataAllGet {Managers.PunData.blackBoardCnt}");
 		teamUIController.SetTeamUI(playerShooting);
 
     }

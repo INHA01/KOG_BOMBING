@@ -15,15 +15,13 @@ public class PhotonDataManager
     Dictionary<string, PlayerBlackBoard> dicPlayerBlackBoard = new Dictionary<string, PlayerBlackBoard>();
     Dictionary<string, PlayerKDA> dicPlayerKDA = new Dictionary<string, PlayerKDA>();
     List<PlayerBlackBoard> blackBoardList = new List<PlayerBlackBoard>();
-    public bool IsDataAllGet = false;
+    public int blackBoardCnt { get { return dicPlayerBlackBoard.Count; } }
 
     public void AddPlayerBlackBoard(string nickname, PlayerBlackBoard blackBoard)
     {
         Debug.Log($"add ID {blackBoard.nickname}");
         dicPlayerBlackBoard.Add(nickname, blackBoard);
         blackBoardList.Add(blackBoard);
-        if (PhotonNetwork.PlayerList.Length == dicPlayerBlackBoard.Count)
-            IsDataAllGet = true;
     }
     public PlayerBlackBoard GetPlayerBlackBoard(string nickname)
     {
@@ -41,6 +39,7 @@ public class PhotonDataManager
     public void Init()
     {
         dicPlayerBlackBoard.Clear();
+        blackBoardList.Clear();
         dicPlayerKDA.Clear();
     }
 

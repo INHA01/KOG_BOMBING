@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using Photon.Realtime;
-
+using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
+using ExitGames.Client.Photon;
 namespace Orpul1
 {
-    public class GameDirector : MonoBehaviour
+    public class GameDirector : MonoBehaviourPunCallbacks
     {
         [SerializeField]
         GameObject playerCamera;
@@ -20,20 +21,70 @@ namespace Orpul1
 
         UIPopup _uiScene;
 
+        enum EGameState
+        {
+            CharacterSelect = 10,
+            GameStart,
+            GameEnd,
+            TeamAlternative
+        }
+
         public float time = 180;
         public static int blueScore = 0;
         public static int redScore = 0;
-
+        int readyPlayerCnt = 0;
+        RaiseEventOptions options = new RaiseEventOptions();
+        private void Awake()
+        {
+            options.Receivers = ReceiverGroup.All;
+        }
         void Start()
         {
-            SpawnPlayer();
-            StartCoroutine(TimeCount());
+            PhotonNetwork.NetworkingClient.EventReceived += PhotonEvent;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.Start } });
+            StartCoroutine(CoWaitPlayer());
+            //SpawnPlayer();
+        }
+
+        private void PhotonEvent(EventData punEvent)
+        {
+            if(punEvent.Code == (int)EGameState.GameStart)
+            {
+                //SpawnPlayer();
+                //StartCoroutine(TimeCount());
+            }
+        }
+        public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+
+            EPlayerState playerState = (EPlayerState)targetPlayer.CustomProperties["State"];
+            if (playerState == EPlayerState.Start)
+            {
+                readyPlayerCnt++;
+                //StartCoroutine(TimeCount());
+            }
+        }
+        
+        private IEnumerator CoWaitPlayer()
+        {
+            int playerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
+            while(readyPlayerCnt< playerCnt) yield return null;
+            //PhotonNetwork.RaiseEvent((int)EGameState.GameStart, null, options, SendOptions.SendReliable);
+            pv.RPC("StartTimeCount", RpcTarget.AllBuffered);
+            pv.RPC("SpawnPlayer", RpcTarget.AllBuffered);
         }
         [PunRPC]
         public void UpdateScores(int newBlueScore, int newRedScore)
         {
             blueScore = newBlueScore;
             redScore = newRedScore;
+        }
+        [PunRPC]
+        private void StartTimeCount()
+        {
+            StartCoroutine(TimeCount());
+
         }
         IEnumerator TimeCount()
         {
@@ -47,6 +98,7 @@ namespace Orpul1
             Debug.Log("Time Over");
             Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas");
         }
+        [PunRPC]
         void SpawnPlayer()
         {
             int spawnIndex = 0;

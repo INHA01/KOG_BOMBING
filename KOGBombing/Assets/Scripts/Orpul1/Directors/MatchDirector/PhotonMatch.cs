@@ -70,6 +70,7 @@ namespace Orpul1
             {
                 if ((string)propertiesThatChanged["RoomState"] == "Start")
                 {
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.Ready } });
                     btnMatch.interactable = false;
                     
                     StartCoroutine(CoStartDelay());
@@ -98,7 +99,6 @@ namespace Orpul1
         private void SetPlayerIndex()
         {
             Player[] players = PhotonNetwork.PlayerList;
-            //StringBuilder stbTeam = new StringBuilder((string)PhotonNetwork.LocalPlayer.CustomProperties["Team"]);
             ETeam playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
             Debug.Log($"team : {playerTeam}");
             int playerTeamIndex = 0;
@@ -126,7 +126,6 @@ namespace Orpul1
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
             LoadingSceneManager.LoadScene("MainGame");
-            //PhotonNetwork.LoadLevel(3);
         }
     }
 }

@@ -128,18 +128,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2164964122958627734}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &50141436 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2192897603439113067, guid: d3bac9bbc2d12074aa37e31aa18ceccd,
-    type: 3}
-  m_PrefabInstance: {fileID: 2164964122958627734}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dd23736960bd2a48beef6c615cd7607, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &82725403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,18 +1073,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1060356700736209641}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1784143249 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7773317709508873750, guid: 06d71ee04cc4020458d95d25ab1167fb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1060356700736209641}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dd23736960bd2a48beef6c615cd7607, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1984246788
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,10 +2672,10 @@ MonoBehaviour:
   moveSpeed: 6
   defence: 150
   maxDefence: 6
+  reviveInterval: 0
   isLive: 1
   isGroggy: 0
   groggyable: 1
-  reviveInterval: 0
 --- !u!1001 &3046126219018517895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2850,6 +2826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd122e076fbcf4b813b08cfeaa8ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSight: 0
   viewRadius: 23.03
   viewAngle: 90
   targetMask:
@@ -2962,11 +2939,6 @@ MonoBehaviour:
   InitMagazineCount: 4
   reloadTime: 3.2
   shootingTerm: 1
-  shotEmitters:
-  - {fileID: 50141436}
-  - {fileID: 1784143249}
-  projectilePrefab: {fileID: 4795683133691389418, guid: 8438f6fb5c6665d4fba188282cc98f51,
-    type: 3}
 --- !u!33 &4733636880424360131
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3126,6 +3098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd122e076fbcf4b813b08cfeaa8ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSight: 0
   viewRadius: 3
   viewAngle: 360
   targetMask:

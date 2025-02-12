@@ -20,6 +20,7 @@ public class PlayerCamera : MonoBehaviour
 	Coroutine shake;
 
     [SerializeField] float sensitivity = 300.0f;
+	[SerializeField] Quaternion initRotation = Quaternion.Euler(55f, 45f, 0);
 
     private void Start()
 	{
@@ -33,6 +34,7 @@ public class PlayerCamera : MonoBehaviour
                     target.transform.position.z + offsetZ
                     );
         transform.position = TargetPos;
+		transform.rotation = initRotation;
 		//Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
         //Vector3 cursorPosition = new Vector3(Screen.width / 2, 50, 0); // 50은 위쪽 위치 (y 좌표)
@@ -65,6 +67,7 @@ public class PlayerCamera : MonoBehaviour
                     target.transform.position.z + offsetZ
                     );
         transform.position = TargetPos;
+        transform.rotation = initRotation;
     }
 	public void Shake(float duration, float magnitude)
 	{

@@ -143,7 +143,7 @@ public class PlayerAttack : PlayerBehavior
     public void OnUseAttackConsum(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
-        if (blackBoard.groggyable == false) return;
+        if (blackBoard.playerStatus.groggyable == false) return;
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;

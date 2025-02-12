@@ -33,11 +33,6 @@ public class PlayerCamera : MonoBehaviour
                     target.transform.position.z + offsetZ
                     );
         transform.position = TargetPos;
-		//Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-        //Vector3 cursorPosition = new Vector3(Screen.width / 2, 50, 0); // 50은 위쪽 위치 (y 좌표)
-        //Cursor.SetCursor(null, cursorPosition, CursorMode.Auto);
-
     }
     void FixedUpdate()
 	{
@@ -45,13 +40,24 @@ public class PlayerCamera : MonoBehaviour
 		{
 			TargetRotation();
 		}
+		if(Input.GetKey(KeyCode.LeftShift))
+            ZoomCamera(30);
+        else
+			ZoomCamera(50);
     }
-
+	void ZoomCamera(float angle)
+	{
+		float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        this.transform.rotation 
+			= Quaternion.Lerp(
+				this.transform.rotation, 
+				Quaternion.Euler(angle, target.transform.eulerAngles.y, 0), 
+				Time.deltaTime * CameraSpeed);
+    }
     void TargetRotation()
     {
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 		target.transform.Rotate(Vector3.up * mouseX);
-		//target.transform.rotation = Quaternion.Lerp(target.transform.rotation, Quaternion.Euler(target.transform.eulerAngles.x, target.transform.eulerAngles.y + mouseX, target.transform.eulerAngles.z), Time.deltaTime * CameraSpeed);
         minimapCamera.transform.rotation = Quaternion.Euler(90, target.transform.eulerAngles.y, 0);
 
     }

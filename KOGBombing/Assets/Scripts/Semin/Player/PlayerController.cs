@@ -25,13 +25,14 @@ public class PlayerController : MonoBehaviour
 	TeamUIController teamUIController = new TeamUIController();
     void Awake()
 	{
-        blackBoard.isLive = true;
+		blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
+        blackBoard.playerStatus.isLive = true;
         playerData = GetComponent<PlayerData>();
         playerShooting = GetComponent<PlayerShooting>();
 		playerMaterialController = GetComponent<PlayerMaterialController>();
 		playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
-		blackBoard.hp = blackBoard.maxHp;
-		blackBoard.defence = blackBoard.maxDefence;
+		blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
+		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
 
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();

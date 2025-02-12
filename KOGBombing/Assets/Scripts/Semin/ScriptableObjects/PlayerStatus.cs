@@ -1,0 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Semin
+{
+	public enum CharacterType
+	{
+		Ned,
+		Uni,
+		Max
+	}
+
+
+	[CreateAssetMenu(fileName = "Player Data", menuName = "Scriptable Object/Player Data", order = int.MaxValue)]
+	public class PlayerStatus : ScriptableObject
+	{
+		[SerializeField] private CharacterType type;
+        public float hp;
+        public float maxHp;
+        public float moveSpeed;
+        public float defence;
+        public float maxDefence;
+        public float reviveInterval;
+        public bool isLive;
+        public bool isGroggy;
+        public bool groggyable;
+
+        public CharacterType CharacterType { get { return type; } }
+	}
+
+}

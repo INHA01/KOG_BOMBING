@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Semin
 {
@@ -24,6 +25,7 @@ namespace Semin
 		public MeshFilter viewMeshFilter;
 		Mesh viewMesh;
 
+        Coroutine lerpValue;
         void Start()
 		{
 			viewMesh = new Mesh();
@@ -39,15 +41,35 @@ namespace Semin
 			{
 				if (Input.GetKeyDown(KeyCode.LeftShift))
 				{
-					viewAngle /= 2;
-					viewRadius *= 2;
-				}
+                    if (lerpValue != null)
+					{
+						StopCoroutine(lerpValue);
+                        lerpValue = null;
+					}
+                    lerpValue = StartCoroutine(LerpValue(30, 12));
+                }
 				else if (Input.GetKeyUp(KeyCode.LeftShift))
 				{
-					viewAngle *= 2;
-					viewRadius /= 2;
-				}
+					if(lerpValue != null)
+                    {
+                        StopCoroutine(lerpValue);
+                        lerpValue = null;
+                    }
+                    lerpValue = StartCoroutine(LerpValue(60, 6));
+                }
 			}
+        }
+        private IEnumerator LerpValue(float changeAngle , float changeRadius)
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < 0.5f)
+            {
+                viewAngle = Mathf.Lerp(viewAngle, changeAngle, elapsedTime / 0.5f);
+                viewRadius = Mathf.Lerp(viewRadius, changeRadius, elapsedTime / 0.5f);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
         }
         IEnumerator FindTargetsWithDelay(float delay)
 		{

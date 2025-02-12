@@ -43,7 +43,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
             ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
             if (otherTeam != blackBoard.eTeam) continue;
             interactObj = colliders[i].GetComponent<IInteractAble>();
-            if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) continue;
+            if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) continue;
             objName = colliders[i].name;
             if (interactObj != null) break;
         }
@@ -96,7 +96,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     IEnumerator CoRevive()
     {
         if (isReviving) yield break;
-        float time = Time.time + blackBoard.reviveInterval;
+        float time = Time.time + blackBoard.playerStatus.reviveInterval;
         while (time > Time.time) 
         {
             if (!isReviving) yield break;
@@ -107,8 +107,8 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     [PunRPC]
     public void OnResurrect()
     {
-        blackBoard.hp = 50f;
-        blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        blackBoard.playerStatus.hp = 50f;
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
         playerData.speedDebuffPercent = 1f;

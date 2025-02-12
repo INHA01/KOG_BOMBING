@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
 		{
 			blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
 			blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-
         }
 		else
 		{
@@ -48,13 +47,11 @@ public class PlayerController : MonoBehaviour
         }
 	}
 
-
 	private void Start()
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
 
 		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos);
-		playerMaterialController.SaveCurrentMaterial();
 
 		if(playerData.pv.IsMine)
 		{

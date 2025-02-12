@@ -34,7 +34,6 @@ public class PlayerData : MonoBehaviour
     [SerializeField] public List<GameObject> changeMaterialMeshs = new List<GameObject>();
     [SerializeField] public List<Material> changeMaterials = new List<Material>();
     [SerializeField] public Material hitMaterial;
-	[SerializeField] public List<Material> curMaterial = new List<Material>();
 
     [Header("Weapon")]
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();

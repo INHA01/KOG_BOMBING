@@ -25,6 +25,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         //StartCoroutine(DamageTest(2f, 150));
+        playerMaterialController.SaveCurrentMaterial();
 	}
     void SetOtherTeamInfo()
     {
@@ -150,8 +151,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     private void SetActiveState(bool isDie)
     {
-        for (int i = 0; i < blackBoard.playerModels.Count; i++)
-            blackBoard.playerModels[i].SetActive(isDie);
+        for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
+			playerData.changeMaterialMeshs[i].SetActive(isDie);
 
         blackBoard.rigidBody.isKinematic = !isDie;
         blackBoard.playerCollider.enabled = isDie;

@@ -6,7 +6,6 @@ using Orpul1;
 
 public class PlayerBlackBoard : MonoBehaviour
 {
-    public List<GameObject> playerModels;
     public Collider playerCollider;
     public Rigidbody rigidBody;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());

@@ -23,7 +23,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             SetOtherTeamInfo();
         else blackBoard.hpBar.SetIsMyTeam(true);
         blackBoard.hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
-    }
+		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
+        //StartCoroutine(DamageTest(2f, 150));
+	}
     void SetOtherTeamInfo()
     {
         if (!playerData.pv.IsMine)
@@ -33,7 +35,37 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
         blackBoard.hpBar.SetIsMyTeam(false);
     }
-    public void OnDamaged(float damage)
+
+    IEnumerator DamageTest(float time, float damage)
+    {
+        yield return new WaitForSeconds(time);
+        OnDamaged(damage);
+    }
+
+
+	[PunRPC]
+	private void SetRecoverDefence(float time)
+	{
+		StartCoroutine(RecoverDefence(time));
+	}
+
+	IEnumerator RecoverDefence(float duration)
+	{
+		while (true)
+		{
+            playerData.timeWithoutDamage += Time.deltaTime;
+			if (playerData.timeWithoutDamage >= duration)
+			{
+				float value = blackBoard.defence + blackBoard.maxDefence / 100 * 10;
+				blackBoard.defence = Mathf.Min(value, blackBoard.maxDefence);
+				blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+				playerData.timeWithoutDamage = 0;
+			}
+			yield return null;
+		}
+	}
+
+	public void OnDamaged(float damage)
     {
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
         playerMaterialController.Hit();
@@ -61,12 +93,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     [PunRPC]
     private void Damage(float damage)
-    {
-        float decreaseHp = blackBoard.defence - damage;
+	{
+		float decreaseHp = blackBoard.defence - damage;
         blackBoard.defence = Mathf.Max(decreaseHp, 0);
         if (decreaseHp < 0)
             blackBoard.hp += decreaseHp;
         blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+		playerData.timeWithoutDamage = 0;
 
         if (blackBoard.hp <= 0)
         {

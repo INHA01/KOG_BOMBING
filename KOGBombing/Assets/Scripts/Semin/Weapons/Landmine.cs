@@ -24,6 +24,7 @@ namespace Semin
 		private void Awake()
 		{
 			pView = GetComponent<PhotonView>();
+			decal.GenerateProjector();
 		}
 
 		public override void Use()
@@ -104,7 +105,7 @@ namespace Semin
 			if (!pView) yield break;
 			pView.RPC("ShowParticle", RpcTarget.AllBuffered);
 			yield return new WaitForSeconds(interval);
-			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange / 2);
 			for (int i = 0; i < hitColliders.Length; i++)
 			{
 				if (hitColliders[i].CompareTag("Player"))
@@ -113,11 +114,9 @@ namespace Semin
 					if (!pView) continue;
 					if (!IsOtherTeam(pView)) continue;
 
-					Debug.Log("�÷��̾� �±�, " + hitColliders[i].name);
 					IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
 					if (player != null)
 					{
-						Debug.Log("�÷��̾� landmine damage");
 						player.OnDamaged(Damage);
 						player.OnRigidity(rigidityTime);
 					}
@@ -126,7 +125,7 @@ namespace Semin
 
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
-			yield return new WaitForSeconds(0.5f);	// particle ��� ���� destroy
+			yield return new WaitForSeconds(0.5f);
 			PhotonNetwork.Destroy(gameObject);
 		}
 		public void DestroyLandmine()

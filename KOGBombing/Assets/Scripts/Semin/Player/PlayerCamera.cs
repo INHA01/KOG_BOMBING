@@ -58,7 +58,14 @@ public class PlayerCamera : MonoBehaviour
     public void SetTarget(GameObject target)
 	{
 		this.target = target;
-	}
+		this.transform.parent = target.transform;
+        TargetPos = new Vector3(
+                    target.transform.position.x + offsetX + shakeX,
+                    target.transform.position.y + offsetY + shakeY,
+                    target.transform.position.z + offsetZ
+                    );
+        transform.position = TargetPos;
+    }
 	public void Shake(float duration, float magnitude)
 	{
 		if (shake != null)

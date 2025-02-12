@@ -68,7 +68,7 @@ namespace Orpul1
             cameraObj.transform.SetParent(playerObj.transform);
             playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(),spawnPosi);
             //_uiScene.GetComponent<PlayScene>().gameDirector = this;
-            _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
+            //_uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         }
     }
 }

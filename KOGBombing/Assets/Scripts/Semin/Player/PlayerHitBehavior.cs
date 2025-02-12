@@ -4,6 +4,8 @@ using UnityEngine;
 using Orpul1;
 using Photon.Pun;
 using Semin;
+using System;
+using Unity.VisualScripting;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -14,6 +16,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     
 
     TeamUIController teamUIController = new TeamUIController();
+    float groggyTime;
+    Coroutine groggyCoroutine;
 
     
     private void Start()
@@ -24,8 +28,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         else blackBoard.hpBar.SetIsMyTeam(true);
         blackBoard.hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
-        //StartCoroutine(DamageTest(2f, 150));
         playerMaterialController.SaveCurrentMaterial();
+        //StartCoroutine(DamageTest(2f, 350));
 	}
     void SetOtherTeamInfo()
     {
@@ -110,41 +114,80 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
                 playerData.speedDebuffPercent = 0.1f;
                 ChangeWeapon(WeaponType.NONE);
-            }
-            else // Death
+                blackBoard.hpBar.ShowGroggy();
+				groggyCoroutine = StartCoroutine(Groggy());
+			}
+            else if (blackBoard.groggyValue - damage >= 0)
+			{
+				blackBoard.hpBar.SetGroggyValue(blackBoard.groggyValue - damage);
+			}
+            else
             {
-                if (playerData.pv.IsMine)
-                {
-                    ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-                    if (playerTeam == ETeam.REDTEAM)
-                        GameDirector.blueScore++;
-                    else
-                        GameDirector.redScore++;
-
-                    //gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-                    StartCoroutine(RespawnDelay(3.0f));
-                }
-                blackBoard.hp = blackBoard.maxHp;
-                blackBoard.defence = blackBoard.maxDefence;
-                animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-                blackBoard.groggyable = true;
-                playerData.speedDebuffPercent = 1f;
-                blackBoard.hpBar.InitializeValues();
-                this.transform.position = blackBoard.spawnPoint;
+                if (groggyCoroutine != null)
+                    StopCoroutine(groggyCoroutine);
+                blackBoard.hpBar.SetGroggyValue(0);
+                Death();
             }
+        }
+    }
+
+    private void Death()
+    {
+		if (playerData.pv.IsMine)
+		{
+			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+			if (playerTeam == ETeam.REDTEAM)
+				GameDirector.blueScore++;
+			else
+				GameDirector.redScore++;
+
+			//gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+			StartCoroutine(RespawnDelay(3.0f));
+		}
+		blackBoard.hp = blackBoard.maxHp;
+		blackBoard.defence = blackBoard.maxDefence;
+        blackBoard.groggyValue = blackBoard.maxGroggy;
+		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		blackBoard.groggyable = true;
+		playerData.speedDebuffPercent = 1f;
+		blackBoard.hpBar.InitializeValues();
+		this.transform.position = blackBoard.spawnPoint;
+	}
+
+    IEnumerator Groggy()
+    {
+        groggyTime = 0;
+        int time = 1;
+        while (groggyTime <= 15f)
+        {
+            groggyTime += Time.deltaTime;
+            if (groggyTime >= time)
+            {
+                time++;
+                blackBoard.groggyValue -= blackBoard.maxGroggy / 10;
+                blackBoard.hpBar.SetGroggyValue(blackBoard.groggyValue);
+            }
+            if (blackBoard.groggyValue <= 0)
+            {
+                Death();
+				blackBoard.hpBar.SetGroggyValue(0);
+				yield break;
+            }
+            yield return null;
         }
     }
 
     IEnumerator RespawnDelay(float time)
     {
         blackBoard._uiScene = Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
-
         blackBoard.hpBar.SetStopHpUI(true);
+        blackBoard.hpBar.HideGroggy();
         blackBoard.isLive = false;
         SetActiveState(false);
         yield return new WaitForSeconds(time);
         blackBoard.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
+        blackBoard.groggyValue = 150;
         SetActiveState(true);
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         Managers.UI.ClosePopupUI();

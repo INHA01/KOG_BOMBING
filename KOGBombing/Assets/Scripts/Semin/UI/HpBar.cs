@@ -9,19 +9,21 @@ public class HpBar : MonoBehaviour
 {
     [SerializeField] Image hp;
     [SerializeField] Image defence;
+    [SerializeField] Image groggy;
     [SerializeField] TextMeshProUGUI level;
     [SerializeField] GameObject myTeam;
     [SerializeField] GameObject otherTeam;
+    [SerializeField] GameObject groggyObject;
     float maxHp;
-    float hpValue;
     float maxDefence;
-    float defenceValue;
+    float maxGroggy = 150;
     float decreaseTime = 0.5f;
-    float damageValue;
-    float targetHp, targetDefence;
+    float hpValue, defenceValue, groggyValue;
+    float targetHp, targetDefence, targetGroggy;
     Camera mainCamera;
     Coroutine decrease;
     bool stopHpUI = false;
+
     public void SetHpValue(float hpValue, float defenceValue)
     {
         if (stopHpUI) return;
@@ -33,6 +35,26 @@ public class HpBar : MonoBehaviour
         this.defenceValue = defenceValue / maxDefence;
         decrease = StartCoroutine(DecreaseHP());
     }
+
+    public void ShowGroggy()
+    {
+        groggyObject.gameObject.SetActive(true);
+    }
+
+    public void HideGroggy()
+	{
+		groggyObject.gameObject.SetActive(false);
+    }
+
+    public void SetGroggyValue(float groggyValue)
+	{
+		if (stopHpUI) return;
+		if (decrease != null)
+			StopCoroutine(decrease);
+		groggy.fillAmount = targetGroggy;
+        this.groggyValue = groggyValue / maxGroggy;
+        decrease = StartCoroutine(DecreaseGroggy());
+	}
 
     public void SetStopHpUI(bool value)
     {
@@ -57,10 +79,13 @@ public class HpBar : MonoBehaviour
         this.maxDefence = maxDefence;
         hpValue = 1f;
         defenceValue = 1f;
+        groggyValue = 1f;
         hp.fillAmount = 1f;
         defence.fillAmount = 1f;
+        groggy.fillAmount = 1f;
 		targetHp = 1f;
 		targetDefence = 1f;
+        targetGroggy = 1f;
 		transform.GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
@@ -111,5 +136,21 @@ public class HpBar : MonoBehaviour
         hp.fillAmount = targetHp;
         defence.fillAmount = targetDefence; 
         decrease = null;
+    }
+
+    private IEnumerator DecreaseGroggy()
+    {
+        float startGroggy = groggy.fillAmount;
+        float elapsedTime = 0f;
+        targetGroggy = Mathf.Max(groggyValue, 0);
+        while (elapsedTime < 0.1f)
+        {
+			if (stopHpUI) yield break;
+            groggyValue = Mathf.Lerp(startGroggy, targetGroggy, elapsedTime / 0.1f);
+            groggy.fillAmount = groggyValue;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+		}
+        groggy.fillAmount = targetGroggy;
     }
 }

@@ -25,6 +25,8 @@ public class PlayerBlackBoard : MonoBehaviour
     public float defence;
     public float maxDefence;
     public float reviveInterval;
+    public float groggyValue;
+    public float maxGroggy;
     public bool isLive;
 	public bool isGroggy;
 	public bool groggyable;

@@ -34,12 +34,12 @@ namespace Orpul1
             //pv.Owner.SetCustomProperties(new PhotonHashtable { { "State", EInteractState.WAIT } });
 
         }
-        public void ProcessInteract(PhotonView pView)
+        public bool ProcessInteract(PhotonView pView)
         {
             EInteractState state = (EInteractState)pv.Owner.CustomProperties["State"];
             if (state == EInteractState.DONE || state == EInteractState.INTERACTING) 
             {
-                return;
+                return false;
             }
             if (coroutine == null)
             {
@@ -48,6 +48,7 @@ namespace Orpul1
 
                 coroutine = StartCoroutine(CoInteract());
             }
+            return true;
         }
         public void AbortInteract()
         {

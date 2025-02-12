@@ -7,7 +7,7 @@ namespace Orpul1
 {
     public interface IInteractAble
     {
-        public void ProcessInteract(PhotonView pView);
+        public bool ProcessInteract(PhotonView pView);
         public void AbortInteract();
     }
 }

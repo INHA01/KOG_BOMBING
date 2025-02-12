@@ -461,7 +461,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 46dd07121b0ec92489d8cef9b7f4240d, type: 2}
   - {fileID: 2100000, guid: c2679c226e7ed1543b9561d91e1b7390, type: 2}
   hitMaterial: {fileID: 2100000, guid: fc3656e33c800b54e9293c205d44069c, type: 2}
-  curMaterial: []
   weapons:
   - Name: Gun
     obj: {fileID: 9193337171736834427}
@@ -574,12 +573,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb76a47e11aa3ce418b751ae22c498b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerModels:
-  - {fileID: 8607103005998974962}
-  - {fileID: 772106139481323054}
-  - {fileID: 6761382930891668201}
   playerCollider: {fileID: 4440454996282029130}
   rigidBody: {fileID: 1272812946582949491}
+  initRotation: {x: 0, y: 0, z: 0, w: 0}
   viewCamera: {fileID: 0}
   _uiScene: {fileID: 0}
   hpBar: {fileID: 2206209511068946223}
@@ -2573,7 +2569,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 9052087200176377939}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6761382930891668201}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92630b6aeb63da64a95f96919d4d4cc1, type: 3}
@@ -2582,12 +2578,6 @@ MonoBehaviour:
 --- !u!224 &3782786559583129614 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5323343872662470749, guid: 61ba5e01b4b14a6478f79c467a3160df,
-    type: 3}
-  m_PrefabInstance: {fileID: 9052087200176377939}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6761382930891668201 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2326734464319777466, guid: 61ba5e01b4b14a6478f79c467a3160df,
     type: 3}
   m_PrefabInstance: {fileID: 9052087200176377939}
   m_PrefabAsset: {fileID: 0}

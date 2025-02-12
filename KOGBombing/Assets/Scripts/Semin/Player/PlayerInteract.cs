@@ -34,16 +34,9 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
 
         if (colliders.Length == 0) return false;
         IInteractAble interactObj = null;
-        string objName = "";
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject == gameObject) continue;
-            /*if(pView == null) continue;
-            ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
-            if (otherTeam != blackBoard.eTeam) continue;
-            interactObj = colliders[i].GetComponent<IInteractAble>();
-            if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) continue;
-            objName = colliders[i].name;*/
             interactObj = colliders[i].GetComponent<IInteractAble>();
             if (interactObj != null) break;
         }
@@ -57,7 +50,9 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     {
         Debug.Log("Process Interact");
         isInteracting = true;
-        iInteractObj.ProcessInteract(playerData.pv);
+        bool isSuccess = iInteractObj.ProcessInteract(playerData.pv);
+        if(!isSuccess) return INode.ENodeState.Fail;
+
         return INode.ENodeState.Success;
 
     }
@@ -72,13 +67,14 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         return INode.ENodeState.Success;
     }
 
-    void IInteractAble.ProcessInteract(PhotonView pView)
+    bool IInteractAble.ProcessInteract(PhotonView pView)
     {
-        if (pView == null) return;
+        if (pView == null) return false;
         ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
-        if (otherTeam != blackBoard.eTeam) return;
-        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) return;
+        if (otherTeam != blackBoard.eTeam) return false;
+        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) return false;
         playerData.pv.RPC("RPCProcess", RpcTarget.AllBuffered);
+        return true;
     }
     void IInteractAble.AbortInteract()
     {
@@ -87,6 +83,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     [PunRPC]
     private void RPCProcess()
     {
+        
         Debug.Log("RPC Process Interact");
         StartCoroutine(CoRevive());
     }
@@ -100,7 +97,9 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     IEnumerator CoRevive()
     {
         if (isReviving) yield break;
-        float time = Time.time + blackBoard.reviveInterval;
+        isReviving = true;
+        int reviveInterval = 3;
+        float time = Time.time + reviveInterval;
         while (time > Time.time) 
         {
             if (!isReviving) yield break;

@@ -53,12 +53,19 @@ namespace Orpul1
         private void SetRoomTeamCount(ETeam teamType, int count)
         {
             int teamCnt = 0;
+            StringBuilder stbTeam = new StringBuilder();
             if (teamType == ETeam.BLUETEAM)
+            {
                 teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+                stbTeam.Append("BT");
+            }
             else
+            {
                 teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+                stbTeam.Append("RT");
+            }
 
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { teamType.ToString(), teamCnt + count } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { stbTeam.ToString(), teamCnt + count } });
 
         }
         public void SetRoomOwner()

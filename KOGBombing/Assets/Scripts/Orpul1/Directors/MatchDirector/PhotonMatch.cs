@@ -30,9 +30,9 @@ namespace Orpul1
         public override void OnJoinedRoom()
         {
             Debug.Log("JoinRoom!");
-            int playerTeam = SetTeam();
+            ETeam playerTeam = SetTeam();
             int teamIndex = 0;
-            if (playerTeam == (int)ETeam.REDTEAM)
+            if (playerTeam == ETeam.REDTEAM)
             {
                 teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"] + 1;
             }
@@ -40,8 +40,10 @@ namespace Orpul1
             {
                 teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"] + 1;
             }
-            
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", (ETeam)playerTeam } });
+
+
+            Debug.Log($"SetTeam  {(ETeam)playerTeam}");
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", playerTeam } });
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
         }
 
@@ -79,21 +81,21 @@ namespace Orpul1
             }
         }
        
-        protected int SetTeam()
+        protected ETeam SetTeam()
         {
-            int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-            int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-            if (redTeam > blueTeam)
+            int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+            int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+            if (redTeamCnt > blueTeamCnt)
             {
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeam + 1 } });
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "BT", blueTeamCnt + 1 } });
                 Debug.Log("SetTeam BT");
-                return (int)ETeam.BLUETEAM;
+                return ETeam.BLUETEAM;
             }
             else
             {
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeam + 1 } });
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", redTeamCnt + 1 } });
                 Debug.Log("SetTeam RT");
-                return (int)ETeam.REDTEAM;
+                return ETeam.REDTEAM;
             }
         }
         private void SetPlayerIndex()

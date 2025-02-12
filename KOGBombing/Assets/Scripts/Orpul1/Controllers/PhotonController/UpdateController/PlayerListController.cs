@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Photon.Pun;
 using Photon.Realtime;
@@ -43,6 +44,18 @@ namespace Orpul1
             dicPlayerInfo.Remove(otherPlayer.NickName);
         }
 
+        public override void OnLeftRoom()
+        {
+            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            for (int i=0; i<dicPlayerInfo.Count; i++)
+            {
+                KeyValuePair<string, DisplayPlayerPresenter> playerInfo = dicPlayerInfo.ElementAt(i);
+                Destroy(playerInfo.Value.gameObject);
+                Debug.Log($"delete Player UI {playerInfo.Key}");
+            }
+            dicPlayerInfo.Clear();
+        }
+
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)
         {
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
@@ -57,10 +70,10 @@ namespace Orpul1
             if(!dicPlayerInfo.ContainsKey(playerInfo.NickName))
             {
                 ETeam teamIndex = 0;
-                if (playerInfo.CustomProperties["Team"]!=null)
+                if (playerInfo.CustomProperties.ContainsKey("Team"))
                 {
-                    //teamIndex = GetTeamIndex(new StringBuilder(playerInfo.CustomProperties["Team"].ToString()));
                     teamIndex = (ETeam)playerInfo.CustomProperties["Team"];
+                    Debug.Log($"{playerInfo.NickName} set {teamIndex.ToString()}");
                 }
                 else
                 {
@@ -88,19 +101,9 @@ namespace Orpul1
             Room curRoom = PhotonNetwork.CurrentRoom;
             if ((int)curRoom.CustomProperties["RT"] > (int)curRoom.CustomProperties["BT"])
             {
-                return ETeam.REDTEAM;
+                return ETeam.BLUETEAM;
             }
-            Debug.Log("GetTeamIndex()");
-            return ETeam.BLUETEAM;
-        }
-        private int GetTeamIndex(StringBuilder stbTeam)
-        {
-            if (stbTeam.ToString() == "RT")
-            {
-                return (int)ETeam.REDTEAM;
-            }
-            Debug.Log("GetTeamIndex(Param)");
-            return (int)ETeam.BLUETEAM;
+            return ETeam.REDTEAM;
         }
 
     }

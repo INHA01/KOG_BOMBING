@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
 		Left,
 		Right,
 	}
-    AttackRange attackRange;
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
@@ -85,7 +84,5 @@ public class PlayerController : MonoBehaviour
 
         if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue);
-        /*if (attackRange != null)
-            attackRange.ShowAttackArea();*/
     }
 }

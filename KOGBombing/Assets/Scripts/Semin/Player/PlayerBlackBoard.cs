@@ -20,7 +20,6 @@ public class PlayerBlackBoard : MonoBehaviour
     public Vector3 spawnPoint;
     public ETeam eTeam;
     public string nickname;
-    public ETeam eTeam;
     public float hp;
     public float maxHp;
     public float moveSpeed;

@@ -125,7 +125,7 @@ namespace Semin
 
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.5f);	
 			PhotonNetwork.Destroy(gameObject);
 		}
 		public void DestroyLandmine()

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerCamera : ViewObserver
 {
 	public GameObject target;
 	public GameObject minimapCamera;
@@ -35,11 +35,7 @@ public class PlayerCamera : MonoBehaviour
                     );
         transform.position = TargetPos;
 		transform.rotation = initRotation;
-		//Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-        //Vector3 cursorPosition = new Vector3(Screen.width / 2, 50, 0); // 50은 위쪽 위치 (y 좌표)
-        //Cursor.SetCursor(null, cursorPosition, CursorMode.Auto);
-
+		SetSubject(target.GetComponent<PlayerInputListner>(),true);
     }
     void FixedUpdate()
 	{
@@ -48,12 +44,36 @@ public class PlayerCamera : MonoBehaviour
 			TargetRotation();
 		}
     }
-
+    protected override void SetPlayerSight(int isZoom)
+    {
+        if (lerpValue != null)
+        {
+            StopCoroutine(lerpValue);
+            lerpValue = null;
+        }
+        if (isZoom == 1)
+            lerpValue = StartCoroutine(ZoomCamera(30));
+        else
+            lerpValue = StartCoroutine(ZoomCamera(50));
+    }
+    private IEnumerator ZoomCamera(float angle)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < finshLerpTime)
+        {
+            this.transform.rotation 
+                = Quaternion.Lerp(
+                    this.transform.rotation, 
+                    Quaternion.Euler(angle, target.transform.eulerAngles.y, 0), 
+                    elapsedTime / finshLerpTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    }
     void TargetRotation()
     {
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 		target.transform.Rotate(Vector3.up * mouseX);
-		//target.transform.rotation = Quaternion.Lerp(target.transform.rotation, Quaternion.Euler(target.transform.eulerAngles.x, target.transform.eulerAngles.y + mouseX, target.transform.eulerAngles.z), Time.deltaTime * CameraSpeed);
         minimapCamera.transform.rotation = Quaternion.Euler(90, target.transform.eulerAngles.y, 0);
 
     }

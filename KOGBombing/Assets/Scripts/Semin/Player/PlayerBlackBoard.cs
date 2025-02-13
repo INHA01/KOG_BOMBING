@@ -31,5 +31,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public bool isLive;
 	public bool isGroggy;
 	public bool groggyable;
+    public PlayerStatus SOplayerStatus;
+    [HideInInspector] public PlayerStatus playerStatus;
 }
 

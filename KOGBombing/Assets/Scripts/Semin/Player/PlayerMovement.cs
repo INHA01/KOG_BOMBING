@@ -19,12 +19,12 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
         {
             case EDirection.Left:
             case EDirection.Right:
-                movement = transform.right * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
+                movement = transform.right * Time.deltaTime * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
                 blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
                 break;
             case EDirection.Up:
             case EDirection.Down:
-                movement = transform.forward * Time.deltaTime * blackBoard.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
+                movement = transform.forward * Time.deltaTime * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
                 blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
                 break;
         }
@@ -47,6 +47,7 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
             if (GroupPlane.Raycast(cameraRay, out rayLength))
             {
                 Vector3 pointTolook = cameraRay.GetPoint(rayLength);
+
                 playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, blackBoard.speedValue);
                 playerData.playerObj.transform.LookAt(pointTolook);

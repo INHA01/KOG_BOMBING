@@ -1,0 +1,69 @@
+using Orpul1;
+using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ChoosePlayer : Subject
+{
+    [SerializeField] GameObject teamIconBack;
+    [SerializeField] TextMeshProUGUI characterName;
+    [SerializeField] TextMeshProUGUI teamType;
+    public Semin.CharacterType type;
+    public override void Notify(int index)
+    {
+        base.Notify(index);
+        SetCharacterName(index);
+    }
+    private void Awake()
+    {
+        Init();
+    }
+    public void Init()
+    {
+        ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        if (eTeam == ETeam.BLUETEAM)
+        {
+            Color32 weekBlue = new Color32(0, 0, 255, 60);
+            teamType.color = Color.blue;
+            teamType.colorGradient = new VertexGradient(Color.blue, Color.blue, weekBlue, weekBlue);
+            teamType.text = "수비";
+        }
+        else
+        {
+            Color32 weekRed = new Color32(255, 0, 0, 60);
+            teamType.color = Color.red;
+            teamType.colorGradient = new VertexGradient(Color.red, Color.red, weekRed, weekRed);
+            teamType.text = "공격";
+        }
+        GameObject go = null;
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
+        go.GetComponent<ChooseAvatar>().SetSubject(this , true);
+        SetIcon(true);
+    }
+    public void SetIcon(bool isMine)
+    {
+        GameObject go = null;
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
+        go.transform.SetParent(teamIconBack.transform);
+        if(isMine)
+        {
+            go.GetComponent<ChooseAvatarIcon>().SetSubject(this , true);
+        }
+    }
+    public void SetCharacterName(int index)
+    {
+        type = (Semin.CharacterType)index;
+        characterName.text = type.ToString();
+    }
+    public void Spawn()
+    {
+        EventBusSystem.Publish();
+        Notify();
+        RemoveAllObserver();
+        Managers.UI.ClosePopupUI(this.gameObject.name);
+    }
+}

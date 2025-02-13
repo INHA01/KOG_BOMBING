@@ -87,13 +87,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public bool IsDie()
     {
-        return !blackBoard.isLive;
+        return !blackBoard.playerStatus.isLive;
     }
     public bool IsTargetDie()
     {
         if (blackBoard.gmlookTarget == null) return true;
         string name = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
-        if (Managers.PunData.GetPlayerBlackBoard(name).isLive) return true;
+        if (Managers.PunData.GetPlayerBlackBoard(name).playerStatus.isLive) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
@@ -112,9 +112,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
 		playerData.timeWithoutDamage = 0;
 
-        if (blackBoard.hp <= 0)
+        if (blackBoard.playerStatus.hp <= 0)
         {
-            if (blackBoard.groggyable)  // Groggy
+            if (blackBoard.playerStatus.groggyable)  // Groggy
             {
                 blackBoard.isGroggy = true;
 				blackBoard.groggyable = false;
@@ -186,18 +186,17 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         blackBoard._uiScene = Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
         blackBoard.hpBar.SetStopHpUI(true);
-        blackBoard.isLive = false;
+        blackBoard.playerStatus.isLive = false;
         SetActiveState(false);
         yield return new WaitForSeconds(time);
-        blackBoard.isLive = true;
+        blackBoard.playerStatus.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
         blackBoard.groggyValue = 150;
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-
-        Managers.UI.ClosePopupUI();
+        Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     private void SetActiveState(bool isDie)
     {
@@ -211,7 +210,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(blackBoard.isLive);
+            stream.SendNext(blackBoard.playerStatus.isLive);
         }
         else if (stream.IsReading)
         {
@@ -227,8 +226,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     public void OnResurrect()
     {
-        blackBoard.hp = 50f;
-        blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        blackBoard.playerStatus.hp = 50f;
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
         playerData.speedDebuffPercent = 1f;
@@ -248,7 +247,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
             if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
-            if (blackBoards[i].isLive)
+            if (blackBoards[i].playerStatus.isLive)
             {
                 Debug.Log($"Find Target {blackBoards[i].nickname}");
                 blackBoard.gmlookTarget = blackBoards[i].rigidBody.gameObject;
@@ -263,7 +262,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         string nickname = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
 
-        if (Managers.PunData.GetPlayerBlackBoard(nickname).isLive)
+        if (Managers.PunData.GetPlayerBlackBoard(nickname).playerStatus.isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.gmlookTarget);
             Debug.Log("Set Camera Look Alive Player");

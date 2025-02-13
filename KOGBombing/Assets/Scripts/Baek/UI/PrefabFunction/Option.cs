@@ -13,8 +13,8 @@ public class Option : MonoBehaviour
     }
     public void Cancel()
     {
-        playerBlackBoard.inputs[EKey.Escape] = false;
-        Managers.UI.ClosePopupUI();
+        playerBlackBoard.inputs[EKey.ESC] = false;
+        Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     public void ReturnLobby()
     { 

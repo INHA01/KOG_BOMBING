@@ -6,8 +6,10 @@ using UnityEngine;
 public class Subject : MonoBehaviour
 {
     public event Action OnNotify;
+    public event Action<int> OnNotifyParam;
 
-    public void Notify()
+    #region OnNotify
+    public virtual void Notify()
     {
          OnNotify?.Invoke();
     }
@@ -18,5 +20,26 @@ public class Subject : MonoBehaviour
     public void RemoveObserver(Observer observer)
     {
         OnNotify -= observer.OnNotify;
+    }
+    #endregion
+
+    #region OnNotifyParam
+    public virtual void Notify(int index)
+    {
+        OnNotifyParam?.Invoke(index);
+    }
+    public void AddObserverParam(Observer observer)
+    {
+        OnNotifyParam += observer.OnNotifyParam;
+    }
+    public void RemoveObserverParam(Observer observer)
+    {
+        OnNotifyParam -= observer.OnNotifyParam;
+    }
+    #endregion
+    public void RemoveAllObserver()
+    {
+        OnNotify = null;
+        OnNotifyParam = null;
     }
 }

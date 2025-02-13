@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputListner : MonoBehaviour
+public class PlayerInputListner : Subject
 {
     [SerializeField]
     PlayerBlackBoard blackBoard;
@@ -19,8 +19,8 @@ public class PlayerInputListner : MonoBehaviour
     }
     public void OnCanBehavior(InputValue value)
     {
-        blackBoard.inputs[EKey.Escape] = !blackBoard.inputs[EKey.Escape];
-        if (blackBoard.inputs[EKey.Escape])
+        blackBoard.inputs[EKey.ESC] = !blackBoard.inputs[EKey.ESC];
+        if (blackBoard.inputs[EKey.ESC])
         {
             blackBoard._uiScene = Managers.UI.ShowPopupUI<UIPopup>("OptionCanvas");
             if (blackBoard._uiScene.GetComponent<Option>().playerBlackBoard == null)
@@ -29,7 +29,7 @@ public class PlayerInputListner : MonoBehaviour
             }
         }
         else
-            Managers.UI.ClosePopupUI();
+            Managers.UI.ClosePopupUI(this.gameObject.name);
     }
 
     public void OnAttack(InputValue value)
@@ -96,5 +96,10 @@ public class PlayerInputListner : MonoBehaviour
     {
         blackBoard.inputs[EKey.F] = value.isPressed;
     }
-
+    public void OnSlowMove(InputValue value)
+    {
+        blackBoard.inputs[EKey.LEFTSHIFT] = value.isPressed;
+        int pressed = value.isPressed ? 1 : 0;
+        Notify(pressed);
+    }
 }

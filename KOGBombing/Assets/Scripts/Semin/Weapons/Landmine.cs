@@ -32,7 +32,7 @@ namespace Semin
 			destroyCoroutine = StartCoroutine(SetTimerToDestroy());
 		}
 
-		[PunRPC]
+		//[PunRPC]
 		public override void SetTeam(int team)
 		{
 			base.SetTeam(team);
@@ -41,7 +41,8 @@ namespace Semin
 			attackCollider.radius = attackRange / 2f;
 			attackCollider.isTrigger = true;
 			attackCollider.gameObject.SetActive(true);
-			pView.RPC("SetDecal", RpcTarget.AllBuffered);
+			//pView.RPC("SetDecal", RpcTarget.AllBuffered);
+			SetDecal();
 		}
 
 
@@ -50,7 +51,8 @@ namespace Semin
 			Molotov molotov = other.GetComponent<Molotov>();
 			if (molotov != null)
 			{
-				pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
+				//pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
+				RPCDestroy();
 			}
 			if (other.tag == "Player")
 			{
@@ -58,19 +60,20 @@ namespace Semin
 				if (!otherPv) return;
 				if (!IsOtherTeam(otherPv)) return;
 
-				pView.RPC("ActiveWarringArea", RpcTarget.AllBuffered);
+				//pView.RPC("ActiveWarringArea", RpcTarget.AllBuffered);
+				ActiveWarringArea();
 				StartCoroutine(Bomb());
 			}
 		}
 
-		[PunRPC]
+		//[PunRPC]
 		private void ActiveWarringArea()
 		{
 			StartCoroutine(ShowDecal());
 		}
 
 
-		[PunRPC]
+		//[PunRPC]
 		private void SetDecal()
 		{
 			decal.transform.parent = transform;
@@ -83,8 +86,9 @@ namespace Semin
 		IEnumerator SetTimerToDestroy()
 		{
 			yield return new WaitForSeconds(activeTime);
-            PhotonNetwork.Destroy(gameObject);
-        }
+			//PhotonNetwork.Destroy(gameObject);
+			Release();
+		}
 
 		IEnumerator ShowDecal()
 		{
@@ -103,7 +107,8 @@ namespace Semin
 		IEnumerator Bomb()
 		{
 			if (!pView) yield break;
-			pView.RPC("ShowParticle", RpcTarget.AllBuffered);
+			//pView.RPC("ShowParticle", RpcTarget.AllBuffered);
+			ShowParticle();
 			yield return new WaitForSeconds(interval);
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange / 2);
 			for (int i = 0; i < hitColliders.Length; i++)
@@ -125,12 +130,13 @@ namespace Semin
 
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
-			yield return new WaitForSeconds(0.5f);	
-			PhotonNetwork.Destroy(gameObject);
+			yield return new WaitForSeconds(0.5f);
+			Release();
 		}
 		public void DestroyLandmine()
 		{
-			pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
+			//pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
+			RPCDestroy();
 		}
 		[PunRPC]
 		private void RPCDestroy()

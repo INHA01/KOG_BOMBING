@@ -40,9 +40,9 @@ public class ThrowableWeapon : SupportWeaponBase
 		lineRendererToTarget.positionCount = lineCnt;
 	}
 
-    public override void SetConsum(WeaponType type)
+    public override void SetConsum(WeaponType type, PlayerData playerData)
 	{
-		base.SetConsum(type);
+		base.SetConsum(type, playerData);
 
 		if (consum is Molotov molotov)
 			decal.size = new Vector3(molotov.Range, molotov.Range, decal.size.z);
@@ -73,7 +73,7 @@ public class ThrowableWeapon : SupportWeaponBase
             else lineRendererToRange.gameObject.SetActive(false);
 
             SetLineToTarget(normalizedDirection);
-			SetLineToRange(throableInfo.angle);
+			SetLineToRange(throableInfo.Angle);
 		}
 	}
 
@@ -84,14 +84,16 @@ public class ThrowableWeapon : SupportWeaponBase
 		lineRendererToRange.gameObject.SetActive(false);
 	}
 
-	public override void Use()
+	public override bool Use()
 	{
+		if (count <= 0)
+			return false;
 		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
         StartCoroutine(ThrowConsum());
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
-		
+		return true;
     }
 	[PunRPC]
 	private void SpawnThrowWeapon()

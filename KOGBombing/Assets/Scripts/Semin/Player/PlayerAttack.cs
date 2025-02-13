@@ -48,13 +48,13 @@ public class PlayerAttack : PlayerBehavior
         {
             playerData.supportWeapon = gameObject.AddComponent<ThrowableWeapon>();
             if (playerData.supportWeapon is SupportWeaponBase support)
-                support.SetConsum(WeaponType.MOLOTOV);
+                support.SetConsum(WeaponType.MOLOTOV, playerData);
         }
         else
         {
             playerData.supportWeapon = gameObject.AddComponent<DeployableWeapon>();
             if (playerData.supportWeapon is SupportWeaponBase support)
-                support.SetConsum(WeaponType.LANDMINE);
+                support.SetConsum(WeaponType.LANDMINE, playerData);
         }
     }
     IEnumerator WaitForChangeAnim(float waitTime, WeaponType type)
@@ -71,16 +71,15 @@ public class PlayerAttack : PlayerBehavior
         return INode.ENodeState.Success;
     }
     public INode.ENodeState LayingLandmine()
-    {
-        if (playerData.supportWeapon is DeployableWeapon deploy)
+	{
+		if (playerData.supportWeapon is DeployableWeapon deploy)
         {
             if (isChangableAnim)
-            {
-                ChangeWeapon(WeaponType.NONE);
+			{
+				ChangeWeapon(WeaponType.NONE);
                 animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Landmine);
-                playerData.supportWeapon.Use();
             }
             if (animChange != null)
             {
@@ -144,8 +143,9 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.groggyable == false) return;
+		if (playerData.supportWeapon.Use() == false) return;
 
-        isChangableAnim = true;
+		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
 

@@ -8,6 +8,16 @@ using UnityEngine;
 public class DeployableWeapon : SupportWeaponBase
 {
 	private Vector3 position;
+	ObjectPool objectPool;
+
+	private void Awake()
+	{
+		count = 1;
+		objectPool = gameObject.AddComponent<ObjectPool>();
+		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Landmine"));
+		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+		objectPool.initPoolSize = count;
+	}
 
 	public override void SetWeapon(SupportWeaponInfo info)
 	{
@@ -17,11 +27,23 @@ public class DeployableWeapon : SupportWeaponBase
 		position = info.Position;
 	}
 
-	public override void Use()
+	public override bool Use()
 	{
-        Landmine landmine = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
-							.GetComponent<Landmine>();
+		// Landmine landmine = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
+		//.GetComponent<Landmine>();
+		if (count <= 0) 
+			return false;
+		count--;
+		playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
+		return true;
+	}
+
+	[PunRPC]
+	public void PutConsum()
+	{
+		Landmine landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
+		landmine.transform.position = playerData.ConsumPos.position;
 		landmine.SetTeam((int)team);
-        landmine.Use();
-    }
+		landmine.Use();
+	}
 }

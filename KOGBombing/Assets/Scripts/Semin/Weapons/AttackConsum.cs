@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Semin
 {
-	public abstract class AttackConsum : MonoBehaviour, IConsumable
+	public abstract class AttackConsum : PooledObject, IConsumable
 	{
         [SerializeField] protected ParticleSystem particle;
         protected SphereCollider attackCollider;

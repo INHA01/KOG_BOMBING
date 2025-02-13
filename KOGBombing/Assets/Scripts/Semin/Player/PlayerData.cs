@@ -38,6 +38,7 @@ public class PlayerData : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
     public ISupportWeapon supportWeapon;
+    [SerializeField] public Transform ConsumPos;
 
     public GameObject AttackRange { get { return Instantiate(attackRangePrefab); } }
     public GameObject NoAttackRange { get { return Instantiate(noAttackRangePrefab); } }

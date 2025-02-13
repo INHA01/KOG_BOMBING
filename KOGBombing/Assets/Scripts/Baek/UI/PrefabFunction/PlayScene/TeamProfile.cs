@@ -22,8 +22,8 @@ public class TeamProfile : MonoBehaviour
     }
     public void UpdateUI()
     {
-        dieIcon.SetActive(!blackBoard.isLive);
-        hpBar.fillAmount = blackBoard.hp / blackBoard.maxHp;
-        defenceBar.fillAmount = blackBoard.defence / blackBoard.maxDefence;
+        dieIcon.SetActive(!blackBoard.playerStatus.isLive);
+        hpBar.fillAmount = blackBoard.playerStatus.hp / blackBoard.playerStatus.maxHp;
+        defenceBar.fillAmount = blackBoard.playerStatus.defence / blackBoard.playerStatus.maxDefence;
     }
 }

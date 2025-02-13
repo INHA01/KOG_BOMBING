@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Semin
 {
-	public class FieldOfView : MonoBehaviour
+	public class FieldOfView : ViewObserver
 	{
 		public bool playerSight = false;
         public float viewRadius;
@@ -31,23 +32,35 @@ namespace Semin
 			viewMeshFilter.mesh = viewMesh;
 
             StartCoroutine("FindTargetsWithDelay", .2f);
-		}
-
-        private void Update()
+			
+			Attach(true);
+        }
+        protected override void SetPlayerSight(int isZoom)
+		{
+            if (playerSight)
+            {
+                if (lerpValue != null)
+                {
+                    StopCoroutine(lerpValue);
+                    lerpValue = null;
+                }
+                if (isZoom == 1)
+                    lerpValue = StartCoroutine(LerpValue(30, 12));
+                else
+                    lerpValue = StartCoroutine(LerpValue(60, 6));
+            }
+        }
+        private IEnumerator LerpValue(float changeAngle , float changeRadius)
         {
-			if(playerSight)
-			{
-				if (Input.GetKeyDown(KeyCode.LeftShift))
-				{
-					viewAngle /= 2;
-					viewRadius *= 2;
-				}
-				else if (Input.GetKeyUp(KeyCode.LeftShift))
-				{
-					viewAngle *= 2;
-					viewRadius /= 2;
-				}
-			}
+            float elapsedTime = 0f;
+
+            while (elapsedTime < finshLerpTime)
+            {
+                viewAngle = Mathf.Lerp(viewAngle, changeAngle, elapsedTime / finshLerpTime);
+                viewRadius = Mathf.Lerp(viewRadius, changeRadius, elapsedTime / finshLerpTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
         }
         IEnumerator FindTargetsWithDelay(float delay)
 		{

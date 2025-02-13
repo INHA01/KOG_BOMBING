@@ -19,9 +19,6 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] float shootingTerm;
     float time;
 
-    //[SerializeField][Tooltip("Shot emitters array")] private ParticleGroupEmitter[] shotEmitters;
-    //[SerializeField] private GameObject projectilePrefab;
-
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
     Magazine magazine;
@@ -78,13 +75,6 @@ public class PlayerShooting : MonoBehaviour
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
-            //if(shotEmitters != null)
-            //{
-            //    foreach (var emitter in shotEmitters)
-            //    {
-            //        emitter.Emit(1);
-            //    }
-            //}
             animator.Shoot();
             playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
 			bulletCount--;

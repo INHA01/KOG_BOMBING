@@ -20,16 +20,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public Vector3 spawnPoint;
     public ETeam eTeam;
     public string nickname;
-    public float hp;
-    public float maxHp;
-    public float moveSpeed;
-    public float defence;
-    public float maxDefence;
-    public float reviveInterval;
-    public float groggyValue;
-    public float maxGroggy;
-    public bool isLive;
-	public bool isGroggy;
-	public bool groggyable;
+    public PlayerStatus SOplayerStatus;
+    [HideInInspector] public PlayerStatus playerStatus;
 }
 

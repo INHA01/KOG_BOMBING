@@ -5,7 +5,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 namespace Semin
 {
-	public class FieldOfView : MonoBehaviour
+	public class FieldOfView : ViewObserver
 	{
 		public bool playerSight = false;
         public float viewRadius;
@@ -25,7 +25,6 @@ namespace Semin
 		public MeshFilter viewMeshFilter;
 		Mesh viewMesh;
 
-        Coroutine lerpValue;
         void Start()
 		{
 			viewMesh = new Mesh();
@@ -33,40 +32,32 @@ namespace Semin
 			viewMeshFilter.mesh = viewMesh;
 
             StartCoroutine("FindTargetsWithDelay", .2f);
-		}
-
-        private void Update()
-        {
-			if(playerSight)
-			{
-				if (Input.GetKeyDown(KeyCode.LeftShift))
-				{
-                    if (lerpValue != null)
-					{
-						StopCoroutine(lerpValue);
-                        lerpValue = null;
-					}
+			
+			Attach(true);
+        }
+        protected override void SetPlayerSight(int isZoom)
+		{
+            if (playerSight)
+            {
+                if (lerpValue != null)
+                {
+                    StopCoroutine(lerpValue);
+                    lerpValue = null;
+                }
+                if (isZoom == 1)
                     lerpValue = StartCoroutine(LerpValue(30, 12));
-                }
-				else if (Input.GetKeyUp(KeyCode.LeftShift))
-				{
-					if(lerpValue != null)
-                    {
-                        StopCoroutine(lerpValue);
-                        lerpValue = null;
-                    }
+                else
                     lerpValue = StartCoroutine(LerpValue(60, 6));
-                }
-			}
+            }
         }
         private IEnumerator LerpValue(float changeAngle , float changeRadius)
         {
             float elapsedTime = 0f;
 
-            while (elapsedTime < 0.5f)
+            while (elapsedTime < finshLerpTime)
             {
-                viewAngle = Mathf.Lerp(viewAngle, changeAngle, elapsedTime / 0.5f);
-                viewRadius = Mathf.Lerp(viewRadius, changeRadius, elapsedTime / 0.5f);
+                viewAngle = Mathf.Lerp(viewAngle, changeAngle, elapsedTime / finshLerpTime);
+                viewRadius = Mathf.Lerp(viewRadius, changeRadius, elapsedTime / finshLerpTime);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }

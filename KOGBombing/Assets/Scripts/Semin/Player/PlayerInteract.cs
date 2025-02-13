@@ -12,7 +12,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     bool isReviving = false;
     public INode.ENodeState CanBehavior()
     {
-        if (blackBoard.inputs[EKey.Escape])
+        if (blackBoard.inputs[EKey.ESC])
             return INode.ENodeState.Success;
         return INode.ENodeState.Fail;
     }

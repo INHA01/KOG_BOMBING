@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 623686509233430170}
   - component: {fileID: 300900094228053599}
   - component: {fileID: 3131665543565810114}
+  - component: {fileID: 4775503271486549401}
   m_Layer: 5
   m_Name: IconBack
   m_TagString: Untagged
@@ -76,6 +77,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4775503271486549401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3993063136069470609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03eff0bca05cdea4eb3a24ea58d51047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subject: {fileID: 0}
+  image: {fileID: 6930287984821644827}
 --- !u!1 &6578485174860582553
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +156,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 82a58f642ea797042a53c47f19f4fffa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: af6f241600a73af43bb650e7476a3dc3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

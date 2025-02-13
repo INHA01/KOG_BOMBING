@@ -113,7 +113,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.SetStopHpUI(false);
         SetActiveState(true);
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-        Managers.UI.ClosePopupUI();
+        Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     private void SetActiveState(bool isDie)
     {

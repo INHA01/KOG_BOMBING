@@ -20,7 +20,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     GameObject minimapCamera;
 
     UIPopup _uiScene;
-    
+
     public float time = 180;
     public int blueScore = 0;
     public int redScore = 0;
@@ -28,10 +28,11 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PhotonNetwork.OfflineMode = true;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", ETeam.BLUETEAM } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", ETeam.REDTEAM } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
         StartCoroutine(TimeCount());
+        EventBusSystem.Subscribe(SpawnPlayer);
     }
     IEnumerator TimeCount()
     {
@@ -51,7 +52,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     {
         Debug.Log("JoinRoom");
         InitEvent();
-        SpawnPlayer();
+        //SpawnPlayer();
+        SelectPlayer();
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -73,9 +75,13 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         Debug.Log("CreteRoom");
         PhotonNetwork.CreateRoom("OfflineModeRoom"+Time.time.ToString());
     }
+    void SelectPlayer()
+    {
+        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
+    }
     void SpawnPlayer()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/SinglePlayer", spawnPosi.position, Quaternion.Euler(0, 45, 0));
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + _uiScene.GetComponent<ChoosePlayer>().type.ToString(), spawnPosi.position, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
         GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi.position + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
         minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;
@@ -86,5 +92,6 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
         //_uiScene.GetComponent<PlayScene>().gameDirector = this;
         _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
+        EventBusSystem.Unsubscribe(SpawnPlayer);
     }
 }

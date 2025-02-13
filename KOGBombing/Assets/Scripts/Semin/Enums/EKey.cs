@@ -8,10 +8,11 @@ public enum EKey
 	A,
 	S,
 	D,
-	F,
+    LEFTSHIFT,
+    F,
 	LMOUSEBUTTON,
 	NUM_2,
-    Escape,
+    ESC,
     MAX
 }
 

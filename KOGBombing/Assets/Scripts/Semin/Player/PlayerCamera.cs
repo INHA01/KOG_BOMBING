@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerCamera : ViewObserver
 {
 	public GameObject target;
 	public GameObject minimapCamera;
@@ -33,6 +33,7 @@ public class PlayerCamera : MonoBehaviour
                     target.transform.position.z + offsetZ
                     );
         transform.position = TargetPos;
+		SetSubject(target.GetComponent<PlayerInputListner>(),true);
     }
     void FixedUpdate()
 	{
@@ -40,19 +41,32 @@ public class PlayerCamera : MonoBehaviour
 		{
 			TargetRotation();
 		}
-		if(Input.GetKey(KeyCode.LeftShift))
-            ZoomCamera(30);
-        else
-			ZoomCamera(50);
     }
-	void ZoomCamera(float angle)
-	{
-		float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-        this.transform.rotation 
-			= Quaternion.Lerp(
-				this.transform.rotation, 
-				Quaternion.Euler(angle, target.transform.eulerAngles.y, 0), 
-				Time.deltaTime * CameraSpeed);
+    protected override void SetPlayerSight(int isZoom)
+    {
+        if (lerpValue != null)
+        {
+            StopCoroutine(lerpValue);
+            lerpValue = null;
+        }
+        if (isZoom == 1)
+            lerpValue = StartCoroutine(ZoomCamera(30));
+        else
+            lerpValue = StartCoroutine(ZoomCamera(50));
+    }
+    private IEnumerator ZoomCamera(float angle)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < finshLerpTime)
+        {
+            this.transform.rotation 
+                = Quaternion.Lerp(
+                    this.transform.rotation, 
+                    Quaternion.Euler(angle, target.transform.eulerAngles.y, 0), 
+                    elapsedTime / finshLerpTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
     }
     void TargetRotation()
     {

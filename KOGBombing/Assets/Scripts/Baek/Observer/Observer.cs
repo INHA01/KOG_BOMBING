@@ -10,28 +10,39 @@ public class Observer : MonoBehaviour
     {
         // Observer logic
     }
-    public void SetSubject(Subject subject)
+    public virtual void OnNotifyParam(int index)
+    {
+        // Observer logic
+    }
+    public virtual void SetSubject(Subject subject , bool isParam)
     {
         this.subject = subject;
-        Attach();
+        Attach(isParam);
     }
-    public void RemoveSubject()
+    public virtual void RemoveSubject(bool isParam)
     {
-        Detach();
+        Detach(isParam);
         this.subject = null;
     }
-    protected void Attach()
+
+    protected void Attach(bool isParam)
     {
         if (subject != null)
         {
-            subject.AddObserver(this);
+            if (isParam)
+                subject.AddObserverParam(this);
+            else
+                subject.AddObserver(this);
         }
     }
-    protected void Detach()
+    protected void Detach(bool isParam)
     {
         if (subject != null)
         {
-            subject.RemoveObserver(this);
+            if(isParam)
+                subject.RemoveObserverParam(this);
+            else
+                subject.RemoveObserver(this);
         }
     }
 }

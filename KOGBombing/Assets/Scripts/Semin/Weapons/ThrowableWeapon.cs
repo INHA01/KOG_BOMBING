@@ -61,12 +61,12 @@ public class ThrowableWeapon : SupportWeaponBase
 	{
 		decal.gameObject.SetActive(true);
 		lineRendererToTarget.gameObject.SetActive(true);
-		Debug.Log("????");
 
 		if (info is ThrowableWeaponInfo throwableInfo)
 		{
-			playerData.pv.RPC("SetInfo", RpcTarget.AllBuffered, throwableInfo.CurPosition,
-				throwableInfo.Position, throwableInfo.Angle);
+			curPos = throwableInfo.CurPosition;
+			targetPos = throwableInfo.Position;
+			angle = throwableInfo.Angle;
 
 			Vector3 zeroCurPos = curPos;
 			zeroCurPos.y = 0;
@@ -122,8 +122,8 @@ public class ThrowableWeapon : SupportWeaponBase
 	private void SetLineToTarget(Vector3 direction)
 	{
 		points[0] = playerData.shootStartPos.position;
-		points[1] = curPos + new Vector3(0, yPos, 0);
-		points[2] = targetPos;
+		points[1] = playerData.shootStartPos.position + new Vector3(0, yPos, 0);
+		points[2] = playerData.consumTargetPos;
 
 		decal.transform.position = Vector3.Lerp(decal.transform.position, targetPos, Time.deltaTime * 20.0f);
 

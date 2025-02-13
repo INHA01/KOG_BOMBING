@@ -123,8 +123,8 @@ public class PlayerAttack : PlayerBehavior
 
             if (Physics.Raycast(cameraRay, out hit))
             {
-                Vector3 targetPoint = hit.point;
-                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, targetPoint,
+                playerData.consumTargetPos = hit.point;
+                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, playerData.consumTargetPos,
                     playerData.playerObj.transform.eulerAngles.y));
             }
 

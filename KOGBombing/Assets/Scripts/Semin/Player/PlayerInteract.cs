@@ -72,7 +72,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         if (pView == null) return false;
         ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
         if (otherTeam != blackBoard.eTeam) return false;
-        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).isLive) return false;
+        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
         playerData.pv.RPC("RPCProcess", RpcTarget.AllBuffered);
         return true;
     }

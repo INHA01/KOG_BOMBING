@@ -17,7 +17,7 @@ public class HpBar : MonoBehaviour
     float maxHp;
     float maxDefence;
     float maxGroggy = 150;
-    float decreaseTime = 0.5f;
+    float decreaseTime = 0.1f;
     float hpValue, defenceValue, groggyValue;
     float targetHp, targetDefence, targetGroggy;
     Camera mainCamera;
@@ -143,10 +143,10 @@ public class HpBar : MonoBehaviour
         float startGroggy = groggy.fillAmount;
         float elapsedTime = 0f;
         targetGroggy = Mathf.Max(groggyValue, 0);
-        while (elapsedTime < 0.1f)
+        while (elapsedTime < decreaseTime)
         {
 			if (stopHpUI) yield break;
-            groggyValue = Mathf.Lerp(startGroggy, targetGroggy, elapsedTime / 0.1f);
+            groggyValue = Mathf.Lerp(startGroggy, targetGroggy, elapsedTime / decreaseTime);
             groggy.fillAmount = groggyValue;
             elapsedTime += Time.deltaTime;
             yield return null;

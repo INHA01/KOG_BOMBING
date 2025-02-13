@@ -4,6 +4,8 @@ using UnityEngine;
 using Orpul1;
 using Photon.Pun;
 using Semin;
+using System;
+using Unity.VisualScripting;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -14,6 +16,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     
 
     TeamUIController teamUIController = new TeamUIController();
+    float groggyTime;
+    Coroutine groggyCoroutine;
 
     
     private void Start()
@@ -24,8 +28,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         else blackBoard.hpBar.SetIsMyTeam(true);
         blackBoard.hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
-        //StartCoroutine(DamageTest(2f, 150));
         playerMaterialController.SaveCurrentMaterial();
+        //StartCoroutine(DamageTest(2f, 350));
 	}
     void SetOtherTeamInfo()
     {
@@ -54,13 +58,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	{
 		while (true)
 		{
-            playerData.timeWithoutDamage += Time.deltaTime;
+            if (!blackBoard.isGroggy)
+                playerData.timeWithoutDamage += Time.deltaTime;
 			if (playerData.timeWithoutDamage >= duration)
 			{
 				float value = blackBoard.defence + blackBoard.maxDefence / 100 * 10;
 				blackBoard.defence = Mathf.Min(value, blackBoard.maxDefence);
 				blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
-				playerData.timeWithoutDamage = 0;
+				playerData.timeWithoutDamage = 9f;
 			}
 			yield return null;
 		}
@@ -98,7 +103,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		float decreaseHp = blackBoard.defence - damage;
         blackBoard.defence = Mathf.Max(decreaseHp, 0);
         if (decreaseHp < 0)
-            blackBoard.hp += decreaseHp;
+        {
+            float decreaseGroggy = blackBoard.hp + decreaseHp;
+            blackBoard.hp = Mathf.Max(decreaseGroggy, 0);
+            if (decreaseGroggy < 0)
+                blackBoard.groggyValue += decreaseGroggy;
+        }
         blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
 		playerData.timeWithoutDamage = 0;
 
@@ -106,44 +116,82 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (blackBoard.groggyable)  // Groggy
             {
-                blackBoard.groggyable = false;
+                blackBoard.isGroggy = true;
+				blackBoard.groggyable = false;
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
                 playerData.speedDebuffPercent = 0.1f;
                 ChangeWeapon(WeaponType.NONE);
+                blackBoard.hpBar.ShowGroggy();
+				groggyCoroutine = StartCoroutine(Groggy());
+			}
+            else if (blackBoard.groggyValue <= 0)
+			{
+				blackBoard.hpBar.SetGroggyValue(0);
+				Death();
             }
-            else // Death
-            {
-                if (playerData.pv.IsMine)
-                {
-                    ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-                    if (playerTeam == ETeam.REDTEAM)
-                        GameDirector.blueScore++;
-                    else
-                        GameDirector.redScore++;
+        }
+    }
 
-                    //gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-                    StartCoroutine(RespawnDelay(3.0f));
-                }
-                blackBoard.hp = blackBoard.maxHp;
-                blackBoard.defence = blackBoard.maxDefence;
-                animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-                blackBoard.groggyable = true;
-                playerData.speedDebuffPercent = 1f;
-                blackBoard.hpBar.InitializeValues();
+    private void Death()
+    {
+		if (playerData.pv.IsMine)
+		{
+			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+			if (playerTeam == ETeam.REDTEAM)
+				GameDirector.blueScore++;
+			else
+				GameDirector.redScore++;
+
+			//gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+			StartCoroutine(RespawnDelay(3.0f));
+		}
+		if (groggyCoroutine != null)
+			StopCoroutine(groggyCoroutine);
+		blackBoard.hp = blackBoard.maxHp;
+		blackBoard.defence = blackBoard.maxDefence;
+        blackBoard.groggyValue = blackBoard.maxGroggy;
+		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		blackBoard.groggyable = true;
+		blackBoard.isGroggy = false;
+		playerData.speedDebuffPercent = 1f;
+		blackBoard.hpBar.InitializeValues();
+        blackBoard.hpBar.HideGroggy();
+		this.transform.position = blackBoard.spawnPoint;
+	}
+
+    IEnumerator Groggy()
+    {
+        groggyTime = 0;
+        int time = 1;
+        while (groggyTime <= 15f)
+        {
+            groggyTime += Time.deltaTime;
+            if (groggyTime >= time)
+            {
+                time++;
+                blackBoard.groggyValue -= blackBoard.maxGroggy / 10;
+                blackBoard.hpBar.SetGroggyValue(blackBoard.groggyValue);
             }
+            if (blackBoard.groggyValue <= 0)
+            {
+                Death();
+				blackBoard.hpBar.SetGroggyValue(0);
+				yield break;
+            }
+            yield return null;
         }
     }
 
     IEnumerator RespawnDelay(float time)
     {
         blackBoard._uiScene = Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
-
         blackBoard.hpBar.SetStopHpUI(true);
         blackBoard.isLive = false;
         SetActiveState(false);
         yield return new WaitForSeconds(time);
         blackBoard.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
+        blackBoard.groggyValue = 150;
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;

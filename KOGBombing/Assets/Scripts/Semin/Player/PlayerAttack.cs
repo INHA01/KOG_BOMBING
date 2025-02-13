@@ -76,6 +76,7 @@ public class PlayerAttack : PlayerBehavior
         {
             if (isChangableAnim)
 			{
+                playerData.supportWeapon.Use();
 				ChangeWeapon(WeaponType.NONE);
                 animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
@@ -143,7 +144,10 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.groggyable == false) return;
-		if (playerData.supportWeapon.Use() == false) return;
+		if (playerData.supportWeapon is SupportWeaponBase weapon)
+        {
+            if (weapon.isUsable() == false) return;
+        }
 
 		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -164,5 +168,4 @@ public class PlayerAttack : PlayerBehavior
 
         ChangeWeapon(weaponType);
     }
-   
 }

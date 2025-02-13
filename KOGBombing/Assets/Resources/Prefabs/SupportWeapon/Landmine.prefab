@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3760219330505423870}
   - component: {fileID: 9143231483034674756}
   - component: {fileID: 4850578772142234696}
-  - component: {fileID: 4855507605314062337}
-  - component: {fileID: 2467061916442575359}
+  - component: {fileID: 7204609068541949291}
+  - component: {fileID: 5966966566835099253}
   m_Layer: 0
   m_Name: Landmine
   m_TagString: Untagged
@@ -79,23 +79,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.22
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4855507605314062337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2076389301880976140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
---- !u!114 &2467061916442575359
+--- !u!114 &7204609068541949291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,10 +98,26 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 4855507605314062337}
+  - {fileID: 5966966566835099253}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &5966966566835099253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076389301880976140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1001 &4577153816955368951
 PrefabInstance:
   m_ObjectHideFlags: 0

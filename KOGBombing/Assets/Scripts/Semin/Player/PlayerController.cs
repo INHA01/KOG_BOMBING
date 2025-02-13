@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
 
 		if(playerData.pv.IsMine)
 		{
-			
 			StartCoroutine(WaitSetTeamUI());
 		}
 	}

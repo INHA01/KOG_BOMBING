@@ -27,20 +27,21 @@ public class DeployableWeapon : SupportWeaponBase
 		position = info.Position;
 	}
 
-	public override bool Use()
+	public override void Use()
 	{
-		// Landmine landmine = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Landmine", position, Quaternion.identity)
-		//.GetComponent<Landmine>();
-		if (count <= 0) 
-			return false;
 		count--;
 		playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
-		return true;
 	}
 
 	[PunRPC]
 	public void PutConsum()
 	{
+		StartCoroutine(PutAfterAnim());
+	}
+
+	IEnumerator PutAfterAnim()
+	{
+		yield return new WaitForSeconds(1.3f);
 		Landmine landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
 		landmine.transform.position = playerData.ConsumPos.position;
 		landmine.SetTeam((int)team);

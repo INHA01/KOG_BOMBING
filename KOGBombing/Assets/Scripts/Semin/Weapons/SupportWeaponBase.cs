@@ -38,6 +38,13 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 	}
 
 	public abstract void SetWeapon(SupportWeaponInfo info);
-	public abstract bool Use();
+	public abstract void Use();
 	public virtual void Disable() { }
+
+	public bool isUsable()
+	{
+		if (count <= 0)
+			return false;
+		return true;
+	}
 }

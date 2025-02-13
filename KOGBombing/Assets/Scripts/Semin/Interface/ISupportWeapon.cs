@@ -8,5 +8,5 @@ public interface ISupportWeapon
 	public void Disable();
 	public void SetWeapon(SupportWeaponInfo info);
 	public void SetTeam(ETeam team);
-	public bool Use();
+	public void Use();
 }

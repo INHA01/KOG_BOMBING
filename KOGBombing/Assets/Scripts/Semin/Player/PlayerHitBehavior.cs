@@ -74,7 +74,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	public void OnDamaged(float damage)
     {
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
-        playerMaterialController.Hit();
 
         teamUIController.UpdateTeamUI();
 
@@ -102,7 +101,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	{
 		float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
-        if (decreaseHp < 0)
+		playerMaterialController.Hit();
+		if (decreaseHp < 0)
         {
             float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
             blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);

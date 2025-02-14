@@ -17,17 +17,17 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Errors found in
-      old project file will be treated as a warnings. Configuration mis-match will
-      be ignored, but current Configuration needs to be fixed:\n\tParent for 'Core'
-      differs from one found in HumanDescription. 'A_Ka_M_Type05_Wait' was found
-      instead of 'Root'.\n"
+    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
+      copied configuration does not match position in animation file:\n\t'Thigh_L'
+      : position error = 12.998579 mm\n\t'Calf_L' : position error = 92.918556 mm\n\t'Foot_L'
+      : position error = 92.258949 mm\n\t'Toe_L' : position error = 49.073536 mm\n\t'Thigh_R'
+      : position error = 12.998554 mm\n\t'Calf_R' : position error = 92.918457 mm\n\t'Foot_R'
+      : position error = 92.258949 mm\n\t'Toe_R' : position error = 57.357552 mm\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Pelvis' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Spine' has translation
-      animation that will be discarded.\n"
+      to improve retargeting quality.\n\t'Spine' has translation animation that will
+      be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -52,7 +52,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1

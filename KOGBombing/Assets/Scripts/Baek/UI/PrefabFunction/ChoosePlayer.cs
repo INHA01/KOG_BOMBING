@@ -44,6 +44,7 @@ public class ChoosePlayer : Subject
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
         go.GetComponent<ChooseAvatar>().SetSubject(this , true);
         SetIcon(true);
+        StartCoroutine(CountDown());
     }
     public void SetIcon(bool isMine)
     {
@@ -69,7 +70,7 @@ public class ChoosePlayer : Subject
     }
     IEnumerator CountDown()
     {
-        float time = 10;
+        float time = 5;
         while(time > 0)
         {
             countDownText.text = time.ToString();

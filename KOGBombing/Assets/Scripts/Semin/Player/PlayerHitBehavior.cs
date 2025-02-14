@@ -196,7 +196,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        Managers.UI.ClosePopupUI("DieCanvas");
     }
     private void SetActiveState(bool isDie)
     {

@@ -246,17 +246,32 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Shoot
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: IsMoving
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Throw
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Cancel
   - Type: 4
-    SynchronizeType: 0
-    Name: Granade
+    SynchronizeType: 1
+    Name: IsGranade
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsAttackTeam
+  - Type: 9
+    SynchronizeType: 1
+    Name: Landmine
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsGroggy
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsRight
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsLeft
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0

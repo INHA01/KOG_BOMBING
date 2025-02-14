@@ -34,18 +34,21 @@ public class BulletController : PooledObject
     }
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if(other.tag != "Bullet")
         {
-            // >> : �� ����
-            PhotonView pView = other.GetComponent<PhotonView>();
-            if (!pView) return;
-            if (!IsOtherTeam(pView)) return;
-            // << :
-            IDamageAble player = other.transform.GetComponent<IDamageAble>();
-            if (player != null)
-                player.OnDamaged(damage);
+            if (other.tag == "Player")
+            {
+                // >> : �� ����
+                PhotonView pView = other.GetComponent<PhotonView>();
+                if (!pView) return;
+                if (!IsOtherTeam(pView)) return;
+                // << :
+                IDamageAble player = other.transform.GetComponent<IDamageAble>();
+                if (player != null)
+                    player.OnDamaged(damage);
+            }
+            distance = 0;
+            Release();
         }
-        distance = 0;
-        Release();
     }
 }

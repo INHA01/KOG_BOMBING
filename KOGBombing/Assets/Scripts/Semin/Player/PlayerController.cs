@@ -45,15 +45,13 @@ public class PlayerController : MonoBehaviour
 
 	private void InitPlayerData()
 	{
-        blackBoard.isLive = true;
         playerData = GetComponent<PlayerData>();
         playerShooting = GetComponent<PlayerShooting>();
         playerMaterialController = GetComponent<PlayerMaterialController>();
         playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
-        blackBoard.hp = blackBoard.maxHp;
-        blackBoard.defence = blackBoard.maxDefence;
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
+        blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
         if (playerData.pv.IsMine)
         {
             blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;

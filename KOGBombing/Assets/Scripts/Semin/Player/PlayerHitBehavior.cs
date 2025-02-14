@@ -26,7 +26,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
             SetOtherTeamInfo();
         else blackBoard.hpBar.SetIsMyTeam(true);
-        blackBoard.hpBar.Init(blackBoard.maxHp, blackBoard.maxDefence);
+        blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         //StartCoroutine(DamageTest(2f, 350));
@@ -58,13 +58,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	{
 		while (true)
 		{
-            if (!blackBoard.isGroggy)
+            if (!blackBoard.playerStatus.isGroggy)
                 playerData.timeWithoutDamage += Time.deltaTime;
 			if (playerData.timeWithoutDamage >= duration)
 			{
-				float value = blackBoard.defence + blackBoard.maxDefence / 100 * 10;
-				blackBoard.defence = Mathf.Min(value, blackBoard.maxDefence);
-				blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+				float value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
+				blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
+				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				playerData.timeWithoutDamage = 9f;
 			}
 			yield return null;
@@ -87,44 +87,44 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public bool IsDie()
     {
-        return !blackBoard.isLive;
+        return !blackBoard.playerStatus.isLive;
     }
     public bool IsTargetDie()
     {
         if (blackBoard.gmlookTarget == null) return true;
         string name = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
-        if (Managers.PunData.GetPlayerBlackBoard(name).isLive) return true;
+        if (Managers.PunData.GetPlayerBlackBoard(name).playerStatus.isLive) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
     [PunRPC]
     private void Damage(float damage)
 	{
-		float decreaseHp = blackBoard.defence - damage;
-        blackBoard.defence = Mathf.Max(decreaseHp, 0);
+		float decreaseHp = blackBoard.playerStatus.defence - damage;
+        blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
         if (decreaseHp < 0)
         {
-            float decreaseGroggy = blackBoard.hp + decreaseHp;
-            blackBoard.hp = Mathf.Max(decreaseGroggy, 0);
+            float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
+            blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);
             if (decreaseGroggy < 0)
-                blackBoard.groggyValue += decreaseGroggy;
+                blackBoard.playerStatus.groggyValue += decreaseGroggy;
         }
-        blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 		playerData.timeWithoutDamage = 0;
 
-        if (blackBoard.hp <= 0)
+        if (blackBoard.playerStatus.hp <= 0)
         {
-            if (blackBoard.groggyable)  // Groggy
+            if (blackBoard.playerStatus.groggyable)  // Groggy
             {
-                blackBoard.isGroggy = true;
-				blackBoard.groggyable = false;
+                blackBoard.playerStatus.isGroggy = true;
+				blackBoard.playerStatus.groggyable = false;
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
                 playerData.speedDebuffPercent = 0.1f;
                 ChangeWeapon(WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				groggyCoroutine = StartCoroutine(Groggy());
 			}
-            else if (blackBoard.groggyValue <= 0)
+            else if (blackBoard.playerStatus.groggyValue <= 0)
 			{
 				blackBoard.hpBar.SetGroggyValue(0);
 				Death();
@@ -147,12 +147,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
 		if (groggyCoroutine != null)
 			StopCoroutine(groggyCoroutine);
-		blackBoard.hp = blackBoard.maxHp;
-		blackBoard.defence = blackBoard.maxDefence;
-        blackBoard.groggyValue = blackBoard.maxGroggy;
+		blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
+		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
+        blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-		blackBoard.groggyable = true;
-		blackBoard.isGroggy = false;
+		blackBoard.playerStatus.groggyable = true;
+		blackBoard.playerStatus.isGroggy = false;
 		playerData.speedDebuffPercent = 1f;
 		blackBoard.hpBar.InitializeValues();
         blackBoard.hpBar.HideGroggy();
@@ -169,10 +169,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             if (groggyTime >= time)
             {
                 time++;
-                blackBoard.groggyValue -= blackBoard.maxGroggy / 10;
-                blackBoard.hpBar.SetGroggyValue(blackBoard.groggyValue);
+                blackBoard.playerStatus.groggyValue -= blackBoard.playerStatus.maxGroggy / 10;
+                blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
             }
-            if (blackBoard.groggyValue <= 0)
+            if (blackBoard.playerStatus.groggyValue <= 0)
             {
                 Death();
 				blackBoard.hpBar.SetGroggyValue(0);
@@ -186,18 +186,17 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         blackBoard._uiScene = Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
         blackBoard.hpBar.SetStopHpUI(true);
-        blackBoard.isLive = false;
+        blackBoard.playerStatus.isLive = false;
         SetActiveState(false);
         yield return new WaitForSeconds(time);
-        blackBoard.isLive = true;
+        blackBoard.playerStatus.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
-        blackBoard.groggyValue = 150;
+        blackBoard.playerStatus.groggyValue = 150;
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-
-        Managers.UI.ClosePopupUI();
+        Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     private void SetActiveState(bool isDie)
     {
@@ -211,7 +210,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(blackBoard.isLive);
+            stream.SendNext(blackBoard.playerStatus.isLive);
         }
         else if (stream.IsReading)
         {
@@ -227,8 +226,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     public void OnResurrect()
     {
-        blackBoard.hp = 50f;
-        blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        blackBoard.playerStatus.hp = 50f;
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
         playerData.speedDebuffPercent = 1f;
@@ -248,7 +247,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
             if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
-            if (blackBoards[i].isLive)
+            if (blackBoards[i].playerStatus.isLive)
             {
                 Debug.Log($"Find Target {blackBoards[i].nickname}");
                 blackBoard.gmlookTarget = blackBoards[i].rigidBody.gameObject;
@@ -263,7 +262,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         string nickname = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
 
-        if (Managers.PunData.GetPlayerBlackBoard(nickname).isLive)
+        if (Managers.PunData.GetPlayerBlackBoard(nickname).playerStatus.isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.gmlookTarget);
             Debug.Log("Set Camera Look Alive Player");

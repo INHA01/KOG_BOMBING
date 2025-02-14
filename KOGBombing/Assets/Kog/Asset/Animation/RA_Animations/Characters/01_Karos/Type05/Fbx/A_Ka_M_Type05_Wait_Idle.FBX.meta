@@ -17,14 +17,17 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: 
+    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
+      copied configuration does not match position in animation file:\n\t'Thigh_L'
+      : position error = 12.998579 mm\n\t'Calf_L' : position error = 92.918556 mm\n\t'Foot_L'
+      : position error = 92.258949 mm\n\t'Toe_L' : position error = 49.073521 mm\n\t'Thigh_R'
+      : position error = 12.998554 mm\n\t'Calf_R' : position error = 92.918510 mm\n\t'Foot_R'
+      : position error = 92.258850 mm\n\t'Toe_R' : position error = 57.357559 mm\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Pelvis' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Spine' has translation
-      animation that will be discarded.\n\t'Spine2' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n"
+      to improve retargeting quality.\n\t'Spine' has translation animation that will
+      be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -55,9 +58,9 @@ ModelImporter:
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []

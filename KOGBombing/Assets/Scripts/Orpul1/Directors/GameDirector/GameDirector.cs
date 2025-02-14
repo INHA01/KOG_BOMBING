@@ -34,6 +34,7 @@ namespace Orpul1
         public static int redScore = 0;
         int readyPlayerCnt = 0;
         RaiseEventOptions options = new RaiseEventOptions();
+        bool isAllPlayerReady = false;
         private void Awake()
         {
             options.Receivers = ReceiverGroup.All;
@@ -51,8 +52,7 @@ namespace Orpul1
         {
             if(punEvent.Code == (int)EGameState.GameStart)
             {
-                //SpawnPlayer();
-                //StartCoroutine(TimeCount());
+                isAllPlayerReady = true;
             }
         }
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)
@@ -63,14 +63,14 @@ namespace Orpul1
             if (playerState == EPlayerState.Start)
             {
                 readyPlayerCnt++;
-                //StartCoroutine(TimeCount());
+                if (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) return;
+                PhotonNetwork.RaiseEvent((int)EGameState.GameStart, null, options, SendOptions.SendReliable);
             }
         }
         
         private IEnumerator CoWaitPlayer()
         {
-            int playerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
-            while(readyPlayerCnt< playerCnt) yield return null;
+            while(!isAllPlayerReady) yield return null;
             SelectPlayer();
         }
         void SelectPlayer()
@@ -79,6 +79,7 @@ namespace Orpul1
         }
         void StartGame()
         {
+            if (!pv.IsMine) return;
             pv.RPC("StartTimeCount", RpcTarget.AllBuffered);
             pv.RPC("SpawnPlayer", RpcTarget.AllBuffered);
         }

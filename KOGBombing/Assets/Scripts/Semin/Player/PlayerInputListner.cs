@@ -29,7 +29,7 @@ public class PlayerInputListner : Subject
             }
         }
         else
-            Managers.UI.ClosePopupUI(this.gameObject.name);
+            Managers.UI.ClosePopupUI("OptionCanvas");
     }
 
     public void OnAttack(InputValue value)

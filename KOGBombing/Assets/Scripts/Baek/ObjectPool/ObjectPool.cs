@@ -21,6 +21,7 @@ public class ObjectPool :  MonoBehaviour
     }
     virtual protected void Init()
     {
+        if (parentPrefab == null) return;
         GameObject parentInstance = Instantiate(parentPrefab);
         parent = parentInstance.transform;
     }
@@ -46,6 +47,16 @@ public class ObjectPool :  MonoBehaviour
                 instance.transform.SetParent(parent);
             }
         }
+    }
+
+    public void SetObjectToPool(PooledObject objectToPool)
+    {
+        this.objectToPool = objectToPool;
+    }
+
+    public void SetParentPrefab(GameObject parentPrefab)
+    {
+        this.parentPrefab = parentPrefab;
     }
 
     public PooledObject GetPooledObject()

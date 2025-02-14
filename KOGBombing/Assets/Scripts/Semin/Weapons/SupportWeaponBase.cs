@@ -4,17 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
+public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 {
 	[SerializeField] public AttackConsum consum;
 	protected ETeam team;
 	protected float range;
 	protected float damage;
 	protected int count = 10;
+	protected PlayerData playerData;
 	public float Damage { get { return damage; } }
-	public int Count { get { return count; } }
+	//public int Count { get { return count; } }
 
-	public virtual void SetConsum(WeaponType type)
+	public virtual void SetConsum(WeaponType type, PlayerData playerData)
 	{
 		GameObject consumObj;
 		switch (type)
@@ -29,6 +30,7 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 				break;
         }
         consum.type = type;
+		this.playerData = playerData;
     }
 	public void SetTeam(ETeam team)
 	{
@@ -38,4 +40,11 @@ public abstract class SupportWeaponBase : MonoBehaviour, ISupportWeapon
 	public abstract void SetWeapon(SupportWeaponInfo info);
 	public abstract void Use();
 	public virtual void Disable() { }
+
+	public bool isUsable()
+	{
+		if (count <= 0)
+			return false;
+		return true;
+	}
 }

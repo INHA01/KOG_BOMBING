@@ -10,12 +10,6 @@ public class Molotov : AttackConsum
 	[Range(0f, 100f), SerializeField] private float effectTime;
 	public override float Damage { get { return damage; } }
 	public float Range { get { return range; } }
-	PhotonView pView;
-
-    private void Awake()
-    {
-        pView = GetComponent<PhotonView>();
-    }
 
     private void Start()
 	{
@@ -31,13 +25,14 @@ public class Molotov : AttackConsum
 
 	IEnumerator PlayParticle()
 	{
-		pView.RPC("ShowParticle", RpcTarget.AllBuffered);
+		//pView.RPC("ShowParticle", RpcTarget.AllBuffered);
+		ShowParticle();
 		attackCollider.enabled = true;
 		attackCollider.isTrigger = true;
 		yield return new WaitForSeconds(0.5f);
         attackCollider.enabled = false;
         yield return new WaitForSeconds(4f);
-		PhotonNetwork.Destroy(gameObject);
+		Release();
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -46,7 +41,7 @@ public class Molotov : AttackConsum
 		{
 			PhotonView pv = other.transform.GetComponent<PhotonView>();
 
-			if (!pView) return;
+			//if (!pView) return;
 			if (!IsOtherTeam(pv)) return;
 
 			IDamageAble player = other.transform.GetComponent<IDamageAble>();

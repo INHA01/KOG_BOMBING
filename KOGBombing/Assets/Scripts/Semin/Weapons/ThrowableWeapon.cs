@@ -6,10 +6,10 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UIElements;
 
 public class ThrowableWeapon : SupportWeaponBase
 {
-	private PlayerData playerData;
 	private DecalProjector decal;
 	private LineRenderer lineRendererToTarget;
 	private LineRenderer lineRendererToRange;
@@ -20,10 +20,13 @@ public class ThrowableWeapon : SupportWeaponBase
 	private float yPos = 6.0f;
 	private float throwDuration = 0.5f;
 	private float maxDistance = 10f;
+	private float angle;
 
 	public float angleStart = 55; 
 	public float angleEnd = 125;
 	public int segments = 20;
+
+	ObjectPool objectPool;
 
 	private void Awake()
 	{
@@ -38,11 +41,17 @@ public class ThrowableWeapon : SupportWeaponBase
 		lineRendererToTarget.transform.parent = transform;
 		lineRendererToRange.transform.parent = transform;
 		lineRendererToTarget.positionCount = lineCnt;
+
+		count = 1;
+		objectPool = gameObject.AddComponent<ObjectPool>();
+		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Molotov"));
+		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+		objectPool.initPoolSize = count;
 	}
 
-    public override void SetConsum(WeaponType type)
+    public override void SetConsum(WeaponType type, PlayerData playerData)
 	{
-		base.SetConsum(type);
+		base.SetConsum(type, playerData);
 
 		if (consum is Molotov molotov)
 			decal.size = new Vector3(molotov.Range, molotov.Range, decal.size.z);
@@ -53,28 +62,34 @@ public class ThrowableWeapon : SupportWeaponBase
 		decal.gameObject.SetActive(true);
 		lineRendererToTarget.gameObject.SetActive(true);
 
-		if (info is ThrowableWeaponInfo throableInfo)
+		if (info is ThrowableWeaponInfo throwableInfo)
+			playerData.pv.RPC("SetInfo", RpcTarget.AllBuffered, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
+	}
+
+	[PunRPC]
+	public void SetInfo(Vector3 curPos, Vector3 targetPos, float angle)
+	{
+		this.curPos = curPos;
+		this.targetPos = targetPos;
+		this.angle = angle;
+
+		Vector3 zeroCurPos = curPos;
+		zeroCurPos.y = 0;
+		float distance = Vector3.Distance(zeroCurPos, targetPos);
+
+		Vector3 direction = targetPos - zeroCurPos;
+		Vector3 normalizedDirection = direction.normalized;
+
+		if (distance > maxDistance * 2 / 3)
 		{
-			curPos = throableInfo.CurPosition;
-			targetPos = throableInfo.Position;
-            Vector3 zeroCurPos = curPos;
-            zeroCurPos.y = 0;
-            float distance = Vector3.Distance(zeroCurPos, targetPos);
-
-			Vector3 direction = targetPos - zeroCurPos;
-			Vector3 normalizedDirection = direction.normalized;
-
-            if (distance > maxDistance * 2 / 3)
-            {
-                lineRendererToRange.gameObject.SetActive(true);
-                if (distance >= maxDistance)
-                    targetPos = zeroCurPos + normalizedDirection * maxDistance;
-            }
-            else lineRendererToRange.gameObject.SetActive(false);
-
-            SetLineToTarget(normalizedDirection);
-			SetLineToRange(throableInfo.angle);
+			lineRendererToRange.gameObject.SetActive(true);
+			if (distance >= maxDistance)
+				targetPos = zeroCurPos + normalizedDirection * maxDistance;
 		}
+		else lineRendererToRange.gameObject.SetActive(false);
+
+		SetLineToTarget(normalizedDirection);
+		SetLineToRange(angle);
 	}
 
 	public override void Disable()
@@ -86,13 +101,11 @@ public class ThrowableWeapon : SupportWeaponBase
 
 	public override void Use()
 	{
-		decal.gameObject.SetActive(false);
-		lineRendererToTarget.gameObject.SetActive(false);
-		lineRendererToRange.gameObject.SetActive(false);
-        StartCoroutine(ThrowConsum());
+		count--;
+		playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
-		
     }
+
 	[PunRPC]
 	private void SpawnThrowWeapon()
 	{
@@ -104,9 +117,9 @@ public class ThrowableWeapon : SupportWeaponBase
 	
 	private void SetLineToTarget(Vector3 direction)
 	{
-		points[0] = curPos;
-		points[1] = curPos + new Vector3(0, yPos, 0);
-		points[2] = targetPos;
+		points[0] = playerData.shootStartPos.position;
+		points[1] = playerData.shootStartPos.position + new Vector3(0, yPos, 0);
+		points[2] = playerData.consumTargetPos;
 
 		decal.transform.position = Vector3.Lerp(decal.transform.position, targetPos, Time.deltaTime * 20.0f);
 
@@ -149,7 +162,10 @@ public class ThrowableWeapon : SupportWeaponBase
 	IEnumerator ThrowConsum()
 	{
 		float elapsedTime = 0f;
-        GameObject molotov = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Molotov", points[0], Quaternion.identity);
+		//GameObject molotov = PhotonNetwork.Instantiate("Prefabs/SupportWeapon/Molotov", points[0], Quaternion.identity);
+		GameObject molotov = objectPool.GetPooledObject().gameObject;
+		molotov.transform.position = points[0];
+		molotov.transform.rotation = Quaternion.identity;
 		AttackConsum grenade = molotov.GetComponent<AttackConsum>();
 
         grenade.SetTeam((int)team);
@@ -165,7 +181,7 @@ public class ThrowableWeapon : SupportWeaponBase
 			yield return null;
 		}
 
-		grenade.transform.position = Bezier(points[0], points[1], points[2], 1f);
+		grenade.transform.position = targetPos;
 		grenade.Use();
 	}
 }

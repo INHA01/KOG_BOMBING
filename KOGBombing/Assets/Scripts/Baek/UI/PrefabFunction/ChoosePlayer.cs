@@ -12,6 +12,7 @@ public class ChoosePlayer : Subject
     [SerializeField] GameObject teamIconBack;
     [SerializeField] TextMeshProUGUI characterName;
     [SerializeField] TextMeshProUGUI teamType;
+    [SerializeField] TextMeshProUGUI countDownText;
     public Semin.CharacterType type;
     public override void Notify(int index)
     {
@@ -65,5 +66,16 @@ public class ChoosePlayer : Subject
         Notify();
         RemoveAllObserver();
         Managers.UI.ClosePopupUI(this.gameObject.name);
+    }
+    IEnumerator CountDown()
+    {
+        float time = 10;
+        while(time > 0)
+        {
+            countDownText.text = time.ToString();
+            yield return new WaitForSeconds(1);
+            time--;
+        }
+        Spawn();
     }
 }

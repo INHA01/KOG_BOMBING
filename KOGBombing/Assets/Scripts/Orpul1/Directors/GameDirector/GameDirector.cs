@@ -40,6 +40,7 @@ namespace Orpul1
         }
         void Start()
         {
+            EventBusSystem.Subscribe(StartGame);
             PhotonNetwork.NetworkingClient.EventReceived += PhotonEvent;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.Start } });
             StartCoroutine(CoWaitPlayer());
@@ -70,7 +71,14 @@ namespace Orpul1
         {
             int playerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
             while(readyPlayerCnt< playerCnt) yield return null;
-            //PhotonNetwork.RaiseEvent((int)EGameState.GameStart, null, options, SendOptions.SendReliable);
+            SelectPlayer();
+        }
+        void SelectPlayer()
+        {
+            _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
+        }
+        void StartGame()
+        {
             pv.RPC("StartTimeCount", RpcTarget.AllBuffered);
             pv.RPC("SpawnPlayer", RpcTarget.AllBuffered);
         }

@@ -79,6 +79,7 @@ namespace Orpul1
         }
         void StartGame()
         {
+            if (!pv.IsMine) return;
             pv.RPC("StartTimeCount", RpcTarget.AllBuffered);
             pv.RPC("SpawnPlayer", RpcTarget.AllBuffered);
         }

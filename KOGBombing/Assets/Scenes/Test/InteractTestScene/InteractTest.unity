@@ -2341,6 +2341,8 @@ MonoBehaviour:
   - Name: Molotov
     obj: {fileID: 378320462}
     type: 1
+  consumTargetPos: {x: 0, y: 0, z: 0}
+  ConsumPos: {fileID: 0}
 --- !u!114 &620656086585340160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4423,6 +4425,11 @@ PrefabInstance:
       propertyPath: otherDoor
       value: 
       objectReference: {fileID: 1162589559}
+    - target: {fileID: 6651038156164803476, guid: 78933430ca31d9a4487ecfbaac8e6456,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8172399820621907451, guid: 78933430ca31d9a4487ecfbaac8e6456,
         type: 3}
       propertyPath: m_Name

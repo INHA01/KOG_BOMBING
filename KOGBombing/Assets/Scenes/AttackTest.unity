@@ -1053,7 +1053,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -10783,6 +10783,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhotonOfflineModePref
       objectReference: {fileID: 0}
+    - target: {fileID: 8971347490359471377, guid: 98b012e4433e9b34892c450121fa94e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10931,6 +10936,6 @@ SceneRoots:
   - {fileID: 335175794}
   - {fileID: 1471007853}
   - {fileID: 1023632062}
-  - {fileID: 1935787949}
   - {fileID: 140442383}
   - {fileID: 1377929091}
+  - {fileID: 1935787949}

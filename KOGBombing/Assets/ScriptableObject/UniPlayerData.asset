@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   hp: 200
-  defenceAmount: 200
+  maxHp: 200
   moveSpeed: 6
-  groggyMoveSpeed: 2
+  defence: 150
+  maxDefence: 150
+  reviveInterval: 3
+  isLive: 1
+  isGroggy: 0
+  groggyable: 1

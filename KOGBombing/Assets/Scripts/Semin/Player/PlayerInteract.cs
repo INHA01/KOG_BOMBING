@@ -12,7 +12,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     bool isReviving = false;
     public INode.ENodeState CanBehavior()
     {
-        if (blackBoard.inputs[EKey.Escape])
+        if (blackBoard.inputs[EKey.ESC])
             return INode.ENodeState.Success;
         return INode.ENodeState.Fail;
     }
@@ -21,7 +21,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         return isInteracting;
     }
 
-    // >> TODO : Blackboard¸¦ »ç¿ëÇÏ¿© °ªÀ» µû·Î ¼³Á¤ÇØ ÁÖ´Â ÀÛ¾÷À» ÁÙÀÌ´Â ¹æ¾È °ËÅäÇØº¸±â
+    // >> TODO : Blackboardï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Øºï¿½ï¿½ï¿½
     public INode.ENodeState FindInteractObjNode()
     {
         if (FindObject() == false)
@@ -110,8 +110,8 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     [PunRPC]
     public void OnResurrect()
     {
-        blackBoard.hp = 50f;
-        blackBoard.hpBar.SetHpValue(blackBoard.hp, blackBoard.defence);
+        blackBoard.playerStatus.hp = 50f;
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
         playerData.speedDebuffPercent = 1f;

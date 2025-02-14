@@ -110,7 +110,6 @@ public class PlayerAttack : PlayerBehavior
                     return INode.ENodeState.Running;
                 else
                 {
-                    Debug.Log("End anim");
                     blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
                     blackBoard.inputs[EKey.NUM_2] = false;
                     playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);

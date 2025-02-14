@@ -21,14 +21,13 @@ namespace Semin
 		public virtual void SetTeam(int team)
 		{
 			this.team = (ETeam)team;
-            Debug.Log($"team: {team}");
         }
 
         protected bool IsOtherTeam(PhotonView pView)
         {
             ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
 
-            Debug.Log($"otherTeam: {otherTeam}, mine: {team}");
+            //Debug.Log($"otherTeam: {otherTeam}, mine: {team}");
             //customproperties Team 변수를 ETeam타입으로 변경 중
             if (team == otherTeam) return false;
             return true;

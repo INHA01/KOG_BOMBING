@@ -99,6 +99,7 @@ Transform:
   - {fileID: 1368636139714485546}
   - {fileID: 3328951802869612583}
   - {fileID: 535690572618158977}
+  - {fileID: 7676723418722959363}
   m_Father: {fileID: 1094112876497018481}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4970186942349010887
@@ -114,6 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subject: {fileID: -7677719124921718330}
+  finshLerpTime: 0.3
   playerSight: 1
   viewRadius: 6
   viewAngle: 60
@@ -141,6 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subject: {fileID: -7677719124921718330}
+  finshLerpTime: 0.3
   playerSight: 0
   viewRadius: 2.5
   viewAngle: 360
@@ -507,6 +510,8 @@ MonoBehaviour:
   - Name: Molotov
     obj: {fileID: 5906265369696766698}
     type: 1
+  consumTargetPos: {x: 0, y: 0, z: 0}
+  ConsumPos: {fileID: 7676723418722959363}
 --- !u!114 &3900849375641417542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,17 +630,6 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 0, z: 0}
   eTeam: 0
   nickname: 
-  hp: 200
-  maxHp: 200
-  moveSpeed: 6
-  defence: 150
-  maxDefence: 150
-  reviveInterval: 0
-  groggyValue: 150
-  maxGroggy: 150
-  isLive: 1
-  isGroggy: 0
-  groggyable: 1
   SOplayerStatus: {fileID: 11400000, guid: d57402e405a5d7a4da349a45ea0b6a1a, type: 2}
   playerStatus: {fileID: 0}
 --- !u!114 &777691158875268194
@@ -1106,6 +1100,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5577978274509119654}
   m_Mesh: {fileID: 0}
+--- !u!1 &7202236666654096169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7676723418722959363}
+  m_Layer: 8
+  m_Name: ConsumPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7676723418722959363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7202236666654096169}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6786506344979437206}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8294877286034478507
 GameObject:
   m_ObjectHideFlags: 0

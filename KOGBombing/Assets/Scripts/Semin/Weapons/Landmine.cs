@@ -141,12 +141,12 @@ namespace Semin
 		[PunRPC]
 		private void RPCDestroy()
 		{
-            Destroy(gameObject);
+            Release();
         }
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.red;
-			Gizmos.DrawWireSphere(transform.position, attackRange);
+			Gizmos.DrawWireSphere(transform.position, attackRange / 2);
 		}
 	}
 

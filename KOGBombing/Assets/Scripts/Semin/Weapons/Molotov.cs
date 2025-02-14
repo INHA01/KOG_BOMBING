@@ -32,7 +32,7 @@ public class Molotov : AttackConsum
 		yield return new WaitForSeconds(0.5f);
         attackCollider.enabled = false;
         yield return new WaitForSeconds(4f);
-		PhotonNetwork.Destroy(gameObject);
+		Release();
 	}
 
 	private void OnTriggerEnter(Collider other)

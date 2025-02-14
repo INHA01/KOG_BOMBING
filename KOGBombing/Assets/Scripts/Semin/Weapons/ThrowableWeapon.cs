@@ -63,38 +63,33 @@ public class ThrowableWeapon : SupportWeaponBase
 		lineRendererToTarget.gameObject.SetActive(true);
 
 		if (info is ThrowableWeaponInfo throwableInfo)
-		{
-			curPos = throwableInfo.CurPosition;
-			targetPos = throwableInfo.Position;
-			angle = throwableInfo.Angle;
-
-			Vector3 zeroCurPos = curPos;
-			zeroCurPos.y = 0;
-			float distance = Vector3.Distance(zeroCurPos, targetPos);
-
-			Vector3 direction = targetPos - zeroCurPos;
-			Vector3 normalizedDirection = direction.normalized;
-
-			if (distance > maxDistance * 2 / 3)
-			{
-				lineRendererToRange.gameObject.SetActive(true);
-				if (distance >= maxDistance)
-					targetPos = zeroCurPos + normalizedDirection * maxDistance;
-			}
-			else lineRendererToRange.gameObject.SetActive(false);
-
-			SetLineToTarget(normalizedDirection);
-			SetLineToRange(angle);
-		}
+			playerData.pv.RPC("SetInfo", RpcTarget.AllBuffered, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
 	}
 
 	[PunRPC]
 	public void SetInfo(Vector3 curPos, Vector3 targetPos, float angle)
 	{
 		this.curPos = curPos;
-		this.targetPos = targetPos; 
+		this.targetPos = targetPos;
 		this.angle = angle;
-		Debug.Log("SetInfo");
+
+		Vector3 zeroCurPos = curPos;
+		zeroCurPos.y = 0;
+		float distance = Vector3.Distance(zeroCurPos, targetPos);
+
+		Vector3 direction = targetPos - zeroCurPos;
+		Vector3 normalizedDirection = direction.normalized;
+
+		if (distance > maxDistance * 2 / 3)
+		{
+			lineRendererToRange.gameObject.SetActive(true);
+			if (distance >= maxDistance)
+				targetPos = zeroCurPos + normalizedDirection * maxDistance;
+		}
+		else lineRendererToRange.gameObject.SetActive(false);
+
+		SetLineToTarget(normalizedDirection);
+		SetLineToRange(angle);
 	}
 
 	public override void Disable()
@@ -110,6 +105,7 @@ public class ThrowableWeapon : SupportWeaponBase
 		playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
     }
+
 	[PunRPC]
 	private void SpawnThrowWeapon()
 	{
@@ -185,7 +181,7 @@ public class ThrowableWeapon : SupportWeaponBase
 			yield return null;
 		}
 
-		grenade.transform.position = Bezier(points[0], points[1], points[2], 1f);
+		grenade.transform.position = targetPos;
 		grenade.Use();
 	}
 }

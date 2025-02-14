@@ -32,7 +32,6 @@ public class PlayerMaterialController : MonoBehaviour
 	public void SetMaterialToHide()
 	{
 		int index = 0;
-		Debug.Log("SetMaterialToHide");
 		for (int i = 0; i < changeMaterialMeshs.Count; i++)
 		{
 			Renderer skin = changeMaterialMeshs[i].GetComponent<Renderer>();

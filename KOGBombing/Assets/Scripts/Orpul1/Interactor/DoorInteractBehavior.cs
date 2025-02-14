@@ -56,7 +56,11 @@ public class DoorInteractBehavior : MonoBehaviour, IInteractAble
         if (isInteracting) yield break;
         isInteracting = true;
         float interval = Time.time + doorOpenInterval;
-        while (interval > Time.time) yield return null;
+        while (interval > Time.time)
+        {
+            if (!isInteracting) yield break;
+            yield return null;
+        }
         
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);
         

@@ -414,8 +414,9 @@ Shader "Custom/LitStencilObject"
                 half4 color = UniversalFragmentPBR(inputData, surfaceData);
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
                 color.a = OutputAlpha(color.a, IsSurfaceTypeTransparent(_Surface));
-
-                outColor = color * 0.6f;
+                
+            // TODO : BASE COLOR
+                outColor = color * 0.4f;
 
             #ifdef _WRITE_RENDERING_LAYERS
                 uint renderingLayers = GetMeshRenderingLayer();

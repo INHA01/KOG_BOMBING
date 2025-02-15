@@ -6,7 +6,7 @@ public class ChooseObserver : Observer
 {
     public override void OnNotify()
     {
-        Destroy(this);
+        Destroy(this.gameObject);
     }
     public override void OnNotifyParam(int index)
     {

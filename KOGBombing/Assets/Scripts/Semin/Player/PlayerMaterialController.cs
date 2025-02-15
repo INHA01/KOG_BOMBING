@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class PlayerMaterialController : MonoBehaviour
 {
-	private List<GameObject> changeMaterialMeshs = new List<GameObject>();
-	private List<Material> changeMaterials = new List<Material>();
-	private List<Material> curMaterial = new List<Material>();
+	public List<GameObject> changeMaterialMeshs = new List<GameObject>();
+	public List<Material> changeMaterials = new List<Material>();
+	public List<Material> curMaterial = new List<Material>();
 	[SerializeField] private Material hitMaterial;
 	Coroutine hit;
 

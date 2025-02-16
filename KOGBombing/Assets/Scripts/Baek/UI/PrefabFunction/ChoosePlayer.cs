@@ -43,7 +43,27 @@ public class ChoosePlayer : Subject
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
         go.GetComponent<ChooseAvatar>().SetSubject(this , true);
-        SetIcon(true);
+
+
+        // >>: 다른 플레이어들 아이콘 추가
+
+        int playerCnt = 0;
+        
+        if (eTeam == ETeam.REDTEAM)
+        {
+            playerCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+        }
+        else
+        {
+            playerCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+        }
+        
+        
+        for(int i=0; i< playerCnt; i++)
+        {
+            SetIcon(true);
+        }
+        // << :
         StartCoroutine(CountDown());
     }
     public void SetIcon(bool isMine)

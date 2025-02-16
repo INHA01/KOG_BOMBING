@@ -3106,7 +3106,7 @@
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">368</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">2196</XPD:ATTR>
-<XPD:ATTR name="Width" type="integer">132</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">139</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">84</XPD:ATTR>
 <XPD:REF name="Model">fs143vWOHEOBHbQFJc3MnAAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="5LJ+juWNZE+bGtfa/gjB2gAA">
@@ -6448,6 +6448,17 @@
 <XPD:REF name="Views[3]">hkjFg2JSaEys+kloWLv6KwAA</XPD:REF>
 <XPD:ATTR name="#Generalizations" type="integer">1</XPD:ATTR>
 <XPD:REF name="Generalizations[0]">r4ii0iIOU06tgW2N1sTpvAAA</XPD:REF>
+<XPD:ATTR name="#Operations" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Operations[0]" type="UMLOperation" guid="tqOvGkfKzUSudxr2lklu/QAA">
+<XPD:ATTR name="Name" type="string">OnNotify</XPD:ATTR>
+<XPD:REF name="Owner">fs143vWOHEOBHbQFJc3MnAAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="Lm+4FRRXEEKg2lJOEejHIAAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">override void</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">tqOvGkfKzUSudxr2lklu/QAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[107]" type="UMLGeneralization" guid="r4ii0iIOU06tgW2N1sTpvAAA">
 <XPD:REF name="Namespace">pu4EvfdmZ0aYn7LpfRrjVAAA</XPD:REF>

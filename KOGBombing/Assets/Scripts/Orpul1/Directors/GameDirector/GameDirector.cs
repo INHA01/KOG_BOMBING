@@ -128,6 +128,9 @@ namespace Orpul1
             cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
             cameraObj.transform.SetParent(playerObj.transform);
             playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(),spawnPosi);
+
+            Managers.camData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
+            Managers.camData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
             //_uiScene.GetComponent<PlayScene>().gameDirector = this;
             //_uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         }

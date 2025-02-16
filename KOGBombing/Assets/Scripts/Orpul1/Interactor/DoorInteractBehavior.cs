@@ -18,8 +18,14 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     [SerializeField] float doorOpenInterval = 3;
     [SerializeField] DoorInteractBehavior otherDoor;
     [SerializeField] Collider interactCollider;
+
+    Action openOtherDoor;
     bool isInteracting = false;
     bool isOpened = false;
+    private void Start()
+    {
+        openOtherDoor += otherDoor.OpenDoor;
+    }
     public override bool ProcessInteract(PhotonView pView)
     {
         if (isOpened) return false;
@@ -43,13 +49,14 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     {
         Debug.Log("DoInteractDoor");
         OpenDoor();
-        otherDoor.OpenDoor();
+        openOtherDoor();
 
-        isInteracting = false;
-        isOpened = true;
     }
     public void OpenDoor()
     {
+        isInteracting = false;
+        isOpened = true;
+        interactCollider.enabled = false;
         animator.SetTrigger(EDoorAni.TriOpenDoor.ToString());
     }
     [PunRPC]
@@ -70,7 +77,6 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
             yield return null;
         }
         interactUI.DeactivePanel();
-        interactCollider.enabled = false;
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);
         
     }

@@ -12,10 +12,12 @@ public class Managers : MonoBehaviour
     UIManager _ui = new UIManager();
     ResourceManager _resource = new ResourceManager();
     PhotonDataManager _punData = new PhotonDataManager();
+    CameraManager _camData = new CameraManager();
     public static UserDataManager UserData { get { return Instance._userData; } }
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PhotonDataManager PunData { get { return Instance._punData; } }
+    public static CameraManager camData { get { return Instance._camData; } }
 
     void Start()
     {

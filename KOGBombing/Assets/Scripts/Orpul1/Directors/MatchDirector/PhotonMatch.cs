@@ -15,6 +15,8 @@ namespace Orpul1
         protected float updateDelay;
         protected bool isStopMatch = false;
         [SerializeField]
+        protected float delayTime = 5;
+        [SerializeField]
         Button btnMatch;
         private void Start()
         {
@@ -116,9 +118,9 @@ namespace Orpul1
         }
         protected virtual IEnumerator CoStartDelay()
         {
-            float delayTime = Time.time + 3f;
+            float time = Time.time + delayTime;
             Debug.Log($"Prev Delay {Time.time}");
-            while (Time.time < delayTime) yield return null;
+            while (Time.time < time) yield return null;
             SetPlayerIndex();
             Debug.Log($"After delay {Time.time}");
             if(PhotonNetwork.IsMasterClient)

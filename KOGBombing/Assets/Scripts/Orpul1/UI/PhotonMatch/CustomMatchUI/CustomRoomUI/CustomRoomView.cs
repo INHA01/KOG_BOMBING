@@ -10,5 +10,6 @@ public class CustomRoomView : MonoBehaviour
     public Button btnStartGame;
     public Button btnQuitRoom;
     public Button btnSwapTeam;
-    public TextMeshProUGUI tmpStartBtnText;
+    public GameObject startCounting;
+    public Image startCountingCircle;
 }

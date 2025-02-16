@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using static UnityEngine.Rendering.DebugUI;
+using Orpul1;
+using Photon.Pun;
 
 namespace Semin
 {
@@ -29,9 +31,11 @@ namespace Semin
 		{
 			viewMesh = new Mesh();
 			viewMesh.name = "View Mesh";
+			viewMesh.Clear();
+			DrawFieldOfView();
 			viewMeshFilter.mesh = viewMesh;
 
-            StartCoroutine("FindTargetsWithDelay", .2f);
+			StartCoroutine("FindTargetsWithDelay", .2f);
 			
 			Attach(true);
         }
@@ -187,6 +191,19 @@ namespace Semin
 		{
 			Vector3 dir = DirFromAngle(globalAngle, true);
 			RaycastHit hit;
+
+			if (Physics.Raycast(transform.position, dir, out hit, viewRadius, targetMask))
+			{
+				if (hit.transform.GetComponent<PlayerController>() != null)
+				{
+					ETeam team = hit.transform.GetComponent<PlayerController>().blackBoard.eTeam;
+					if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != team)
+					{
+						HpBar hp = hit.transform.GetComponent<PlayerController>().blackBoard.hpBar;
+						hp.SetHpValue(50, 50);
+					}
+				}
+			}
 
 			if (Physics.Raycast(transform.position, dir, out hit, viewRadius, obstacleMask))
 			{

@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 311611062723761190}
   - component: {fileID: 7570284626034266062}
   - component: {fileID: 5664466906588752623}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: DoorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -613,8 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactUI: {fileID: 1291467568824783898}
-  meshRenderer: {fileID: 5565903886636667825}
-  outline: {fileID: 2100000, guid: 63e81f7dce069884f84de581c5cd9d03, type: 2}
+  showOutlineObj: {fileID: 8466264629336129251}
   pView: {fileID: 7509528774599767848}
   otherDoor: {fileID: 0}
   animator: {fileID: 6883414618472772737}

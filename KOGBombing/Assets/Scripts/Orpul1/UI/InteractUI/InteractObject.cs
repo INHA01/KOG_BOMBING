@@ -10,9 +10,7 @@ public abstract class InteractObject : Subject, IInteractAble
     [SerializeField]
     protected InteractPresenter interactUI;
     [SerializeField]
-    MeshRenderer meshRenderer;
-    [SerializeField]
-    protected Material outline;
+    GameObject showOutlineObj;
 
     public abstract bool ProcessInteract(PhotonView pView);
     public virtual void AbortInteract()
@@ -21,17 +19,13 @@ public abstract class InteractObject : Subject, IInteractAble
     }
     protected void SetOutline(bool isAdd)
     {
-        List<Material> materialList = meshRenderer.materials.ToList();
         if (isAdd)
         {
-            materialList.Add(outline);
-            meshRenderer.materials = materialList.ToArray();
+            showOutlineObj.layer = LayerMask.NameToLayer("InteractObj");
         }
         else
         {
-            if (materialList[1]!=null)
-                materialList.RemoveAt(1);
-            meshRenderer.materials = materialList.ToArray();
+            showOutlineObj.layer = LayerMask.NameToLayer("Default");
         }
     }
     private void OnTriggerEnter(Collider other)

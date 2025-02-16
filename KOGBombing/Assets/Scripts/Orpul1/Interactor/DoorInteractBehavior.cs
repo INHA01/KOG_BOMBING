@@ -57,7 +57,9 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         isInteracting = false;
         isOpened = true;
         interactCollider.enabled = false;
+        SetOutline(false);
         animator.SetTrigger(EDoorAni.TriOpenDoor.ToString());
+        interactUI.DeactivePanel();
     }
     [PunRPC]
     private void AbortInteractDoor()
@@ -76,8 +78,6 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
             interactUI.SetValue(deltaTime);
             yield return null;
         }
-        interactUI.DeactivePanel();
-        SetOutline(false);
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);
         
     }

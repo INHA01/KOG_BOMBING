@@ -74,7 +74,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2039
+    m_Bits: 2047
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -150,6 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 786fe417140b0a143a0486cc08c45c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  subject: {fileID: 0}
+  finshLerpTime: 0.3
   target: {fileID: 0}
   minimapCamera: {fileID: 0}
   offsetX: -3
@@ -157,3 +159,4 @@ MonoBehaviour:
   offsetZ: -3
   CameraSpeed: 10
   sensitivity: 300
+  initRotation: {x: 0.42660007, y: 0.33944437, z: -0.17670356, w: 0.8194911}

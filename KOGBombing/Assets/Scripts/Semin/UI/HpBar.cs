@@ -119,10 +119,12 @@ public class HpBar : MonoBehaviour
     {
         GameObject team;
         if (isMyTeam)
+        {
             team = myTeam;
+           team.SetActive(true);
+        }
         else team = otherTeam;
 
-        team.SetActive(true);
         Debug.Log(team.transform.GetChild(0).gameObject);  
         level = team.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         hp = team.transform.GetChild(2).GetComponent<Image>();

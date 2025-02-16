@@ -32,12 +32,12 @@ namespace Semin
 			viewMesh = new Mesh();
 			viewMesh.name = "View Mesh";
 			viewMesh.Clear();
+			DrawFieldOfView();
 			viewMeshFilter.mesh = viewMesh;
 
-            StartCoroutine("FindTargetsWithDelay", .2f);
+			StartCoroutine("FindTargetsWithDelay", .2f);
 			
 			Attach(true);
-			StartCoroutine(SetCollider());
         }
         protected override void SetPlayerSight(int isZoom)
 		{
@@ -79,13 +79,6 @@ namespace Semin
 		void LateUpdate()
 		{
 			DrawFieldOfView();
-		}
-
-		IEnumerator SetCollider()
-		{
-			yield return new WaitForEndOfFrame();
-			yield return new WaitForEndOfFrame();
-			viewMeshFilter.gameObject.GetComponent<FOVMeshCollider>().meshCollider.sharedMesh = viewMesh;
 		}
 
 		void FindVisibleTargets()

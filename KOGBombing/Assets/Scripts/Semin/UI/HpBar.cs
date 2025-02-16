@@ -36,6 +36,21 @@ public class HpBar : MonoBehaviour
         decrease = StartCoroutine(DecreaseHP());
     }
 
+    public bool IsShowUI()
+    {
+        return otherTeam.activeSelf;
+    }
+
+    public void ShowOtherTeamUI()
+    {
+        otherTeam.SetActive(true);
+    }
+
+    public void HideOtherTeamUI()
+    {
+        otherTeam.SetActive(false);
+    }
+
     public void ShowGroggy()
     {
         groggyObject.gameObject.SetActive(true);

@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 6407967426121760647}
   - component: {fileID: 4043429811539251080}
   - component: {fileID: 2503684496763761375}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ProgressUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 7049831553472106005}
   - component: {fileID: 4000032472217404414}
   - component: {fileID: 8453197698552011039}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6400869176689802278}
   - component: {fileID: 5320789673141193286}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractProgressPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3794293845503082767}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ProgressUIPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4208641980502222664}
   - component: {fileID: 1411195399813675265}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 311611062723761190}
   - component: {fileID: 7570284626034266062}
   - component: {fileID: 5664466906588752623}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DoorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -613,11 +613,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactUI: {fileID: 1291467568824783898}
-  animator: {fileID: 6883414618472772737}
+  meshRenderer: {fileID: 5565903886636667825}
+  outline: {fileID: 2100000, guid: 63e81f7dce069884f84de581c5cd9d03, type: 2}
   pView: {fileID: 7509528774599767848}
-  doorOpenInterval: 3
   otherDoor: {fileID: 0}
+  animator: {fileID: 6883414618472772737}
   interactCollider: {fileID: 311611062723761190}
+  doorOpenInterval: 3
 --- !u!114 &7509528774599767848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -715,7 +717,7 @@ GameObject:
   - component: {fileID: 4583614914431392631}
   - component: {fileID: 1848222634694362535}
   - component: {fileID: 8908528606108604849}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: CanvasInteractUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -814,7 +816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6770088846404991428}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractIconPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +854,7 @@ GameObject:
   - component: {fileID: 3513411242645411009}
   - component: {fileID: 4214563611438964879}
   - component: {fileID: 9142275261209684399}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ProgressUIBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -926,7 +928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5861637612302307343}
   - component: {fileID: 2430205868180430440}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractAblePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -970,7 +972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1463076779851618291}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ProgressUIPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,7 +1010,7 @@ GameObject:
   - component: {fileID: 8000257478653254108}
   - component: {fileID: 866375178033439473}
   - component: {fileID: 271657338429502389}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractIconKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1085,7 +1087,7 @@ GameObject:
   - component: {fileID: 6796133303386535047}
   - component: {fileID: 405463167881943453}
   - component: {fileID: 47591991735906932}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: TMP_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,7 +1222,7 @@ GameObject:
   - component: {fileID: 1009078736586308607}
   - component: {fileID: 5699046553105426106}
   - component: {fileID: 2698837181580237516}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ProgressUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1432,7 +1434,7 @@ GameObject:
   - component: {fileID: 1118853541057226285}
   - component: {fileID: 1291467568824783898}
   - component: {fileID: 8518882590789886064}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: InteractPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -746,6 +746,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractObject
       objectReference: {fileID: 0}
+    - target: {fileID: 1035747500509473384, guid: 28eda4adac056214492908ea501da5a9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882486611312162803, guid: 28eda4adac056214492908ea501da5a9,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882486611312162803, guid: 28eda4adac056214492908ea501da5a9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 63e81f7dce069884f84de581c5cd9d03, type: 2}
     - target: {fileID: 4283430936179812812, guid: 28eda4adac056214492908ea501da5a9,
         type: 3}
       propertyPath: sceneViewId
@@ -3704,11 +3719,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactUI: {fileID: 1291467569295054929}
-  animator: {fileID: 6883414617867237578}
+  meshRenderer: {fileID: 0}
+  outline: {fileID: 0}
   pView: {fileID: 7509528774135659363}
-  doorOpenInterval: 3
   otherDoor: {fileID: 1619358645}
+  animator: {fileID: 6883414617867237578}
   interactCollider: {fileID: 311611063193999469}
+  doorOpenInterval: 3
 --- !u!65 &3943808926829531572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3990,11 +4007,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 82725405}
-    - target: {fileID: 7509528774599767848, guid: af85284a724a14b42b4a62b83965deb0,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 8712899068519284504, guid: af85284a724a14b42b4a62b83965deb0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5424,11 +5436,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactUI: {fileID: 0}
-  animator: {fileID: 8729330973595444934}
+  meshRenderer: {fileID: 0}
+  outline: {fileID: 0}
   pView: {fileID: 8729330973595444933}
-  doorOpenInterval: 3
   otherDoor: {fileID: 0}
+  animator: {fileID: 8729330973595444934}
   interactCollider: {fileID: 0}
+  doorOpenInterval: 3
 --- !u!114 &8729330973595444933
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,11 +13,11 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         TriOpenDoor,
         TriInitDoor
     }
-    [SerializeField] Animator animator;
     [SerializeField] PhotonView pView;
-    [SerializeField] float doorOpenInterval = 3;
     [SerializeField] DoorInteractBehavior otherDoor;
+    [SerializeField] Animator animator;
     [SerializeField] Collider interactCollider;
+    [SerializeField] float doorOpenInterval = 3;
 
     Action openOtherDoor;
     bool isInteracting = false;
@@ -77,6 +77,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
             yield return null;
         }
         interactUI.DeactivePanel();
+        SetOutline(false);
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);
         
     }

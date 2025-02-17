@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ChoosePlayer : Subject
 {
-    [SerializeField] GameObject teamIconBack;
+    [SerializeField] protected GameObject teamIconBack;
     [SerializeField] TextMeshProUGUI characterName;
     [SerializeField] TextMeshProUGUI teamType;
     [SerializeField] TextMeshProUGUI countDownText;
@@ -19,11 +19,11 @@ public class ChoosePlayer : Subject
         base.Notify(index);
         SetCharacterName(index);
     }
-    private void Awake()
+    protected virtual void Awake()
     {
         Init();
     }
-    public void Init()
+    public virtual void Init()
     {
         ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         if (eTeam == ETeam.BLUETEAM)
@@ -47,26 +47,12 @@ public class ChoosePlayer : Subject
 
         // >>: 다른 플레이어들 아이콘 추가
 
-        int playerCnt = 0;
-        
-        if (eTeam == ETeam.REDTEAM)
-        {
-            playerCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-        }
-        else
-        {
-            playerCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-        }
-        
-        
-        for(int i=0; i< playerCnt; i++)
-        {
-            SetIcon(true);
-        }
+        SetIcon(true);
+
         // << :
         StartCoroutine(CountDown());
     }
-    public void SetIcon(bool isMine)
+    public virtual void SetIcon(bool isMine)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
@@ -90,7 +76,7 @@ public class ChoosePlayer : Subject
     }
     IEnumerator CountDown()
     {
-        float time = 10;
+        float time = 60;
         while(time > 0)
         {
             countDownText.text = time.ToString();

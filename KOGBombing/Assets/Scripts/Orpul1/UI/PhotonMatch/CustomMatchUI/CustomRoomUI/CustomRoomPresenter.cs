@@ -46,9 +46,25 @@ namespace Orpul1
             SetRoomTeamCount(curTeam, -1);
             if (curTeam == ETeam.REDTEAM)
                 changeTeam = ETeam.BLUETEAM;
-
             SetRoomTeamCount(changeTeam, 1);
+            SetTeamIndex(changeTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam } });
+        }
+
+        private void SetTeamIndex(ETeam playerTeam)
+        {
+            int teamIndex = 0;
+            if (playerTeam == ETeam.REDTEAM)
+            {
+                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"] + 1;
+            }
+            else
+            {
+                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"] + 1;
+            }
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
+            Debug.Log($"TeamIndex {teamIndex}");
+
         }
         private void SetRoomTeamCount(ETeam teamType, int count)
         {

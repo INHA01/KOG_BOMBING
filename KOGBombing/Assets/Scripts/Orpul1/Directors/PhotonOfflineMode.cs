@@ -57,6 +57,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", 1 } });
         InitEvent();
         SpawnPlayer();
     }

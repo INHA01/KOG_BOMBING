@@ -45,6 +45,7 @@ namespace Orpul1
             Debug.Log($"SetTeam  {(ETeam)playerTeam}");
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", playerTeam } });
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
+            Debug.Log($"Teamindex {teamIndex}");
         }
 
         public override void OnJoinedLobby()

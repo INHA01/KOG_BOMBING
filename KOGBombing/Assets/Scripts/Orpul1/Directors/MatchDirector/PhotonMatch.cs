@@ -74,14 +74,39 @@ namespace Orpul1
                 if ((string)propertiesThatChanged["RoomState"] == "Start")
                 {
                     PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.Ready } });
+
+                    //>> TODO :  TeamIndex 설정 코드 추가해야함
+                    SetPlayerTeamIndex();
+                    //<< :
+
                     btnMatch.interactable = false;
-                    
                     StartCoroutine(CoStartDelay());
                    
                 }
             }
         }
-       
+       private void SetPlayerTeamIndex()
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+            Player[] players = PhotonNetwork.PlayerList;
+            int redTeamIndex = 0, blueTeamIndex = 0;
+
+            for(int i=0; i<players.Length; i++)
+            {
+                ETeam team = (ETeam)players[i].CustomProperties["Team"];
+                if(team== ETeam.REDTEAM)
+                {
+                    players[i].SetCustomProperties(new PhotonHashTable { { "TeamIndex", redTeamIndex } });
+                    redTeamIndex++;
+
+                }
+                else if(team == ETeam.BLUETEAM)
+                {
+                    players[i].SetCustomProperties(new PhotonHashTable { { "TeamIndex", blueTeamIndex } });
+                    blueTeamIndex++;
+                }
+            }
+        }
         protected ETeam SetTeam()
         {
             int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];

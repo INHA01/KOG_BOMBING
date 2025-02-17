@@ -58,6 +58,7 @@ public class PhotonChoosePlayer : ChoosePlayer
         //자기 자신을 제외한 플레이어 아이콘 생성
         for (int i = 0; i < mTeamPlayerList.Count; i++) 
         {
+            Debug.Log($"instantiate SelectUI {i}");
             SetIcon(false);
         }
     }
@@ -81,7 +82,6 @@ public class PhotonChoosePlayer : ChoosePlayer
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
         go.transform.SetParent(teamIconBack.transform);
         int teamIndex = mTeamIndex.Dequeue();
-        Debug.Log($"teanUIndex {teamIndex}");
         photonAvatar.AddPlayerAvatar(teamIndex, go.GetComponent<ChooseAvatarIcon>());
     }
 

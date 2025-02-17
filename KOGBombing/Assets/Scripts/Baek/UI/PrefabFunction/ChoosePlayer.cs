@@ -45,11 +45,7 @@ public class ChoosePlayer : Subject
         go.GetComponent<ChooseAvatar>().SetSubject(this , true);
 
 
-        // >>: 다른 플레이어들 아이콘 추가
-
         SetIcon(true);
-
-        // << :
         StartCoroutine(CountDown());
     }
     public virtual void SetIcon(bool isMine)

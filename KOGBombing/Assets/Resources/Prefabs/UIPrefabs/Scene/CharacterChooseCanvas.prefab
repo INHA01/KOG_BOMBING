@@ -426,12 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 232151a4eec92cc4a86a905015454241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamIconBack: {fileID: 6824280659782139080}
-  characterName: {fileID: 0}
-  teamType: {fileID: 0}
-  countDownText: {fileID: 0}
-  type: 0
-  pView: {fileID: 0}
+  teamIconBack: {fileID: 8639218755897665352}
 --- !u!1 &4302439119480960465
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,7 +696,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5041078391237037437}
         m_TargetAssemblyTypeName: PhotonChoosePlayer, Assembly-CSharp
-        m_MethodName: Notify
+        m_MethodName: ChangeOtherPlayerIcon
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1265,7 +1260,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5041078391237037437}
         m_TargetAssemblyTypeName: PhotonChoosePlayer, Assembly-CSharp
-        m_MethodName: Notify
+        m_MethodName: ChangeOtherPlayerIcon
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

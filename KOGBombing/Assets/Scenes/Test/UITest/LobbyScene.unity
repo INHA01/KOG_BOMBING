@@ -339,7 +339,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1020402306}
   - component: {fileID: 1020402305}
-  - component: {fileID: 1020402304}
   - component: {fileID: 1020402303}
   m_Layer: 0
   m_Name: LobbyPlayerCamera
@@ -392,14 +391,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &1020402304
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020402302}
-  m_Enabled: 1
 --- !u!20 &1020402305
 Camera:
   m_ObjectHideFlags: 0

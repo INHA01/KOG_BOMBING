@@ -73,15 +73,15 @@ namespace Orpul1
         protected override IEnumerator CoStartDelay()
         {
             matchUIController.DeactiveCustomRoomBtn();
-            float delayTime = Time.time + 3f;
+            float time = Time.time + delayTime;
 
-            while (Time.time < delayTime) yield return null;
+            while (Time.time < time) yield return null;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             Managers.UI.DestroyAllPopupUI();
-            PhotonNetwork.LoadLevel(3);
-            //LoadingSceneManager.LoadScene("TestGame");
+            //PhotonNetwork.LoadLevel(3);
+            LoadingSceneManager.LoadScene("MainGame");
 
         }
     }

@@ -39,32 +39,15 @@ namespace Orpul1
         {
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
         }
-        public void OnSwapTeamBtn()
+        public void OnSwapTeamBtn(int select)
         {
+            ETeam changeTeam = (ETeam)select;
             ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-            ETeam changeTeam = ETeam.REDTEAM;
+            if (changeTeam == curTeam) return;
             SetRoomTeamCount(curTeam, -1);
-            if (curTeam == ETeam.REDTEAM)
-                changeTeam = ETeam.BLUETEAM;
+            if (curTeam == ETeam.REDTEAM) changeTeam = ETeam.BLUETEAM;
             SetRoomTeamCount(changeTeam, 1);
-            SetTeamIndex(changeTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam } });
-        }
-
-        private void SetTeamIndex(ETeam playerTeam)
-        {
-            int teamIndex = 0;
-            if (playerTeam == ETeam.REDTEAM)
-            {
-                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"] + 1;
-            }
-            else
-            {
-                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"] + 1;
-            }
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
-            Debug.Log($"TeamIndex {teamIndex}");
-
         }
         private void SetRoomTeamCount(ETeam teamType, int count)
         {
@@ -97,15 +80,29 @@ namespace Orpul1
         }
         private IEnumerator CoStartCounting()
         {
-            int delayCnt = 3;
-            
+            float elapsedTime = 0f;
+            float finishTime = 3f;
+            float k = 5f; // 조절 가능한 계수
+
             view.btnStartGame.interactable = false;
-            for (int count = delayCnt;  count > 0; count--)
+            view.startCounting.SetActive(true);
+            view.startCountingCircle.fillAmount = 0;
+
+            while (true)
             {
-                view.tmpStartBtnText.text = "Waiting for " + count.ToString();
-                yield return new WaitForSeconds(1);
+                // 지수 함수로 fillAmount 계산
+                float t = elapsedTime / finishTime;
+                view.startCountingCircle.fillAmount = 1 - Mathf.Exp(-k * t);
+                elapsedTime += Time.deltaTime;
+
+                if(view.startCountingCircle.fillAmount >= 0.99f)
+                {
+                    view.startCountingCircle.fillAmount = 0;
+                    elapsedTime = 0f;
+                }
+                yield return null;
             }
-            view.tmpStartBtnText.text = "Starting...";
+
         }
     }
     

@@ -19,7 +19,7 @@ public class ThrowableWeapon : SupportWeaponBase
 	private int lineCnt = 20;
 	private float yPos = 6.0f;
 	private float throwDuration = 0.5f;
-	private float maxDistance = 10f;
+	public float maxDistance = 7f;
 	private float angle;
 
 	public float angleStart = 55; 
@@ -84,7 +84,7 @@ public class ThrowableWeapon : SupportWeaponBase
 		{
 			lineRendererToRange.gameObject.SetActive(true);
 			if (distance >= maxDistance)
-				targetPos = zeroCurPos + normalizedDirection * maxDistance;
+				this.targetPos = zeroCurPos + normalizedDirection * maxDistance;
 		}
 		else lineRendererToRange.gameObject.SetActive(false);
 
@@ -119,7 +119,7 @@ public class ThrowableWeapon : SupportWeaponBase
 	{
 		points[0] = playerData.shootStartPos.position;
 		points[1] = playerData.shootStartPos.position + new Vector3(0, yPos, 0);
-		points[2] = playerData.consumTargetPos;
+		points[2] = targetPos;
 
 		decal.transform.position = Vector3.Lerp(decal.transform.position, targetPos, Time.deltaTime * 20.0f);
 
@@ -145,8 +145,8 @@ public class ThrowableWeapon : SupportWeaponBase
 		for (int i = 0; i <= segments; i++)
 		{
 			float currentAngle = angle + angleStart + i * angleStep;
-			float x = curPos.x - (maxDistance - decal.size.x / 2) * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
-			float z = curPos.z + (maxDistance - decal.size.x / 2) * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
+			float x = curPos.x - (maxDistance + decal.size.x / 2) * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
+			float z = curPos.z + (maxDistance + decal.size.x / 2) * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
 			lineRendererToRange.SetPosition(i, new Vector3(x, curPos.y, z));
 		}
 	}

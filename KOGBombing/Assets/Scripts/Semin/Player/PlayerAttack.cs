@@ -120,10 +120,10 @@ public class PlayerAttack : PlayerBehavior
                 }
             }
 
-            if (Physics.Raycast(cameraRay, out hit))
+			if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
                 playerData.consumTargetPos = hit.point;
-                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position, playerData.consumTargetPos,
+                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), playerData.consumTargetPos,
                     playerData.playerObj.transform.eulerAngles.y));
             }
 

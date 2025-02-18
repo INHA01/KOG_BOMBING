@@ -1431,6 +1431,11 @@ Shader "Custom/Stencil Mask"
                 "LightMode" = "DepthNormals"
             }
         
+        Stencil {
+            Ref 1
+            Comp Equal
+            Pass keep
+        }
         // Render State
         Cull Back
         ZTest LEqual

@@ -300,8 +300,7 @@ GameObject:
   - component: {fileID: 5692399547618019558}
   - component: {fileID: 3033848319823012077}
   - component: {fileID: 4036492858300786112}
-  - component: {fileID: 3796531427897086792}
-  - component: {fileID: 5041078391237037437}
+  - component: {fileID: 2597896122239260872}
   m_Layer: 5
   m_Name: CharacterChooseCanvas
   m_TagString: Untagged
@@ -397,24 +396,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3796531427897086792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4145742951126778194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4aa2a99f70469043a9fb7cadd6b6acc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teamIconBack: {fileID: 6824280659782139080}
-  characterName: {fileID: 3978850060373612332}
-  teamType: {fileID: 878897023318656126}
-  countDownText: {fileID: 8201883683700916302}
-  type: 0
---- !u!114 &5041078391237037437
+--- !u!114 &2597896122239260872
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -427,6 +409,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamIconBack: {fileID: 8639218755897665352}
+  characterName: {fileID: 3978850060373612332}
+  teamType: {fileID: 878897023318656126}
+  countDownText: {fileID: 8201883683700916302}
+  type: 0
 --- !u!1 &4302439119480960465
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,21 +668,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3796531427897086792}
-        m_TargetAssemblyTypeName: Subject, Assembly-CSharp
+      - m_Target: {fileID: 2597896122239260872}
+        m_TargetAssemblyTypeName: ChoosePlayer, Assembly-CSharp
         m_MethodName: Notify
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5041078391237037437}
-        m_TargetAssemblyTypeName: PhotonChoosePlayer, Assembly-CSharp
-        m_MethodName: ChangeOtherPlayerIcon
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1037,7 +1011,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3796531427897086792}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ChoosePlayer, Assembly-CSharp
         m_MethodName: Spawn
         m_Mode: 1
@@ -1246,21 +1220,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3796531427897086792}
-        m_TargetAssemblyTypeName: Subject, Assembly-CSharp
+      - m_Target: {fileID: 2597896122239260872}
+        m_TargetAssemblyTypeName: ChoosePlayer, Assembly-CSharp
         m_MethodName: Notify
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5041078391237037437}
-        m_TargetAssemblyTypeName: PhotonChoosePlayer, Assembly-CSharp
-        m_MethodName: ChangeOtherPlayerIcon
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

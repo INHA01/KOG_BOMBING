@@ -42,7 +42,6 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         }
         if (interactObj == null) return false;
         iInteractObj = interactObj;
-        Debug.Log("Find Interact Obj");
         return true;
     }
 

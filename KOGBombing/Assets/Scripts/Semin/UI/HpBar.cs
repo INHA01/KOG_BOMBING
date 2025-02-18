@@ -49,6 +49,7 @@ public class HpBar : MonoBehaviour
     public void HideOtherTeamUI()
     {
         otherTeam.SetActive(false);
+        groggyObject.SetActive(false);
     }
 
     public void ShowGroggy()

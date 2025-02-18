@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,10 +18,11 @@ public class PlayerMaterialController : MonoBehaviour
 		this.hitMaterial = hitMaterial;
 	}
 
-	public void SetOtherTeamMaterial(List<Material> changeMaterials)
+	public void SetOtherTeamMaterial(List<Material> changeMaterials, HpBar hpBar)
 	{
 		this.changeMaterials = changeMaterials;
 		SetMaterialToHide();
+		hpBar.HideOtherTeamUI();
 		//hitMaterial = Managers.Resource.Load<Material>("Materials/HitHideMaterial");
 		for ( int i = 0; i < changeMaterialMeshs.Count; i++ )
 		{

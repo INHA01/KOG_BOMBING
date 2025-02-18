@@ -35,7 +35,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (!playerData.pv.IsMine)
         {
-            playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials);
+            playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials, blackBoard.hpBar);
             blackBoard.fieldOfView.SetActive(false);
         }
         blackBoard.hpBar.SetIsMyTeam(false);

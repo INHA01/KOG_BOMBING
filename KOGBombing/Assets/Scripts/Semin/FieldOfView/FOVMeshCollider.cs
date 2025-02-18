@@ -28,7 +28,11 @@ public class FOVMeshCollider : MonoBehaviour
 
 		ETeam playerTeam = player.blackBoard.eTeam;
 		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
+		{
 			player.blackBoard.hpBar.ShowOtherTeamUI();
+			if (player.blackBoard.playerStatus.isGroggy)
+				player.blackBoard.hpBar.ShowGroggy();
+		}
 	}
 
 	private void OnTriggerStay(Collider other)
@@ -36,8 +40,11 @@ public class FOVMeshCollider : MonoBehaviour
 		PlayerController player = other.GetComponent<PlayerController>();
 		if (player == null) return;
 		if (!player.blackBoard.hpBar.IsShowUI())
+		{
 			player.blackBoard.hpBar.ShowOtherTeamUI();
-
+			if (player.blackBoard.playerStatus.isGroggy)
+				player.blackBoard.hpBar.ShowGroggy();
+		}
 	}
 
 	private void OnTriggerExit(Collider other)

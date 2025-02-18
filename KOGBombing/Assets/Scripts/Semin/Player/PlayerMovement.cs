@@ -12,23 +12,12 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
         return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
     }
 
-    public INode.ENodeState Move(EDirection direction)
+    public INode.ENodeState Move()
     {
         Vector3 movement;
-        switch (direction)
-        {
-            case EDirection.Left:
-            case EDirection.Right:
-                movement = transform.right * Time.deltaTime * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
-                blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
-                break;
-            case EDirection.Up:
-            case EDirection.Down:
-                movement = transform.forward * Time.deltaTime * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
-                blackBoard.rigidBody.MovePosition(blackBoard.rigidBody.position + movement);
-                break;
-        }
-
+		movement = transform.right * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
+        movement += transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
+		blackBoard.rigidBody.velocity = movement;
         return INode.ENodeState.Success;
     }
 

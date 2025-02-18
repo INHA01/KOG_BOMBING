@@ -72,7 +72,7 @@ public class ChoosePlayer : Subject
     }
     IEnumerator CountDown()
     {
-        float time = 60;
+        float time = 10;
         while(time > 0)
         {
             countDownText.text = time.ToString();

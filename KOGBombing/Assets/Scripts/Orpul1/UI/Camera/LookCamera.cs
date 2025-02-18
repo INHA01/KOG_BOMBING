@@ -9,6 +9,7 @@ public class LookCamera : MonoBehaviour
     bool canStart = false;
     private void Start()
     {
+        Managers.camData.InitCamera();
         StartCoroutine(CoWaitInit());
     }
     private IEnumerator CoWaitInit()

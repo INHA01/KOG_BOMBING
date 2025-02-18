@@ -42,9 +42,6 @@ public class PhotonChoosePlayer : ChoosePlayer
             ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
             if (chooseAvatarIcon == null) return;
             chooseAvatarIcon.Choosing(receiveChooseIndex);
-
-            Debug.Log($"chooseIndex {receiveChooseIndex}");
-            Debug.Log($"TeamIndex {receiveTeamIndex}");
         }
     }
     public override void Init()
@@ -52,13 +49,11 @@ public class PhotonChoosePlayer : ChoosePlayer
         ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         playerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
         mTeamPlayerList = GetTeamPlayer(eTeam);
-        Debug.Log($"playerTeamIndex {playerTeamIndex}");
         int playerCnt = mTeamPlayerList.Count;
         
         //자기 자신을 제외한 플레이어 아이콘 생성
         for (int i = 0; i < mTeamPlayerList.Count; i++) 
         {
-            Debug.Log($"instantiate SelectUI {i}");
             SetIcon(false);
         }
     }

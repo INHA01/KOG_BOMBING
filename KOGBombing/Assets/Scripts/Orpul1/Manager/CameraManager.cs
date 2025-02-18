@@ -38,4 +38,8 @@ public class CameraManager
         }
         dicCamera.Remove(key);
     }
+    public void InitCamera()
+    {
+        dicCamera.Clear();
+    }
 }

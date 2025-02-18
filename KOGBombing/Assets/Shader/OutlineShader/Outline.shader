@@ -31,7 +31,6 @@ Shader "Custom/Outline"
             Comp Equal
         }
 
-
         Pass
         {
             Name "Universal Forward"

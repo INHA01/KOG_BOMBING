@@ -23,6 +23,7 @@ public class PhotonChoosePlayer : ChoosePlayer
 
     protected override void Awake()
     {
+        if (PhotonNetwork.OfflineMode == true) return;
         base.Awake();
         PhotonNetwork.NetworkingClient.EventReceived += OnSelectEvent;
         option.Receivers = ReceiverGroup.All;

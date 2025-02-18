@@ -29,6 +29,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.OfflineMode = true;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", ETeam.REDTEAM } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", 0 } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
         StartCoroutine(TimeCount());

@@ -9,10 +9,8 @@ using System.IO;
 using UnityEngine;
 
 
-public class PhotonChoosePlayer : MonoBehaviour
+public class PhotonChoosePlayer : ChoosePlayer
 {
-    [SerializeField]
-    Transform teamIconBack;
     PhotonChooseAvatar photonAvatar = new PhotonChooseAvatar();
     List<Player> mTeamPlayerList;
     Queue<int> mTeamIndex = new Queue<int>();
@@ -21,15 +19,16 @@ public class PhotonChoosePlayer : MonoBehaviour
     RaiseEventOptions option = new RaiseEventOptions();
     int eventCode = 12;
 
-    void Awake()
+    protected override void Awake()
     {
         if (PhotonNetwork.OfflineMode == true) return;
         PhotonNetwork.NetworkingClient.EventReceived += OnSelectEvent;
         option.Receivers = ReceiverGroup.All;
         Init();
     }
-    public void ChangeOtherPlayerIcon(int index)
+    public override void Notify(int index)
     {
+        base.Notify(index);
         object[] sendMsg = new object[2] { index, playerTeamIndex };
         PhotonNetwork.RaiseEvent((byte)eventCode, sendMsg, option, SendOptions.SendReliable);
     }
@@ -45,40 +44,51 @@ public class PhotonChoosePlayer : MonoBehaviour
             chooseAvatarIcon.Choosing(receiveChooseIndex);
         }
     }
-    void Init()
+    public override void Init()
     {
         ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         playerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
         mTeamPlayerList = GetTeamPlayer(eTeam);
         int playerCnt = mTeamPlayerList.Count;
         
-        //자기 자신을 제외한 플레이어 아이콘 생성
+        //플레이어 아이콘 생성
         for (int i = 0; i < mTeamPlayerList.Count; i++) 
         {
-            CreateOtherIcon();
+            if (mTeamPlayerList[i] == PhotonNetwork.LocalPlayer)
+                SetIcon(true);
+            else
+                SetIcon(false);
         }
+        base.Init();
     }
     private List<Player> GetTeamPlayer(ETeam eTeam)
     {
         List<Player> teamPlayerList = new List<Player>();
-        Player[] otherPlayer = PhotonNetwork.PlayerListOthers;
-        for(int i=0; i<otherPlayer.Length; i++)
+        Player[] players = PhotonNetwork.PlayerList;
+        for(int i=0; i<players.Length; i++)
         {
-            if ((ETeam)otherPlayer[i].CustomProperties["Team"] == eTeam)
+            if ((ETeam)players[i].CustomProperties["Team"] == eTeam)
             {
-                teamPlayerList.Add(otherPlayer[i]);
-                mTeamIndex.Enqueue((int)otherPlayer[i].CustomProperties["TeamIndex"]);
+                teamPlayerList.Add(players[i]);
+                mTeamIndex.Enqueue((int)players[i].CustomProperties["TeamIndex"]);
             }
         }
         return teamPlayerList;
     }
-    void CreateOtherIcon()
+    public override void SetIcon(bool isMine)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
         go.transform.SetParent(teamIconBack);
         int teamIndex = mTeamIndex.Dequeue();
-        photonAvatar.AddPlayerAvatar(teamIndex, go.GetComponent<ChooseAvatarIcon>());
+        if (isMine)
+        {
+            go.GetComponent<ChooseAvatarIcon>().SetSubject(this, true);
+        }
+        else
+        { 
+            photonAvatar.AddPlayerAvatar(teamIndex, go.GetComponent<ChooseAvatarIcon>());
+        }
     }
 
 }

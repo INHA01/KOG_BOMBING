@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ChoosePlayer : Subject
 {
-    [SerializeField] protected GameObject teamIconBack;
+    [SerializeField] protected Transform teamIconBack;
     [SerializeField] TextMeshProUGUI characterName;
     [SerializeField] TextMeshProUGUI teamType;
     [SerializeField] TextMeshProUGUI countDownText;
@@ -40,19 +40,19 @@ public class ChoosePlayer : Subject
             teamType.colorGradient = new VertexGradient(Color.red, Color.red, weekRed, weekRed);
             teamType.text = "АјАн";
         }
-        GameObject go = null;
-        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
-        go.GetComponent<ChooseAvatar>().SetSubject(this , true);
+        //GameObject go = null;
+        //go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
+        //go.GetComponent<ChooseAvatar>().SetSubject(this , true);
 
 
-        SetIcon(true);
+        //SetIcon(true);
         StartCoroutine(CountDown());
     }
     public virtual void SetIcon(bool isMine)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
-        go.transform.SetParent(teamIconBack.transform);
+        go.transform.SetParent(teamIconBack);
         if(isMine)
         {
             go.GetComponent<ChooseAvatarIcon>().SetSubject(this , true);

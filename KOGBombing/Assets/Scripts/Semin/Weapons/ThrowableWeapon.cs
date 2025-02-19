@@ -145,8 +145,8 @@ public class ThrowableWeapon : SupportWeaponBase
 		for (int i = 0; i <= segments; i++)
 		{
 			float currentAngle = angle + angleStart + i * angleStep;
-			float x = curPos.x - (maxDistance + decal.size.x / 2) * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
-			float z = curPos.z + (maxDistance + decal.size.x / 2) * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
+			float x = curPos.x - (maxDistance + decal.size.x / 4) * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
+			float z = curPos.z + (maxDistance + decal.size.x / 4) * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
 			lineRendererToRange.SetPosition(i, new Vector3(x, curPos.y, z));
 		}
 	}

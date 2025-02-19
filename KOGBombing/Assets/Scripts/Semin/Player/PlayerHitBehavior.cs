@@ -119,7 +119,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 blackBoard.playerStatus.isGroggy = true;
 				blackBoard.playerStatus.groggyable = false;
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
-                playerData.speedDebuffPercent = 0.1f;
+				blackBoard.speedDebuffPercent = 0.1f;
                 ChangeWeapon(WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				groggyCoroutine = StartCoroutine(Groggy());
@@ -153,7 +153,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
 		blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
-		playerData.speedDebuffPercent = 1f;
+		blackBoard.speedDebuffPercent = 1f;
 		blackBoard.hpBar.InitializeValues();
         blackBoard.hpBar.HideGroggy();
 		this.transform.position = blackBoard.spawnPoint;
@@ -230,12 +230,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
-        playerData.speedDebuffPercent = 1f;
+		blackBoard.speedDebuffPercent = 1f;
     }
     [PunRPC]
     private void Rigidity(float time)
     {
-        playerData.speedDebuffPercent = 0.5f;
+		blackBoard.speedDebuffPercent = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
 
@@ -274,6 +274,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     IEnumerator ResetRigidity(float time)
     {
         yield return new WaitForSeconds(time);
-        playerData.speedDebuffPercent = 1.0f;
+		blackBoard.speedDebuffPercent = 1.0f;
     }
 }

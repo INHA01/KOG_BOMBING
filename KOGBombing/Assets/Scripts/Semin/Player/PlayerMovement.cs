@@ -15,8 +15,8 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
     public INode.ENodeState Move()
     {
         Vector3 movement;
-		movement = transform.right * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * playerData.speedDebuffPercent;
-        movement += transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.y * playerData.speedDebuffPercent;
+		movement = transform.right * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * blackBoard.speedDebuffPercent;
+        movement += transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.y * blackBoard.speedDebuffPercent;
         movement.y = blackBoard.rigidBody.velocity.y;
         blackBoard.rigidBody.velocity = movement;
         return INode.ENodeState.Success;

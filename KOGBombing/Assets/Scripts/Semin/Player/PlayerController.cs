@@ -86,6 +86,6 @@ public class PlayerController : MonoBehaviour
         if (!playerData.pv.IsMine) return;
 
         if (playerData.animator != null)
-            playerData.animator.UpdateAnimation(blackBoard.speedValue, transform);
+            playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
     }
 }

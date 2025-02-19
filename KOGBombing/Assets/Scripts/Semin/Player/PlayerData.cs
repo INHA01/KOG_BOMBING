@@ -22,7 +22,6 @@ public class PlayerData : MonoBehaviour
 
     [Header("Player Info")]
     public Rigidbody rigidBody;
-    public float speedDebuffPercent = 1;
 	public float timeWithoutDamage;
 
     [Header("Model Anim")]

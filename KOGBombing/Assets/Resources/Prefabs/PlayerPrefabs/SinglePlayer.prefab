@@ -479,7 +479,6 @@ MonoBehaviour:
     type: 3}
   pv: {fileID: 2047044685979704218}
   rigidBody: {fileID: 1272812946582949491}
-  speedDebuffPercent: 1
   timeWithoutDamage: 0
   playerObj: {fileID: 772106139481323054}
   playerLookObj: {fileID: 1368636139714485546}
@@ -627,6 +626,7 @@ MonoBehaviour:
   fieldOfView: {fileID: 297773431431672600}
   gmlookTarget: {fileID: 0}
   speedValue: {x: 0, y: 0}
+  speedDebuffPercent: 1
   mousePos: {x: 0, y: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
   eTeam: 0
@@ -1090,7 +1090,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 535690572618158977}

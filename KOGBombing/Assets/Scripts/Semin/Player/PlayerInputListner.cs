@@ -101,5 +101,8 @@ public class PlayerInputListner : Subject
         blackBoard.inputs[EKey.LEFTSHIFT] = value.isPressed;
         int pressed = value.isPressed ? 1 : 0;
         Notify(pressed);
+        if (pressed == 1)
+            blackBoard.speedDebuffPercent *= 0.5f;
+        else blackBoard.speedDebuffPercent *= 2f;
     }
 }

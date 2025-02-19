@@ -16,7 +16,8 @@ public class PlayerBlackBoard : MonoBehaviour
     public GameObject fieldOfView;
     public GameObject gmlookTarget;
     public Vector2 speedValue;
-    public Vector2 mousePos;
+	public float speedDebuffPercent = 1;
+	public Vector2 mousePos;
     public Vector3 spawnPoint;
     public ETeam eTeam;
     public string nickname;

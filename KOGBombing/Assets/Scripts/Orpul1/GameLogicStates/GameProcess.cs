@@ -10,7 +10,6 @@ using UnityEngine;
 public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
 {
     
-    RaiseEventOptions options = new RaiseEventOptions();
     GameRoundData roundData = new GameRoundData();
     [SerializeField]
     float roundInterval = 20;
@@ -48,6 +47,7 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
         int teamType = (int)punEvent.CustomData;
         roundData.SetTeamCount(teamType, -1);
         isEndRound = roundData.IsExterminateTeam();
+        Managers.UI.ClosePopupUI("DieCanvas");
         Debug.Log($"RT {roundData.TeamScores[(int)ETeam.REDTEAM]} BT {roundData.TeamScores[(int)ETeam.BLUETEAM]}");
     }
 
@@ -61,15 +61,11 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
             time = 0;
         }
     }
-    private void RedayNextRound()
-    {
-        transitionState((int)EGameState.ROUNDWAIT);
-    }
 
     public void SetTeamCount(int teamType)
     {
         // TODO : 팀 감소 동기화
-        PhotonNetwork.RaiseEvent((int)EGameEvent.EXTERMINATETEAM, teamType, options, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent((int)EGameEvent.EXTERMINATETEAM, teamType, logicContext.options, SendOptions.SendReliable);
     }
 
     public void ExplosionBomb()

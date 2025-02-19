@@ -10,12 +10,6 @@ public class CharacterSelect : GameProcessLogic
 {
     UIPopup _uiScene;
     bool isSelectCharacter = false;
-    Action<StringBuilder> setPlayerCharacter;
-    StringBuilder characterPath = new StringBuilder();
-    private void Start()
-    {
-        setPlayerCharacter = GetComponent<PlayerSpawner>().SetPlayerCharacter;
-    }
     public override void EnterState()
     {
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
@@ -39,8 +33,7 @@ public class CharacterSelect : GameProcessLogic
     private void DoneSelectCharacter()
     {
         Debug.Log("DoneSelectCharacter");
-        characterPath.Append(_uiScene.GetComponent<ChoosePlayer>().type.ToString());
-        setPlayerCharacter(characterPath);
+        logicContext.selectCharacterPath.Append(_uiScene.GetComponent<ChoosePlayer>().type.ToString());
         isSelectCharacter = true;
     }
     

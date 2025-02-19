@@ -8,7 +8,6 @@ using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 public class RoundWaiter : PhotonPlayerWaitLogic
 {
-    RaiseEventOptions options = new RaiseEventOptions();
     bool canCountDown = false;
     float gamestartInterval = 15;
     [SerializeField]
@@ -18,7 +17,7 @@ public class RoundWaiter : PhotonPlayerWaitLogic
         readyPlayerCnt = 0;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", (int)EPlayerState.WAITROUND } });
         PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;
-        options.Receivers = ReceiverGroup.All;
+        logicContext.options.Receivers = ReceiverGroup.All;
         canCountDown = false;
         SetPlayerPosi();
         time = 0;
@@ -77,6 +76,6 @@ public class RoundWaiter : PhotonPlayerWaitLogic
     {
         Debug.Log("RoundWait");
         while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
-        PhotonNetwork.RaiseEvent((int)EGameEvent.ROUNDREADY, null, options, SendOptions.SendUnreliable);
+        PhotonNetwork.RaiseEvent((int)EGameEvent.ROUNDREADY, null, logicContext.options, SendOptions.SendUnreliable);
     }
 }

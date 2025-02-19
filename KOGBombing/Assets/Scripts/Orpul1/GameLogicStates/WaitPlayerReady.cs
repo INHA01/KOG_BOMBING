@@ -10,7 +10,6 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 public class WaitPlayerReady : PhotonPlayerWaitLogic 
 {
 
-    RaiseEventOptions options = new RaiseEventOptions();
     int curPlayerCnt = 0;
     bool isAllPlayerReady = false;
     public override void EnterState()
@@ -18,7 +17,7 @@ public class WaitPlayerReady : PhotonPlayerWaitLogic
         readyPlayerCnt = 0;
         isAllPlayerReady = false;
         curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
-        options.Receivers = ReceiverGroup.All;
+        logicContext.options.Receivers = ReceiverGroup.All;
         PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
         base.EnterState();
     }
@@ -46,7 +45,7 @@ public class WaitPlayerReady : PhotonPlayerWaitLogic
     private void SendAllPlayerReady()
     {
         if (!(curPlayerCnt == readyPlayerCnt)) return;
-        PhotonNetwork.RaiseEvent((int)EGameEvent.PLAYERREADY, null, options, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent((int)EGameEvent.PLAYERREADY, null, logicContext.options, SendOptions.SendReliable);
     }
     private void OnWaitPlayer(EventData punEvent)
     {
@@ -73,6 +72,6 @@ public class WaitPlayerReady : PhotonPlayerWaitLogic
             Debug.Log("WaitPlayerReady");
             yield return null;
         }
-        PhotonNetwork.RaiseEvent((int)EGameEvent.PLAYERREADY, null, options, SendOptions.SendUnreliable);
+        PhotonNetwork.RaiseEvent((int)EGameEvent.PLAYERREADY, null, logicContext.options, SendOptions.SendUnreliable);
     }
 }

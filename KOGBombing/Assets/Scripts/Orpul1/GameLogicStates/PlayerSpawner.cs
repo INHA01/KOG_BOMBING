@@ -62,7 +62,7 @@ public class PlayerSpawner : GameProcessLogic
     }
     void DoSpawnPlayer(Vector3 spawnPosi)
     {
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + characterPath.ToString(), spawnPosi, Quaternion.Euler(0, 45, 0));
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + logicContext.selectCharacterPath.ToString(), spawnPosi, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
         GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
         minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;
@@ -70,7 +70,7 @@ public class PlayerSpawner : GameProcessLogic
         cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
         cameraObj.transform.SetParent(playerObj.transform);
         playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(), spawnPosi, GetComponent<ISetTeamCountable>());
-
+        logicContext.playerObj = playerObj;
         Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
         Managers.CamData.AddCamera(minCamaraObj, ECameraType.MINIMAPCAMERA);
     }

@@ -8,17 +8,22 @@ public class GameRoundData
     int[] teamCounts = new int[2] { 0, 0 };
     public int[] TeamScores { get { return teamScores; } }
     public int[] TeamCounts { get { return teamCounts; } }
+    int winRound = 3;
+    int processRoundCnt = 0;
+    int switchRound = 2;
     bool isTimeOver = false;
     bool isExplosion = false;
-    public GameRoundData()
+    public GameRoundData(int winRound)
     {
         isTimeOver = false;
         isExplosion = false;
-        for (int i=0; i<2; i++)
+        for (int i = 0; i < 2; i++)
         {
             teamScores[i] = 0;
             teamCounts[i] = 0;
         }
+
+        this.winRound = winRound;
     }
     public void Init()
     {
@@ -73,18 +78,28 @@ public class GameRoundData
     }
     public EGameState GetNextState()
     {
-        if (JudgementNextRound())
+        if (IsEndGame())    
             return EGameState.GAMEEND;
-        return EGameState.ROUNDWAIT;
+
+        processRoundCnt++;
+        if (IsNextRound())  
+            return EGameState.ROUNDWAIT;
+        else                
+            return EGameState.SWITCHTEAMROLL;
     }
-    private bool JudgementNextRound()
+
+    private bool IsEndGame()
     {
-        return true;
         float scoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
 
-        if (scoreGap < 3) return false;
-        if (teamScores[(int)ETeam.REDTEAM] < 9 && teamScores[(int)ETeam.BLUETEAM] < 9) return false;
-
+        if (scoreGap > winRound) return true;
+        if (teamScores[(int)ETeam.REDTEAM] > 9 && teamScores[(int)ETeam.BLUETEAM] > 9) return true;
+        return false;
+    }
+    private bool IsNextRound()
+    {
+        if (processRoundCnt % switchRound == 0)
+            return false;
         return true;
     }
 }

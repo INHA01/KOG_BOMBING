@@ -9,13 +9,17 @@ using UnityEngine;
 
 public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
 {
-    
-    GameRoundData roundData = new GameRoundData();
+
+    GameRoundData roundData;
     [SerializeField]
     float roundInterval = 20;
     [SerializeField]
     float time = 0;
     bool isEndRound = false;
+    private void Start()
+    {
+        roundData = new GameRoundData(2);
+    }
     public override void EnterState()
     {
         int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];

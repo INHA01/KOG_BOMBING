@@ -40,10 +40,9 @@ public class ChoosePlayer : Subject
             teamType.colorGradient = new VertexGradient(Color.red, Color.red, weekRed, weekRed);
             teamType.text = "АјАн";
         }
-        //GameObject go = null;
-        //go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
-        //go.GetComponent<ChooseAvatar>().SetSubject(this , true);
-
+        GameObject go = null;
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
+        go.GetComponent<ChooseAvatar>().SetSubject(this, true);
 
         //SetIcon(true);
         StartCoroutine(CountDown());
@@ -72,7 +71,7 @@ public class ChoosePlayer : Subject
     }
     IEnumerator CountDown()
     {
-        float time = 10;
+        float time = 5;
         while(time > 0)
         {
             countDownText.text = time.ToString();

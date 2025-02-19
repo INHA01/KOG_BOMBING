@@ -184,7 +184,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     IEnumerator RespawnDelay(float time)
     {
-        blackBoard._uiScene = Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
+        Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
         blackBoard.hpBar.SetStopHpUI(true);
         blackBoard.playerStatus.isLive = false;
         SetActiveState(false);

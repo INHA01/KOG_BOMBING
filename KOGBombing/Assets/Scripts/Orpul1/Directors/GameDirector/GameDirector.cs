@@ -96,6 +96,9 @@ namespace Orpul1
             StartCoroutine(TimeCount());
 
         }
+        GameObject playerObj;
+        GameObject cameraObj;
+        GameObject minCamaraObj;
         IEnumerator TimeCount()
         {
             while (true)
@@ -106,6 +109,10 @@ namespace Orpul1
                 time -= Time.deltaTime;
             }
             Debug.Log("Time Over");
+            Destroy(playerObj);
+            Destroy(cameraObj);
+            Destroy(minCamaraObj);
+            Managers.UI.ClosePopupUI("PlayCanvas");
             Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas");
         }
         [PunRPC]
@@ -121,9 +128,9 @@ namespace Orpul1
 
             Debug.Log($"teamSpawnSpot : {teamSpawnSpot}");
             Debug.Log($"spawnPosi : {spawnPosi}");
-            GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + _uiScene.GetComponent<ChoosePlayer>().type.ToString(), spawnPosi, Quaternion.Euler(0, 45, 0));
-            GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
-            GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
+            playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + _uiScene.GetComponent<ChoosePlayer>().type.ToString(), spawnPosi, Quaternion.Euler(0, 45, 0));
+            cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
+            minCamaraObj = Instantiate(minimapCamera, spawnPosi + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
             minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
             cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;

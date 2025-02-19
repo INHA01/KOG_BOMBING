@@ -82,7 +82,7 @@ namespace Orpul1
         {
             float elapsedTime = 0f;
             float finishTime = 3f;
-            float k = 5f; // 조절 가능한 계수
+            float k = 5f; 
 
             view.btnStartGame.interactable = false;
             view.startCounting.SetActive(true);
@@ -90,7 +90,6 @@ namespace Orpul1
 
             while (true)
             {
-                // 지수 함수로 fillAmount 계산
                 float t = elapsedTime / finishTime;
                 view.startCountingCircle.fillAmount = 1 - Mathf.Exp(-k * t);
                 elapsedTime += Time.deltaTime;

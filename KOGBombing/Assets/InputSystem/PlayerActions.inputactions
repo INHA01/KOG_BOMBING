@@ -67,6 +67,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "OpenBattleboard",
+                    "type": "Value",
+                    "id": "2282bf22-f47e-4561-9f7b-b20a30b49ad8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "OpenKeyDescription",
+                    "type": "Value",
+                    "id": "a915a751-7f03-4839-ae66-1f73ee537263",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -161,7 +179,7 @@
                 {
                     "name": "",
                     "id": "34b2bf55-fd07-4a4c-8495-6fe31edb41b9",
-                    "path": "<Keyboard>/2",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -188,6 +206,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SlowMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6893c7fd-9b92-475e-bf5f-8fb037188e98",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenBattleboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1849b0bd-2ff5-4165-bc0e-6eb59f8ba276",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenKeyDescription",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

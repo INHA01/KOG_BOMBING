@@ -102,4 +102,18 @@ public class PlayerInputListner : Subject
         int pressed = value.isPressed ? 1 : 0;
         Notify(pressed);
     }
+    public void OnOpenBattleboard(InputValue value)
+    {
+        if(value.isPressed)
+            Managers.UI.ShowPopupUI<UIPopup>("BattleBoardCanvas");
+        else
+            Managers.UI.ClosePopupUI("BattleBoardCanvas");
+    }
+    public void OnOpenKeyDescription(InputValue value)
+    {
+        if (value.isPressed)
+            Managers.UI.ShowPopupUI<UIPopup>("KeyDescriptionCanvas");
+        else
+            Managers.UI.ClosePopupUI("KeyDescriptionCanvas");
+    }
 }

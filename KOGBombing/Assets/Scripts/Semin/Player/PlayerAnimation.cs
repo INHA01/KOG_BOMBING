@@ -1,5 +1,6 @@
 using Orpul1;
 using Photon.Pun;
+using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -36,7 +37,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			animator = GetComponent<Animator>();
     }
 
-	public void Init(GameObject playerObj, ETeam team, Transform bulletPoint)
+	public void Init(GameObject playerObj, ETeam team, Transform bulletPoint, CharacterType type)
 	{
 		this.playerObj = playerObj;
 		if (team == ETeam.REDTEAM)
@@ -44,6 +45,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		else if (team == ETeam.BLUETEAM)
 			animator.SetBool("IsAttackTeam", false);
 		this.bulletPoint = bulletPoint;
+		animator.SetInteger("CharacterType", (int)type);
 	}
 
 	public void SetAnimTrigger(AnimType type)

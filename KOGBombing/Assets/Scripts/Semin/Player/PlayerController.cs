@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
 
-		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos);
+		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
 
 		if(playerData.pv.IsMine)
 		{

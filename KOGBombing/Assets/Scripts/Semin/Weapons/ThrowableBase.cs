@@ -155,7 +155,5 @@ public abstract class ThrowableBase : SupportWeaponBase
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
 		StartCoroutine(ThrowConsum());
-
-		Debug.Log($"{points[0]}, {points[1]}, {points[2]}");
 	}
 }

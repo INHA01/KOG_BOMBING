@@ -76,7 +76,6 @@ public class PlayerAttack : PlayerBehavior
             case CharacterType.Ned:
                 playerData.skill = gameObject.AddComponent<ThrowableSkill>();
                 playerData.skill.InitializationSkill(playerData);
-                Debug.Log("Ned");
                 break;
             case CharacterType.Uni:
                 break;
@@ -245,14 +244,12 @@ public class PlayerAttack : PlayerBehavior
 		if (blackBoard.playerStatus.groggyable == false) return;
         if (!playerData.skill.isUsableSkill()) return;
 
-        Debug.Log("ASDFASDFASDFASDFSADFDS");
 		isChangableAnim = true;
 		WeaponType weaponType = WeaponType.GUN;
 		blackBoard.inputs[EKey.Q] = !blackBoard.inputs[EKey.Q];
 
 		if (blackBoard.inputs[EKey.Q])
 		{
-            Debug.Log("push");
 			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, true);
 			if (playerData.skill is ThrowableSkill baseWeapon)
 				weaponType = baseWeapon.type;

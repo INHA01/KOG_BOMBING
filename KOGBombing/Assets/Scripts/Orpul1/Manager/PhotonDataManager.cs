@@ -23,6 +23,10 @@ public class PhotonDataManager
         dicPlayerBlackBoard.Add(nickname, blackBoard);
         blackBoardList.Add(blackBoard);
     }
+    public bool IsContainKey(string key)
+    {
+        return dicPlayerBlackBoard.ContainsKey(key);
+    }
     public PlayerBlackBoard GetPlayerBlackBoard(string nickname)
     {
         if(!dicPlayerBlackBoard.ContainsKey(nickname))

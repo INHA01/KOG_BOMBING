@@ -4,9 +4,7 @@ using UnityEngine;
 using Orpul1;
 using Photon.Pun;
 using Semin;
-using System;
-using Unity.VisualScripting;
-
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
     [SerializeField]
@@ -18,7 +16,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     TeamUIController teamUIController = new TeamUIController();
     float groggyTime;
     Coroutine groggyCoroutine;
-
     
     private void Start()
     {
@@ -134,16 +131,20 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     private void Death()
     {
-		if (playerData.pv.IsMine)
+        if (playerData.pv.IsMine)
 		{
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-			if (playerTeam == ETeam.REDTEAM)
-				GameDirector.blueScore++;
-			else
-				GameDirector.redScore++;
+            blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", EPlayerState.WAITROUND } });
 
-			//gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-			StartCoroutine(RespawnDelay(3.0f));
+            /*
+                        if (playerTeam == ETeam.REDTEAM)
+                            GameDirector.blueScore++;
+                        else
+                            GameDirector.redScore++;*/
+
+            //gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
+            StartCoroutine(RespawnDelay(3.0f));
 		}
 		if (groggyCoroutine != null)
 			StopCoroutine(groggyCoroutine);

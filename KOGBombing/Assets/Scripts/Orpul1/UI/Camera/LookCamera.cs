@@ -9,17 +9,17 @@ public class LookCamera : MonoBehaviour
     bool canStart = false;
     private void Start()
     {
-        Managers.camData.InitCamera();
+        Managers.CamData.InitCamera();
         StartCoroutine(CoWaitInit());
     }
     private IEnumerator CoWaitInit()
     {
         GameObject cameraObj = null;
-        while (!Managers.camData.IsContainCamera(ECameraType.MAINCAMERA)) 
+        while (!Managers.CamData.IsContainCamera(ECameraType.MAINCAMERA)) 
         {
             yield return null;
         }
-        cameraObj = Managers.camData.GetCamera(ECameraType.MAINCAMERA);
+        cameraObj = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
         trCamera = cameraObj.transform;
         canStart = true;
     }

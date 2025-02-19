@@ -19,6 +19,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public Vector2 mousePos;
     public Vector3 spawnPoint;
     public ETeam eTeam;
+    public ISetTeamCountable setTeam;
     public string nickname;
     public PlayerStatus SOplayerStatus;
     [HideInInspector] public PlayerStatus playerStatus;

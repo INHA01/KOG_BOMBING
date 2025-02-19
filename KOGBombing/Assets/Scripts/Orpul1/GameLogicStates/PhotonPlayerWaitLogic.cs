@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public abstract class PhotonPlayerWaitLogic : MonoBehaviourPunCallbacks,IState
+public abstract class PhotonPlayerWaitLogic : MonoBehaviourPunCallbacks, IState
 {
     protected int readyPlayerCnt = 0;
     protected Action<int> transitionState;

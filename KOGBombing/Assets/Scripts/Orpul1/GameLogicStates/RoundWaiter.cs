@@ -8,18 +8,20 @@ using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 public class RoundWaiter : PhotonPlayerWaitLogic
 {
-    RaiseEventOptions options;
+    RaiseEventOptions options = new RaiseEventOptions();
     bool canCountDown = false;
     float gamestartInterval = 15;
     [SerializeField]
-    float time;
+    float time = 0;
     public override void EnterState()
     {
+        readyPlayerCnt = 0;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", (int)EPlayerState.WAITROUND } });
         PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;
         options.Receivers = ReceiverGroup.All;
-        SetPlayerPosi();
         canCountDown = false;
+        SetPlayerPosi();
+        time = 0;
         base.EnterState();
     }
     public override void UpdateState()
@@ -42,6 +44,7 @@ public class RoundWaiter : PhotonPlayerWaitLogic
 
     void SetPlayerPosi()
     {
+        if (!Managers.PunData.IsContainKey(PhotonNetwork.LocalPlayer.NickName)) return;
         Vector3 spawnPoint = Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).spawnPoint;
         Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).transform.position = spawnPoint;
     }
@@ -55,6 +58,7 @@ public class RoundWaiter : PhotonPlayerWaitLogic
         time += Time.deltaTime;
         if(time > gamestartInterval)
         {
+            Debug.Log($"Round Start");
             transitionState((int)EGameState.GAMESTART);
         }
     }
@@ -71,6 +75,7 @@ public class RoundWaiter : PhotonPlayerWaitLogic
 
     protected override IEnumerator CoWaitPlayer()
     {
+        Debug.Log("RoundWait");
         while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
         PhotonNetwork.RaiseEvent((int)EGameEvent.ROUNDREADY, null, options, SendOptions.SendUnreliable);
     }

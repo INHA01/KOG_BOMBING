@@ -4,16 +4,18 @@ using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class WaitPlayerReady : PhotonPlayerWaitLogic 
 {
 
-    RaiseEventOptions options;
+    RaiseEventOptions options = new RaiseEventOptions();
     int curPlayerCnt = 0;
     bool isAllPlayerReady = false;
     public override void EnterState()
     {
+        readyPlayerCnt = 0;
         isAllPlayerReady = false;
         curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
         options.Receivers = ReceiverGroup.All;
@@ -59,14 +61,18 @@ public class WaitPlayerReady : PhotonPlayerWaitLogic
         Player[] player = PhotonNetwork.PlayerList;
         for (int i = 0; i < player.Length; i++)
         {
-            if ((int)player[i].CustomProperties["State"] == (int)EPlayerState.WAITROUND)
+            if ((int)player[i].CustomProperties["State"] == (int)EPlayerState.READY)
                 readyPlayerCnt++;
         }
     }
 
     protected override IEnumerator CoWaitPlayer()
     {
-        while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
-        PhotonNetwork.RaiseEvent((int)EGameEvent.ROUNDREADY, null, options, SendOptions.SendUnreliable);
+        while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log("WaitPlayerReady");
+            yield return null;
+        }
+        PhotonNetwork.RaiseEvent((int)EGameEvent.PLAYERREADY, null, options, SendOptions.SendUnreliable);
     }
 }

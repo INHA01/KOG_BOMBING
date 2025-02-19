@@ -26,7 +26,6 @@ public class CharacterSelect : GameProcessLogic
     {
         if (isSelectCharacter)
         {
-            setPlayerCharacter(characterPath);
             transitionState((int)EGameState.SPAWNPLAYER);
         }
     }
@@ -39,7 +38,9 @@ public class CharacterSelect : GameProcessLogic
     
     private void DoneSelectCharacter()
     {
+        Debug.Log("DoneSelectCharacter");
         characterPath.Append(_uiScene.GetComponent<ChoosePlayer>().type.ToString());
+        setPlayerCharacter(characterPath);
         isSelectCharacter = true;
     }
     

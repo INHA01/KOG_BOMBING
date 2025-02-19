@@ -16,14 +16,18 @@ public class PlayerSpawner : GameProcessLogic
     GameObject minimapCamera;
 
     StringBuilder characterPath;
+    bool isSpawnPlayer = false;
     
     public override void EnterState()
     {
+        isSpawnPlayer = false;
+        Debug.Log($"SpawnEnterState");
         SpawnPlayer();
     }
     public override void UpdateState()
     {
-        transitionState((int)EGameState.ROUNDWAIT);
+        if(isSpawnPlayer)
+            transitionState((int)EGameState.ROUNDWAIT);
     }
     public override void ExitState()
     {
@@ -32,9 +36,17 @@ public class PlayerSpawner : GameProcessLogic
     
     public void SetPlayerCharacter(StringBuilder path)
     {
+        Debug.Log($"playerpaht:{path.ToString()}");
         characterPath = path;
     }
     void SpawnPlayer()
+    {
+        Debug.Log($"SpawnPlayer()");
+        Vector3 spawnPosi = SetSpawnPoint();
+        DoSpawnPlayer(spawnPosi);
+        isSpawnPlayer = true;
+    }
+    Vector3 SetSpawnPoint()
     {
         int spawnIndex = 0;
         int teamSpawnSpot = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
@@ -46,6 +58,10 @@ public class PlayerSpawner : GameProcessLogic
 
         Debug.Log($"teamSpawnSpot : {teamSpawnSpot}");
         Debug.Log($"spawnPosi : {spawnPosi}");
+        return spawnPosi;
+    }
+    void DoSpawnPlayer(Vector3 spawnPosi)
+    {
         GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + characterPath.ToString(), spawnPosi, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
         GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
@@ -53,12 +69,9 @@ public class PlayerSpawner : GameProcessLogic
         cameraObj.GetComponent<PlayerCamera>().target = playerObj;
         cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
         cameraObj.transform.SetParent(playerObj.transform);
-        playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(), spawnPosi);
+        playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(), spawnPosi, GetComponent<ISetTeamCountable>());
 
-        Managers.camData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
-        Managers.camData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
-
-        //_uiScene.GetComponent<PlayScene>().gameDirector = this;
-        //_uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
+        Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
+        Managers.CamData.AddCamera(minCamaraObj, ECameraType.MINIMAPCAMERA);
     }
 }

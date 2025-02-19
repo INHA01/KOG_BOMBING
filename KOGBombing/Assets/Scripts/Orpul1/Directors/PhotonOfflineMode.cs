@@ -91,12 +91,12 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
 		cameraObj.GetComponent<PlayerCamera>().target = playerObj;
         cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
         cameraObj.transform.SetParent(playerObj.transform);
-        playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(),spawnPosi.position);
+        playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(),spawnPosi.position, GetComponent<ISetTeamCountable>());
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
         //_uiScene.GetComponent<PlayScene>().gameDirector = this;
         _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         EventBusSystem.Unsubscribe(SpawnPlayer);
-        Managers.camData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
-        Managers.camData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
+        Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
+        Managers.CamData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
     }
 }

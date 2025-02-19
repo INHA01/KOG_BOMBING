@@ -7,44 +7,79 @@ using Photon.Realtime;
 using PhotnHashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 
-public class GameProcess : GameProcessLogic
+public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
 {
-    RaiseEventOptions options;
-    int attakTeamCnt = 0;
-    int defensTeamCnt = 0;
+    
+    RaiseEventOptions options = new RaiseEventOptions();
+    GameRoundData roundData = new GameRoundData();
+    [SerializeField]
+    float roundInterval = 20;
+    [SerializeField]
+    float time = 0;
+    bool isEndRound = false;
     public override void EnterState()
     {
-        attakTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-        defensTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-        PhotonNetwork.NetworkingClient.EventReceived += SendRoundEnd;
+        int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+        int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+        roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
+        roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
 
+        PhotonNetwork.NetworkingClient.EventReceived += OnSetTeamCount;
+        isEndRound = false;
+        time = 0;
     }
     public override void UpdateState()
     {
+        DoRoundCountDown();
+        if (isEndRound)
+        {
+            roundData.SetTeamScore();
+            transitionState((int)roundData.GetNextState());
+        }
     }
 
     public override void ExitState()
     {
-        PhotonNetwork.NetworkingClient.EventReceived -= SendRoundEnd;
+        PhotonNetwork.NetworkingClient.EventReceived -= OnSetTeamCount;
     }
-    private void CheckExterminateTeam()
-    {
-        if (attakTeamCnt == 0)
-        {
-
-        }
-        else if(defensTeamCnt == 0)
-        {
-
-        }
-    }
-    private void SendRoundEnd(EventData punEvent)
+    private void OnSetTeamCount(EventData punEvent)
     {
         if ((int)punEvent.Code != (int)EGameEvent.EXTERMINATETEAM) return;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.WAITROUND } });
+        int teamType = (int)punEvent.CustomData;
+        roundData.SetTeamCount(teamType, -1);
+        isEndRound = roundData.IsExterminateTeam();
+        Debug.Log($"RT {roundData.TeamScores[(int)ETeam.REDTEAM]} BT {roundData.TeamScores[(int)ETeam.BLUETEAM]}");
+    }
+
+    private void DoRoundCountDown()
+    {
+        time += Time.deltaTime;
+        if (time > roundInterval) 
+        {
+            roundData.RoundTimeOver();
+            isEndRound = true;
+            time = 0;
+        }
     }
     private void RedayNextRound()
     {
         transitionState((int)EGameState.ROUNDWAIT);
+    }
+
+    public void SetTeamCount(int teamType)
+    {
+        // TODO : 팀 감소 동기화
+        PhotonNetwork.RaiseEvent((int)EGameEvent.EXTERMINATETEAM, teamType, options, SendOptions.SendReliable);
+    }
+
+    public void ExplosionBomb()
+    {
+        roundData.ExplosionBomb();
+        isEndRound = true;
+    }
+
+    public void ClearBomb()
+    {
+        isEndRound = true;
     }
 }

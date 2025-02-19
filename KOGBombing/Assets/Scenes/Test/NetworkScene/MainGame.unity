@@ -8746,7 +8746,7 @@ GameObject:
   m_Component:
   - component: {fileID: 791594912}
   m_Layer: 0
-  m_Name: BlueTeamSpawnPoint
+  m_Name: DefenceTeamSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9780,7 +9780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1012673131}
   m_Layer: 0
-  m_Name: RedTeamSpawnPoint
+  m_Name: AttackTeamSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10918,6 +10918,13 @@ GameObject:
   - component: {fileID: 1317832628}
   - component: {fileID: 1317832630}
   - component: {fileID: 1317832629}
+  - component: {fileID: 1317832635}
+  - component: {fileID: 1317832634}
+  - component: {fileID: 1317832633}
+  - component: {fileID: 1317832632}
+  - component: {fileID: 1317832631}
+  - component: {fileID: 1317832637}
+  - component: {fileID: 1317832636}
   m_Layer: 0
   m_Name: GameDirector
   m_TagString: Untagged
@@ -10952,15 +10959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e8f123af8421149aea9c394e2d6fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 765872088010769705, guid: 0a097aab33c99b74f8c1e822180a4334,
-    type: 3}
-  minimapCamera: {fileID: 4415545071260989796, guid: bc263b49e528dc34ead1616c5f691de0,
-    type: 3}
-  teamSpawnPoints:
-  - {fileID: 1012673131}
-  - {fileID: 791594912}
-  pv: {fileID: 1317832630}
-  time: 180
 --- !u!114 &1317832629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11000,6 +10998,100 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1317832631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1493d3b61b4a1409ab8a081c24043f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roundInterval: 50
+  time: 0
+--- !u!114 &1317832632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea46b08510744154da39fd1e216cc02a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0
+--- !u!114 &1317832633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd15f6fb14345e4483ed756a2732277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamSpawnPoints:
+  - {fileID: 1012673131}
+  - {fileID: 791594912}
+  playerCamera: {fileID: 765872088010769705, guid: 0a097aab33c99b74f8c1e822180a4334,
+    type: 3}
+  minimapCamera: {fileID: 4415545071260989796, guid: bc263b49e528dc34ead1616c5f691de0,
+    type: 3}
+--- !u!114 &1317832634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6044f78d2def5d84899fed8fc51a2db2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1317832635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6fed6e09770c0d4bbb83a26fa3403ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1317832636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20facc900c7d8e347970f137987a7be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1317832637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4999f8a51b4e48a783ae6a44d5a3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &1319289927
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -1,43 +1,40 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.0.11">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.1 Chrome/112.0.5615.87 Electron/24.1.2 Safari/537.36" modified="2025-02-19T00:14:58.373Z" version="21.2.1" etag="cO2hgnMN6MBMpkPKupQ2" type="device">
   <diagram name="페이지-1" id="qsMyMIJTtJl387BWLE7k">
-    <mxGraphModel dx="1562" dy="845" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="678" dy="595" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-19" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="70" y="160" width="690" height="360" as="geometry" />
-        </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-2" value="캐릭터 선택" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-2" value="캐릭터 선택" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="260" y="280" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-3" value="게임 진행" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-3" value="게임 진행" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="460" y="280" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-4" value="공수 교대" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-4" value="공수 교대" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="660" y="280" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-5" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ovZiylqTLVrIvCY7d7Cw-2" target="ovZiylqTLVrIvCY7d7Cw-3">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-5" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="ovZiylqTLVrIvCY7d7Cw-2" target="ovZiylqTLVrIvCY7d7Cw-3" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="390" y="460" as="sourcePoint" />
             <mxPoint x="440" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-6" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ovZiylqTLVrIvCY7d7Cw-3" target="ovZiylqTLVrIvCY7d7Cw-4">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-6" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="ovZiylqTLVrIvCY7d7Cw-3" target="ovZiylqTLVrIvCY7d7Cw-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="540" y="319.5" as="sourcePoint" />
             <mxPoint x="660" y="319.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-7" value="캐릭터&lt;br&gt;선택이 끝났을 때" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-7" value="캐릭터&lt;br&gt;선택이 끝났을 때" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="340" y="290" width="120" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-8" value="게임 전반전이&lt;br&gt;끝났을 때" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-8" value="게임 전반전이&lt;br&gt;끝났을 때" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="540" y="290" width="120" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-9" value="게임 종료" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-9" value="게임 종료" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="660" y="410" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-10" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="ovZiylqTLVrIvCY7d7Cw-4" target="ovZiylqTLVrIvCY7d7Cw-2">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-10" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" parent="1" source="ovZiylqTLVrIvCY7d7Cw-4" target="ovZiylqTLVrIvCY7d7Cw-2" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="590" y="230" as="sourcePoint" />
             <mxPoint x="640" y="180" as="targetPoint" />
@@ -46,29 +43,133 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-11" value="후반전 시작" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-11" value="후반전 시작" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="460" y="180" width="80" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-12" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ovZiylqTLVrIvCY7d7Cw-3" target="ovZiylqTLVrIvCY7d7Cw-9">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-12" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="ovZiylqTLVrIvCY7d7Cw-3" target="ovZiylqTLVrIvCY7d7Cw-9" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="390" y="460" as="sourcePoint" />
             <mxPoint x="440" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-13" value="게임 종료 조건 일 때" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-13" value="게임 종료 조건 일 때" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="480" y="400" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-14" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-14" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="90" y="320" as="sourcePoint" />
             <mxPoint x="260" y="321" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-16" value="시작" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-16" value="시작" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="140" y="290" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ovZiylqTLVrIvCY7d7Cw-18" value="게임 종료 조건&lt;br&gt;1. 후반전 종료&lt;br&gt;2. 역전 불가능한 점수를 얻었을 때" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="ovZiylqTLVrIvCY7d7Cw-18" value="게임 종료 조건&lt;br&gt;1. 후반전 종료&lt;br&gt;2. 역전 불가능한 점수를 얻었을 때" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="140" y="400" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-1" value="캐릭터 스폰" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="400" y="860" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-21" value="캐릭터 선택" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="210" y="860" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-23" value="공수 교대" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="860" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-33" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="900" as="sourcePoint" />
+            <mxPoint x="210" y="901" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-34" value="시작" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="870" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-35" value="게임 종료 조건&lt;br&gt;1. 후반전 종료&lt;br&gt;2. 역전 불가능한 점수를 얻었을 때" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="980" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-36" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-21" target="91n7fDjYp4Qx0MaL3Qp6-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="243" y="980" as="sourcePoint" />
+            <mxPoint x="413" y="981" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-37" value="게임 라운드&lt;br&gt;대기" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="590" y="860" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-38" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-1" target="91n7fDjYp4Qx0MaL3Qp6-37">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="490" y="940" as="sourcePoint" />
+            <mxPoint x="600" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-39" value="게임 진행&lt;br&gt;상태" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="800" y="860" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-40" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-37" target="91n7fDjYp4Qx0MaL3Qp6-39">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="960" as="sourcePoint" />
+            <mxPoint x="790" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-41" value="게임 종료" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1000" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-42" value="" style="endArrow=classic;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-39" target="91n7fDjYp4Qx0MaL3Qp6-39">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="1020" as="sourcePoint" />
+            <mxPoint x="930" y="1020" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="930" y="790" />
+              <mxPoint x="812" y="760" />
+              <mxPoint x="740" y="820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-44" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-39" target="91n7fDjYp4Qx0MaL3Qp6-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="810" y="1010" as="sourcePoint" />
+            <mxPoint x="940" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-45" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.425;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-39" target="91n7fDjYp4Qx0MaL3Qp6-41">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="827" y="1090" as="sourcePoint" />
+            <mxPoint x="957" y="1090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-46" value="캐릭터 스폰을 완료&lt;br&gt;하였을 때" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="460" y="920" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-47" value="캐릭터 선택이 끝났을 때" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="284" y="930" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-48" value="모든 플레이어가 준비&lt;br&gt;되었을 때" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="670" y="920" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-52" value="라운드가 끝났을 때" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="770" y="738" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-53" value="전반전, 후반전이&lt;br&gt;끝났을 때" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="890" y="855" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-55" value="게임 종료 조건일 경우" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="915" y="955" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-57" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" target="91n7fDjYp4Qx0MaL3Qp6-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1050" y="860" as="sourcePoint" />
+            <mxPoint x="650" y="720" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="690" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-59" value="공수 교대가 끝났을 때" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="590" y="640" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-60" value="모든 플레이어&lt;br&gt;준비 대기" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="100" y="750" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

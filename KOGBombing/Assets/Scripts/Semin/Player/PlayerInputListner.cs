@@ -105,4 +105,18 @@ public class PlayerInputListner : Subject
             blackBoard.speedDebuffPercent *= 0.5f;
         else blackBoard.speedDebuffPercent *= 2f;
     }
+    public void OnOpenBattleboard(InputValue value)
+    {
+        if(value.isPressed)
+            Managers.UI.ShowPopupUI<UIPopup>("BattleBoardCanvas");
+        else
+            Managers.UI.ClosePopupUI("BattleBoardCanvas");
+    }
+    public void OnOpenKeyDescription(InputValue value)
+    {
+        if (value.isPressed)
+            Managers.UI.ShowPopupUI<UIPopup>("KeyDescriptionCanvas");
+        else
+            Managers.UI.ClosePopupUI("KeyDescriptionCanvas");
+    }
 }

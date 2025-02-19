@@ -20,11 +20,9 @@ public class Winner : MonoBehaviour
             redWin.SetActive(false);
         }
     }
-    public void ReturnLobby()
+    public void OpenResult()
     {
-        Managers.UI.DestroyAllPopupUI();
-        PhotonNetwork.LeaveRoom();
-        Managers.PunData.Init();
-        LoadingSceneManager.LoadScene("LobbyScene");
+        Managers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
+        Managers.UI.ClosePopupUI("WinnerCanvas");
     }
 }

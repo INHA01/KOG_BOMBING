@@ -22,20 +22,32 @@ public class LoadingSceneManager : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene);
         asyncLoad.allowSceneActivation = false;
         float time = Time.time + 1.0f; // 1 seconds term
+
+        float elapsedTime = 0f;
+        float finishTime = 3f;
+        float k = 5f;
+
         while (!asyncLoad.isDone)
         {
             yield return null;
             {
-                loadingCircle.fillAmount += Time.deltaTime;
-                if(loadingCircle.fillAmount >= 1) loadingCircle.fillAmount = 0;
+                // 지수 함수로 fillAmount 계산
+                float t = elapsedTime / finishTime;
+                loadingCircle.fillAmount = 1 - Mathf.Exp(-k * t);
+                elapsedTime += Time.deltaTime;
 
-                if (asyncLoad.progress / 1.0f > 0.7f)
+                if (loadingCircle.fillAmount >= 0.99f)
                 {
-                    if(Time.time > time)
+                    if (asyncLoad.progress / 1.0f > 0.7f)
                     {
-                        asyncLoad.allowSceneActivation = true;
-                        yield break;
+                        if (Time.time > time)
+                        {
+                            asyncLoad.allowSceneActivation = true;
+                            yield break;
+                        }
                     }
+                    loadingCircle.fillAmount = 0;
+                    elapsedTime = 0f;
                 }
             }
         }

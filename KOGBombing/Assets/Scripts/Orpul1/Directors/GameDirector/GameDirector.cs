@@ -7,9 +7,41 @@ using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 namespace Orpul1
 {
+    public enum EGameEvent
+    {
+        PLAYERREADY,
+        ROUNDREADY,
+        EXTERMINATETEAM,
+        PLAYERDIE
+    }
+    public enum EGameState
+    {
+        STARTSTATE,
+        SELECT = 20,
+        ROUNDWAIT,
+        GAMESTART,
+        GAMEEND,
+        SWITCHTEAMROLL,
+        SPAWNPLAYER,
+        WAITPLAYERS,
+        STARTEND,
+    }
+
     public class GameDirector : MonoBehaviourPunCallbacks
     {
-        [SerializeField]
+        public static int blueScore = 0;
+        public static int redScore = 0;
+        Dictionary<EGameEvent, IState> dicGameState = new Dictionary<EGameEvent, IState>();
+        private void Awake()
+        {
+            
+        }
+        private void OnServerInitialized()
+        {
+        }
+
+        /*
+         [SerializeField]
         GameObject playerCamera;
         [SerializeField]
         GameObject minimapCamera;
@@ -21,13 +53,7 @@ namespace Orpul1
 
         UIPopup _uiScene;
 
-        enum EGameState
-        {
-            CharacterSelect = 10,
-            GameStart,
-            GameEnd,
-            TeamAlternative
-        }
+        
 
         public float time = 180;
         public static int blueScore = 0;
@@ -43,14 +69,13 @@ namespace Orpul1
         {
             EventBusSystem.Subscribe(StartGame);
             PhotonNetwork.NetworkingClient.EventReceived += PhotonEvent;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.Start } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.START } });
             StartCoroutine(CoWaitPlayer());
             //SpawnPlayer();
         }
-
-        private void PhotonEvent(EventData punEvent)
+          private void PhotonEvent(EventData punEvent)
         {
-            if(punEvent.Code == (int)EGameState.GameStart)
+            if(punEvent.Code == (int)EGameState.GAMESTART)
             {
                 isAllPlayerReady = true;
             }
@@ -60,11 +85,11 @@ namespace Orpul1
             if (!PhotonNetwork.IsMasterClient) return;
 
             EPlayerState playerState = (EPlayerState)targetPlayer.CustomProperties["State"];
-            if (playerState == EPlayerState.Start)
+            if (playerState == EPlayerState.START)
             {
                 readyPlayerCnt++;
                 if (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) return;
-                PhotonNetwork.RaiseEvent((int)EGameState.GameStart, null, options, SendOptions.SendReliable);
+                PhotonNetwork.RaiseEvent((int)EGameState.GAMESTART, null, options, SendOptions.SendReliable);
             }
         }
         
@@ -134,6 +159,6 @@ namespace Orpul1
             Managers.camData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
             //_uiScene.GetComponent<PlayScene>().gameDirector = this;
             //_uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
-        }
+        }*/
     }
 }

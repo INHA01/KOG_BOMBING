@@ -75,7 +75,7 @@ namespace Orpul1
             {
                 if ((string)propertiesThatChanged["RoomState"] == "Start")
                 {
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.Ready } });
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.READY } });
 
                     //>> TODO :  TeamIndex 설정 코드 추가해야함
                     SetPlayerTeamIndex();

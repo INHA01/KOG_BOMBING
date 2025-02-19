@@ -21,6 +21,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public Vector3 spawnPoint;
     public ETeam eTeam;
     public string nickname;
+    public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
     [HideInInspector] public PlayerStatus playerStatus;
 }

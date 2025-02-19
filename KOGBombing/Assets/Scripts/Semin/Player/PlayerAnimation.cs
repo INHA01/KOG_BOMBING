@@ -17,6 +17,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Groggy,
 		Right,
 		Left,
+		Skill,
 		MAX
 	}
 

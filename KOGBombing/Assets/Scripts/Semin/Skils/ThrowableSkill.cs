@@ -1,0 +1,88 @@
+using Knife.Effects.SimpleController;
+using Orpul1;
+using Photon.Pun;
+using Semin;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ThrowableSkill : ThrowableBase, ISkill
+{
+	Coroutine skillCooldown;
+	bool bisUsableSkill;
+	float skillDeltaTime;
+
+	protected override void Start()
+	{
+		skillCooldown = StartCoroutine(Cooldown(3f));
+		bisUsableSkill = true;
+	}
+
+	IEnumerator Cooldown(float time)
+	{
+		skillDeltaTime = 0f;
+		while (true)
+		{
+			if (skillDeltaTime < time)
+			{
+				skillDeltaTime += Time.deltaTime;
+				if (skillDeltaTime > time)
+					bisUsableSkill = true;
+			}
+			yield return null;
+		}
+	}
+	public void InitializationSkill(PlayerData playerData)
+	{
+		consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
+		type = WeaponType.SHOCK_GRENADE;
+		this.playerData = playerData;
+
+		objectPool = gameObject.AddComponent<ObjectPool>();
+		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Skill/ShockGrenade"));
+		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+		objectPool.initPoolSize = count;
+		decal.size = new Vector3(consum.GetComponent<ShockGrenade>().Range, consum.GetComponent<ShockGrenade>().Range, decal.size.z);
+
+		team = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+	}
+
+	public void SetSkill(SkillInfo info)
+	{
+		decal.gameObject.SetActive(true);
+		lineRendererToTarget.gameObject.SetActive(true);
+
+		if (info is ThrowableSkillInfo throwableInfo)
+			playerData.pv.RPC("SetInfoSkill", RpcTarget.AllBuffered, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
+	}
+
+	[PunRPC]
+	public void SetInfoSkill(Vector3 curPos, Vector3 targetPos, float angle)
+	{
+		SetDistanceInfo(curPos, targetPos, angle);
+	}
+
+	public bool isUsableSkill()
+	{
+		return bisUsableSkill;
+	}
+	public override void Use()
+	{
+		count--;
+		playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
+		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
+		skillDeltaTime = 0;
+		bisUsableSkill = false;
+	}
+
+	public override void SetWeapon(SupportWeaponInfo info)
+	{
+		throw new System.NotImplementedException();
+	}
+
+	[PunRPC]
+	private void SpawnThrowWeaponSkill()
+	{
+		SetSpawnThrowWeapon();
+	}
+}

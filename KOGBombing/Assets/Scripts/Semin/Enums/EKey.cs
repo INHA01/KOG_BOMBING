@@ -10,7 +10,9 @@ public enum EKey
 	D,
     LEFTSHIFT,
     F,
+	Q,
 	LMOUSEBUTTON,
+	NUM_1,
 	NUM_2,
     ESC,
     MAX

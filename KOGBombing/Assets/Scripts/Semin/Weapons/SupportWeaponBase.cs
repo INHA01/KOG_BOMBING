@@ -13,23 +13,21 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 	protected int count = 10;
 	protected PlayerData playerData;
 	public float Damage { get { return damage; } }
+	public WeaponType type;
 	//public int Count { get { return count; } }
 
 	public virtual void SetConsum(WeaponType type, PlayerData playerData)
 	{
-		GameObject consumObj;
 		switch (type)
 		{
 			case WeaponType.LANDMINE:
-                consumObj = Managers.Resource.Instantiate("SupportWeapon/Landmine");
-				consum = consumObj.GetComponent<AttackConsum>();
+                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
 				break;
 			case WeaponType.MOLOTOV:
-				consumObj = Managers.Resource.Instantiate("SupportWeapon/Molotov");
-				consum = consumObj.GetComponent<AttackConsum>();
+				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
 				break;
         }
-        consum.type = type;
+		this.type = type;
 		this.playerData = playerData;
     }
 	public void SetTeam(ETeam team)

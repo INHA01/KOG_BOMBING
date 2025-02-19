@@ -40,6 +40,9 @@ public class PlayerData : MonoBehaviour
     public Vector3 consumTargetPos;
     [SerializeField] public Transform ConsumPos;
 
+    [Header("Skill")]
+    [SerializeField] public ISkill skill;
+
     public GameObject AttackRange { get { return Instantiate(attackRangePrefab); } }
     public GameObject NoAttackRange { get { return Instantiate(noAttackRangePrefab); } }
     public GameObject MaxAttackRange { get { return Instantiate(maxAttackRangePrefab); } }

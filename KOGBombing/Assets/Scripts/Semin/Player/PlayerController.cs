@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
 using Orpul1;
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour,IDestroyAble,IRespawnAble
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -88,5 +88,22 @@ public class PlayerController : MonoBehaviour
 
         if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
+    }
+
+    public void DoDestory()
+    {
+        if (!playerData.pv.IsMine) return;
+        //>> TODO: 플레이어 제거 작업 수행
+        playerData.pv.RPC("DestroyPlayer", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void DestroyPlayer()
+    {
+        Destroy(gameObject);
+    }
+    public void DoRespawn()
+    {
+        //TODO: 행동트리 리스폰 관련 작업 추가할 것
     }
 }

@@ -35,7 +35,8 @@ public class TeamRollSwitcher : GameProcessLogic
         GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
         Destroy(mainCam);
         Destroy(miniMapCam);
-        PhotonNetwork.Destroy(logicContext.playerObj);
+        logicContext.playerObj.GetComponent<IDestroyAble>().DoDestory();
+        //PhotonNetwork.Destroy(logicContext.playerObj); // << ÀÌ½´ ¿øÀÎ
         Managers.PunData.Init();
         Managers.CamData.InitCamera();
         Managers.UI.ClosePopupUI("PlayCanvas");

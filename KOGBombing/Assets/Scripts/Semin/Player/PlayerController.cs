@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
 
-		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos);
+		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
 
 		if(playerData.pv.IsMine)
 		{
@@ -87,6 +87,6 @@ public class PlayerController : MonoBehaviour
         if (!playerData.pv.IsMine) return;
 
         if (playerData.animator != null)
-            playerData.animator.UpdateAnimation(blackBoard.speedValue, transform);
+            playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
     }
 }

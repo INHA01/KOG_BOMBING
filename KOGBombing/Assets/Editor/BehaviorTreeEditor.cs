@@ -71,7 +71,7 @@ public class BehaviorTreeEditor : EditorWindow
         fieldView.SetEnabled(true);
         funcDropdownView.SetEnabled(false);
         classDropdownView.SetEnabled(false);
-        keyParameterView.SetEnabled(false);
+        //keyParameterView.SetEnabled(false);
         directionParameterView.SetEnabled(false);
     }
 
@@ -153,16 +153,13 @@ public class BehaviorTreeEditor : EditorWindow
         if (funcDropdownView.value == null)
             return;
         GameObject controller = fieldView.value as GameObject;
-        if (parameters.Length > 0)
-        {
-            if (selectNode.node is IfDecoratorNode deco)
-                deco.SetConditionWithParam(funcDropdownView.value.ToString(), controller, key.value.ToString(), classDropdownView.value);
-        }
+        if (selectNode.node is IfDecoratorNode deco)
+            deco.SetConditionWithParam(funcDropdownView.value.ToString(), controller, key.value.ToString(), classDropdownView.value);
     }
 
     ParameterInfo[] GetParameters(string methodName)
     {
-        keyParameterView.SetEnabled(false);
+       //keyParameterView.SetEnabled(false);
         directionParameterView.SetEnabled(false);
 
         ParameterInfo[] parameters = null;

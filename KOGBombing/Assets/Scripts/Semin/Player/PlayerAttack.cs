@@ -23,7 +23,8 @@ public class PlayerAttack : PlayerBehavior
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
         SetSupportWeapon((int)playerTeam);
-        playerData.supportWeapon.SetTeam(playerTeam);
+		playerData.supportWeapon.SetTeam(playerTeam);
+		InitSkill();
     }
     private void Update()
     {
@@ -41,6 +42,16 @@ public class PlayerAttack : PlayerBehavior
         return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.BLUETEAM;
     }
 
+    public bool IsUni()
+    {   
+        return (blackBoard.characterType == CharacterType.Uni);
+    }
+
+    public bool IsNed()
+    {
+		return (blackBoard.characterType == CharacterType.Ned);
+	}
+
 
     void SetSupportWeapon(int team)
     {
@@ -57,6 +68,20 @@ public class PlayerAttack : PlayerBehavior
                 support.SetConsum(WeaponType.LANDMINE, playerData);
         }
     }
+
+    void InitSkill()
+    {
+        switch (blackBoard.characterType)
+        {
+            case CharacterType.Ned:
+                playerData.skill = gameObject.AddComponent<ThrowableSkill>();
+                playerData.skill.InitializationSkill(playerData);
+                break;
+            case CharacterType.Uni:
+                break;
+        }
+    }
+
     IEnumerator WaitForChangeAnim(float waitTime, WeaponType type)
     {
         isChangableAnim = false;
@@ -89,7 +114,7 @@ public class PlayerAttack : PlayerBehavior
             else
             {
                 isChangableAnim = true;
-                blackBoard.inputs[EKey.NUM_2] = false;
+                blackBoard.inputs[EKey.NUM_1] = false;
                 playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Landmine);
                 return INode.ENodeState.Success;
             }
@@ -111,7 +136,7 @@ public class PlayerAttack : PlayerBehavior
                 else
                 {
                     blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
-                    blackBoard.inputs[EKey.NUM_2] = false;
+                    blackBoard.inputs[EKey.NUM_1] = false;
                     playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
                     playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                     playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
@@ -122,8 +147,8 @@ public class PlayerAttack : PlayerBehavior
 
 			if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
-                playerData.consumTargetPos = hit.point;
-                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), playerData.consumTargetPos,
+                //playerData.consumTargetPos = hit.point;
+                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
                     playerData.playerObj.transform.eulerAngles.y));
             }
 
@@ -139,24 +164,68 @@ public class PlayerAttack : PlayerBehavior
 
         return INode.ENodeState.Running;
     }
-    public void OnUseAttackConsum(InputValue value)
+
+    public INode.ENodeState SetSkill()
+    {
+        switch (blackBoard.characterType)
+        {
+            case CharacterType.Ned:
+				Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
+				RaycastHit hit;
+
+				if (!isChangableAnim)
+				{
+					if (animChange != null)
+						return INode.ENodeState.Running;
+					else
+					{
+						blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+						blackBoard.inputs[EKey.Q] = false;
+						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
+						playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+						playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+						isChangableAnim = true;
+						return INode.ENodeState.Success;
+					}
+				}
+
+				if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
+				{
+					playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+						playerData.playerObj.transform.eulerAngles.y));
+				}
+
+				if (blackBoard.inputs[EKey.LMOUSEBUTTON])
+				{
+					animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
+					playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
+                    playerData.skill.Use();
+					return INode.ENodeState.Success;
+				}
+				return INode.ENodeState.Running;
+            case CharacterType.Uni:
+                break;
+        }			
+		return INode.ENodeState.Running;
+	}
+
+
+	public void OnUseAttackConsum(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
 		if (playerData.supportWeapon is SupportWeaponBase weapon)
-        {
             if (weapon.isUsable() == false) return;
-        }
 
 		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
-        blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
+        blackBoard.inputs[EKey.NUM_1] = !blackBoard.inputs[EKey.NUM_1];
 
-        if (blackBoard.inputs[EKey.NUM_2])
+        if (blackBoard.inputs[EKey.NUM_1])
         {
             playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, true);
             if (playerData.supportWeapon is SupportWeaponBase baseWeapon)
-                weaponType = baseWeapon.consum.type;
+                weaponType = baseWeapon.type;
         }
         else
         {
@@ -167,4 +236,30 @@ public class PlayerAttack : PlayerBehavior
 
         ChangeWeapon(weaponType);
     }
+
+
+	public void OnUseSkill(InputValue value)
+	{
+		if (!playerData.pv.IsMine) return;
+		if (blackBoard.playerStatus.groggyable == false) return;
+        if (!playerData.skill.isUsableSkill()) return;
+
+		isChangableAnim = true;
+		WeaponType weaponType = WeaponType.GUN;
+		blackBoard.inputs[EKey.Q] = !blackBoard.inputs[EKey.Q];
+
+		if (blackBoard.inputs[EKey.Q])
+		{
+			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, true);
+			if (playerData.skill is ThrowableSkill baseWeapon)
+				weaponType = baseWeapon.type;
+		}
+		else
+		{
+			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
+			playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+			if (playerData.skill is ThrowableWeapon baseWeapon)
+				baseWeapon.Disable();
+		}
+	}
 }

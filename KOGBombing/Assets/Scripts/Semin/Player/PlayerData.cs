@@ -22,7 +22,6 @@ public class PlayerData : MonoBehaviour
 
     [Header("Player Info")]
     public Rigidbody rigidBody;
-    public float speedDebuffPercent = 1;
 	public float timeWithoutDamage;
 
     [Header("Model Anim")]
@@ -40,6 +39,9 @@ public class PlayerData : MonoBehaviour
     public ISupportWeapon supportWeapon;
     public Vector3 consumTargetPos;
     [SerializeField] public Transform ConsumPos;
+
+    [Header("Skill")]
+    [SerializeField] public ISkill skill;
 
     public GameObject AttackRange { get { return Instantiate(attackRangePrefab); } }
     public GameObject NoAttackRange { get { return Instantiate(noAttackRangePrefab); } }

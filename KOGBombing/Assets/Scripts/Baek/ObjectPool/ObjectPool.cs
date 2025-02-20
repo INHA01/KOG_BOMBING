@@ -15,7 +15,7 @@ public class ObjectPool :  MonoBehaviour
     public int Count { get => queue.Count; }
 
 
-    protected void Start()
+    protected virtual void Start()
     {
         SetupPool();
     }

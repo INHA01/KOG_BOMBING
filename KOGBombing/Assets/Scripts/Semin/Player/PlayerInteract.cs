@@ -115,6 +115,6 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
-        playerData.speedDebuffPercent = 1f;
+		blackBoard.speedDebuffPercent = 1f;
     }
 }

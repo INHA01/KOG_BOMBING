@@ -33,9 +33,9 @@ public class TeamRollSwitcher : GameProcessLogic
         string playerNickname = PhotonNetwork.LocalPlayer.NickName;
         GameObject mainCam = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
         GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
-        PhotonNetwork.Destroy(Managers.PunData.GetPlayerBlackBoard(playerNickname).gameObject);
         Destroy(mainCam);
         Destroy(miniMapCam);
+        PhotonNetwork.Destroy(logicContext.playerObj);
         Managers.PunData.Init();
         Managers.CamData.InitCamera();
         Managers.UI.ClosePopupUI("PlayCanvas");

@@ -258,8 +258,8 @@ public class PlayerAttack : PlayerBehavior
 		{
 			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
 			playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-			if (playerData.skill is ThrowableWeapon baseWeapon)
-				baseWeapon.Disable();
+			if (playerData.skill is ThrowableSkill skill)
+				skill.Disable();
 		}
 	}
 }

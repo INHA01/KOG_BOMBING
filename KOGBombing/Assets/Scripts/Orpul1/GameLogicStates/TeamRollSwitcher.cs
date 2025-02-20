@@ -1,3 +1,4 @@
+using System.Collections;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
@@ -6,16 +7,22 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class TeamRollSwitcher : GameProcessLogic
 {
-    Player[] players;
+    [SerializeField]
+    float waitRoundInterval = 2f;
+    float time = 0;
     public override void EnterState()
     {
-        players = PhotonNetwork.PlayerList;
+        time = 0;
+        SwitchTeamRoll();
     }
     public override void UpdateState()
     {
-        SwitchTeamRoll();
-        DestroyGameObject();
-        transitionState((int)EGameState.SELECT);
+        time += Time.deltaTime;
+        if (time > waitRoundInterval) 
+        {
+            DestroyGameObject();
+            transitionState((int)EGameState.SELECT);
+        }
     }
 
     public override void ExitState()
@@ -35,7 +42,9 @@ public class TeamRollSwitcher : GameProcessLogic
     }
     private void SwitchTeamRoll()
     {
+        logicContext.roundData.SwapTeam();
         if (!PhotonNetwork.IsMasterClient) return;
+        Player[] players = PhotonNetwork.PlayerList;
         for (int i = 0; i < players.Length; i++)
         {
             ETeam setTeam = ETeam.REDTEAM;

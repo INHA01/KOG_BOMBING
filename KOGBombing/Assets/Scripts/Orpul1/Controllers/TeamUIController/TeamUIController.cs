@@ -4,6 +4,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class TeamUIController
 {
@@ -24,6 +25,7 @@ public class TeamUIController
                 teamPlayerList.Add(players[i]);
                 _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
                 _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
+                _uiScene.GetComponent<PlayScene>().Reset();
                 _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(players[i].NickName));
             }
         }

@@ -1,6 +1,7 @@
 using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +41,16 @@ public class PlayScene : MonoBehaviour
             redScoreIcon.sprite = redScoreImages[GameDirector.redScore];
         if (GameDirector.blueScore < 10)
             blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];*/
+    }
+    public void Reset()
+    {
+        if (dicTeamProfile.Count == 0) return;
+        for(int i=0; i<dicTeamProfile.Count; i++)
+        {
+            TeamProfile profile = dicTeamProfile.ElementAt(i).Value;
+            Destroy(profile.gameObject);
+        }
+        dicTeamProfile.Clear();
     }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {

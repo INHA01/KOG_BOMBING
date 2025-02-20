@@ -21,7 +21,7 @@ public class ChoosePlayer : Subject
     }
     protected virtual void Awake()
     {
-        Init();
+        //Init();
     }
     public virtual void Init()
     {

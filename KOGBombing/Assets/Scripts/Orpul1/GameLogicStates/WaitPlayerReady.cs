@@ -19,6 +19,7 @@ public class WaitPlayerReady : PhotonPlayerWaitLogic
         curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
         logicContext.options.Receivers = ReceiverGroup.All;
         PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable{ { "State",EPlayerState.READY} });
         base.EnterState();
     }
 

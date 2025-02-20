@@ -9,23 +9,17 @@ using UnityEngine;
 
 public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
 {
-
-    GameRoundData roundData;
     [SerializeField]
     float roundInterval = 20;
     [SerializeField]
     float time = 0;
     bool isEndRound = false;
-    private void Start()
-    {
-        roundData = new GameRoundData(2);
-    }
     public override void EnterState()
     {
         int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
         int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-        roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
-        roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
+        logicContext.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
+        logicContext.roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
 
         PhotonNetwork.NetworkingClient.EventReceived += OnSetTeamCount;
         isEndRound = false;
@@ -36,8 +30,8 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
         DoRoundCountDown();
         if (isEndRound)
         {
-            roundData.SetTeamScore();
-            transitionState((int)roundData.GetNextState());
+            logicContext.roundData.SetTeamScore();
+            transitionState((int)logicContext.roundData.GetNextState());
         }
     }
 
@@ -49,10 +43,10 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
     {
         if ((int)punEvent.Code != (int)EGameEvent.EXTERMINATETEAM) return;
         int teamType = (int)punEvent.CustomData;
-        roundData.SetTeamCount(teamType, -1);
-        isEndRound = roundData.IsExterminateTeam();
+        logicContext.roundData.SetDecreaseTeamCount(teamType);
+        isEndRound = logicContext.roundData.IsExterminateTeam();
         Managers.UI.ClosePopupUI("DieCanvas");
-        Debug.Log($"RT {roundData.TeamScores[(int)ETeam.REDTEAM]} BT {roundData.TeamScores[(int)ETeam.BLUETEAM]}");
+        Debug.Log($"RT {logicContext.roundData.TeamScores[(int)ETeam.REDTEAM]} BT {logicContext.roundData.TeamScores[(int)ETeam.BLUETEAM]}");
     }
 
     private void DoRoundCountDown()
@@ -60,7 +54,7 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
         time += Time.deltaTime;
         if (time > roundInterval) 
         {
-            roundData.RoundTimeOver();
+            logicContext.roundData.RoundTimeOver();
             isEndRound = true;
             time = 0;
         }
@@ -74,7 +68,7 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
 
     public void ExplosionBomb()
     {
-        roundData.ExplosionBomb();
+        logicContext.roundData.ExplosionBomb();
         isEndRound = true;
     }
 

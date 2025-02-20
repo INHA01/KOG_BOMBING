@@ -14,7 +14,10 @@ public class CharacterSelect : GameProcessLogic
     {
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
         EventBusSystem.Subscribe(DoneSelectCharacter);
+        _uiScene.GetComponent<ChoosePlayer>().Init();
         isSelectCharacter = false;
+        logicContext.selectCharacterPath.Clear();
+        Debug.Log("Character Select State");
     }
     public override void UpdateState()
     {
@@ -29,7 +32,7 @@ public class CharacterSelect : GameProcessLogic
         EventBusSystem.Unsubscribe(DoneSelectCharacter);
     }
 
-    
+
     private void DoneSelectCharacter()
     {
         Debug.Log("DoneSelectCharacter");

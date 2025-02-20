@@ -9,7 +9,8 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 public class RoundWaiter : PhotonPlayerWaitLogic
 {
     bool canCountDown = false;
-    float gamestartInterval = 15;
+    [SerializeField]
+    float gamestartInterval = 5;
     [SerializeField]
     float time = 0;
     public override void EnterState()

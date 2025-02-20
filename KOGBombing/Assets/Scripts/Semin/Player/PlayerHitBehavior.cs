@@ -243,7 +243,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState FindAlivePlayer()
     {
         List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
-        Debug.Log($"TeamPlayer {blackBoards.Count}");
         for (int i = 0; i < blackBoards.Count; i++)
         {
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
@@ -255,7 +254,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 return INode.ENodeState.Success;
             }
         }
-        Debug.Log("All Team Player Die");
         blackBoard.gmlookTarget = null;
         return INode.ENodeState.Fail;
     }

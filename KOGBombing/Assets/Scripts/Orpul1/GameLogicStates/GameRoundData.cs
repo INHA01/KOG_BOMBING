@@ -2,18 +2,19 @@ using System;
 using Orpul1;
 using UnityEngine;
 
+[Serializable]
 public class GameRoundData
 {
-    int[] teamScores = new int[2] { 0, 0 };
-    int[] teamCounts = new int[2] { 0, 0 };
+    public int[] teamScores = new int[2] { 0, 0 }; //private
+    public int[] teamCounts = new int[2] { 0, 0 }; //private
     public int[] TeamScores { get { return teamScores; } }
     public int[] TeamCounts { get { return teamCounts; } }
-    int winRound = 3;
-    int processRoundCnt = 0;
-    int switchRound = 2;
+    public int winRound = 3;
+    public int processRoundCnt = 0; //private
+    public int switchRound = 2;
     bool isTimeOver = false;
     bool isExplosion = false;
-    public GameRoundData(int winRound)
+    public GameRoundData()
     {
         isTimeOver = false;
         isExplosion = false;
@@ -22,8 +23,10 @@ public class GameRoundData
             teamScores[i] = 0;
             teamCounts[i] = 0;
         }
+    }
+    public void Initialize()
+    {
 
-        this.winRound = winRound;
     }
     public void Init()
     {
@@ -31,7 +34,11 @@ public class GameRoundData
     }
     public void SetTeamCount(int teamType, int count)
     {
-        teamCounts[teamType] += count;
+        teamCounts[teamType] = count;
+    }
+    public void SetDecreaseTeamCount(int teamType)
+    {
+        teamCounts[teamType]--;
     }
 
     public bool IsExterminateTeam()

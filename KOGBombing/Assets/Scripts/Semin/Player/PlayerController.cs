@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour,IDestroyAble,IRespawnAble
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
         blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
+        blackBoard.canRespawn = false;
         if (playerData.pv.IsMine)
         {
             blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
@@ -100,10 +101,13 @@ public class PlayerController : MonoBehaviour,IDestroyAble,IRespawnAble
     [PunRPC]
     private void DestroyPlayer()
     {
+        Debug.Log($"DestroyPlayer {blackBoard.nickname}");
         Destroy(gameObject);
     }
     public void DoRespawn()
     {
         //TODO: 행동트리 리스폰 관련 작업 추가할 것
+        Debug.Log($"Set Respawn");
+        blackBoard.canRespawn = true;
     }
 }

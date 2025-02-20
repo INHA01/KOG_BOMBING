@@ -24,6 +24,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public string nickname;
     public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
+    public bool canRespawn;
     [HideInInspector] public PlayerStatus playerStatus;
 }
 

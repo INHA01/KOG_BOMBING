@@ -14,14 +14,15 @@ public class TeamRollSwitcher : GameProcessLogic
     {
         time = 0;
         SwitchTeamRoll();
+        DestroyGameObject();
     }
     public override void UpdateState()
     {
         time += Time.deltaTime;
         if (time > waitRoundInterval) 
         {
-            DestroyGameObject();
             transitionState((int)EGameState.SELECT);
+            time = 0;
         }
     }
 

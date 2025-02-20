@@ -28,11 +28,13 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
     public override void UpdateState()
     {
         DoRoundCountDown();
-        if (isEndRound)
-        {
-            logicContext.roundData.SetTeamScore();
-            transitionState((int)logicContext.roundData.GetNextState());
-        }
+        if (!isEndRound) return;
+
+        logicContext.roundData.SetTeamScore();
+        int nextState = (int)logicContext.roundData.GetNextState();
+        if (nextState == (int)EGameState.ROUNDWAIT)
+            logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
+        transitionState(nextState);
     }
 
     public override void ExitState()

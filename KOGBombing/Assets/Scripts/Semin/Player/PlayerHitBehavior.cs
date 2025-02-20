@@ -81,6 +81,25 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         return INode.ENodeState.Success;
     }
+
+    public bool CanRespawnPlayer()
+    {
+        if (!blackBoard.canRespawn) return false;
+        return true;
+    }
+    public INode.ENodeState RespawnNode()
+    {
+        Debug.Log("ResapwnPlayer");
+        blackBoard.playerStatus.isLive = true;
+        blackBoard.hpBar.SetStopHpUI(false);
+        blackBoard.playerStatus.groggyValue = 150;
+        SetActiveState(true);
+        this.transform.position = blackBoard.spawnPoint;
+        this.transform.rotation = blackBoard.initRotation;
+        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+        blackBoard.canRespawn = false;
+        return INode.ENodeState.Success;
+    }
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;
@@ -144,8 +163,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                             GameDirector.redScore++;*/
 
             //gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-            StartCoroutine(RespawnDelay(3.0f));
-		}
+            //StartCoroutine(RespawnDelay(3.0f));
+            //Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
+            blackBoard.hpBar.SetStopHpUI(true);
+            blackBoard.playerStatus.isLive = false;
+            SetActiveState(false);
+        }
 		if (groggyCoroutine != null)
 			StopCoroutine(groggyCoroutine);
 		blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;

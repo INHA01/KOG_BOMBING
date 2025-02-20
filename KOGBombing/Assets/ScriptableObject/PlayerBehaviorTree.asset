@@ -142,6 +142,23 @@ MonoBehaviour:
   method: IsInteracting
   paramName: 
   className: PlayerInteract
+--- !u!114 &-7039590277047733480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 762273ba3543f264cadbdc1bc629d7be
+  position: {x: 372.00006, y: -660}
+  paramName: 
+  method: RespawnNode
+  className: PlayerHitBehavior
 --- !u!114 &-6981434794934456990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +439,8 @@ MonoBehaviour:
   - {fileID: 6475284595041551624}
   - {fileID: -8340223700539422723}
   - {fileID: -5304561471504019390}
+  - {fileID: 9102362582084557919}
+  - {fileID: -7039590277047733480}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,6 +561,7 @@ MonoBehaviour:
   guid: 8dc3e1a7f585c514fa2ba12ece6a19e3
   position: {x: 49.777775, y: -157.77779}
   children:
+  - {fileID: 9102362582084557919}
   - {fileID: 6600464113284892490}
   - {fileID: -7802083987999387392}
   - {fileID: 6230328644466973241}
@@ -773,6 +793,24 @@ MonoBehaviour:
   paramName: 
   method: LayingLandmine
   className: PlayerAttack
+--- !u!114 &9102362582084557919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 0c03d62f34236fa499cd48916dcf4b8f
+  position: {x: 192.80005, y: -659.99994}
+  child: {fileID: -7039590277047733480}
+  method: CanRespawnPlayer
+  paramName: 
+  className: PlayerHitBehavior
 --- !u!114 &9203852556320774010
 MonoBehaviour:
   m_ObjectHideFlags: 0

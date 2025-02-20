@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour,IDestroyAble,IRespawnAble
     private void DestroyPlayer()
     {
         Debug.Log($"DestroyPlayer {blackBoard.nickname}");
+        blackBoard = null;
+        playerData = null;
         Destroy(gameObject);
     }
     public void DoRespawn()

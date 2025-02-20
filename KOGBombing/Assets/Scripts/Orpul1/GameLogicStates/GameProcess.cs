@@ -62,7 +62,6 @@ public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
 
     public void SetTeamCount(int teamType)
     {
-        // TODO : 팀 감소 동기화
         PhotonNetwork.RaiseEvent((int)EGameEvent.EXTERMINATETEAM, teamType, logicContext.options, SendOptions.SendReliable);
     }
 

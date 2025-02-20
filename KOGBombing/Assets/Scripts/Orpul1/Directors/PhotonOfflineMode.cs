@@ -53,12 +53,11 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     {
         Debug.Log("JoinRoom");
         InitEvent();
-        //SpawnPlayer();
-        SelectPlayer();
+        SpawnPlayer();
+        //SelectPlayer();
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-
         PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RT", 1 } });
         InitEvent();
         SpawnPlayer();
@@ -84,7 +83,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     void SpawnPlayer()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + _uiScene.GetComponent<ChoosePlayer>().type.ToString(), spawnPosi.position, Quaternion.Euler(0, 45, 0));
+        //GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + _uiScene.GetComponent<ChoosePlayer>().type.ToString(), spawnPosi.position, Quaternion.Euler(0, 45, 0));
+        GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + "Ned", spawnPosi.position, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
         GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi.position + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
         minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;

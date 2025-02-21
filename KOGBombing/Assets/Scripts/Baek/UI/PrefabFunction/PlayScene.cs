@@ -21,14 +21,23 @@ public class PlayScene : MonoBehaviour
     [SerializeField] Sprite[] redScoreImages;
     [SerializeField] Image blueScoreIcon;
     [SerializeField] Image redScoreIcon;
+    [Header("Map")]
+    [SerializeField] GameObject[] maps;
     [Header("Model")]
     [HideInInspector] public PlayerShooting weapon;
     Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
 
-    void Update()
+    [SerializeField] float sensitivity = 100f;
+
+    void FixedUpdate()
     {
         magazineCount.text = weapon.MagazineCount + "/4";
         chargeBar.fillAmount = weapon.ReloadTime;
+        if(Input.GetKeyDown(KeyCode.Comma))
+        {
+            maps[0].SetActive(!maps[0].activeSelf);
+            maps[1].SetActive(!maps[1].activeSelf);
+        }
        /* string min = ((int)gameDirector.time / 60).ToString();
         if(min.Length == 1)
             min = "0" + min;

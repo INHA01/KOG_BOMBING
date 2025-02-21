@@ -122,9 +122,15 @@ public class HpBar : MonoBehaviour
         if (isMyTeam)
         {
             team = myTeam;
-           team.SetActive(true);
+            team.SetActive(true);
+            otherTeam.SetActive(false);
         }
-        else team = otherTeam;
+        else
+        {
+            team = otherTeam;
+            //myTeam.SetActive(false);
+            otherTeam.SetActive(false);
+        }
 
         Debug.Log(team.transform.GetChild(0).gameObject);  
         level = team.transform.GetChild(0).GetComponent<TextMeshProUGUI>();

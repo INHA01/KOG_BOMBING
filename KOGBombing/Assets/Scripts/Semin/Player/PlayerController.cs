@@ -94,7 +94,6 @@ public class PlayerController : MonoBehaviour,IDestroyAble,IRespawnAble
     public void DoDestory()
     {
         if (!playerData.pv.IsMine) return;
-        //>> TODO: 플레이어 제거 작업 수행
         playerData.pv.RPC("DestroyPlayer", RpcTarget.AllBuffered);
     }
 

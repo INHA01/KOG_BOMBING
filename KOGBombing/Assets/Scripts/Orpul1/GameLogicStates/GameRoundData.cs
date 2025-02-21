@@ -10,7 +10,7 @@ public class GameRoundData
     public int[] TeamScores { get { return teamScores; } }
     public int[] TeamCounts { get { return teamCounts; } }
     public int maxRound = 10;
-    public int winRound = 3;
+    public int winRound = 4;
     public int processRoundCnt = 0; //private
     public int switchRound = 2;
     bool isTimeOver = false;
@@ -100,13 +100,15 @@ public class GameRoundData
     {
         float scoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
 
-        if (scoreGap > winRound) return true;
+        if (scoreGap >= winRound) return true;
         if (teamScores[(int)ETeam.REDTEAM] > maxRound && teamScores[(int)ETeam.BLUETEAM] > maxRound) return true;
         return false;
     }
     private bool IsNextRound()
     {
-        if (processRoundCnt % switchRound == 0)
+        //processRoundCnt % switchRound == 0
+        int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
+        if (switchRollScore == 3)
             return false;
         return true;
     }

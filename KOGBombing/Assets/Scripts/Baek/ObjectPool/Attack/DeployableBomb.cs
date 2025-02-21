@@ -24,25 +24,12 @@ public class DeployableBomb : DeployableBase
 
         position = info.Position;
     }
-    [PunRPC]
-    public override void PutConsum()
-    {
-        StartCoroutine(PutAfterAnim());
-    }
     protected override IEnumerator PutAfterAnim()
     {
         yield return null;
-        if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
-        {
-            Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
-            bomb.transform.position = playerData.ConsumPos.position;
-            bomb.SetTeam((int)team);
-            bomb.Use();
-        }
-        else
-        {
-            // ÆøÅº ÇØÁ¦
-            gameObject.GetComponent<PlayerBlackBoard>().playerStatus.isBombDefuse = true;
-        }
+        Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
+        bomb.transform.position = playerData.ConsumPos.position;
+        bomb.SetTeam((int)team);
+        bomb.Use();
     }
 }

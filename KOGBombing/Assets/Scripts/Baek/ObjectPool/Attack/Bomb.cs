@@ -17,6 +17,7 @@ public class Bomb : AttackConsum
         PlayerBlackBoard player = other.GetComponent<PlayerBlackBoard>();
         if (player != null && player.playerStatus.isBombDefuse)
         {
+            player.playerStatus.isBombDefuse = false;
             Release();
             //RPCDestroy();
         }

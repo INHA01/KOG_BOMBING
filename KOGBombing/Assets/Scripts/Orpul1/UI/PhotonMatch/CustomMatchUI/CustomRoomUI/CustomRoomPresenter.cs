@@ -25,7 +25,8 @@ namespace Orpul1
             StartCoroutine(CoStartCounting());
             view.btnStartGame.interactable = false;
             view.btnQuitRoom.interactable = false;
-            view.btnSwapTeam.interactable = false;
+            view.btnSwapRedTeam.interactable = false;
+            view.btnSwapBlueTeam.interactable = false;
             
         }
         public void OnLeaveRoomBtn()

@@ -6678,6 +6678,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7446563131070058403, guid: d52e45778cbd9004ba56f0a9c6152104,
+        type: 3}
+      propertyPath: btnSwapRedTeam
+      value: 
+      objectReference: {fileID: 8622420368143709375}
+    - target: {fileID: 7446563131070058403, guid: d52e45778cbd9004ba56f0a9c6152104,
+        type: 3}
+      propertyPath: btnSwapBlueTeam
+      value: 
+      objectReference: {fileID: 8622420368143709374}
     - target: {fileID: 8187392223641208920, guid: d52e45778cbd9004ba56f0a9c6152104,
         type: 3}
       propertyPath: lobbyPlayer
@@ -6742,6 +6752,30 @@ VideoPlayer:
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
+--- !u!114 &8622420368143709374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7095270471756284176, guid: d52e45778cbd9004ba56f0a9c6152104,
+    type: 3}
+  m_PrefabInstance: {fileID: 8622420368143709371}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8622420368143709375 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4473348104093973340, guid: d52e45778cbd9004ba56f0a9c6152104,
+    type: 3}
+  m_PrefabInstance: {fileID: 8622420368143709371}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8637871644667800872
 GameObject:
   m_ObjectHideFlags: 0

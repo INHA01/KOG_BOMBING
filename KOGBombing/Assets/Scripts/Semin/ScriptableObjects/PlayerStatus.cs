@@ -27,6 +27,8 @@ namespace Semin
         public bool isLive;
         public bool isGroggy;
         public bool groggyable;
+        public bool isBombInteract;
+        public bool isBombDefuse;
 
         public CharacterType CharacterType { get { return type; } }
 	}

@@ -26,6 +26,9 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 			case WeaponType.MOLOTOV:
 				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
 				break;
+			case WeaponType.BOMB:
+                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
+                break;
         }
 		this.type = type;
 		this.playerData = playerData;

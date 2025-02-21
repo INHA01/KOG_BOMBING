@@ -5,6 +5,7 @@ public enum WeaponType
     GUN,
     MOLOTOV,
     LANDMINE,
+    BOMB,
     SHOCK_GRENADE,
     NONE,
     MAX

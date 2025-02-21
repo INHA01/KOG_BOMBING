@@ -14,6 +14,7 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Granade,
         Cancel,
 		Landmine,
+		Bomb,
 		Shoot,
 		Groggy,
 		Right,

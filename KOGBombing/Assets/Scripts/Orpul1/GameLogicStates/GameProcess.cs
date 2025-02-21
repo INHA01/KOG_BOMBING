@@ -32,7 +32,7 @@ namespace Orpul1
         {
             DoRoundCountDown();
             if (!roundController.IsEndRound()) return;
-
+            Debug.Log("Next Transition State");
             int nextState = (int)roundController.GetGameState();
             transitionState(nextState);
         }

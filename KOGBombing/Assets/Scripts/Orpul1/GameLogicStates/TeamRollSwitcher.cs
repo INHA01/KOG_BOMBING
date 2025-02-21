@@ -14,6 +14,7 @@ namespace Orpul1
         public override void EnterState()
         {
             time = 0;
+            SwapTeamCount();
             SwitchTeamRoll();
             DestroyGameObject();
         }
@@ -43,17 +44,21 @@ namespace Orpul1
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI("PlayCanvas");
         }
-        private void SwitchTeamRoll()
+        private void SwapTeamCount()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            Player[] players = PhotonNetwork.PlayerList;
-            for (int i = 0; i < players.Length; i++)
-            {
-                ETeam setTeam = ETeam.REDTEAM;
-                if ((ETeam)players[i].CustomProperties["Team"] == ETeam.REDTEAM)
-                    setTeam = ETeam.BLUETEAM;
-                players[i].SetCustomProperties(new PhotonHashtable { { "Team", setTeam } });
-            }
+            int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+            int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "RT", blueTeamCnt } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "BT", redTeam } });
+        }
+        private void SwitchTeamRoll()
+        {
+            ETeam setTeam = ETeam.REDTEAM;
+            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == ETeam.REDTEAM)
+                setTeam = ETeam.BLUETEAM;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "Team", setTeam } });
+
         }
     }
 }

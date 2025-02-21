@@ -23,6 +23,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+        //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
             SetOtherTeamInfo();
         else blackBoard.hpBar.SetIsMyTeam(true);
@@ -37,8 +38,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials, blackBoard.hpBar);
             blackBoard.fieldOfView.SetActive(false);
-        }
-        blackBoard.hpBar.SetIsMyTeam(false);
+			blackBoard.hpBar.SetIsMyTeam(false);
+		}
     }
 
     IEnumerator DamageTest(float time, float damage)

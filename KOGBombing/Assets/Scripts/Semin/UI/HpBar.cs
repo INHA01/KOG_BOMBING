@@ -23,6 +23,7 @@ public class HpBar : MonoBehaviour
     Camera mainCamera;
     Coroutine decrease;
     bool stopHpUI = false;
+    bool isOtherTeam = false;
 
     public void SetHpValue(float hpValue, float defenceValue)
     {
@@ -43,12 +44,14 @@ public class HpBar : MonoBehaviour
 
     public void ShowOtherTeamUI()
     {
+        if (!isOtherTeam) return;
         otherTeam.SetActive(true);
     }
 
     public void HideOtherTeamUI()
-    {
-        otherTeam.SetActive(false);
+	{
+		if (!isOtherTeam) return;
+		otherTeam.SetActive(false);
         groggyObject.SetActive(false);
     }
 
@@ -128,6 +131,7 @@ public class HpBar : MonoBehaviour
         else
         {
             team = otherTeam;
+            isOtherTeam = true;
             //myTeam.SetActive(false);
             otherTeam.SetActive(false);
         }

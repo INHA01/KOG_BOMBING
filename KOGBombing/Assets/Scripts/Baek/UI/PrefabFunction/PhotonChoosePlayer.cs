@@ -15,6 +15,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     List<Player> mTeamPlayerList;
     Queue<int> mTeamIndex = new Queue<int>();
     int playerTeamIndex = 0;
+    ETeam eTeam;
 
     RaiseEventOptions option = new RaiseEventOptions();
     int eventCode = 12;
@@ -23,12 +24,11 @@ public class PhotonChoosePlayer : ChoosePlayer
     {
         PhotonNetwork.NetworkingClient.EventReceived += OnSelectEvent;
         option.Receivers = ReceiverGroup.All;
-        //Init();
     }
     public override void Notify(int index)
     {
         base.Notify(index);
-        object[] sendMsg = new object[2] { index, playerTeamIndex };
+        object[] sendMsg = new object[3] { index, playerTeamIndex, eTeam };
         PhotonNetwork.RaiseEvent((byte)eventCode, sendMsg, option, SendOptions.SendReliable);
     }
     private void OnSelectEvent(EventData punEvent)
@@ -38,6 +38,8 @@ public class PhotonChoosePlayer : ChoosePlayer
             object[] receiveMsg = (object[])punEvent.CustomData;
             int receiveChooseIndex = (int)receiveMsg[0];
             int receiveTeamIndex = (int)receiveMsg[1];
+            ETeam receiveTeamType = (ETeam)receiveMsg[2];
+            if (receiveTeamType != eTeam) return;
             ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
             if (chooseAvatarIcon == null) return;
             chooseAvatarIcon.Choosing(receiveChooseIndex);
@@ -46,10 +48,9 @@ public class PhotonChoosePlayer : ChoosePlayer
     public override void Init()
     {
         InitAvatar();
-        ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         playerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
         mTeamPlayerList = GetTeamPlayer(eTeam);
-        int playerCnt = mTeamPlayerList.Count;
         
         //플레이어 아이콘 생성
         for (int i = 0; i < mTeamPlayerList.Count; i++) 

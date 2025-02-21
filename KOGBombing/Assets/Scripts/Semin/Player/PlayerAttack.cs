@@ -78,7 +78,9 @@ public class PlayerAttack : PlayerBehavior
                 playerData.skill.InitializationSkill(playerData);
                 break;
             case CharacterType.Uni:
-                break;
+				playerData.skill = gameObject.AddComponent<DashSkill>();
+				playerData.skill.InitializationSkill(playerData);
+				break;
         }
     }
 
@@ -167,47 +169,90 @@ public class PlayerAttack : PlayerBehavior
 
     public INode.ENodeState SetSkill()
     {
-        switch (blackBoard.characterType)
-        {
-            case CharacterType.Ned:
-				Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
-				RaycastHit hit;
+        if (blackBoard.characterType != CharacterType.Ned) 
+            return INode.ENodeState.Fail;
 
-				if (!isChangableAnim)
-				{
-					if (animChange != null)
-						return INode.ENodeState.Running;
-					else
-					{
-						blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
-						blackBoard.inputs[EKey.Q] = false;
-						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
-						playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-						playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-						isChangableAnim = true;
-						return INode.ENodeState.Success;
-					}
-				}
+		Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
+		RaycastHit hit;
 
-				if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
-				{
-					playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
-						playerData.playerObj.transform.eulerAngles.y));
-				}
-
-				if (blackBoard.inputs[EKey.LMOUSEBUTTON])
-				{
-					animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
-					playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
-                    playerData.skill.Use();
-					return INode.ENodeState.Success;
-				}
+		if (!isChangableAnim)
+		{
+			if (animChange != null)
 				return INode.ENodeState.Running;
-            case CharacterType.Uni:
-                break;
-        }			
+			else
+			{
+				blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+				blackBoard.inputs[EKey.Q] = false;
+				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
+				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+				playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+				isChangableAnim = true;
+				return INode.ENodeState.Success;
+			}
+		}
+
+		if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
+		{
+			playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+				playerData.playerObj.transform.eulerAngles.y));
+		}
+
+		if (blackBoard.inputs[EKey.LMOUSEBUTTON])
+		{
+			animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
+			playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
+            playerData.skill.Use();
+			return INode.ENodeState.Success;
+		}
 		return INode.ENodeState.Running;
 	}
+
+    public INode.ENodeState DashSkill()
+	{
+		if (blackBoard.characterType != CharacterType.Uni) 
+            return INode.ENodeState.Fail;
+
+		if (playerData.skill is DashSkill dash)
+		{
+			if (isChangableAnim)
+			{
+				Vector3 direction = playerData.mousePos - playerData.animator.transform.position;
+				direction.y = 0;
+				Quaternion targetRotation = Quaternion.LookRotation(direction);
+				playerData.animator.transform.rotation = targetRotation;
+				playerData.playerObj.transform.LookAt(playerData.mousePos);
+
+                playerData.skill.SetSkill(new DashSkillInfo(playerData.canAttackPoint, transform.forward, 2f, blackBoard));
+				playerData.skill.Use();
+				ChangeWeapon(WeaponType.NONE);
+				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
+                blackBoard.speedDebuffPercent *= 1.5f;
+				//playerData.skill.SetWeapon(new SupportWeaponInfo(transform.position));
+				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
+			}
+			if (animChange != null)
+			{
+                if (!dash.IsRunning())
+                {
+                    StopCoroutine(animChange);
+					animChange = null;
+					ChangeWeapon(WeaponType.GUN);
+				}
+				return INode.ENodeState.Running;
+			}
+			else
+			{
+				isChangableAnim = true;
+				blackBoard.inputs[EKey.Q] = false;
+                blackBoard.speedDebuffPercent /= 1.5f;
+
+				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
+				playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+				return INode.ENodeState.Success;
+			}
+		}
+		return INode.ENodeState.Fail;
+    }
 
 
 	public void OnUseAttackConsum(InputValue value)
@@ -251,6 +296,7 @@ public class PlayerAttack : PlayerBehavior
 		if (blackBoard.inputs[EKey.Q])
 		{
 			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, true);
+            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill); // Uni Test
 			if (playerData.skill is ThrowableSkill baseWeapon)
 				weaponType = baseWeapon.type;
 		}

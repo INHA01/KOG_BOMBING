@@ -2,6 +2,7 @@ using Photon.Pun;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static PlayerController;
 
@@ -10,9 +11,9 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
     public bool IsNotGroggy()
     {
         return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
-    }
+	}
 
-    public INode.ENodeState Move()
+	public INode.ENodeState Move()
     {
         Vector3 movement;
 		movement = transform.right * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * blackBoard.speedDebuffPercent;

@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -20,5 +21,19 @@ public class ThrowableSkillInfo : SkillInfo
 	{
 		CurPosition = curPosition;
 		Angle = angle;
+	}
+}
+
+public class DashSkillInfo : SkillInfo
+{
+	public Vector3 Direction;
+	public float BuffTime;
+	public PlayerBlackBoard Blackboard;
+
+	public DashSkillInfo(Vector3 TargetPosition, Vector3 direction, float buffTime, PlayerBlackBoard blackboard) : base(TargetPosition) 
+	{
+		Direction = direction;
+		BuffTime = buffTime;
+		Blackboard = blackboard;
 	}
 }

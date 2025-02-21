@@ -66,9 +66,9 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	{
 		return bisUsableSkill;
 	}
+
 	public override void Use()
 	{
-		count--;
 		playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
 		skillDeltaTime = 0;

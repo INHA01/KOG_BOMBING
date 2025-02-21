@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: b657134a57c64114e9acef68e0836e18
-  position: {x: 796, y: 374}
+  position: {x: 791, y: 538.2271}
   child: {fileID: 6882639984666204211}
   method: CheckInput
   paramName: LMOUSEBUTTON
@@ -31,9 +31,27 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: a0032de2e54ce404f87fa05e7d107bdd
-  position: {x: 796, y: 133}
+  position: {x: 790.0001, y: 244.22716}
   child: {fileID: -1446105872691957205}
   method: IsNed
+  paramName: 
+  className: PlayerAttack
+--- !u!114 &-8257180949858221506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: e13d1af56b4128d488c18e280c49bd6b
+  position: {x: 345.99994, y: -81.00001}
+  child: {fileID: 1275248584821849244}
+  method: IsUni
   paramName: 
   className: PlayerAttack
 --- !u!114 &-7834396176166106668
@@ -49,7 +67,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 8909ff68af306264780cf6dc9c643114
-  position: {x: 200, y: 3.2311096}
+  position: {x: 195, y: 167.22717}
   children:
   - {fileID: -5288419803410853016}
   - {fileID: -6981434794934456990}
@@ -102,7 +120,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 32590d5588da483418585039052ec4f7
-  position: {x: 205.00006, y: -136.00002}
+  position: {x: 200.00003, y: 28.227158}
   child: {fileID: 225296470337349713}
   method: IsNotGroggy
   paramName: 
@@ -155,7 +173,7 @@ MonoBehaviour:
   m_Name: ParallelNode
   m_EditorClassIdentifier: 
   guid: 79342286855fc6649bdf0e8161f0b4f4
-  position: {x: 357, y: 42.2311}
+  position: {x: 352, y: 206.22711}
   children:
   - {fileID: 8200657294350586246}
   - {fileID: 6193472429586276356}
@@ -177,6 +195,41 @@ MonoBehaviour:
   method: IsNotGroggy
   paramName: Landmine
   className: PlayerController
+--- !u!114 &-5927412410425040769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 52a7d735b0511b545bb66da508683f6b
+  position: {x: 627.99994, y: -81.00001}
+  paramName: 
+  method: DashSkill
+  className: PlayerAttack
+--- !u!114 &-5437065837203755736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: f75fc412319d7194286f4d612ac84a48
+  position: {x: 200.00009, y: -80.99996}
+  child: {fileID: -8257180949858221506}
+  method: IsNotGroggy
+  paramName: 
+  className: PlayerMovement
 --- !u!114 &-5304561471504019390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +243,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: cc370945274aed3488a68f8caf738156
-  position: {x: 1080, y: 133}
+  position: {x: 1074, y: 244.22716}
   paramName: 
   method: SetSkill
   className: PlayerAttack
@@ -207,7 +260,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c531646cc1b5f9f4e8668128c0e9841e
-  position: {x: 357, y: -34.76889}
+  position: {x: 352, y: 129.22713}
   paramName: 
   method: RotatePlayer
   className: PlayerMovement
@@ -242,7 +295,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: bf43af4aee70b3f41a5100032c6c1660
-  position: {x: 796, y: 284.19254}
+  position: {x: 791, y: 448.2271}
   child: {fileID: 1713173759231001354}
   method: IsAttackTeam
   paramName: 
@@ -275,7 +328,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: aaba949fd9b0cdf439754d8c5ca62a3f
-  position: {x: 492, y: -136}
+  position: {x: 486.99994, y: 28.227158}
   child: {fileID: 8366443915547346038}
   method: IsDefenceTeam
   paramName: 
@@ -293,7 +346,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: 6275358fa4846bc40ba80d31871b5a32
-  position: {x: 644.00006, y: 132.82703}
+  position: {x: 639, y: 297.22717}
   children:
   - {fileID: -8340223700539422723}
   - {fileID: -3281831052019774864}
@@ -311,7 +364,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 8d9b3cb5afbfb9f4ea5ad6d15cfb3f87
-  position: {x: 939.0001, y: 133}
+  position: {x: 933, y: 244.22716}
   child: {fileID: -5304561471504019390}
   method: CheckInput
   paramName: Q
@@ -364,7 +417,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: ef0aa5e1ce532194793e6c71fddf2728
-  position: {x: 1080, y: 284}
+  position: {x: 1075, y: 448.2271}
   paramName: 
   method: SetSupportWeapon
   className: PlayerAttack
@@ -422,6 +475,10 @@ MonoBehaviour:
   - {fileID: 6475284595041551624}
   - {fileID: -8340223700539422723}
   - {fileID: -5304561471504019390}
+  - {fileID: -5437065837203755736}
+  - {fileID: -8257180949858221506}
+  - {fileID: 1275248584821849244}
+  - {fileID: -5927412410425040769}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,7 +492,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: bf0171e340d973c428fc5c7c99fdfc74
-  position: {x: 351.00003, y: -135.72966}
+  position: {x: 346, y: 28.227158}
   child: {fileID: -1819408944471962811}
   method: CheckInput
   paramName: NUM_1
@@ -453,7 +510,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 429a24365a6422543b3f1a807fac993b
-  position: {x: 357, y: 250.32251}
+  position: {x: 352, y: 414.22717}
   child: {fileID: 5499220917565172958}
   method: IsInteracting
   paramName: 
@@ -492,6 +549,24 @@ MonoBehaviour:
   children:
   - {fileID: -3704719262176938618}
   - {fileID: -7147036626057015698}
+--- !u!114 &1275248584821849244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: add27958aa968904c9f07bdf9e497e11
+  position: {x: 487, y: -81.00001}
+  child: {fileID: -5927412410425040769}
+  method: CheckInput
+  paramName: Q
+  className: PlayerInputListner
 --- !u!114 &1584241473073964167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,6 +620,7 @@ MonoBehaviour:
   - {fileID: 6600464113284892490}
   - {fileID: -7802083987999387392}
   - {fileID: 6230328644466973241}
+  - {fileID: -5437065837203755736}
   - {fileID: -7184894367834191486}
   - {fileID: -7834396176166106668}
 --- !u!114 &1713173759231001354
@@ -560,7 +636,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 7e290234733aa9043a9c2c23f21b1451
-  position: {x: 939.00006, y: 284.19254}
+  position: {x: 934, y: 448.2271}
   child: {fileID: -240715722926024634}
   method: CheckInput
   paramName: NUM_1
@@ -613,7 +689,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 876e5aa7fbda8014caab232d39034a0a
-  position: {x: 505, y: 250.32251}
+  position: {x: 500.00006, y: 414.22717}
   paramName: 
   method: AbortInteract
   className: PlayerInteract
@@ -647,7 +723,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2daf35ad2c3351a4db5454e837fdcef2
-  position: {x: 505.00003, y: 41.99998}
+  position: {x: 500.00006, y: 206.22711}
   paramName: 
   method: Move
   className: PlayerMovement
@@ -682,7 +758,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: eebe930993a696147ac0d50ded27a9ef
-  position: {x: 866.5, y: 464.93753}
+  position: {x: 862, y: 629.22723}
   child: {fileID: 0}
   method: CheckInput
   paramName: 
@@ -717,7 +793,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 32a724eb36e0a614e8e9d72196e443e3
-  position: {x: 939.00006, y: 374.19254}
+  position: {x: 934, y: 538.2271}
   paramName: 
   method: ShootBullet
   className: PlayerAttack
@@ -751,7 +827,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 965833fd334acab4db8423ece042ff8a
-  position: {x: 505.00003, y: 132.82703}
+  position: {x: 500.00006, y: 297.22717}
   child: {fileID: -1676848161917596575}
   method: IsNotGroggy
   paramName: 
@@ -769,7 +845,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: b9f696e256882b5489995bd4b15db166
-  position: {x: 634.4, y: -136}
+  position: {x: 628, y: 28.000025}
   paramName: 
   method: LayingLandmine
   className: PlayerAttack

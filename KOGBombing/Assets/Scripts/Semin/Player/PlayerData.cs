@@ -9,6 +9,7 @@ public class PlayerData : MonoBehaviour
     [Header("Shooting")]
     public Transform shootStartPos;
     public Transform shootEndPos;
+    public Vector3 canAttackPoint;
     public float maxLength;
     public Vector3 mousePos;
 

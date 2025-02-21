@@ -79,6 +79,7 @@ public class AttackRange
         Vector3 startPos = playerData.shootStartPos.position;
         startPos.y -= 0.8f;
 
+        playerData.canAttackPoint = canAttackPoint;
         SetPoint(lineRenderer1, startPos, canAttackPoint);
         Vector3 canNotAttackPoint = new Vector3(playerData.mousePos.x, canAttackPoint.y, playerData.mousePos.z);
         SetPoint(lineRenderer2, canAttackPoint, canNotAttackPoint);

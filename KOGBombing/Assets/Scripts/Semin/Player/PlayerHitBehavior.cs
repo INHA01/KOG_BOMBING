@@ -6,6 +6,7 @@ using Photon.Pun;
 using Semin;
 using System;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -196,7 +197,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+		blackBoard.speedDebuffPercent = 1f;
+		blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         Managers.UI.ClosePopupUI("DieCanvas");
     }
     private void SetActiveState(bool isDie)

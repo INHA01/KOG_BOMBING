@@ -5,31 +5,32 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public abstract class PhotonPlayerWaitLogic : MonoBehaviourPunCallbacks, IState
+namespace Orpul1
 {
-    [SerializeField]
-    protected LogicContext logicContext;
-    protected int readyPlayerCnt = 0;
-    protected Action<int> transitionState;
-    public void Initialize(Action<int> transition)
+    public abstract class PhotonPlayerWaitLogic : MonoBehaviourPunCallbacks, IState
     {
-        transitionState = transition;
-        logicContext = GetComponent<LogicContext>();
-        logicContext.options.Receivers = ReceiverGroup.All;
-    }
-    public virtual void EnterState()
-    {
-        if(PhotonNetwork.IsMasterClient)
+        [SerializeField]
+        protected LogicContext logicContext;
+        protected int readyPlayerCnt = 0;
+        protected Action<int> transitionState;
+        public void Initialize(Action<int> transition, LogicContext logicContext)
         {
-            SetCurReadyPlayer();
-            StartCoroutine(CoWaitPlayer());
+            transitionState = transition;
+            this.logicContext = logicContext;
+            this.logicContext.options.Receivers = ReceiverGroup.All;
         }
+        public virtual void EnterState()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SetCurReadyPlayer();
+                StartCoroutine(CoWaitPlayer());
+            }
+        }
+        public abstract void UpdateState();
+        public abstract void ExitState();
+
+        protected abstract void SetCurReadyPlayer();
+        protected abstract IEnumerator CoWaitPlayer();
     }
-    public abstract void UpdateState();
-    public abstract void ExitState();
-
-    protected abstract void SetCurReadyPlayer();
-    protected abstract IEnumerator CoWaitPlayer();
-
-    
 }

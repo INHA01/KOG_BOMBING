@@ -1,9 +1,12 @@
 using System;
 
-public interface IState
+namespace Orpul1
 {
-    public void Initialize(Action<int> transition);
-    public void EnterState();
-    public void UpdateState();
-    public void ExitState();
+    public interface IState
+    {
+        public void Initialize(Action<int> transition,LogicContext logicContext);
+        public void EnterState();
+        public void UpdateState();
+        public void ExitState();
+    }
 }

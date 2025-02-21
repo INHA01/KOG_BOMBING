@@ -8,7 +8,7 @@ using ExitGames.Client.Photon;
 using System;
 namespace Orpul1
 {
-    public enum EGameEvent
+    public enum EGameRound
     {
         PLAYERREADY,
         ROUNDREADY,
@@ -27,6 +27,16 @@ namespace Orpul1
         GAMEEND,
         END,
     }
+    public enum EGameEvent
+    {
+        WIN,
+        LOSS,
+        DOOROPEN,
+        LASTROUND,
+        SETBOMB,
+        SWITCHROLL,
+    }
+    
 
     public class GameDirector : MonoBehaviourPunCallbacks
     {
@@ -45,7 +55,7 @@ namespace Orpul1
             for (int i=(int)EGameState.START+1; i<(int)EGameState.END; i++)
             {
                 IState state = states[i-1];
-                state.Initialize(TransitionState);
+                state.Initialize(TransitionState,GetComponent<LogicContext>());
                 dicGameState.Add(i, state);
             }
             TransitionState((int)EGameState.WAITPLAYERS);

@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISetTeamCountable
+namespace Orpul1
 {
-    public void SetTeamCount(int teamType);
+    public interface ISetTeamCountAble
+    {
+        public void SetTeamCount(int teamType);
+    }
 }

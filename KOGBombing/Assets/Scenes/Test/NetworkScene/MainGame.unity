@@ -10926,6 +10926,7 @@ GameObject:
   - component: {fileID: 1317832637}
   - component: {fileID: 1317832636}
   - component: {fileID: 1317832638}
+  - component: {fileID: 1317832639}
   m_Layer: 0
   m_Name: GameDirector
   m_TagString: Untagged
@@ -11027,6 +11028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logicContext: {fileID: 0}
+  gamestartInterval: 5
   time: 0
 --- !u!114 &1317832633
 MonoBehaviour:
@@ -11100,6 +11102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logicContext: {fileID: 0}
+  waitRoundInterval: 2
 --- !u!114 &1317832638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11112,8 +11115,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d613f971a4cd814e91c024a6e16ba23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
   playerObj: {fileID: 0}
+  roundData:
+    maxRound: 10
+    winRound: 4
+    processRoundCnt: 0
+    switchRound: 2
+    isAlreadySwitchRoll: 0
+--- !u!114 &1317832639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d8c621da5024948bc0c48636de8a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &1319289927
 MeshCollider:
   m_ObjectHideFlags: 0

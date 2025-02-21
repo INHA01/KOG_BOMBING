@@ -1,4 +1,7 @@
-public interface IRespawnAble
+namespace Orpul1
 {
-    public void DoRespawn();
+    public interface IRespawnAble
+    {
+        public void DoRespawn();
+    }
 }

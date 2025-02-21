@@ -1,5 +1,7 @@
+
+using UnityEditor.Build;
+
 public interface IBombStateAble
 {
-    public void ExplosionBomb();
-    public void ClearBomb();
+    public void BombEvent(EBombState bombState);
 }

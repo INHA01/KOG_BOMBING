@@ -7,74 +7,50 @@ using Photon.Realtime;
 using PhotnHashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 
-public class GameProcess : GameProcessLogic, ISetTeamCountable, IBombStateAble
+namespace Orpul1
 {
-    [SerializeField]
-    float roundInterval = 20;
-    [SerializeField]
-    float time = 0;
-    bool isEndRound = false;
-    public override void EnterState()
+    public class GameProcess : GameProcessLogic
     {
-        int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-        int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-        logicContext.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
-        logicContext.roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
+        [SerializeField]
+        float roundInterval = 20;
+        [SerializeField]
+        float time = 0;
 
-        PhotonNetwork.NetworkingClient.EventReceived += OnSetTeamCount;
-        isEndRound = false;
-        time = 0;
-    }
-    public override void UpdateState()
-    {
-        DoRoundCountDown();
-        if (!isEndRound) return;
-
-        logicContext.roundData.SetTeamScore();
-        int nextState = (int)logicContext.roundData.GetNextState();
-        if (nextState == (int)EGameState.ROUNDWAIT)
-            logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
-        transitionState(nextState);
-    }
-
-    public override void ExitState()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= OnSetTeamCount;
-    }
-    private void OnSetTeamCount(EventData punEvent)
-    {
-        if ((int)punEvent.Code != (int)EGameEvent.EXTERMINATETEAM) return;
-        int teamType = (int)punEvent.CustomData;
-        logicContext.roundData.SetDecreaseTeamCount(teamType);
-        isEndRound = logicContext.roundData.IsExterminateTeam();
-        Managers.UI.ClosePopupUI("DieCanvas");
-        Debug.Log($"RT {logicContext.roundData.TeamScores[(int)ETeam.REDTEAM]} BT {logicContext.roundData.TeamScores[(int)ETeam.BLUETEAM]}");
-    }
-
-    private void DoRoundCountDown()
-    {
-        time += Time.deltaTime;
-        if (time > roundInterval) 
+        RoundController roundController = new RoundController();
+        private void Start()
         {
-            logicContext.roundData.RoundTimeOver();
-            isEndRound = true;
+            GetComponent<RoundEventListner>().Initialize(roundController);
+        }
+        public override void EnterState()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived += roundController.OnSetTeamCount;
+            roundController.Initialize(logicContext);
             time = 0;
+        }
+
+        public override void UpdateState()
+        {
+            DoRoundCountDown();
+            if (!roundController.IsEndRound()) return;
+
+            int nextState = (int)roundController.GetGameState();
+            transitionState(nextState);
+        }
+
+        public override void ExitState()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
+        }
+
+        private void DoRoundCountDown()
+        {
+            time += Time.deltaTime;
+            if (time > roundInterval)
+            {
+                logicContext.roundData.RoundTimeOver();
+                time = 0;
+            }
         }
     }
 
-    public void SetTeamCount(int teamType)
-    {
-        PhotonNetwork.RaiseEvent((int)EGameEvent.EXTERMINATETEAM, teamType, logicContext.options, SendOptions.SendReliable);
-    }
-
-    public void ExplosionBomb()
-    {
-        logicContext.roundData.ExplosionBomb();
-        isEndRound = true;
-    }
-
-    public void ClearBomb()
-    {
-        isEndRound = true;
-    }
 }

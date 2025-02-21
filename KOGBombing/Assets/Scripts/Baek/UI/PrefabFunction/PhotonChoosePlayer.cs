@@ -45,6 +45,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     }
     public override void Init()
     {
+        InitAvatar();
         ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         playerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
         mTeamPlayerList = GetTeamPlayer(eTeam);
@@ -59,6 +60,16 @@ public class PhotonChoosePlayer : ChoosePlayer
                 SetIcon(false);
         }
         base.Init();
+    }
+    private void InitAvatar()
+    {
+        if (photonAvatar.IsNull()) return;
+        List<ChooseAvatarIcon> avatarList = photonAvatar.GetPlayerAvatarList();
+        for (int i = 0; i < avatarList.Count; i++)
+        {
+            Destroy(avatarList[i].gameObject);
+        }
+        photonAvatar.RemoveAll();
     }
     private List<Player> GetTeamPlayer(ETeam eTeam)
     {

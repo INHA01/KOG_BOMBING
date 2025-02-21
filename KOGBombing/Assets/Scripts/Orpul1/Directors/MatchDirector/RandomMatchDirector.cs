@@ -134,6 +134,7 @@ namespace Orpul1
 
             if (PhotonNetwork.IsMasterClient)
             {
+                yield return new WaitForSeconds(2f);
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
             }
         }

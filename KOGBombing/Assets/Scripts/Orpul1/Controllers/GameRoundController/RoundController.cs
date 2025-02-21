@@ -52,7 +52,7 @@ namespace Orpul1
             float scoreGap = Mathf.Abs(attackTeamScore - defenseTeamScore);
 
             if (scoreGap >= logicContext.roundData.winRound) return true;
-            if (attackTeamScore > logicContext.roundData.maxRound && defenseTeamScore > logicContext.roundData.maxRound) return true;
+            if (logicContext.roundData.processRoundCnt > logicContext.roundData.maxRound) return true;
             return false;
         }
 
@@ -63,9 +63,10 @@ namespace Orpul1
             {
                 return EGameState.GAMEEND;
             }
-
+            logicContext.roundData.processRoundCnt++;
             if (IsNextRound())
             {
+                Debug.Log($"Player Respawn : {logicContext.playerObj.name}");
                 logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
                 return EGameState.GAMESTART;
             }

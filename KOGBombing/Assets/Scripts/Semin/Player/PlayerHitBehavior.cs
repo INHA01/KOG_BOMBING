@@ -268,6 +268,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         for (int i = 0; i < blackBoards.Count; i++)
         {
+            if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
             if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
             if (blackBoards[i].playerStatus.isLive)

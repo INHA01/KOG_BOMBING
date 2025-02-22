@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeployableWeapon : SupportWeaponBase
+public class DeployableWeapon : DeployableBase
 {
 	private Vector3 position;
 	ObjectPool objectPool;
@@ -32,14 +32,7 @@ public class DeployableWeapon : SupportWeaponBase
 		count--;
 		playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
 	}
-
-	[PunRPC]
-	public void PutConsum()
-	{
-		StartCoroutine(PutAfterAnim());
-	}
-
-	IEnumerator PutAfterAnim()
+    protected override IEnumerator PutAfterAnim()
 	{
 		yield return new WaitForSeconds(1.3f);
 		Landmine landmine = objectPool.GetPooledObject().GetComponent<Landmine>();

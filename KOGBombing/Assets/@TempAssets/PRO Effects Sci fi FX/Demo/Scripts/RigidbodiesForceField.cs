@@ -46,7 +46,7 @@ namespace Knife.ScifiEffects
         private void OnEnable()
         {
             elapsedTime = 0;
-            StartCoroutine(Enable());
+            //StartCoroutine(Enable());
         }
 
         private IEnumerator Enable()

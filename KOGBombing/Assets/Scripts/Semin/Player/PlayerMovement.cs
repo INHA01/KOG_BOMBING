@@ -11,9 +11,12 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
     public bool IsNotGroggy()
     {
         return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
-	}
-
-	public INode.ENodeState Move()
+    }
+    public bool IsBombInteract()
+    {
+        return !blackBoard.playerStatus.isBombInteract;
+    }
+    public INode.ENodeState Move()
     {
         Vector3 movement;
 		movement = transform.right * blackBoard.playerStatus.moveSpeed * blackBoard.speedValue.x * blackBoard.speedDebuffPercent;

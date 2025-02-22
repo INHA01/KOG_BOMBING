@@ -38,6 +38,7 @@ public class PlayerData : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
     public ISupportWeapon supportWeapon;
+    public ISupportWeapon bomb;
     public Vector3 consumTargetPos;
     [SerializeField] public Transform ConsumPos;
 

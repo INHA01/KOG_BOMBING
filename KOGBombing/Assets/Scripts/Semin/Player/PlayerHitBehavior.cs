@@ -4,9 +4,6 @@ using UnityEngine;
 using Orpul1;
 using Photon.Pun;
 using Semin;
-using System;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using Photon.Pun;
 using UnityEngine;
 
 public class DashSkill : MonoBehaviour, ISkill
@@ -45,13 +46,20 @@ public class DashSkill : MonoBehaviour, ISkill
 	{
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
-		dash = StartCoroutine(Dash());
-	}
+        playerData.pv.RPC("StartDash", RpcTarget.AllBuffered);
+    }
 
 	public bool IsRunning()
 	{
 		return isRunning;
 	}
+
+	[PunRPC]
+	void StartDash()
+    {
+        dash = StartCoroutine(Dash());
+    }
+
 
 	IEnumerator Dash()
 	{

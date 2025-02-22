@@ -78,7 +78,7 @@ public class PlayerAttack : PlayerBehavior
                 playerData.skill.InitializationSkill(playerData);
                 break;
             case CharacterType.Uni:
-				playerData.skill = gameObject.AddComponent<DashSkill>();
+				playerData.skill = gameObject.GetComponent<DashSkill>();
 				playerData.skill.InitializationSkill(playerData);
 				break;
         }
@@ -227,7 +227,6 @@ public class PlayerAttack : PlayerBehavior
 				ChangeWeapon(WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuffPercent *= 1.5f;
-				//playerData.skill.SetWeapon(new SupportWeaponInfo(transform.position));
 				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
 			}
 			if (animChange != null)

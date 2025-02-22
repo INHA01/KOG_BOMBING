@@ -175,6 +175,7 @@ public class PlayerAttack : PlayerBehavior
                     }
                 }
             }
+
         }
         return INode.ENodeState.Running;
     }
@@ -253,40 +254,40 @@ public class PlayerAttack : PlayerBehavior
         if (blackBoard.characterType != CharacterType.Ned) 
             return INode.ENodeState.Fail;
 
-		Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
-		RaycastHit hit;
+        Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
+        RaycastHit hit;
 
-		if (!isChangableAnim)
-		{
-			if (animChange != null)
-				return INode.ENodeState.Running;
-			else
-			{
-				blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
-				blackBoard.inputs[EKey.Q] = false;
-				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
-				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-				playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-				isChangableAnim = true;
-				return INode.ENodeState.Success;
-			}
-		}
+        if (!isChangableAnim)
+        {
+            if (animChange != null)
+                return INode.ENodeState.Running;
+            else
+            {
+                blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+                blackBoard.inputs[EKey.Q] = false;
+                playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
+                playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+                playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+                isChangableAnim = true;
+                return INode.ENodeState.Success;
+            }
+        }
 
-		if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
-		{
-			playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
-				playerData.playerObj.transform.eulerAngles.y));
-		}
+        if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
+        {
+            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+                playerData.playerObj.transform.eulerAngles.y));
+        }
 
-		if (blackBoard.inputs[EKey.LMOUSEBUTTON])
-		{
-			animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
-			playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
+        if (blackBoard.inputs[EKey.LMOUSEBUTTON])
+        {
+            animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
+            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
             playerData.skill.Use();
-			return INode.ENodeState.Success;
-		}
-		return INode.ENodeState.Running;
-	}
+            return INode.ENodeState.Success;
+        }
+        return INode.ENodeState.Running;
+    }
 
     public INode.ENodeState DashSkill()
 	{
@@ -334,13 +335,24 @@ public class PlayerAttack : PlayerBehavior
 		return INode.ENodeState.Fail;
     }
 
+
+    public void OnUseBomb(InputValue value)
+    {
+        if (!playerData.pv.IsMine) return;
+        if (blackBoard.playerStatus.groggyable == false) return;
+        if (playerData.bomb is SupportWeaponBase weapon)
+            if (weapon.isUsable() == false) return;
+        isChangableAnim = true;
+        WeaponType weaponType = WeaponType.GUN;
+        blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
+
         if (blackBoard.inputs[EKey.NUM_2])
         {
             //playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, true);
             if (playerData.bomb is SupportWeaponBase baseWeapon)
             {
                 // °ø°ÝÆÀÀÎ °æ¿ì ÆøÅºÀåÂø, ¼öºñÆÀ¿¡ °æ¿ì ÇØÁ¦ÀÌ¹Ç·Î ¸Ç¼Õ
-                if((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
+                if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
                     weaponType = WeaponType.BOMB;
                 else
                     weaponType = WeaponType.NONE;
@@ -354,7 +366,6 @@ public class PlayerAttack : PlayerBehavior
         }
         ChangeWeapon(weaponType);
     }
-
     public void OnUseAttackConsum(InputValue value)
     {
         if (!playerData.pv.IsMine) return;

@@ -229,6 +229,24 @@ MonoBehaviour:
   paramName: 
   method: RotatePlayer
   className: PlayerMovement
+--- !u!114 &-4123719882947693958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 2d995bac573101d4d9262ec081fb3049
+  position: {x: 487.00006, y: -44.000004}
+  child: {fileID: 5513869529623679263}
+  method: CheckInput
+  paramName: Q
+  className: PlayerInputListner
 --- !u!114 &-3704719262176938618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +278,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 3aba2f5555cc1324c8e3cbb084b7b3e5
-  position: {x: 936, y: 208}
+  position: {x: 935.99994, y: 208.00002}
   paramName: 
   method: BombInteract
   className: PlayerAttack
@@ -400,7 +418,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: ef0aa5e1ce532194793e6c71fddf2728
-  position: {x: 1075, y: 468}
+  position: {x: 1075.0001, y: 468.00006}
   paramName: 
   method: SetSupportWeapon
   className: PlayerAttack
@@ -460,6 +478,10 @@ MonoBehaviour:
   - {fileID: -7722109807516606535}
   - {fileID: -3290740795640126274}
   - {fileID: 3069321850940118252}
+  - {fileID: 2007857642856111159}
+  - {fileID: 2735303377056483291}
+  - {fileID: -4123719882947693958}
+  - {fileID: 5513869529623679263}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,7 +495,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: bf0171e340d973c428fc5c7c99fdfc74
-  position: {x: 357, y: -136}
+  position: {x: 359.00003, y: -135.99992}
   child: {fileID: -1819408944471962811}
   method: CheckInput
   paramName: NUM_1
@@ -584,6 +606,7 @@ MonoBehaviour:
   - {fileID: -7802083987999387392}
   - {fileID: 6230328644466973241}
   - {fileID: -7184894367834191486}
+  - {fileID: 2007857642856111159}
   - {fileID: -7834396176166106668}
 --- !u!114 &1713173759231001354
 MonoBehaviour:
@@ -603,6 +626,24 @@ MonoBehaviour:
   method: CheckInput
   paramName: NUM_1
   className: PlayerInputListner
+--- !u!114 &2007857642856111159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 8f5012b3f847689438991909bdb81514
+  position: {x: 200.00003, y: -44.000004}
+  child: {fileID: 2735303377056483291}
+  method: IsNotGroggy
+  paramName: 
+  className: PlayerMovement
 --- !u!114 &2381097818974102332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +661,24 @@ MonoBehaviour:
   paramName: 
   method: ProcessInteractNode
   className: PlayerInteract
+--- !u!114 &2735303377056483291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: dce6709dd7d43744f9b2dc08c33a4c4c
+  position: {x: 346.00003, y: -44.000004}
+  child: {fileID: -4123719882947693958}
+  method: IsUni
+  paramName: 
+  className: PlayerAttack
 --- !u!114 &3069321850940118252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,6 +732,23 @@ MonoBehaviour:
   paramName: 
   method: AbortInteract
   className: PlayerInteract
+--- !u!114 &5513869529623679263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 72ee9b6b51740f54c8d7f6843938c3f5
+  position: {x: 628.0001, y: -44.000004}
+  paramName: 
+  method: DashSkill
+  className: PlayerAttack
 --- !u!114 &6077192041609901196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,7 +831,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 32a724eb36e0a614e8e9d72196e443e3
-  position: {x: 936, y: 625}
+  position: {x: 936.0002, y: 625.00006}
   paramName: 
   method: ShootBullet
   className: PlayerAttack
@@ -807,7 +883,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: b9f696e256882b5489995bd4b15db166
-  position: {x: 640, y: -136}
+  position: {x: 641.0001, y: -136.00003}
   paramName: 
   method: LayingLandmine
   className: PlayerAttack

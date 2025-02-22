@@ -8,15 +8,7 @@ public abstract class DeployableBase : SupportWeaponBase
 {
     public abstract override void SetWeapon(SupportWeaponInfo info);
 
-    public override void Use()
-    {
-        playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
-    }
-    [PunRPC]
-    public virtual void PutConsum()
-    {
-        StartCoroutine(PutAfterAnim());
-    }
+    public override abstract void Use();
 
     abstract protected IEnumerator PutAfterAnim();
 }

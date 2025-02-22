@@ -17,9 +17,21 @@ public class DeployableWeapon : DeployableBase
 		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Landmine"));
 		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
 		objectPool.initPoolSize = count;
-	}
+    }
 
-	public override void SetWeapon(SupportWeaponInfo info)
+    public override void Use()
+    {
+        count--;
+        playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    public virtual void PutConsum()
+    {
+        StartCoroutine(PutAfterAnim());
+    }
+
+    public override void SetWeapon(SupportWeaponInfo info)
 	{
 		if (consum == null)
 			return;
@@ -27,11 +39,6 @@ public class DeployableWeapon : DeployableBase
 		position = info.Position;
 	}
 
-	public override void Use()
-	{
-		count--;
-		playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
-	}
     protected override IEnumerator PutAfterAnim()
 	{
 		yield return new WaitForSeconds(1.3f);

@@ -17,6 +17,17 @@ public class DeployableBomb : DeployableBase
         objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
         objectPool.initPoolSize = count;
     }
+    public override void Use()
+    {
+        playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    public virtual void PutBomb()
+    {
+        StartCoroutine(PutAfterAnim());
+    }
+
     public override void SetWeapon(SupportWeaponInfo info)
     {
         if (consum == null)

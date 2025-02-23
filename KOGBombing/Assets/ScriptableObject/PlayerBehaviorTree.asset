@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: f60b1d4b76311bf45b8c4bb2df3b5b54
-  position: {x: 192.99995, y: -478.12128}
+  position: {x: 204.79999, y: -481.6}
   child: {fileID: -7170902545123407570}
   method: IsDie
   paramName: 
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: ba3de5e932228a846ba878b12bcb23a2
-  position: {x: 350.99994, y: -478.12128}
+  position: {x: 363.2, y: -481.6}
   children:
   - {fileID: 649707792052996928}
   - {fileID: -975095478299540825}
@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 90fe78d4596405847881b1e226417bd4
-  position: {x: 517, y: -583.1213}
+  position: {x: 528.8, y: -586.39996}
   paramName: 
   method: SuccessNode
   className: PlayerHitBehavior
@@ -482,6 +482,8 @@ MonoBehaviour:
   - {fileID: 2735303377056483291}
   - {fileID: -4123719882947693958}
   - {fileID: 5513869529623679263}
+  - {fileID: 2646334612005347128}
+  - {fileID: 1416728964697576737}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +533,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 656fe56fce444bd42a36a3cbf6c2e546
-  position: {x: 514, y: -478.12128}
+  position: {x: 526.4, y: -481.6}
   children:
   - {fileID: 1613006539770928240}
   - {fileID: 1584241473073964167}
@@ -552,6 +554,23 @@ MonoBehaviour:
   children:
   - {fileID: -3704719262176938618}
   - {fileID: -7147036626057015698}
+--- !u!114 &1416728964697576737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 2780f2f49acad5a4c97d7dbeb8af335d
+  position: {x: 384.00006, y: -624.8}
+  paramName: 
+  method: RespawnNode
+  className: PlayerHitBehavior
 --- !u!114 &1584241473073964167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,7 +584,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 9631d5fe104d79c4ab6eb48bc55efc0f
-  position: {x: 675, y: -572.1213}
+  position: {x: 687.2, y: -576}
   paramName: 
   method: SetCameraTarget
   className: PlayerHitBehavior
@@ -582,7 +601,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 151e5b5d541a37a448f78535d4b0eb4f
-  position: {x: 675, y: -479}
+  position: {x: 687.2, y: -482.40002}
   child: {fileID: 6077192041609901196}
   method: IsTargetDie
   paramName: 
@@ -603,6 +622,7 @@ MonoBehaviour:
   position: {x: 49.777775, y: -157.77779}
   children:
   - {fileID: 6600464113284892490}
+  - {fileID: 2646334612005347128}
   - {fileID: -7802083987999387392}
   - {fileID: 6230328644466973241}
   - {fileID: -7184894367834191486}
@@ -661,6 +681,24 @@ MonoBehaviour:
   paramName: 
   method: ProcessInteractNode
   className: PlayerInteract
+--- !u!114 &2646334612005347128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: 4bbab7893a3d0354da96e88f6f890a35
+  position: {x: 204, y: -624.7999}
+  child: {fileID: 1416728964697576737}
+  method: CanRespawnPlayer
+  paramName: 
+  className: PlayerHitBehavior
 --- !u!114 &2735303377056483291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,7 +800,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c05b2d6b371aad7499246dd349a37006
-  position: {x: 836, y: -479.12128}
+  position: {x: 848.00006, y: -482.40002}
   paramName: 
   method: FindAlivePlayer
   className: PlayerHitBehavior
@@ -814,7 +852,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: a5823d0448a98dd4a9b5f5f36f4f9fa2
-  position: {x: 192.99998, y: -572.0001}
+  position: {x: 204.80002, y: -720.09595}
   paramName: 
   method: CanBehavior
   className: PlayerInteract

@@ -5,6 +5,7 @@ using Orpul1;
 using Photon.Pun;
 using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
     [SerializeField]
@@ -20,6 +21,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+        //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
             SetOtherTeamInfo();
         else blackBoard.hpBar.SetIsMyTeam(true);
@@ -34,8 +36,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials, blackBoard.hpBar);
             blackBoard.fieldOfView.SetActive(false);
-        }
-        blackBoard.hpBar.SetIsMyTeam(false);
+			blackBoard.hpBar.SetIsMyTeam(false);
+		}
     }
 
     IEnumerator DamageTest(float time, float damage)
@@ -219,7 +221,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+		blackBoard.speedDebuffPercent = 1f;
+		blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         Managers.UI.ClosePopupUI("DieCanvas");
     }
     private void SetActiveState(bool isDie)

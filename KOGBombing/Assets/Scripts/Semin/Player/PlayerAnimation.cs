@@ -14,11 +14,13 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Granade,
         Cancel,
 		Landmine,
+		Bomb,
 		Shoot,
 		Groggy,
 		Right,
 		Left,
 		Skill,
+		DashEnd,
 		MAX
 	}
 
@@ -168,7 +170,10 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	{
 		if (animator == null) return;
 		if (pv.IsMine)
-			animator.SetLookAtPosition(pointToLookAt);
+		{
+			if (!GetCurAnim(AnimType.Skill))
+				animator.SetLookAtPosition(pointToLookAt);
+		}
 		else
 			animator.SetLookAtPosition(netWorkPointToLookAt);
 		if (GetAnimBool(AnimType.Groggy))

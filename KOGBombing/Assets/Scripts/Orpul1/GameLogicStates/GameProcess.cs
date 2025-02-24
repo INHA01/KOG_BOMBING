@@ -23,7 +23,9 @@ namespace Orpul1
         }
         public override void EnterState()
         {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.START} });
             PhotonNetwork.NetworkingClient.EventReceived += roundController.OnSetTeamCount;
+            PhotonNetwork.NetworkingClient.EventReceived += roundController.OnEndRound;
             roundController.Initialize(logicContext);
             time = 0;
         }
@@ -31,7 +33,14 @@ namespace Orpul1
         public override void UpdateState()
         {
             DoRoundCountDown();
+            Debug.Log("UpdateGameProcess");
             if (!roundController.IsEndRound) return;
+            Debug.Log("---END Round---");
+            if(PhotonNetwork.IsMasterClient)
+            {
+                object[] datas = roundController.GetEndEvnetDatas();
+                PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, datas, logicContext.options, SendOptions.SendReliable);
+            }
             Debug.Log("Next Transition State");
             roundController.SetTeamScore();
             int nextState = (int)roundController.GetGameState();
@@ -42,6 +51,8 @@ namespace Orpul1
         public override void ExitState()
         {
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
+            PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.READY } });
         }
 
         private void DoRoundCountDown()
@@ -49,7 +60,7 @@ namespace Orpul1
             time += Time.deltaTime;
             if (time > roundInterval)
             {
-                roundController.SetEndRound();
+                roundController.SetRoundTimeOver();
                 time = 0;
             }
         }

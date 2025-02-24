@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
@@ -28,6 +29,7 @@ namespace Orpul1
         }
         public override void UpdateState()
         {
+            Debug.Log("RoundWait!");
             if (canCountDown)
                 DoCountDown();
         }

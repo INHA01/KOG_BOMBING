@@ -1,5 +1,6 @@
 using System;
 using Orpul1;
+using Photon.Pun;
 using UnityEngine;
 
 
@@ -17,10 +18,12 @@ namespace Orpul1
         public int processRoundCnt = 0; //private
         public int switchRound = 2;
         public bool isAlreadySwitchRoll = false;
-        public bool isEndRound = false;
+        bool isEndRound = false;
         TeamUIController teamUIController;
-        RounEndType roundEndType = RounEndType.NONE;
-        enum RounEndType
+        RoundEndType roundEndType = RoundEndType.NONE;
+        public RoundEndType EndRoundType { get { return roundEndType; } }
+        public bool IsEndRound { get { return isEndRound; } }
+        public enum RoundEndType
         {
             NONE,
             BOMBEXPLOSION,
@@ -44,6 +47,7 @@ namespace Orpul1
         {
             isEndRound = false;
             this.teamUIController = teamUIController;
+            roundEndType = RoundEndType.NONE;
         }
         public void SetTeamCount(int teamType, int count)
         {
@@ -51,30 +55,37 @@ namespace Orpul1
         }
         public void SetDecreaseTeamCount(int teamType)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             teamCounts[teamType]--;
             Debug.Log("DecreaseTeamCount");
             if (teamCounts[teamType] == 0)
             {
                 Debug.Log("EXTERMINATE Team");
-                roundEndType = RounEndType.ATTACKTEAMEXTERMINATE + teamType;
+                roundEndType = RoundEndType.ATTACKTEAMEXTERMINATE + teamType;
                 isEndRound = true;
             }
         }
 
+        public void SetEndRound(GameRoundData.RoundEndType endType, bool isEndRound)
+        {
+            Debug.Log($"endType {endType.ToString()}, isEndRound {isEndRound}");
+            this.roundEndType = endType;
+            this.isEndRound = isEndRound;
+        }
         public void SetTeamScore()
         {
             switch(roundEndType)
             {
                 //Defence team win condition
-                case RounEndType.TIMEOVER:
-                case RounEndType.BOMBCLEAR:
-                case RounEndType.ATTACKTEAMEXTERMINATE:
+                case RoundEndType.TIMEOVER:
+                case RoundEndType.BOMBCLEAR:
+                case RoundEndType.ATTACKTEAMEXTERMINATE:
                     teamScores[(int)ETeam.REDTEAM]++;
                     break;
 
                 //Attack team win condition
-                case RounEndType.BOMBEXPLOSION:
-                case RounEndType.DEFENCETEAMEXTERMINATE:
+                case RoundEndType.BOMBEXPLOSION:
+                case RoundEndType.DEFENCETEAMEXTERMINATE:
                     teamScores[(int)ETeam.BLUETEAM]++;
                     break;
             }
@@ -82,7 +93,7 @@ namespace Orpul1
             // >> TODO : 공수 교대 시 팀 점수 ui 갱신
             teamUIController.UpdateTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
             teamUIController.UpdateTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
-            roundEndType = RounEndType.NONE;
+            roundEndType = RoundEndType.NONE;
         }
         public void SwapTeam()
         {
@@ -93,12 +104,12 @@ namespace Orpul1
         }
         public void RoundTimeOver()
         {
-            roundEndType = RounEndType.TIMEOVER;
+            roundEndType = RoundEndType.TIMEOVER;
             isEndRound = true;
         }
         public void ExplosionBomb()
         {
-            roundEndType = RounEndType.BOMBEXPLOSION;
+            roundEndType = RoundEndType.BOMBEXPLOSION;
             isEndRound = true;
         }
         public EGameState GetNextState()

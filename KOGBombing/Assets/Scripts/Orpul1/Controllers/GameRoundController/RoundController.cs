@@ -13,7 +13,7 @@ namespace Orpul1
         EventUIController eventUIController;
         GameRoundData roundData = new GameRoundData();
         [SerializeField]
-        public bool IsEndRound { get { return roundData.isEndRound; } }
+        public bool IsEndRound { get { return roundData.IsEndRound; } }
 
         public void Initialize(LogicContext logicContext)
         {
@@ -61,11 +61,25 @@ namespace Orpul1
             roundData.SetDecreaseTeamCount(teamType);
             Managers.UI.ClosePopupUI("DieCanvas");
         }
-        public void SetEndRound()
+        public void OnEndRound(EventData punEvent)
+        {
+            if (punEvent.Code != (int)PunEventType.ENDROUND) return;
+            Debug.Log("On ENDROUND Event");
+            object[] datas = (object[])punEvent.CustomData;
+            roundData.SetEndRound((GameRoundData.RoundEndType)datas[0], (bool)datas[1]);
+            Managers.UI.ClosePopupUI("DieCanvas");
+        }
+        public void SetRoundTimeOver()
         {
             roundData.RoundTimeOver();
         }
         
+        public object[] GetEndEvnetDatas()
+        {
+            Debug.Log($"---endType {roundData.EndRoundType.ToString()}");
+            return new object[] { roundData.EndRoundType,roundData.IsEndRound};
+        }
+
         public void SetTeamScore()
         {
             roundData.SetTeamScore();

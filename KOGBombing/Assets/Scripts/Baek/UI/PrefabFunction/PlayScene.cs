@@ -77,7 +77,7 @@ public class PlayScene : MonoBehaviour
     }
     public void UpdateScore(ETeam team, int score)
     {
-        Debug.Log("UpdateScoreUI");
+        Debug.Log($"UpdateScoreUI team {team.ToString()} score {score}");
         if(team == ETeam.REDTEAM)
         {
             redScoreIcon.sprite = redScoreImages[score];

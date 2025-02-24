@@ -47,8 +47,10 @@ public class TeamUIController
     {
         PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
     }
+
     public void UpdateTeamScore(ETeam team, int score)
     {
+        if (!PhotonNetwork.IsMasterClient) return;
         object[] datas = new object[2]{team, score};
         PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSCORE, datas, options, SendOptions.SendReliable);
     }

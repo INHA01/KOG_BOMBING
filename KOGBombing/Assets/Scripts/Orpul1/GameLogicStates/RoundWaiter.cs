@@ -21,7 +21,6 @@ namespace Orpul1
             readyPlayerCnt = 0;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", (int)EPlayerState.WAITROUND } });
             PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;
-            logicContext.options.Receivers = ReceiverGroup.All;
             canCountDown = false;
             SetPlayerPosi();
             time = 0;
@@ -48,12 +47,13 @@ namespace Orpul1
         void SetPlayerPosi()
         {
             if (!Managers.PunData.IsContainKey(PhotonNetwork.LocalPlayer.NickName)) return;
+            
             Vector3 spawnPoint = Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).spawnPoint;
             Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).transform.position = spawnPoint;
         }
         void OoCountDown(EventData punEvent)
         {
-            if ((int)punEvent.Code != (int)EGameRound.ROUNDREADY) return;
+            if ((int)punEvent.Code != (int)PunEventType.ROUNDREADY) return;
             canCountDown = true;
         }
         void DoCountDown()
@@ -80,7 +80,7 @@ namespace Orpul1
         {
             Debug.Log("RoundWait");
             while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
-            PhotonNetwork.RaiseEvent((int)EGameRound.ROUNDREADY, null, logicContext.options, SendOptions.SendUnreliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.ROUNDREADY, null, logicContext.options, SendOptions.SendUnreliable);
         }
     }
 }

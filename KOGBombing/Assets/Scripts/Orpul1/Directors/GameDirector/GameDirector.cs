@@ -51,7 +51,7 @@ namespace Orpul1
         private void InitializeState()
         {
             IState[] states = GetComponents<IState>();
-            
+
             for (int i=(int)EGameState.START+1; i<(int)EGameState.END; i++)
             {
                 IState state = states[i-1];

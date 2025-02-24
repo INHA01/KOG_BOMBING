@@ -49,11 +49,11 @@ namespace Orpul1
         private void SendAllPlayerReady()
         {
             if (!(curPlayerCnt == readyPlayerCnt)) return;
-            PhotonNetwork.RaiseEvent((int)EGameRound.PLAYERREADY, null, logicContext.options, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERREADY, null, logicContext.options, SendOptions.SendReliable);
         }
         private void OnWaitPlayer(EventData punEvent)
         {
-            if (punEvent.Code == (byte)EGameRound.PLAYERREADY)
+            if (punEvent.Code == (byte)PunEventType.PLAYERREADY)
             {
                 isAllPlayerReady = true;
             }

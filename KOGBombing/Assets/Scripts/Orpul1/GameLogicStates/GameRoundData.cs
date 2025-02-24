@@ -63,14 +63,12 @@ namespace Orpul1
 
         public void SetTeamScore()
         {
-            ETeam winnerTeam = ETeam.BLUETEAM;
             switch(roundEndType)
             {
                 //Defence team win condition
                 case RounEndType.TIMEOVER:
                 case RounEndType.BOMBCLEAR:
                 case RounEndType.ATTACKTEAMEXTERMINATE:
-                    winnerTeam = ETeam.REDTEAM;
                     teamScores[(int)ETeam.REDTEAM]++;
                     break;
 
@@ -80,10 +78,11 @@ namespace Orpul1
                     teamScores[(int)ETeam.BLUETEAM]++;
                     break;
             }
-            Debug.Log($"winTeam {winnerTeam.ToString()} score {teamScores[(int)winnerTeam]}");
 
             // >> TODO : 공수 교대 시 팀 점수 ui 갱신
-            teamUIController.UpdateTeamScore(winnerTeam, teamScores[(int)winnerTeam]);
+            teamUIController.UpdateTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
+            teamUIController.UpdateTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
+            roundEndType = RounEndType.NONE;
         }
         public void SwapTeam()
         {
@@ -116,6 +115,7 @@ namespace Orpul1
             else
             {
                 SwapTeam();
+                SetTeamScore();
                 return EGameState.SWITCHTEAMROLL;
             }
         }
@@ -132,8 +132,11 @@ namespace Orpul1
         {
             //processRoundCnt % switchRound == 0
             int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
-            if (switchRollScore == 3)
+            if (switchRollScore == 3&& !isAlreadySwitchRoll)
+            {
+                isAlreadySwitchRoll = true;
                 return false;
+            }
             return true;
         }
     }

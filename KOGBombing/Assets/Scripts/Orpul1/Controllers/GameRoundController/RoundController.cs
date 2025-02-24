@@ -25,6 +25,7 @@ namespace Orpul1
             this.roundData.Initialize(logicContext.teamUIController);
             this.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
             this.roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
+            roundData.SetTeamScore();
         }
 
        
@@ -58,7 +59,6 @@ namespace Orpul1
             Debug.Log("On PlayerDie Event");
             int teamType = (int)punEvent.CustomData;
             roundData.SetDecreaseTeamCount(teamType);
-            //roundData.isEndRound = roundData.IsExterminateTeam();
             Managers.UI.ClosePopupUI("DieCanvas");
         }
         public void SetEndRound()

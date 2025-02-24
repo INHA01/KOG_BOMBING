@@ -257,7 +257,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
     }
-    [PunRPC]
+   /* [PunRPC]
     public void OnResurrect()
     {
         blackBoard.playerStatus.hp = 50f;
@@ -265,7 +265,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
 		blackBoard.speedDebuffPercent = 1f;
-    }
+    }*/
     [PunRPC]
     private void Rigidity(float time)
     {

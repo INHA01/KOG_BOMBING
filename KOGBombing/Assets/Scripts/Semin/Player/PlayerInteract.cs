@@ -80,7 +80,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         isReviving = false;
     }*/
 
-    IEnumerator CoRevive()
+    /*IEnumerator CoRevive()
     {
         if (isReviving) yield break;
         isReviving = true;
@@ -92,13 +92,12 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
             yield return null;
         }
         OnResurrect();
-    }
+    }*/
     [PunRPC]
     public void OnResurrect()
     {
         blackBoard.playerStatus.hp = 50f;
         blackBoard.playerStatus.isGroggy = false;
-        blackBoard.playerInteractCollider.enabled = false;
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         blackBoard.hpBar.HideGroggy();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);

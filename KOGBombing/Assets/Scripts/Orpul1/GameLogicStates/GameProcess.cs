@@ -31,9 +31,11 @@ namespace Orpul1
         public override void UpdateState()
         {
             DoRoundCountDown();
-            if (!roundController.IsEndRound()) return;
+            if (!roundController.IsEndRound) return;
             Debug.Log("Next Transition State");
+            roundController.SetTeamScore();
             int nextState = (int)roundController.GetGameState();
+
             transitionState(nextState);
         }
 
@@ -47,7 +49,7 @@ namespace Orpul1
             time += Time.deltaTime;
             if (time > roundInterval)
             {
-                logicContext.roundData.RoundTimeOver();
+                roundController.SetEndRound();
                 time = 0;
             }
         }

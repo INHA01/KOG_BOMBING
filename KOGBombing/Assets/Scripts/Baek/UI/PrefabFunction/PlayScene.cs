@@ -75,4 +75,16 @@ public class PlayScene : MonoBehaviour
         if (!dicTeamProfile.ContainsKey(nickname)) return;
         dicTeamProfile[nickname].UpdateUI();
     }
+    public void UpdateScore(ETeam team, int score)
+    {
+        Debug.Log("UpdateScoreUI");
+        if(team == ETeam.REDTEAM)
+        {
+            redScoreIcon.sprite = redScoreImages[score];
+        }
+        else if(team == ETeam.BLUETEAM)
+        {
+            blueScoreIcon.sprite = blueScoreImages[score];
+        }
+    }
 }

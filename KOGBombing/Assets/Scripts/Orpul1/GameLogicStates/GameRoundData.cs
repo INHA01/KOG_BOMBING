@@ -17,22 +17,33 @@ namespace Orpul1
         public int processRoundCnt = 0; //private
         public int switchRound = 2;
         public bool isAlreadySwitchRoll = false;
-        bool isTimeOver = false;
-        bool isExplosion = false;
+        public bool isEndRound = false;
+        TeamUIController teamUIController;
+        RounEndType roundEndType = RounEndType.NONE;
+        enum RounEndType
+        {
+            NONE,
+            BOMBEXPLOSION,
+            BOMBCLEAR,
+            
+            TIMEOVER,
+            GAMEEND,
+            ATTACKTEAMEXTERMINATE,
+            DEFENCETEAMEXTERMINATE,
+        }
+        
         public GameRoundData()
         {
-            isTimeOver = false;
-            isExplosion = false;
             for (int i = 0; i < 2; i++)
             {
                 teamScores[i] = 0;
                 teamCounts[i] = 0;
             }
         }
-        public void Initialize()
+        public void Initialize(TeamUIController teamUIController)
         {
-            isTimeOver = false;
-            isExplosion = false;
+            isEndRound = false;
+            this.teamUIController = teamUIController;
         }
         public void SetTeamCount(int teamType, int count)
         {
@@ -41,35 +52,38 @@ namespace Orpul1
         public void SetDecreaseTeamCount(int teamType)
         {
             teamCounts[teamType]--;
+            Debug.Log("DecreaseTeamCount");
+            if (teamCounts[teamType] == 0)
+            {
+                Debug.Log("EXTERMINATE Team");
+                roundEndType = RounEndType.ATTACKTEAMEXTERMINATE + teamType;
+                isEndRound = true;
+            }
         }
 
-        public bool IsExterminateTeam()
-        {
-            if (teamCounts[(int)ETeam.REDTEAM] != 0 && teamCounts[(int)ETeam.BLUETEAM] != 0) return false;
-
-            return true;
-        }
         public void SetTeamScore()
         {
-            if (isExplosion)
+            ETeam winnerTeam = ETeam.BLUETEAM;
+            switch(roundEndType)
             {
-                teamScores[(int)ETeam.REDTEAM]++;
-                return;
-            }
-            else if (isTimeOver)
-            {
-                teamScores[(int)ETeam.BLUETEAM]++;
-                return;
-            }
+                //Defence team win condition
+                case RounEndType.TIMEOVER:
+                case RounEndType.BOMBCLEAR:
+                case RounEndType.ATTACKTEAMEXTERMINATE:
+                    winnerTeam = ETeam.REDTEAM;
+                    teamScores[(int)ETeam.REDTEAM]++;
+                    break;
 
-            if (teamCounts[(int)ETeam.REDTEAM] == 0)
-            {
-                teamScores[(int)ETeam.BLUETEAM]++;
+                //Attack team win condition
+                case RounEndType.BOMBEXPLOSION:
+                case RounEndType.DEFENCETEAMEXTERMINATE:
+                    teamScores[(int)ETeam.BLUETEAM]++;
+                    break;
             }
-            else
-            {
-                teamScores[(int)ETeam.REDTEAM]++;
-            }
+            Debug.Log($"winTeam {winnerTeam.ToString()} score {teamScores[(int)winnerTeam]}");
+
+            // >> TODO : 공수 교대 시 팀 점수 ui 갱신
+            teamUIController.UpdateTeamScore(winnerTeam, teamScores[(int)winnerTeam]);
         }
         public void SwapTeam()
         {
@@ -80,22 +94,30 @@ namespace Orpul1
         }
         public void RoundTimeOver()
         {
-            isTimeOver = true;
+            roundEndType = RounEndType.TIMEOVER;
+            isEndRound = true;
         }
         public void ExplosionBomb()
         {
-            isExplosion = true;
+            roundEndType = RounEndType.BOMBEXPLOSION;
+            isEndRound = true;
         }
         public EGameState GetNextState()
         {
             if (IsEndGame())
+            {
+                teamUIController.EndRound();
                 return EGameState.GAMEEND;
+            }
 
             processRoundCnt++;
             if (IsNextRound())
                 return EGameState.ROUNDWAIT;
             else
+            {
+                SwapTeam();
                 return EGameState.SWITCHTEAMROLL;
+            }
         }
 
         private bool IsEndGame()

@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
-using Orpul1;
 using Photon.Pun;
 using UnityEngine;
 
@@ -11,8 +11,9 @@ namespace Orpul1
     {
         LogicContext logicContext;
         EventUIController eventUIController;
+        GameRoundData roundData = new GameRoundData();
         [SerializeField]
-        bool isEndRound = false;
+        public bool IsEndRound { get { return roundData.isEndRound; } }
 
         public void Initialize(LogicContext logicContext)
         {
@@ -20,70 +21,79 @@ namespace Orpul1
             eventUIController = new EventUIController(logicContext.teamUIController);
             int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
             int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-            this.logicContext.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
-            this.logicContext.roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
-            this.logicContext.roundData.Initialize();
-            isEndRound = false;
+            logicContext.debugRoundData = roundData;
+            this.roundData.Initialize(logicContext.teamUIController);
+            this.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
+            this.roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
         }
+
+       
 
         private bool IsNextRound()
         {
-            int attackTeamScore = logicContext.roundData.TeamScores[(int)ETeam.REDTEAM];
-            int defenseTeamScore = logicContext.roundData.TeamScores[(int)ETeam.BLUETEAM];
+            int attackTeamScore = roundData.TeamScores[(int)ETeam.REDTEAM];
+            int defenseTeamScore = roundData.TeamScores[(int)ETeam.BLUETEAM];
             int switchRollScore = Mathf.Max(attackTeamScore, defenseTeamScore);
-            if (switchRollScore == 3 && !logicContext.roundData.isAlreadySwitchRoll)
+            if (switchRollScore == 3 && !roundData.isAlreadySwitchRoll)
             {
-                logicContext.roundData.isAlreadySwitchRoll = true;
+                roundData.isAlreadySwitchRoll = true;
                 return false;
             }
             return true;
         }
-        
-        public bool IsEndRound()
-        {
-            return isEndRound;
-        }
-
         private bool IsEndGame()
         {
-            int attackTeamScore = logicContext.roundData.TeamScores[(int)ETeam.REDTEAM];
-            int defenseTeamScore = logicContext.roundData.TeamScores[(int)ETeam.BLUETEAM];
+            int attackTeamScore = roundData.TeamScores[(int)ETeam.REDTEAM];
+            int defenseTeamScore = roundData.TeamScores[(int)ETeam.BLUETEAM];
 
             float scoreGap = Mathf.Abs(attackTeamScore - defenseTeamScore);
 
-            if (scoreGap >= logicContext.roundData.winRound) return true;
-            if (logicContext.roundData.processRoundCnt > logicContext.roundData.maxRound) return true;
+            if (scoreGap >= roundData.winRound) return true;
+            if (roundData.processRoundCnt > roundData.maxRound) return true;
             return false;
         }
-
+        public void OnSetTeamCount(EventData punEvent)
+        {
+            if (punEvent.Code != (int)PunEventType.PLAYERDIE) return;
+            Debug.Log("On PlayerDie Event");
+            int teamType = (int)punEvent.CustomData;
+            roundData.SetDecreaseTeamCount(teamType);
+            //roundData.isEndRound = roundData.IsExterminateTeam();
+            Managers.UI.ClosePopupUI("DieCanvas");
+        }
+        public void SetEndRound()
+        {
+            roundData.RoundTimeOver();
+        }
+        
+        public void SetTeamScore()
+        {
+            roundData.SetTeamScore();
+        }
         public EGameState GetGameState()
         {
-            logicContext.roundData.SetTeamScore();
-            if (IsEndGame())
+            EGameState gameState = roundData.GetNextState();
+            if(gameState == EGameState.ROUNDWAIT)
+            {
+                logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
+            }
+            return gameState;
+            /*if (IsEndGame())
             {
                 return EGameState.GAMEEND;
             }
-            logicContext.roundData.processRoundCnt++;
+            roundData.processRoundCnt++;
             if (IsNextRound())
             {
                 Debug.Log($"Player Respawn : {logicContext.playerObj.name}");
                 logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
                 return EGameState.GAMESTART;
             }
-            logicContext.roundData.SwapTeam();
-            return EGameState.SWITCHTEAMROLL;
+            roundData.SwapTeam();
+            return EGameState.SWITCHTEAMROLL;*/
         }
 
-        public void OnSetTeamCount(EventData punEvent)
-        {
-            if ((int)punEvent.Code != (int)EGameRound.EXTERMINATETEAM) return;
-            Debug.Log("Exterminate team");
-            int teamType = (int)punEvent.CustomData;
-            logicContext.roundData.SetDecreaseTeamCount(teamType);
-            isEndRound = logicContext.roundData.IsExterminateTeam();
-            Managers.UI.ClosePopupUI("DieCanvas");
-            Debug.Log($"RT {logicContext.roundData.TeamScores[(int)ETeam.REDTEAM]} BT {logicContext.roundData.TeamScores[(int)ETeam.BLUETEAM]}");
-        }
+       
 
         public void RunEvent(EGameEvent eventType)
         {

@@ -11,7 +11,7 @@ namespace Orpul1
         public GameObject playerObj;
         public RaiseEventOptions options = new RaiseEventOptions();
         public StringBuilder selectCharacterPath = new StringBuilder();
-        public GameRoundData roundData = new GameRoundData();
+        public GameRoundData debugRoundData = new GameRoundData();
         public TeamUIController teamUIController = new TeamUIController();
     }
 }

@@ -57,7 +57,7 @@ namespace Orpul1
         public void SetTeamCount(int teamType)
         {
             Debug.Log($"Decrease {(ETeam)teamType} Count");
-            PhotonNetwork.RaiseEvent((int)EGameRound.EXTERMINATETEAM, teamType, options, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERDIE, teamType, options, SendOptions.SendReliable);
         }
     }
 }

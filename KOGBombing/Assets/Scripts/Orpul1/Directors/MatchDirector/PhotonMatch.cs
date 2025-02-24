@@ -77,9 +77,7 @@ namespace Orpul1
                 {
                     PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "State", EPlayerState.WAIT } });
 
-                    //>> TODO :  TeamIndex 설정 코드 추가해야함
                     SetPlayerTeamIndex();
-                    //<< :
 
                     btnMatch.interactable = false;
                     StartCoroutine(CoStartDelay());

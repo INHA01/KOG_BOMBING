@@ -39,7 +39,6 @@ namespace Orpul1
             Destroy(mainCam);
             Destroy(miniMapCam);
             logicContext.playerObj.GetComponent<IDestroyAble>().DoDestory();
-            //PhotonNetwork.Destroy(logicContext.playerObj); // << ÀÌ½´ ¿øÀÎ
             Managers.PunData.Init();
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI("PlayCanvas");

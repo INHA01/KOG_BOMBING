@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
+    
+    
     bool isInitComplete = false;
     void Awake()
 	{

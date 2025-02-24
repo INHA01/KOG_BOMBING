@@ -95,6 +95,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
         blackBoard.playerStatus.groggyValue = 150;
+        blackBoard.playerStatus.groggyable = true;
+        blackBoard.playerStatus.isGroggy = false;
+        blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
+        blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
+        blackBoard.hpBar.HideGroggy();
+
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
@@ -177,7 +183,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-		blackBoard.playerStatus.groggyable = true;
+        blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
 		blackBoard.speedDebuffPercent = 1f;
 		blackBoard.hpBar.InitializeValues();
@@ -191,6 +197,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         int time = 1;
         while (groggyTime <= 15f)
         {
+            if (!blackBoard.playerStatus.isGroggy) break;
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
@@ -208,7 +215,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
     }
 
-    IEnumerator RespawnDelay(float time)
+    /*IEnumerator RespawnDelay(float time)
     {
         Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
         blackBoard.hpBar.SetStopHpUI(true);
@@ -224,7 +231,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.speedDebuffPercent = 1f;
 		blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         Managers.UI.ClosePopupUI("DieCanvas");
-    }
+    }*/
     private void SetActiveState(bool isDie)
     {
         for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)

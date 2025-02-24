@@ -13,8 +13,11 @@ namespace Orpul1
         int maxPlayer = 2;
 
         TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
+        WaitForSeconds gameStartDelay = new WaitForSeconds(2);
+
         bool isMatching = false;
         bool isRandomMatch = false;
+
         public override void Match()
         {
             if (isMatching)
@@ -131,9 +134,10 @@ namespace Orpul1
                 if (PhotonNetwork.CurrentRoom.PlayerCount >= maxPlayer) break;
                 yield return null;
             }
-
+            
             if (PhotonNetwork.IsMasterClient)
             {
+                yield return gameStartDelay;
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
             }
         }

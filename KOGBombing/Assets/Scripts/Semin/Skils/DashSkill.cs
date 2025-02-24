@@ -66,12 +66,15 @@ public class DashSkill : MonoBehaviour, ISkill
 		isRunning = true;
 		float time = 0;
 		Vector3 movement;
+
+		// >> Managers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
+		PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
 		while (time < 0.5f)
 		{
 			time += Time.deltaTime;
 			movement = playerData.animator.transform.forward;
-			movement.y = blackboard.rigidBody.velocity.y;
-			blackboard.rigidBody.velocity = movement;
+			movement.y = blackBoard.rigidBody.velocity.y;
+            blackBoard.rigidBody.velocity = movement;
 			yield return null;
         }
         particle.gameObject.SetActive(true);
@@ -79,12 +82,12 @@ public class DashSkill : MonoBehaviour, ISkill
 		while (time < 1.5f)
 		{
 			time += Time.deltaTime;
-			movement = playerData.animator.transform.forward * blackboard.playerStatus.moveSpeed * blackboard.speedDebuffPercent * 1.6f;
-			movement.y = blackboard.rigidBody.velocity.y;
-			blackboard.rigidBody.velocity = movement;
+			movement = playerData.animator.transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedDebuffPercent * 1.6f;
+			movement.y = blackBoard.rigidBody.velocity.y;
+            blackBoard.rigidBody.velocity = movement;
 			if (Vector3.Distance(playerData.animator.transform.position, position) < 1f)
 			{
-				blackboard.rigidBody.velocity = Vector3.zero;
+                blackBoard.rigidBody.velocity = Vector3.zero;
 				time = 1.5f;
 			}	
 			yield return null;
@@ -93,14 +96,15 @@ public class DashSkill : MonoBehaviour, ISkill
         particle.gameObject.SetActive(false);
         isRunning = false;
 		time = 0;
-		blackboard.speedDebuffPercent *= 1.5f;
+        blackBoard.speedDebuffPercent *= 1.5f;
 		while (time < buffTime)
 		{ 
 			time += Time.deltaTime;
 			yield return null;
 		}
-		blackboard.speedDebuffPercent /= 1.5f;
+        blackBoard.speedDebuffPercent /= 1.5f;
 		dash = null;
+		// << :
 	}
 
 	IEnumerator Cooldown(float time)

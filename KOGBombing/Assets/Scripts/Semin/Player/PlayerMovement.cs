@@ -7,6 +7,7 @@ using static PlayerController;
 
 public class PlayerMovement : PlayerBehavior, IPunObservable
 {
+
     public bool IsNotGroggy()
     {
         return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
@@ -59,15 +60,16 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(transform.rotation);
-            stream.SendNext(blackBoard.rigidBody.velocity);
+            //stream.SendNext(blackBoard.rigidBody.velocity);
+
         }
         else if (stream.IsReading)
         {
             transform.rotation = (Quaternion)stream.ReceiveNext();
-            blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
-            
-            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            transform.position += blackBoard.rigidBody.velocity * lag;
+            //blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
+
+           //float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
+           // transform.position += blackBoard.rigidBody.velocity * lag;
         }
     }
 }

@@ -5,6 +5,8 @@ using Orpul1;
 using Photon.Pun;
 using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using ExitGames.Client.Photon;
+using Photon.Realtime;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -12,9 +14,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     GameDirector gameDirector;
     [SerializeField]
     PlayerMaterialController playerMaterialController;
+    RaiseEventOptions options = new RaiseEventOptions();
     
 
-    TeamUIController teamUIController = new TeamUIController();
     float groggyTime;
     Coroutine groggyCoroutine;
     
@@ -28,8 +30,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
+        options.Receivers = ReceiverGroup.All;
         //StartCoroutine(DamageTest(2f, 350));
-	}
+    }
     void SetOtherTeamInfo()
     {
         if (!playerData.pv.IsMine)
@@ -74,10 +77,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 
-        teamUIController.UpdateTeamUI();
-
+        
         if (playerData.pv.IsMine)
+        {
+            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
+        }
     }
     public INode.ENodeState SuccessNode()
     {
@@ -164,15 +169,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", EPlayerState.WAITROUND } });
 
-            /*
-                        if (playerTeam == ETeam.REDTEAM)
-                            GameDirector.blueScore++;
-                        else
-                            GameDirector.redScore++;*/
-
-            //gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-            //StartCoroutine(RespawnDelay(3.0f));
-            //Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
             blackBoard.hpBar.SetStopHpUI(true);
             blackBoard.playerStatus.isLive = false;
             SetActiveState(false);
@@ -215,23 +211,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
     }
 
-    /*IEnumerator RespawnDelay(float time)
-    {
-        Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
-        blackBoard.hpBar.SetStopHpUI(true);
-        blackBoard.playerStatus.isLive = false;
-        SetActiveState(false);
-        yield return new WaitForSeconds(time);
-        blackBoard.playerStatus.isLive = true;
-        blackBoard.hpBar.SetStopHpUI(false);
-        blackBoard.playerStatus.groggyValue = 150;
-        SetActiveState(true);
-        this.transform.position = blackBoard.spawnPoint;
-        this.transform.rotation = blackBoard.initRotation;
-		blackBoard.speedDebuffPercent = 1f;
-		blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-        Managers.UI.ClosePopupUI("DieCanvas");
-    }*/
     private void SetActiveState(bool isDie)
     {
         for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)

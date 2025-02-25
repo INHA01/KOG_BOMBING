@@ -21,9 +21,16 @@ namespace Orpul1
         {
             GetComponent<RoundEventListner>().Initialize(roundController);
         }
+        private void OnDisable()
+        {
+            
+            roundController.DoRemoveEvents();
+        }
         public override void EnterState()
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.START} });
+            PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
+            PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
             PhotonNetwork.NetworkingClient.EventReceived += roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived += roundController.OnEndRound;
             roundController.Initialize(logicContext);

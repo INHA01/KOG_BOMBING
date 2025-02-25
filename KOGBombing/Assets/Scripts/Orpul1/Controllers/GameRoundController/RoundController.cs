@@ -92,22 +92,12 @@ namespace Orpul1
                 logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
             }
             return gameState;
-            /*if (IsEndGame())
-            {
-                return EGameState.GAMEEND;
-            }
-            roundData.processRoundCnt++;
-            if (IsNextRound())
-            {
-                Debug.Log($"Player Respawn : {logicContext.playerObj.name}");
-                logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
-                return EGameState.GAMESTART;
-            }
-            roundData.SwapTeam();
-            return EGameState.SWITCHTEAMROLL;*/
         }
 
-       
+       public void DoRemoveEvents()
+        {
+            roundData.RemoveEvents();
+        }
 
         public void RunEvent(EGameEvent eventType)
         {

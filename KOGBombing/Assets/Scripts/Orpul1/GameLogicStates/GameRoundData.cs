@@ -150,5 +150,9 @@ namespace Orpul1
             }
             return true;
         }
+        public void RemoveEvents()
+        {
+            teamUIController.EndRound();
+        }
     }
 }

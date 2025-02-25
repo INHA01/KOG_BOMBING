@@ -10,13 +10,13 @@ namespace Orpul1
     public abstract class GameProcessLogic : MonoBehaviourPunCallbacks, IState
     {
         [SerializeField]
-        protected LogicContext logicContext;
+        protected GameProcessData gameData;
         protected Action<int> transitionState;
-        public virtual void Initialize(Action<int> transition, LogicContext logicContext)
+        public virtual void Initialize(Action<int> transition, GameProcessData logicContext)
         {
             transitionState = transition;
-            this.logicContext = logicContext;
-            this.logicContext.options.Receivers = ReceiverGroup.All;
+            this.gameData = logicContext;
+            this.gameData.options.Receivers = ReceiverGroup.All;
         }
         public abstract void EnterState();
         public abstract void ExitState();

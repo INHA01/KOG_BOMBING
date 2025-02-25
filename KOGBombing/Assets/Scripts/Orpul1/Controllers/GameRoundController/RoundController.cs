@@ -9,13 +9,13 @@ namespace Orpul1
 {
     public class RoundController:IRunEventAble
     {
-        LogicContext logicContext;
+        GameProcessData logicContext;
         EventUIController eventUIController;
         GameRoundData roundData = new GameRoundData();
         [SerializeField]
         public bool IsEndRound { get { return roundData.IsEndRound; } }
 
-        public void Initialize(LogicContext logicContext)
+        public void Initialize(GameProcessData logicContext)
         {
             this.logicContext = logicContext;
             eventUIController = new EventUIController(logicContext.teamUIController);

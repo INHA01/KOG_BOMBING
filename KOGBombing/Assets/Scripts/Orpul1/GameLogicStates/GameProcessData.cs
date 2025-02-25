@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Orpul1
 {
-    public class LogicContext : MonoBehaviour
+    public class GameProcessData : MonoBehaviour
     {
         public GameObject playerObj;
         public RaiseEventOptions options = new RaiseEventOptions();

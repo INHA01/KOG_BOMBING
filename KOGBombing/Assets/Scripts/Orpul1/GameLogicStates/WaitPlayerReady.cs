@@ -20,7 +20,7 @@ namespace Orpul1
             readyPlayerCnt = 0;
             isAllPlayerReady = false;
             curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
-            logicContext.options.Receivers = ReceiverGroup.All;
+            gameData.options.Receivers = ReceiverGroup.All;
             PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", EPlayerState.READY } });
             base.EnterState();
@@ -49,7 +49,7 @@ namespace Orpul1
         private void SendAllPlayerReady()
         {
             if (!(curPlayerCnt == readyPlayerCnt)) return;
-            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERREADY, null, logicContext.options, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERREADY, null, gameData.options, SendOptions.SendReliable);
         }
         private void OnWaitPlayer(EventData punEvent)
         {
@@ -76,7 +76,7 @@ namespace Orpul1
                 Debug.Log("WaitPlayerReady");
                 yield return null;
             }
-            PhotonNetwork.RaiseEvent((int)EGameRound.PLAYERREADY, null, logicContext.options, SendOptions.SendUnreliable);
+            PhotonNetwork.RaiseEvent((int)EGameRound.PLAYERREADY, null, gameData.options, SendOptions.SendUnreliable);
         }
     }
 }

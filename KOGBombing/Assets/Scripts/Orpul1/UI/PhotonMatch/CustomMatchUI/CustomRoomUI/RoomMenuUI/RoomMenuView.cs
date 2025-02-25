@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomMenuView : MonoBehaviour
+namespace Orpul1
 {
-    public GameObject background;
-    public Button btnStartGame;
-    public Button btnQuitRoom;
-    public Button btnSwapRedTeam;
-    public Button btnSwapBlueTeam;
+    public class RoomMenuView : MonoBehaviour
+    {
+        public GameObject background;
+        public Button btnStartGame;
+        public Button btnQuitRoom;
+        public Button btnSwapRedTeam;
+        public Button btnSwapBlueTeam;
+    }
 }

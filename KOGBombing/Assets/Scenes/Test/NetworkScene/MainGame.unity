@@ -11012,7 +11012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1493d3b61b4a1409ab8a081c24043f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
   roundInterval: 50
   time: 0
 --- !u!114 &1317832632
@@ -11027,7 +11027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea46b08510744154da39fd1e216cc02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
   gamestartInterval: 5
   time: 0
 --- !u!114 &1317832633
@@ -11042,7 +11042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd15f6fb14345e4483ed756a2732277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
   teamSpawnPoints:
   - {fileID: 1012673131}
   - {fileID: 791594912}
@@ -11062,7 +11062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6044f78d2def5d84899fed8fc51a2db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
 --- !u!114 &1317832635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11075,7 +11075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6fed6e09770c0d4bbb83a26fa3403ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
 --- !u!114 &1317832636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11088,7 +11088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20facc900c7d8e347970f137987a7be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
 --- !u!114 &1317832637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11101,7 +11101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d4999f8a51b4e48a783ae6a44d5a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logicContext: {fileID: 0}
+  gameData: {fileID: 0}
   waitRoundInterval: 2
 --- !u!114 &1317832638
 MonoBehaviour:
@@ -11112,11 +11112,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1317832626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d613f971a4cd814e91c024a6e16ba23, type: 3}
+  m_Script: {fileID: 11500000, guid: cb7c82ce87fb3124e97447040f0cee89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerObj: {fileID: 0}
-  roundData:
+  debugRoundData:
+    teamScores: 0000000000000000
+    teamCounts: 0000000000000000
     maxRound: 10
     winRound: 4
     processRoundCnt: 0

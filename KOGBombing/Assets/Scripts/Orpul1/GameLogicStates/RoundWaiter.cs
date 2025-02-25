@@ -23,6 +23,7 @@ namespace Orpul1
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", (int)EPlayerState.WAITROUND } });
             PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;
             canCountDown = false;
+            GameEventBus.Publish(GameEventBus.EGameEvent.DOORCLOSE);
             SetPlayerPosi();
             time = 0;
             base.EnterState();
@@ -82,7 +83,7 @@ namespace Orpul1
         {
             Debug.Log("RoundWait");
             while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
-            PhotonNetwork.RaiseEvent((int)PunEventType.ROUNDREADY, null, logicContext.options, SendOptions.SendUnreliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.ROUNDREADY, null, gameData.options, SendOptions.SendUnreliable);
         }
     }
 }

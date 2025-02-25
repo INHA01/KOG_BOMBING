@@ -33,7 +33,7 @@ namespace Orpul1
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
             PhotonNetwork.NetworkingClient.EventReceived += roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived += roundController.OnEndRound;
-            roundController.Initialize(logicContext);
+            roundController.Initialize(gameData);
             time = 0;
         }
 
@@ -46,7 +46,7 @@ namespace Orpul1
             if(PhotonNetwork.IsMasterClient)
             {
                 object[] datas = roundController.GetEndEvnetDatas();
-                PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, datas, logicContext.options, SendOptions.SendReliable);
+                PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, datas, gameData.options, SendOptions.SendReliable);
             }
             Debug.Log("Next Transition State");
             roundController.SetTeamScore();

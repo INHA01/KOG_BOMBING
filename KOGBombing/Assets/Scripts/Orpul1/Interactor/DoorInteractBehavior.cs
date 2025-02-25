@@ -24,6 +24,14 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         interactTime = 3;
         openOtherDoor += otherDoor.OpenDoor;
     }
+    private void OnEnable()
+    {
+        GameEventBus.Subscribe(GameEventBus.EGameEvent.DOORCLOSE,CloseDoor);
+    }
+    private void OnDisable()
+    {
+        GameEventBus.UnSubscribe(GameEventBus.EGameEvent.DOORCLOSE, CloseDoor);
+    }
     public override bool ProcessInteract(PhotonView pView)
     {
         if (interactState == InteractState.COMPLETE) return false;
@@ -31,16 +39,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         StartCoroutine(CoInteractDelay());
         
         return true;
-    }/*
-    public override void AbortInteract()
-    {
-        base.AbortInteract();
-        Debug.Log("AbortInteract");
-        if (interactState == InteractState.COMPLETE) return;
-
-        interactUI.AbortInteract();
-        interactState = InteractState.NONE;
-    }*/
+    }
     [PunRPC]
     private void DoInteractDoor()
     {
@@ -56,6 +55,12 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         SetOutline(false);
         animator.SetTrigger(EDoorAni.TriOpenDoor.ToString());
         interactUI.DeactivePanel();
+    }
+    public void CloseDoor()
+    {
+        interactState = InteractState.NONE;
+        interactCollider.enabled = true;
+        animator.SetTrigger(EDoorAni.TriCloseDoor.ToString());
     }
     [PunRPC]
     private void AbortInteractDoor()

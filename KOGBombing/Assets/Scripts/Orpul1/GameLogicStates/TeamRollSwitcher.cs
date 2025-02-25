@@ -38,7 +38,7 @@ namespace Orpul1
             GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
             Destroy(mainCam);
             Destroy(miniMapCam);
-            logicContext.playerObj.GetComponent<IDestroyAble>().DoDestory();
+            gameData.playerObj.GetComponent<IDestroyAble>().DoDestory();
             Managers.PunData.Init();
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI("PlayCanvas");

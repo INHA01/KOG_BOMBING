@@ -10,14 +10,14 @@ namespace Orpul1
     public abstract class PhotonPlayerWaitLogic : MonoBehaviourPunCallbacks, IState
     {
         [SerializeField]
-        protected LogicContext logicContext;
+        protected GameProcessData gameData;
         protected int readyPlayerCnt = 0;
         protected Action<int> transitionState;
-        public void Initialize(Action<int> transition, LogicContext logicContext)
+        public void Initialize(Action<int> transition, GameProcessData logicContext)
         {
             transitionState = transition;
-            this.logicContext = logicContext;
-            this.logicContext.options.Receivers = ReceiverGroup.All;
+            this.gameData = logicContext;
+            this.gameData.options.Receivers = ReceiverGroup.All;
         }
         public virtual void EnterState()
         {

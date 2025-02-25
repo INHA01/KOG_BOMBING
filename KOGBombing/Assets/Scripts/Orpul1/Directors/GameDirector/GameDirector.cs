@@ -55,7 +55,7 @@ namespace Orpul1
             for (int i=(int)EGameState.START+1; i<(int)EGameState.END; i++)
             {
                 IState state = states[i-1];
-                state.Initialize(TransitionState,GetComponent<LogicContext>());
+                state.Initialize(TransitionState,GetComponent<GameProcessData>());
                 dicGameState.Add(i, state);
             }
             TransitionState((int)EGameState.WAITPLAYERS);

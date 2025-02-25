@@ -1,50 +1,50 @@
-using Orpul1;
 using Photon.Pun;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
-public class RoomMenuModel
+namespace Orpul1
 {
-    Action updateUI;
-    public RoomMenuModel(Action updateUI)
+    public class RoomMenuModel
     {
-        this.updateUI = updateUI;
-    }
-    public void SetStartRoomState()
-    {
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
-        updateUI();
-    }
-    public void SetOtherTeam(int team)
-    {
-        ETeam changeTeam = (ETeam)team;
-        ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-        if (changeTeam == curTeam) return;
-        SetRoomTeamCount(curTeam, -1);
-        if (curTeam == ETeam.REDTEAM) changeTeam = ETeam.BLUETEAM;
-        SetRoomTeamCount(changeTeam, 1);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam } });
-    }
-    private void SetRoomTeamCount(ETeam teamType, int count)
-    {
-        int teamCnt = 0;
-        StringBuilder stbTeam = new StringBuilder();
-        if (teamType == ETeam.BLUETEAM)
+        Action updateUI;
+        public RoomMenuModel(Action updateUI)
         {
-            teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-            stbTeam.Append("BT");
+            this.updateUI = updateUI;
         }
-        else
+        public void SetStartRoomState()
         {
-            teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-            stbTeam.Append("RT");
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { "RoomState", "Start" } });
+            updateUI();
         }
+        public void SetOtherTeam(int team)
+        {
+            ETeam changeTeam = (ETeam)team;
+            ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+            if (changeTeam == curTeam) return;
+            SetRoomTeamCount(curTeam, -1);
+            if (curTeam == ETeam.REDTEAM) changeTeam = ETeam.BLUETEAM;
+            SetRoomTeamCount(changeTeam, 1);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", changeTeam } });
+        }
+        private void SetRoomTeamCount(ETeam teamType, int count)
+        {
+            int teamCnt = 0;
+            StringBuilder stbTeam = new StringBuilder();
+            if (teamType == ETeam.BLUETEAM)
+            {
+                teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+                stbTeam.Append("BT");
+            }
+            else
+            {
+                teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+                stbTeam.Append("RT");
+            }
 
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { stbTeam.ToString(), teamCnt + count } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { stbTeam.ToString(), teamCnt + count } });
 
+        }
     }
+
 }

@@ -20,11 +20,11 @@ namespace Orpul1
         }
         public void DeactiveCustomRoomBtn()
         {
-            customRoomUI.DeactiveBtn();
+            //customRoomUI.DeactiveBtn();
         }
         public void UpdateRoomOwner()
         {
-            customRoomUI.SetRoomOwner();
+            //customRoomUI.SetRoomOwner();
         }
     }
 }

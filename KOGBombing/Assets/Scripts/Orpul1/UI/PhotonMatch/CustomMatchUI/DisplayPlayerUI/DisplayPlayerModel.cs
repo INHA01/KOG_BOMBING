@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -5,8 +6,24 @@ using UnityEngine;
 
 public class DisplayPlayerModel
 {
-    public Transform[] trTeams;
-    public StringBuilder stbNickname = new StringBuilder();
-    public StringBuilder stbLevel = new StringBuilder();
+    Action updateUI;
+
+    private StringBuilder stbNickname = new StringBuilder();
+    private StringBuilder stbLevel = new StringBuilder();
+
+    public StringBuilder PlayerNickname { get { return stbNickname; } }
+    public StringBuilder PlayerLevel { get { return stbLevel; } }
+    public DisplayPlayerModel(Action updateUI)
+    {
+        this.updateUI = updateUI;
+    }
+    public void SetPlayerInfo(StringBuilder nickname, StringBuilder level)
+    {
+        stbNickname = nickname;
+        stbLevel = level;
+        updateUI();
+    }
+
+
 
 }

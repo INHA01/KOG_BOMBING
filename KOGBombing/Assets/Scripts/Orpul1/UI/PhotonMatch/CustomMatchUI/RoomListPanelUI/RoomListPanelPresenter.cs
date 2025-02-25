@@ -1,3 +1,4 @@
+using Orpul1;
 using Photon.Pun;
 using UnityEngine;
 
@@ -6,6 +7,14 @@ public class RoomListPanelPresenter : MonoBehaviour
     [SerializeField]
     RoomListPanelView view;
 
+    private void OnEnable()
+    {
+        UIEventBus.Subscribe(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL,ActiveUIPanel);
+    }
+    private void OnDisable()
+    {
+        UIEventBus.UnSubscribe(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL, ActiveUIPanel);
+    }
     private void Start()
     {
         view.backgroundPanelObj.SetActive(false);

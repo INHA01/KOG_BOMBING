@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Text;
 using UnityEngine;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 namespace Orpul1
@@ -8,37 +9,24 @@ namespace Orpul1
     {
         [SerializeField]
         CreateRoomView view;
-        CreateRoomModel model = new CreateRoomModel();
-        public void InputFieldSetRoomName()
+        CreateRoomModel model;
+        private void Start()
         {
-            model.stbRoomName.Clear();
-            model.stbRoomName.Append(view.tmpInputRoomName.text);
+            model = new CreateRoomModel(UpdateUI);
         }
-        public void DropDownSetPlayerCnt()
-        {
-            model.stbPlayerCnt.Clear();
-            model.stbPlayerCnt.Append(view.tmpDropDPlayerCnt.value);
-        }
-
         public void OnCreateRoomBtn()
         {
-            Debug.Log($"inLobby {PhotonNetwork.InLobby}");
             if (!PhotonNetwork.InLobby) return;
-            int maxPlayer = 0;
-            int.TryParse(view.tmpDropDPlayerCnt.ToString(), out maxPlayer);
-            RoomOptions options = new RoomOptions()
-            {
-                MaxPlayers = maxPlayer,
-                IsVisible = true,
-                IsOpen = true,
-                PublishUserId = true,
-                CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
-            };
-            PhotonNetwork.CreateRoom(view.tmpInputRoomName.text.ToString(), options);
+            StringBuilder roomName = new StringBuilder(view.tmpInputRoomName.text);
+            StringBuilder playerCount = new StringBuilder(view.tmpDropDPlayerCnt.value);
+            model.SetRoomInfo(roomName, playerCount);
+        }
+        public void UpdateUI()
+        {
             view.tmpInputRoomName.text = "";
+            view.tmpDropDPlayerCnt.value = 0;
             view.createRoomPopupPanel.SetActive(false);
         }
-
         public void OnQuitBtn()
         {
             view.createRoomPopupPanel.SetActive(false);

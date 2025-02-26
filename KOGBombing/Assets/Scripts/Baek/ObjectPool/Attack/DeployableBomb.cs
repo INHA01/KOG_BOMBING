@@ -10,16 +10,22 @@ public class DeployableBomb : DeployableBase
 {
     Vector3 position;
     ObjectPool objectPool;
-    private void Awake()
-    {
-        count = 1;
-        objectPool = gameObject.AddComponent<ObjectPool>();
-        PooledObject child = Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
-        objectPool.SetObjectToPool(child);
-        objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
-        objectPool.initPoolSize = count;
-    }
-    public override void Use()
+	public override void SetTeam(ETeam team)
+	{
+		base.SetTeam(team);
+
+		if (team == ETeam.REDTEAM)
+		{
+			count = 1;
+			objectPool = gameObject.AddComponent<ObjectPool>();
+			PooledObject child = Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
+			objectPool.SetObjectToPool(child);
+			objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+			objectPool.initPoolSize = count;
+		}
+	}
+
+	public override void Use()
     {
         count--;
         PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();

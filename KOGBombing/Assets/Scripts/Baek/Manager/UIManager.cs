@@ -18,7 +18,6 @@ public class UIManager
     }
     int _order = 0;
     public Dictionary<string, UIPopup> _popupDictionary = new Dictionary<string, UIPopup>();
-    public List<GameObject> _uiList = new List<GameObject>();
     public T GetPopupUI<T>(string name = null) where T : UIPopup
     {
         if (string.IsNullOrEmpty(name))
@@ -35,66 +34,70 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
         GameObject go = null;
-        // Exists : 조건에 맞는 요소가 하나라도 있으면 true 반환
-        // Find : 조건에 맞는 요소를 찾아서 반환 , 여러개면 첫번째 요소 반환
-        if (_uiList.Exists(ui => ui.name == name))
+        T sceneUI = null;
+        bool isExist = false;
+        // ContainsKey : 키가 존재하면 true 반환
+        // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
+        if (!_popupDictionary.ContainsKey(name))
         {
-            go = _uiList.Find(ui => ui.name == name);
+            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
+            go.transform.SetParent(Root.transform);
+            isExist = true;
         }
         else
         {
-            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
-            _uiList.Add(go); 
-            go.transform.SetParent(Root.transform);
-        }
-
-        T sceneUI = Util.GetOrAddComponent<T>(go);
-        sceneUI.Init();
-
-        // ContainsKey : 키가 존재하면 true 반환
-        if (!_popupDictionary.ContainsKey(name))
-        {
-            _popupDictionary.Add(name, sceneUI);
+            go = _popupDictionary[name].gameObject;
         }
         go.SetActive(true); 
+        sceneUI = Util.GetOrAddComponent<T>(go);
+        // 검색한 UI가 없을 경우
+        if (sceneUI == null)
+        {
+            Debug.LogError("UIPopup is Null");
+            return null;
+        }
+        sceneUI.Init();
+        if(isExist)
+            _popupDictionary.Add(name, sceneUI);
 
         return sceneUI;
     }
     public void ClosePopupUI(string name = null)
     {
-        if (_popupDictionary.Count == 0)
-        {
-            return;
-        }
+        if (_popupDictionary.Count == 0) return;
+        GameObject go = null;
         if (string.IsNullOrEmpty(name))
         {
-            _popupDictionary.Remove(_popupDictionary.Last().Key);
-            _uiList[_uiList.Count - 1].SetActive(false);
-            //_uiList.Find(ui => ui.name == lastPopup.Key)?.SetActive(false);
+            go = _popupDictionary.Last().Value.gameObject;
+            //_popupDictionary.Remove(_popupDictionary.Last().Key);
         }
         else if(_popupDictionary.ContainsKey(name))
         {
-            _popupDictionary.Remove(name);
-            _uiList.Find(ui => ui.name == name)?.SetActive(false);
+            go = _popupDictionary[name].gameObject;
+            //_popupDictionary.Remove(name);
         }
-
-        _order--;
+        if(go != null)
+        {
+            _order--;
+            go.SetActive(false);
+        }
     }
     public void CloseAllPopupUI()
     {
-        while (_popupDictionary.Count > 0)
+        for(int i = 0; i < _popupDictionary.Count; i++)
         {
             ClosePopupUI();
         }
     }
     public void DestroyAllPopupUI()
     {
-        CloseAllPopupUI();
-        for (int i = 0; i < _uiList.Count; i++)
+        //CloseAllPopupUI();
+        for(int i = 0; i < _popupDictionary.Count; i++)
         {
-            Managers.Resource.Destroy(_uiList[i]);
+            GameObject go = _popupDictionary.Last().Value.gameObject;
+            GameObject.Destroy(go);
         }
-        _uiList.Clear();
+        _popupDictionary.Clear();
     }
 
     public void SetCanvas(GameObject go, bool sort = true)

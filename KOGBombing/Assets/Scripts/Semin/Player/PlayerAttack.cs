@@ -125,6 +125,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // 중간에 취소
 					{
+                        Debug.Log("cancel");
 						blackBoard.bombUI.ActiveInteract(false);
 						isChangableAnim = true;
 						bombInteractTime = 0;
@@ -376,8 +377,8 @@ public class PlayerAttack : PlayerBehavior
         }
         else
         {
-            //playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, false);
-            //playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+            playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, false);
+            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
             playerData.bomb.Disable();
         }
         ChangeWeapon(weaponType);

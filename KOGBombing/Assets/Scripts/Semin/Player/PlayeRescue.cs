@@ -32,14 +32,17 @@ public class PlayeRescue : InteractObject
     {
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]!= (ETeam)playerData.pv.Owner.CustomProperties["Team"]) return;
 
+		//Debug.Log("Groggy Interacting Start");
+		//playerData.IsGroggyInteracting = true;
         interactCollider.enabled = true;
         interactUI.ActivePanel();
     }
     [PunRPC]
     private void RPCDeactiveRescueCollider()
     {
-
-        interactCollider.enabled = false;
+        //Debug.Log("Groggy Interacting End");
+		//playerData.IsGroggyInteracting = true;
+		interactCollider.enabled = false;
         interactUI.DeactivePanel();
     }
     public override bool ProcessInteract(PhotonView pView)

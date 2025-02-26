@@ -32,7 +32,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
-		StartCoroutine(DamageTest(2f, 350));
+		//StartCoroutine(DamageTest(2f, 350));
 	}
 
 	[PunRPC]
@@ -206,25 +206,23 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.playerStatus.invincibility = false;
 		groggyTime = 0;
         int time = 1;
-        while (groggyTime <= 15f)
+        while (blackBoard.playerStatus.groggyValue > 0)
         {
             if (!blackBoard.playerStatus.isGroggy) break;
+            if (playerData.IsGroggyInteracting) yield return null;
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
-                time++;
-                blackBoard.playerStatus.groggyValue -= blackBoard.playerStatus.maxGroggy / 10;
+                blackBoard.playerStatus.groggyValue -= blackBoard.playerStatus.maxGroggy / 50;
                 blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
-            }
-            if (blackBoard.playerStatus.groggyValue <= 0)
-            {
-                Death();
-				blackBoard.hpBar.SetGroggyValue(0);
-				yield break;
-            }
+				groggyTime = 0;
+			}
             yield return null;
-        }
-    }
+		}
+		Death();
+		blackBoard.hpBar.SetGroggyValue(0);
+		yield break;
+	}
 
     private void SetActiveState(bool isDie)
     {

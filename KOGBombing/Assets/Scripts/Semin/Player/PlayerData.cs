@@ -42,6 +42,9 @@ public class PlayerData : MonoBehaviour
     public Vector3 consumTargetPos;
     [SerializeField] public Transform ConsumPos;
 
+    [Header("Interact")]
+    public bool IsGroggyInteracting = false;
+
     [Header("Skill")]
     [SerializeField] public ISkill skill;
 

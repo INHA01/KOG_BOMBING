@@ -14,6 +14,8 @@ public class BombNotify : MonoBehaviour
     {
         bombSet.SetActive(true);
         bombDefuse.SetActive(false);
+        if(bombSetCoroutine != null)
+            StopCoroutine(bombSetCoroutine);
         bombSetCoroutine = StartCoroutine(NotifyBombSetCoroutine(true));
     }
     public void NotifyBombDefuse()
@@ -21,9 +23,7 @@ public class BombNotify : MonoBehaviour
         bombSet.SetActive(false);
         bombDefuse.SetActive(true);
         if(bombSetCoroutine != null)
-        {
             StopCoroutine(bombSetCoroutine);
-        }
         bombSetCoroutine = StartCoroutine(NotifyBombSetCoroutine(false));
     }
 
@@ -45,6 +45,6 @@ public class BombNotify : MonoBehaviour
             bombImage.color = color;
             time += Time.deltaTime;
         }
-        Managers.UI.ClosePopupUI("BombNotifyCanvas");
+        bomb.SetActive(false);
     }
 }

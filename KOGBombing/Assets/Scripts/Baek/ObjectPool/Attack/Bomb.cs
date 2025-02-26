@@ -9,9 +9,15 @@ public class Bomb : AttackConsum
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
     UIPopup _uiScene;
-    public void NotifySet()
+    
+    public void Notify()
     {
         // 폭탄 설치 모든 플레이어들에게 Notify
+        NotifySet();
+    }
+    [PunRPC]
+    void NotifySet()
+    {
         if (_uiScene == null)
             _uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
         _uiScene.GetComponent<BombNotify>().NotifyBombSet();

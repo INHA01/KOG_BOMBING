@@ -21,6 +21,7 @@ public class DeployableWeapon : DeployableBase
 
     public override void Use()
     {
+        base.Use();
         count--;
         playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
     }

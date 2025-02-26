@@ -20,6 +20,8 @@ public class DeployableBomb : DeployableBase
     }
     public override void Use()
     {
+        PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+        playScene.subWeaponFades[1].SetActive(true);
         playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);
     }
 

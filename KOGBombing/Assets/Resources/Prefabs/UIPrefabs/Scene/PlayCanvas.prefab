@@ -771,7 +771,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1215,6 +1215,11 @@ MonoBehaviour:
   - {fileID: 7130840762266017011}
   - {fileID: 5210738014880142338}
   weapon: {fileID: 0}
+  skillFade: {fileID: 3989905447984675166}
+  skillCount: {fileID: 6650436180964475353}
+  subWeaponFades:
+  - {fileID: 1586989066867503165}
+  - {fileID: 7557986172914604912}
   sensitivity: 100
 --- !u!1 &4261315610506756645
 GameObject:
@@ -1507,7 +1512,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 00
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 724589ae56e1da84ab4aa70bdac74d44, type: 2}
   m_sharedMaterial: {fileID: 3514089410596274822, guid: 724589ae56e1da84ab4aa70bdac74d44,

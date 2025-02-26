@@ -120,7 +120,6 @@ public class PlayerAttack : PlayerBehavior
                     bombInteractTime += Time.deltaTime;
                     blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
                     // 여기에 공격팀은 폭탄 설치  , 수비팀은 해제 애니메이션 추가
-                    return INode.ENodeState.Running;
                 }
                 else
                 {
@@ -134,8 +133,8 @@ public class PlayerAttack : PlayerBehavior
                     blackBoard.inputs[EKey.NUM_2] = false;
                     blackBoard.playerStatus.isBombInteract = false;
                     ChangeWeapon(WeaponType.GUN);
-                    return INode.ENodeState.Success;
                 }
+                return INode.ENodeState.Success;
             }
             if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
@@ -158,16 +157,12 @@ public class PlayerAttack : PlayerBehavior
                         )
                        )
                     {
-                        if(colliders[i].CompareTag("Bomb"))
-                        {
-                            Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
-                            playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
-                        }
                         blackBoard.bombUI.ActiveInteract(true);
                         bombInteractTime = 0;
                         isChangableAnim = false;
                         blackBoard.playerStatus.isBombInteract = true;
                         blackBoard.playerStatus.isBombDefuse = false;
+                        return INode.ENodeState.Running;
                     }
                 }
             }

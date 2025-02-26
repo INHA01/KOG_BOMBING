@@ -6,28 +6,30 @@ using Photon.Pun;
 using Photon.Realtime;
 using PhotnHashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
+using TMPro;
 
 namespace Orpul1
 {
     public class GameProcess : GameProcessLogic
     {
         [SerializeField]
-        float roundInterval = 20;
+        float roundInterval = 50;
         [SerializeField]
         float time = 0;
 
         RoundController roundController = new RoundController();
+        TextMeshProUGUI timeTMP;
         private void Start()
         {
             GetComponent<RoundEventListner>().Initialize(roundController);
         }
         private void OnDisable()
         {
-            
             roundController.DoRemoveEvents();
         }
         public override void EnterState()
         {
+            timeTMP = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().timer;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.START} });
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
@@ -63,6 +65,7 @@ namespace Orpul1
         private void DoRoundCountDown()
         {
             time += Time.deltaTime;
+            timeTMP.text = string.Format("{0:00}:{1:00}", (int)(roundInterval - time) / 60, (int)(roundInterval - time) % 60);
             if (time > roundInterval)
             {
                 roundController.SetRoundTimeOver();

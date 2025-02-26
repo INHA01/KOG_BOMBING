@@ -39,7 +39,11 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 	}
 
 	public abstract void SetWeapon(SupportWeaponInfo info);
-	public abstract void Use();
+	public virtual void Use()
+	{
+		PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+		playScene.subWeaponFades[0].SetActive(true);
+    }
 	public virtual void Disable() { }
 
 	public bool isUsable()

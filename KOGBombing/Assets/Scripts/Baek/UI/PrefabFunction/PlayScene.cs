@@ -12,10 +12,9 @@ public class PlayScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI magazineCount;
     [SerializeField] Image chargeBar;
     [SerializeField] GameObject teamProfile;
+    Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
     [Header("ScoreIcon")]
-    //[HideInInspector] public PhotonOfflineMode gameDirector;
-    [HideInInspector] public GameDirector gameDirector;
-    [SerializeField] TextMeshProUGUI timer;
+    public TextMeshProUGUI timer;
     // ResourceManager 사용할지 고민 중
     [SerializeField] Sprite[] blueScoreImages;
     [SerializeField] Sprite[] redScoreImages;
@@ -23,9 +22,11 @@ public class PlayScene : MonoBehaviour
     [SerializeField] Image redScoreIcon;
     [Header("Map")]
     [SerializeField] GameObject[] maps;
-    [Header("Model")]
+    [Header("Attack")]
     [HideInInspector] public PlayerShooting weapon;
-    Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
+    [SerializeField] public Image skillFade;
+    [SerializeField] public TextMeshProUGUI skillCount;
+    [SerializeField] public GameObject[] subWeaponFades = new GameObject[2];
 
     [SerializeField] float sensitivity = 100f;
 
@@ -38,18 +39,6 @@ public class PlayScene : MonoBehaviour
             maps[0].SetActive(!maps[0].activeSelf);
             maps[1].SetActive(!maps[1].activeSelf);
         }
-       /* string min = ((int)gameDirector.time / 60).ToString();
-        if(min.Length == 1)
-            min = "0" + min;
-        string sec = ((int)gameDirector.time % 60).ToString();
-        if (sec.Length == 1)
-            sec = "0" + sec;
-        timer.text = min + ":" + sec;
-
-        if(GameDirector.redScore < 10)
-            redScoreIcon.sprite = redScoreImages[GameDirector.redScore];
-        if (GameDirector.blueScore < 10)
-            blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];*/
     }
     public void Reset()
     {
@@ -60,6 +49,15 @@ public class PlayScene : MonoBehaviour
             Destroy(profile.gameObject);
         }
         dicTeamProfile.Clear();
+    }
+    public void ChangeRound()
+    {
+        for(int i=0; i < subWeaponFades.Length; i++)
+        {
+            subWeaponFades[i].SetActive(false);
+        }
+        maps[0].SetActive(true);
+        maps[1].SetActive(false);
     }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {

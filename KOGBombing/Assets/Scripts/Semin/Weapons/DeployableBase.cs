@@ -8,7 +8,5 @@ public abstract class DeployableBase : SupportWeaponBase
 {
     public abstract override void SetWeapon(SupportWeaponInfo info);
 
-    public override abstract void Use();
-
     abstract protected IEnumerator PutAfterAnim();
 }

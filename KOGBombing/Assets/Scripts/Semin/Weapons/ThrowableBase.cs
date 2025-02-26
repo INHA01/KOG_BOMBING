@@ -147,7 +147,6 @@ public abstract class ThrowableBase : SupportWeaponBase
 
 	public abstract override void SetWeapon(SupportWeaponInfo info);
 
-	public abstract override void Use();
 
 	protected void SetSpawnThrowWeapon()
 	{

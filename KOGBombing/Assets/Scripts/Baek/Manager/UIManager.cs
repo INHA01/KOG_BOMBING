@@ -19,6 +19,16 @@ public class UIManager
     int _order = 0;
     public Dictionary<string, UIPopup> _popupDictionary = new Dictionary<string, UIPopup>();
     public List<GameObject> _uiList = new List<GameObject>();
+    public T GetPopupUI<T>(string name = null) where T : UIPopup
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+        if (_popupDictionary.ContainsKey(name))
+        {
+            return _popupDictionary[name] as T;
+        }
+        return null;
+    }
 
     public T ShowPopupUI<T>(string name = null) where T : UIPopup
     {

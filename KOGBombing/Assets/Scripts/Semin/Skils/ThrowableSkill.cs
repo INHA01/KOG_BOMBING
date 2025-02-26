@@ -8,28 +8,32 @@ using UnityEngine;
 
 public class ThrowableSkill : ThrowableBase, ISkill
 {
-	Coroutine skillCooldown;
 	bool bisUsableSkill;
 	float skillDeltaTime;
-
-	protected override void Start()
+    PlayScene playScene;
+    protected override void Start()
 	{
-		skillCooldown = StartCoroutine(Cooldown(3f));
-		bisUsableSkill = true;
-	}
+        bisUsableSkill = true;
+    }
 
 	IEnumerator Cooldown(float time)
 	{
-		skillDeltaTime = 0f;
-		while (true)
-		{
-			if (skillDeltaTime < time)
-			{
-				skillDeltaTime += Time.deltaTime;
-				if (skillDeltaTime > time)
-					bisUsableSkill = true;
-			}
-			yield return null;
+		if(playScene == null)
+            playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+        skillDeltaTime = 0f;
+		while (!bisUsableSkill)
+        {
+            skillDeltaTime += Time.deltaTime;
+            playScene.skillFade.fillAmount = skillDeltaTime / time;
+            playScene.skillCount.text = ((int)(time - skillDeltaTime)).ToString();
+
+            if (skillDeltaTime > time)
+            {
+                playScene.skillFade.fillAmount = 0;
+                playScene.skillCount.text = "";
+                bisUsableSkill = true;
+            }
+            yield return null;
 		}
 	}
 	public void InitializationSkill(PlayerData playerData)
@@ -69,11 +73,12 @@ public class ThrowableSkill : ThrowableBase, ISkill
 
 	public override void Use()
 	{
-		playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
+        playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
-	}
+        StartCoroutine(Cooldown(3f));
+    }
 
 	public override void SetWeapon(SupportWeaponInfo info)
 	{

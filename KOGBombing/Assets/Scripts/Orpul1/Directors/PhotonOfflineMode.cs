@@ -28,7 +28,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PhotonNetwork.OfflineMode = true;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", ETeam.BLUETEAM } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", ETeam.REDTEAM } });
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", 0 } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
@@ -83,7 +83,6 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     void SpawnPlayer()
     {
-        //GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + _uiScene.GetComponent<ChoosePlayer>().type.ToString(), spawnPosi.position, Quaternion.Euler(0, 45, 0));
         GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/PlayerPrefabs/" + "Ned", spawnPosi.position, Quaternion.Euler(0, 45, 0));
         GameObject cameraObj = Instantiate(playerCamera, new Vector3(-3, 7.5f, -3), Quaternion.Euler(50, 45, 0));
         GameObject minCamaraObj = Instantiate(minimapCamera, spawnPosi.position + new Vector3(0, 50f, 0), Quaternion.Euler(90, 0, 0));
@@ -93,7 +92,6 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         cameraObj.transform.SetParent(playerObj.transform);
         playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(),spawnPosi.position, gameObject);
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
-        //_uiScene.GetComponent<PlayScene>().gameDirector = this;
         _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         EventBusSystem.Unsubscribe(SpawnPlayer);
         Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);

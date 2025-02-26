@@ -12,8 +12,8 @@ public class Bomb : AttackConsum
     public void NotifySet()
     {
         // 폭탄 설치 모든 플레이어들에게 Notify
-        //PhotonNetwork.RaiseEvent();
-        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
+        if (_uiScene == null)
+            _uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
         _uiScene.GetComponent<BombNotify>().NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)

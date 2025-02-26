@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public class PlayerScoreUpdater : MonoBehaviour, IUpdateScore
+public class ScoreUIUpdater : MonoBehaviour, IUpdateScore
 {
     [SerializeField]
     Transform playerScoreParent;

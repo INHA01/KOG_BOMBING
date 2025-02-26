@@ -7,6 +7,7 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using UnityEngine.Rendering.UI;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -31,7 +32,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
-		//StartCoroutine(DamageTest(2f, 350));
+		StartCoroutine(DamageTest(2f, 350));
 	}
 
 	[PunRPC]
@@ -54,7 +55,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         yield return new WaitForSeconds(time);
         OnDamaged(damage);
-    }
+	}
 
 
 	[PunRPC]
@@ -135,6 +136,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void Damage(float damage)
 	{
+        if (blackBoard.playerStatus.invincibility) return; // 무적 시 Damage 안 받음
+
 		float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
 		playerMaterialController.Hit();
@@ -198,7 +201,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     IEnumerator Groggy()
     {
-        groggyTime = 0;
+        blackBoard.playerStatus.invincibility = true;
+        yield return new WaitForSeconds(2f);
+		blackBoard.playerStatus.invincibility = false;
+		groggyTime = 0;
         int time = 1;
         while (groggyTime <= 15f)
         {

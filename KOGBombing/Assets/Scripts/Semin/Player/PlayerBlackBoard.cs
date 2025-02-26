@@ -13,6 +13,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public Camera viewCamera;
     public UIPopup _uiScene;
     public HpBar hpBar;
+    public BombUI bombUI;
     public GameObject fieldOfView;
     public GameObject gmlookTarget;
     public Vector2 speedValue;

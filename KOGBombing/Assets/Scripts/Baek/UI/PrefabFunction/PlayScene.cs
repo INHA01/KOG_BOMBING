@@ -32,7 +32,7 @@ public class PlayScene : MonoBehaviour
     {
         magazineCount.text = weapon.MagazineCount + "/4";
         chargeBar.fillAmount = weapon.ReloadTime;
-        if(Input.GetKeyDown(KeyCode.Comma))
+        if(Input.GetKeyDown(KeyCode.M))
         {
             maps[0].SetActive(!maps[0].activeSelf);
             maps[1].SetActive(!maps[1].activeSelf);

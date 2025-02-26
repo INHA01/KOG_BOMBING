@@ -40,6 +40,7 @@ public class DeployableBomb : DeployableBase
         yield return null;
         Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
         bomb.transform.position = playerData.ConsumPos.position;
+        bomb.NotifySet();
         bomb.SetTeam((int)team);
         bomb.Use();
     }

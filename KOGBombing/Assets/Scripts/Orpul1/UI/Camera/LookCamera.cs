@@ -7,9 +7,9 @@ public class LookCamera : MonoBehaviour
 {
     [SerializeField] Transform trCamera;
     bool canStart = false;
-    private void Start()
+    private void Awake()
     {
-        Managers.camData.InitCamera();
+        //Managers.camData.InitCamera();
         StartCoroutine(CoWaitInit());
     }
     private IEnumerator CoWaitInit()

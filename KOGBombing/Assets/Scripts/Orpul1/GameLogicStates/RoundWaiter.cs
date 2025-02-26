@@ -17,6 +17,7 @@ namespace Orpul1
         float gamestartInterval = 5;
         [SerializeField]
         float time = 0;
+        
         public override void EnterState()
         {
             readyPlayerCnt = 0;
@@ -42,9 +43,12 @@ namespace Orpul1
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable hashtable)
         {
             if (!PhotonNetwork.IsMasterClient) return;
+            if (dicReadyPlayer[targetPlayer.NickName] == true) return;
             if (!targetPlayer.CustomProperties.ContainsKey("State")) return;
             if ((int)targetPlayer.CustomProperties["State"] != (int)EPlayerState.WAITROUND) return;
+            
             readyPlayerCnt++;
+            Debug.Log($"player {targetPlayer.NickName} change WAITROUND state!");
         }
 
         void SetPlayerPosi()
@@ -71,11 +75,15 @@ namespace Orpul1
 
         protected override void SetCurReadyPlayer()
         {
-            Player[] player = PhotonNetwork.PlayerList;
-            for (int i = 0; i < player.Length; i++)
+            Player[] players = PhotonNetwork.PlayerList;
+            for (int i = 0; i < players.Length; i++)
             {
-                if ((int)player[i].CustomProperties["State"] == (int)EPlayerState.WAITROUND)
+                if (dicReadyPlayer[players[i].NickName] == true) continue;
+                if ((int)players[i].CustomProperties["State"] == (int)EPlayerState.WAITROUND)
+                {
+                    dicReadyPlayer[players[i].NickName] = true;
                     readyPlayerCnt++;
+                }
             }
         }
 

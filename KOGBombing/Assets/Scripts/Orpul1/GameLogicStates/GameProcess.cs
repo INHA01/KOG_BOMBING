@@ -42,13 +42,11 @@ namespace Orpul1
             DoRoundCountDown();
             Debug.Log("UpdateGameProcess");
             if (!roundController.IsEndRound) return;
-            Debug.Log("---END Round---");
             if(PhotonNetwork.IsMasterClient)
             {
                 object[] datas = roundController.GetEndEvnetDatas();
                 PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, datas, gameData.options, SendOptions.SendReliable);
             }
-            Debug.Log("Next Transition State");
             roundController.SetTeamScore();
             int nextState = (int)roundController.GetGameState();
 

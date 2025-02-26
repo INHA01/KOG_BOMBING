@@ -152,7 +152,8 @@ namespace Orpul1
         }
         public void RemoveEvents()
         {
-            teamUIController.EndRound();
+            if (teamUIController != null) 
+                teamUIController.EndRound();
         }
     }
 }

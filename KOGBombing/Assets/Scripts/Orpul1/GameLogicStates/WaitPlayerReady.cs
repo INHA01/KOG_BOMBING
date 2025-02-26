@@ -40,43 +40,44 @@ namespace Orpul1
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
         {
             if (!PhotonNetwork.IsMasterClient) return;
+            if (dicReadyPlayer[targetPlayer.NickName] == true) return;
             if (!targetPlayer.CustomProperties.ContainsKey("State")) return;
             if ((int)targetPlayer.CustomProperties["State"] != (int)EPlayerState.READY) return;
 
             readyPlayerCnt++;
-            SendAllPlayerReady();
-        }
-        private void SendAllPlayerReady()
-        {
-            if (!(curPlayerCnt == readyPlayerCnt)) return;
-            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERREADY, null, gameData.options, SendOptions.SendReliable);
+            dicReadyPlayer[targetPlayer.NickName] = true;
         }
         private void OnWaitPlayer(EventData punEvent)
         {
-            if (punEvent.Code == (byte)PunEventType.PLAYERREADY)
-            {
-                isAllPlayerReady = true;
-            }
+            if ((int)punEvent.Code != (int)PunEventType.PLAYERREADY) return;
+            isAllPlayerReady = true;
+            Debug.Log("OnWaitPlayer Event");
         }
 
         protected override void SetCurReadyPlayer()
         {
-            Player[] player = PhotonNetwork.PlayerList;
-            for (int i = 0; i < player.Length; i++)
+            Player[] players = PhotonNetwork.PlayerList;
+            for (int i = 0; i < players.Length; i++)
             {
-                if ((int)player[i].CustomProperties["State"] == (int)EPlayerState.READY)
+                if (dicReadyPlayer[players[i].NickName] == true) continue;
+                if ((int)players[i].CustomProperties["State"] == (int)EPlayerState.READY)
+                {
+                    dicReadyPlayer[players[i].NickName] = true;
                     readyPlayerCnt++;
+                }
             }
         }
 
         protected override IEnumerator CoWaitPlayer()
         {
-            while (readyPlayerCnt != PhotonNetwork.CurrentRoom.PlayerCount)
+            while (readyPlayerCnt != curPlayerCnt)
             {
                 Debug.Log("WaitPlayerReady");
                 yield return null;
             }
-            PhotonNetwork.RaiseEvent((int)EGameRound.PLAYERREADY, null, gameData.options, SendOptions.SendUnreliable);
+            Debug.Log("End CoWaitPlayer");
+
+            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERREADY, null, gameData.options, SendOptions.SendUnreliable);
         }
     }
 }

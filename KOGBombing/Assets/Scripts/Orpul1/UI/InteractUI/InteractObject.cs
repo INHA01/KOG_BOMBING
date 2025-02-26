@@ -11,24 +11,46 @@ public abstract class InteractObject : Subject, IInteractAble
     protected InteractPresenter interactUI;
     [SerializeField]
     GameObject showOutlineObj;
+    [SerializeField] 
+    protected Collider interactCollider;
 
+    [SerializeField]
+    LayerMask interactLayer;
+    [SerializeField]
+    LayerMask defualtLayer;
+    [SerializeField]
+    protected float interactTime = 0;
+
+    protected enum InteractState
+    {
+        NONE,
+        INTERACTING,
+        COMPLETE
+    }
+    protected InteractState interactState = InteractState.NONE;
     public abstract bool ProcessInteract(PhotonView pView);
     public virtual void AbortInteract()
     {
         interactUI.AbortInteract();
+
+        if (interactState == InteractState.COMPLETE) return;
+
+        interactUI.AbortInteract();
+        interactState = InteractState.NONE;
     }
     protected void SetOutline(bool isAdd)
     {
         if (isAdd)
         {
-            showOutlineObj.layer = LayerMask.NameToLayer("InteractObj");
+            showOutlineObj.layer = interactLayer;
         }
         else
         {
-            showOutlineObj.layer = LayerMask.NameToLayer("Default");
+            showOutlineObj.layer = defualtLayer;
         }
     }
-    private void OnTriggerEnter(Collider other)
+    protected abstract IEnumerator CoInteractDelay();
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
@@ -38,7 +60,7 @@ public abstract class InteractObject : Subject, IInteractAble
             interactUI.ActivePanel();
         }
     }
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {

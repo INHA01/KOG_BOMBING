@@ -16,33 +16,29 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     [SerializeField] PhotonView pView;
     [SerializeField] DoorInteractBehavior otherDoor;
     [SerializeField] Animator animator;
-    [SerializeField] Collider interactCollider;
-    [SerializeField] float doorOpenInterval = 3;
 
     Action openOtherDoor;
-    bool isInteracting = false;
-    bool isOpened = false;
+   
     private void Start()
     {
+        interactTime = 3;
         openOtherDoor += otherDoor.OpenDoor;
+    }
+    private void OnEnable()
+    {
+        GameEventBus.Subscribe(GameEventBus.EGameEvent.DOORCLOSE,CloseDoor);
+    }
+    private void OnDisable()
+    {
+        GameEventBus.UnSubscribe(GameEventBus.EGameEvent.DOORCLOSE, CloseDoor);
     }
     public override bool ProcessInteract(PhotonView pView)
     {
-        if (isOpened) return false;
+        if (interactState == InteractState.COMPLETE) return false;
 
-        StartCoroutine(CoWaitOpen());
+        StartCoroutine(CoInteractDelay());
         
         return true;
-    }
-    public override void AbortInteract()
-    {
-        base.AbortInteract();
-        Debug.Log("AbortInteract");
-        if (isOpened) return;
-
-        interactUI.AbortInteract();
-        isInteracting = false;
-        //pView.RPC("AbortInteractDoor", RpcTarget.AllBuffered);
     }
     [PunRPC]
     private void DoInteractDoor()
@@ -54,31 +50,35 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     }
     public void OpenDoor()
     {
-        isInteracting = false;
-        isOpened = true;
+        interactState = InteractState.COMPLETE;
         interactCollider.enabled = false;
         SetOutline(false);
         animator.SetTrigger(EDoorAni.TriOpenDoor.ToString());
         interactUI.DeactivePanel();
     }
+    public void CloseDoor()
+    {
+        interactState = InteractState.NONE;
+        interactCollider.enabled = true;
+        animator.SetTrigger(EDoorAni.TriCloseDoor.ToString());
+    }
     [PunRPC]
     private void AbortInteractDoor()
     {
-        isInteracting = false;
+        interactState = InteractState.NONE;
     }
-    IEnumerator CoWaitOpen()
+    protected override IEnumerator CoInteractDelay()
     {
-        if (isInteracting) yield break;
-        isInteracting = true;
+        if (interactState == InteractState.INTERACTING) yield break;
+        interactState = InteractState.INTERACTING;
         float deltaTime = 0;
-        while (deltaTime < doorOpenInterval) 
+        while (deltaTime < interactTime)
         {
-            if (!isInteracting) yield break;
+            if (interactState == InteractState.NONE) yield break;
             deltaTime += Time.deltaTime;
             interactUI.SetValue(deltaTime);
             yield return null;
         }
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);
-        
     }
 }

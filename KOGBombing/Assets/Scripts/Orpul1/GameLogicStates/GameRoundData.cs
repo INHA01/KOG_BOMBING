@@ -1,0 +1,159 @@
+using System;
+using Orpul1;
+using Photon.Pun;
+using UnityEngine;
+
+
+namespace Orpul1
+{
+    [Serializable]
+    public class GameRoundData
+    {
+        public int[] teamScores = new int[2] { 0, 0 }; //private
+        public int[] teamCounts = new int[2] { 0, 0 }; //private
+        public int[] TeamScores { get { return teamScores; } }
+        public int[] TeamCounts { get { return teamCounts; } }
+        public int maxRound = 10;
+        public int winRound = 4;
+        public int processRoundCnt = 0; //private
+        public int switchRound = 2;
+        public bool isAlreadySwitchRoll = false;
+        bool isEndRound = false;
+        TeamUIController teamUIController;
+        RoundEndType roundEndType = RoundEndType.NONE;
+        public RoundEndType EndRoundType { get { return roundEndType; } }
+        public bool IsEndRound { get { return isEndRound; } }
+        public enum RoundEndType
+        {
+            NONE,
+            BOMBEXPLOSION,
+            BOMBCLEAR,
+            
+            TIMEOVER,
+            GAMEEND,
+            ATTACKTEAMEXTERMINATE,
+            DEFENCETEAMEXTERMINATE,
+        }
+        
+        public GameRoundData()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                teamScores[i] = 0;
+                teamCounts[i] = 0;
+            }
+        }
+        public void Initialize(TeamUIController teamUIController)
+        {
+            isEndRound = false;
+            this.teamUIController = teamUIController;
+            roundEndType = RoundEndType.NONE;
+        }
+        public void SetTeamCount(int teamType, int count)
+        {
+            teamCounts[teamType] = count;
+        }
+        public void SetDecreaseTeamCount(int teamType)
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+            teamCounts[teamType]--;
+            Debug.Log("DecreaseTeamCount");
+            if (teamCounts[teamType] == 0)
+            {
+                Debug.Log("EXTERMINATE Team");
+                roundEndType = RoundEndType.ATTACKTEAMEXTERMINATE + teamType;
+                isEndRound = true;
+            }
+        }
+
+        public void SetEndRound(GameRoundData.RoundEndType endType, bool isEndRound)
+        {
+            Debug.Log($"endType {endType.ToString()}, isEndRound {isEndRound}");
+            this.roundEndType = endType;
+            this.isEndRound = isEndRound;
+        }
+        public void SetTeamScore()
+        {
+            switch(roundEndType)
+            {
+                //Defence team win condition
+                case RoundEndType.TIMEOVER:
+                case RoundEndType.BOMBCLEAR:
+                case RoundEndType.ATTACKTEAMEXTERMINATE:
+                    teamScores[(int)ETeam.REDTEAM]++;
+                    break;
+
+                //Attack team win condition
+                case RoundEndType.BOMBEXPLOSION:
+                case RoundEndType.DEFENCETEAMEXTERMINATE:
+                    teamScores[(int)ETeam.BLUETEAM]++;
+                    break;
+            }
+
+            // >> TODO : 공수 교대 시 팀 점수 ui 갱신
+            teamUIController.UpdateTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
+            teamUIController.UpdateTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
+            roundEndType = RoundEndType.NONE;
+        }
+        public void SwapTeam()
+        {
+            int score = teamScores[(int)ETeam.REDTEAM];
+            teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
+            teamScores[(int)ETeam.BLUETEAM] = score;
+            Debug.Log("Swap Team Score");
+        }
+        public void RoundTimeOver()
+        {
+            roundEndType = RoundEndType.TIMEOVER;
+            isEndRound = true;
+        }
+        public void ExplosionBomb()
+        {
+            roundEndType = RoundEndType.BOMBEXPLOSION;
+            isEndRound = true;
+        }
+        public EGameState GetNextState()
+        {
+            if (IsEndGame())
+            {
+                teamUIController.EndRound();
+                return EGameState.GAMEEND;
+            }
+
+            processRoundCnt++;
+            if (IsNextRound())
+                return EGameState.ROUNDWAIT;
+            else
+            {
+                SwapTeam();
+                SetTeamScore();
+                return EGameState.SWITCHTEAMROLL;
+            }
+        }
+
+        private bool IsEndGame()
+        {
+            float scoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
+
+            if (scoreGap >= winRound) return true;
+            if (teamScores[(int)ETeam.REDTEAM] > maxRound && teamScores[(int)ETeam.BLUETEAM] > maxRound) return true;
+            return false;
+        }
+        private bool IsNextRound()
+        {
+            //processRoundCnt % switchRound == 0
+            int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
+            if (switchRollScore == 3&& !isAlreadySwitchRoll)
+            {
+                isAlreadySwitchRoll = true;
+                return false;
+            }
+            return true;
+        }
+        public void RemoveEvents()
+        {
+            if (teamUIController != null) 
+                teamUIController.EndRound();
+        }
+    }
+}

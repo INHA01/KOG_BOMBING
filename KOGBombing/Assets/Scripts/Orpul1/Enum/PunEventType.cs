@@ -1,0 +1,10 @@
+public enum PunEventType
+{
+    CHOOSEPLAYER = 15,
+    PLAYERDIE,
+    UPDATETEAMSCORE,
+    UPDATETEAMSTATE,
+    PLAYERREADY,
+    ROUNDREADY,
+    ENDROUND
+}

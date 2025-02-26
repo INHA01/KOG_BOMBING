@@ -5,7 +5,7 @@ using Photon.Pun;
 using Semin;
 using UnityEngine;
 
-public class PlayerInteract : PlayerBehavior,IInteractAble
+public class PlayerInteract : PlayerBehavior, IRescueAble
 {
     IInteractAble iInteractObj;
     public bool isInteracting = false;
@@ -21,7 +21,6 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         return isInteracting;
     }
 
-    // >> TODO : Blackboard�� ����Ͽ� ���� ���� ������ �ִ� �۾��� ���̴� ��� �����غ���
     public INode.ENodeState FindInteractObjNode()
     {
         if (FindObject() == false)
@@ -66,21 +65,7 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
         return INode.ENodeState.Success;
     }
 
-    bool IInteractAble.ProcessInteract(PhotonView pView)
-    {
-        if (pView == null) return false;
-        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
-        Debug.Log($"interactPlayer {otherTeam.ToString()}, interactedPlayer {blackBoard.eTeam.ToString()}");
-
-        if (otherTeam != blackBoard.eTeam) return false;
-        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
-        playerData.pv.RPC("RPCProcess", RpcTarget.AllBuffered);
-        return true;
-    }
-    void IInteractAble.AbortInteract()
-    {
-        playerData.pv.RPC("RPCAbort", RpcTarget.AllBuffered);
-    }
+   /*
     [PunRPC]
     private void RPCProcess()
     {
@@ -93,9 +78,9 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
     {
         Debug.Log("RPC Abort Interact");
         isReviving = false;
-    }
+    }*/
 
-    IEnumerator CoRevive()
+    /*IEnumerator CoRevive()
     {
         if (isReviving) yield break;
         isReviving = true;
@@ -107,14 +92,21 @@ public class PlayerInteract : PlayerBehavior,IInteractAble
             yield return null;
         }
         OnResurrect();
-    }
+    }*/
     [PunRPC]
     public void OnResurrect()
     {
         blackBoard.playerStatus.hp = 50f;
+        blackBoard.playerStatus.isGroggy = false;
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
+        blackBoard.hpBar.HideGroggy();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
 		blackBoard.speedDebuffPercent = 1f;
+    }
+
+    public void Rescue()
+    {
+        playerData.pv.RPC("OnResurrect", RpcTarget.AllBuffered);
     }
 }

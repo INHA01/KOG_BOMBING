@@ -26,6 +26,7 @@ public class Option : MonoBehaviour
         {
             PhotonNetwork.LeaveRoom();
             Managers.PunData.Init();
+            Managers.CamData.InitCamera();
             LoadingSceneManager.LoadScene("LobbyScene");
         }
         else

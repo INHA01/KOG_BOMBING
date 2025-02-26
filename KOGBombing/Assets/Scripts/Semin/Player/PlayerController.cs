@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
 using Orpul1;
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRespawnAble
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -22,9 +22,12 @@ public class PlayerController : MonoBehaviour
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
-	TeamUIController teamUIController = new TeamUIController();
+    
+    
+    bool isInitComplete = false;
     void Awake()
 	{
+        isInitComplete = false;
         InitPlayerData();
 
         if (playerData.pv.IsMine)
@@ -36,14 +39,18 @@ public class PlayerController : MonoBehaviour
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
 
 		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
-
-		if(playerData.pv.IsMine)
+        isInitComplete = true;
+        /*if(playerData.pv.IsMine)
 		{
 			StartCoroutine(WaitSetTeamUI());
-		}
-	}
+		}*/
+    }
 
-	private void InitPlayerData()
+    public void SetTeamUI(TeamUIController controller)
+    {
+        StartCoroutine(WaitSetTeamUI(controller));
+    }
+    private void InitPlayerData()
 	{
         playerData = GetComponent<PlayerData>();
         playerShooting = GetComponent<PlayerShooting>();
@@ -52,6 +59,7 @@ public class PlayerController : MonoBehaviour
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
         blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
+        blackBoard.canRespawn = false;
         if (playerData.pv.IsMine)
         {
             blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
@@ -68,17 +76,19 @@ public class PlayerController : MonoBehaviour
 	{
         Managers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
     }
-    IEnumerator WaitSetTeamUI()
+    IEnumerator WaitSetTeamUI(TeamUIController controller)
 	{
-		while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount) yield return null;
+        while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
 		Debug.Log($"isDataAllGet {Managers.PunData.blackBoardCnt}");
-		teamUIController.SetTeamUI(playerShooting);
+        controller.SetTeamUI(playerShooting);
 
     }
-	public void Init(Camera camera, Vector3 spawnPosi)
+	public void Init(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
 	{
         blackBoard.viewCamera = camera;
 		blackBoard.spawnPoint = spawnPosi;
+        blackBoard.setTeam = roundEventObj.GetComponent<ISetTeamCountAble>();
+        blackBoard.setBombState = roundEventObj.GetComponent<IBombStateAble>();
 	}
 
     private void Update()
@@ -87,6 +97,33 @@ public class PlayerController : MonoBehaviour
 
         if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
+    }
+
+    public void DoDestory()
+    {
+        if (!playerData.pv.IsMine) return;
+        playerData.pv.RPC("DestroyPlayer", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void DestroyPlayer()
+    {
+        Debug.Log($"DestroyPlayer {blackBoard.nickname}");
+        Destroy(gameObject);
+    }
+    public void DoRespawn()
+    {
+        //TODO: 행동트리 리스폰 관련 작업 추가할 것
+        Debug.Log($"Set Respawn");
+        blackBoard.canRespawn = true;
+
+        //playerData.pv.RPC("RespawnPlayer", RpcTarget.AllBuffered);
+        //blackBoard.canRespawn = true;
+    }
+    [PunRPC]
+    private void RespawnPlayer()
+    {
+        Debug.Log($"RespawnPlayer {blackBoard.nickname}");
     }
 
 	private void OnTriggerEnter(Collider other)

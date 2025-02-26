@@ -9,20 +9,24 @@ namespace Orpul1
     {
         [SerializeField]
         DisplayRoomView view;
-        DisplayRoomModel model = new DisplayRoomModel();
+        DisplayRoomModel model;
 
         public void Init(RoomInfo roomInfo)
         {
-            model.roomInfo = roomInfo;
-            view.tmpServerName.text = roomInfo.Name;
-            view.tmpPlayerCount.text = roomInfo.PlayerCount.ToString();
+            model = new DisplayRoomModel(UpdateUI);
+            model.SetRoomInfo(roomInfo);
         }
 
         public void OnEnterRoom()
         {
-            if (!model.roomInfo.IsOpen) return;
-            if (model.roomInfo.PlayerCount > model.roomInfo.MaxPlayers) return;
-            PhotonNetwork.JoinRoom(model.roomInfo.Name);
+            if (!model.RoomInfo.IsOpen) return;
+            if (model.RoomInfo.PlayerCount > model.RoomInfo.MaxPlayers) return;
+            PhotonNetwork.JoinRoom(model.RoomInfo.Name);
+        }
+        public void UpdateUI()
+        {
+            view.tmpServerName.text = model.RoomInfo.Name;
+            view.tmpPlayerCount.text = model.RoomInfo.PlayerCount.ToString();
         }
     }
 }

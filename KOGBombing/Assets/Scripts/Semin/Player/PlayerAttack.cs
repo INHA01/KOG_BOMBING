@@ -126,14 +126,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     if (bombInteractTime >= waitTime)
                     {
-                        if((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
-                            playerData.bomb.Use();
-                        else
-                        {
-                            // playerData.bomb.Use();에 해당 코드를 통일하였으나 2개 선언된다 문제생김
-                            // 추측상으로는 지뢰에 use와 pun함수가 겹쳐져 발생하는 듯
-                            blackBoard.playerStatus.isBombDefuse = true;
-                        }
+                        playerData.bomb.Use();
                     }
                     blackBoard.bombUI.ActiveInteract(false);
                     isChangableAnim = true;

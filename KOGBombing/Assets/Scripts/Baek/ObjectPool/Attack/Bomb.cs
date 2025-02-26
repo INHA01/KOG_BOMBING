@@ -23,7 +23,9 @@ public class Bomb : AttackConsum
         {
             player.playerStatus.isBombDefuse = false;
             // 폭탄 해제 모든 플레이어들에게 Notify
-            _uiScene.GetComponent<BombNotify>().NotifyBombDefuse();
+            if(_uiScene == null)
+				_uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
+			_uiScene.GetComponent<BombNotify>().NotifyBombDefuse();
             Release();
             //RPCDestroy();
         }

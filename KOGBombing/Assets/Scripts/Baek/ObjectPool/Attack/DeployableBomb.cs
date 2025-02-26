@@ -3,6 +3,7 @@ using Photon.Pun;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class DeployableBomb : DeployableBase
@@ -38,10 +39,18 @@ public class DeployableBomb : DeployableBase
     protected override IEnumerator PutAfterAnim()
     {
         yield return null;
-        Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
-        bomb.transform.position = playerData.ConsumPos.position;
-        bomb.NotifySet();
-        bomb.SetTeam((int)team);
-        bomb.Use();
-    }
+		if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
+        {
+		    Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
+            bomb.transform.position = playerData.ConsumPos.position;
+            bomb.NotifySet();
+            bomb.SetTeam((int)team);
+            bomb.Use();
+        }
+		else
+		{
+            PlayerBlackBoard blackBoard = this.GetComponent<PlayerBlackBoard>();
+			blackBoard.playerStatus.isBombDefuse = true;
+		}
+	}
 }

@@ -8,13 +8,6 @@ using ExitGames.Client.Photon;
 using System;
 namespace Orpul1
 {
-    public enum EGameRound
-    {
-        PLAYERREADY,
-        ROUNDREADY,
-        EXTERMINATETEAM,
-        PLAYERDIE
-    }
     public enum EGameState
     {
         START,

@@ -307,8 +307,8 @@ public class PlayerAttack : PlayerBehavior
     }
 
     public INode.ENodeState DashSkill()
-	{
-		if (blackBoard.characterType != CharacterType.Uni) 
+    {
+        if (blackBoard.characterType != CharacterType.Uni)
             return INode.ENodeState.Fail;
 
 		if (playerData.skill is DashSkill dash)
@@ -357,7 +357,8 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (playerData.bomb is SupportWeaponBase weapon)
+        if (blackBoard.inputs[EKey.Q] || blackBoard.inputs[EKey.NUM_1]) return;
+		if (playerData.bomb is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -387,7 +388,8 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (playerData.supportWeapon is SupportWeaponBase weapon)
+		if (blackBoard.inputs[EKey.NUM_2] || blackBoard.inputs[EKey.Q]) return;
+		if (playerData.supportWeapon is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
 
         isChangableAnim = true;
@@ -415,7 +417,8 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (!playerData.skill.isUsableSkill()) return;
+		if (blackBoard.inputs[EKey.NUM_2] || blackBoard.inputs[EKey.NUM_1]) return;
+		if (!playerData.skill.isUsableSkill()) return;
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;

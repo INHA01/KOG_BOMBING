@@ -88,4 +88,10 @@ public class PlayerController : MonoBehaviour
         if (playerData.animator != null)
             playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
     }
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Player"))
+			Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
+	}
 }

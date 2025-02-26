@@ -34,6 +34,12 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
         RaycastHit hit;
         if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
         {
+            if (Vector3.Distance(hit.point, transform.position) <= 1.2f)
+			{
+                playerData.mousePos = playerData.shootStartPos.position;
+				return INode.ENodeState.Success;
+            }
+
             Vector3 planePos = hit.point;
             planePos.y += 1.6f;
             Plane GroupPlane = new Plane(Vector3.up, planePos);

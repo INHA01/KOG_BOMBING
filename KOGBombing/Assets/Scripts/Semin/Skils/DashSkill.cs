@@ -66,6 +66,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		isRunning = true;
 		float time = 0;
 		Vector3 movement;
+		CapsuleCollider collider = playerData.gameObject.GetComponent<CapsuleCollider>();
 
 		// >> Managers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
 		PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
@@ -97,12 +98,16 @@ public class DashSkill : MonoBehaviour, ISkill
         isRunning = false;
 		time = 0;
         blackBoard.speedDebuffPercent *= 1.5f;
+		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
+		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		while (time < buffTime)
 		{ 
 			time += Time.deltaTime;
 			yield return null;
 		}
         blackBoard.speedDebuffPercent /= 1.5f;
+		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
+		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		dash = null;
 		// << :
 	}

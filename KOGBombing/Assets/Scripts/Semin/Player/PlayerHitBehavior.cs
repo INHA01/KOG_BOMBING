@@ -31,9 +31,16 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
-        //StartCoroutine(DamageTest(2f, 350));
-    }
-    void SetOtherTeamInfo()
+		//StartCoroutine(DamageTest(2f, 350));
+	}
+
+	[PunRPC]
+	private void ChangeWeaponHit(int type)
+	{
+		ChangeWeapon(type);
+	}
+
+	void SetOtherTeamInfo()
     {
         if (!playerData.pv.IsMine)
         {
@@ -149,7 +156,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				blackBoard.playerStatus.groggyable = false;
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
 				blackBoard.speedDebuffPercent *= 0.1f;
-                ChangeWeapon(WeaponType.NONE);
+
+				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				//ChangeWeapon(WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				groggyCoroutine = StartCoroutine(Groggy());
 			}

@@ -17,12 +17,11 @@ public class PlayerBehavior : MonoBehaviour
         playerData = GetComponent<PlayerData>();
     }
 
-    [PunRPC]
-    protected void ChangeWeapon(WeaponType type)
+    protected void ChangeWeapon(int type)
     {
         for (int i = 0; i < playerData.weapons.Count; i++)
         {
-            if (playerData.weapons[i].type == type)
+            if (playerData.weapons[i].type == (WeaponType)type)
                 playerData.weapons[i].obj.SetActive(true);
             else playerData.weapons[i].obj.SetActive(false);
         }

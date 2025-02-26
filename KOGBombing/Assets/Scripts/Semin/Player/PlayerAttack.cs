@@ -173,7 +173,7 @@ public class PlayerAttack : PlayerBehavior
             }
 
         }
-        return INode.ENodeState.Running;
+        return INode.ENodeState.Fail;
     }
     public INode.ENodeState LayingLandmine()
     {

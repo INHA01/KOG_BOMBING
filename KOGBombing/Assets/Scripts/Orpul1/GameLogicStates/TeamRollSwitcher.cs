@@ -46,10 +46,10 @@ namespace Orpul1
         private void SwapTeamCount()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+            int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
             int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "RT", blueTeamCnt } });
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "BT", redTeam } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "BT", redTeamCnt } });
         }
         private void SwitchTeamRoll()
         {

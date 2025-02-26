@@ -13,7 +13,6 @@ public struct PlayerKDA
 public class PhotonDataManager 
 {
     Dictionary<string, PlayerBlackBoard> dicPlayerBlackBoard = new Dictionary<string, PlayerBlackBoard>();
-    Dictionary<string, PlayerKDA> dicPlayerKDA = new Dictionary<string, PlayerKDA>();
     List<PlayerBlackBoard> blackBoardList = new List<PlayerBlackBoard>();
     public int blackBoardCnt { get { return dicPlayerBlackBoard.Count; } }
 
@@ -44,7 +43,6 @@ public class PhotonDataManager
     {
         dicPlayerBlackBoard.Clear();
         blackBoardList.Clear();
-        dicPlayerKDA.Clear();
     }
 
 }

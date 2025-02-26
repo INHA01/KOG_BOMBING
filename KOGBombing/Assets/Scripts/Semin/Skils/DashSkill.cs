@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class DashSkill : MonoBehaviour, ISkill
 {
-	Coroutine skillCooldown;
 	Coroutine dash;
 	PlayerData playerData;
 	bool bisUsableSkill;
@@ -19,10 +18,12 @@ public class DashSkill : MonoBehaviour, ISkill
 	bool isRunning = false;
 	[SerializeField] ParticleSystem particle;
 
+
+	PlayScene playScene;
 	public void InitializationSkill(PlayerData playerData)
 	{
-		this.playerData = playerData;
-		skillCooldown = StartCoroutine(Cooldown(3f));
+        bisUsableSkill = true;
+        this.playerData = playerData;
 		particle.gameObject.SetActive(false);
 	}
 
@@ -47,6 +48,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
         playerData.pv.RPC("StartDash", RpcTarget.AllBuffered);
+        StartCoroutine(Cooldown(3f));
     }
 
 	public bool IsRunning()
@@ -114,16 +116,21 @@ public class DashSkill : MonoBehaviour, ISkill
 
 	IEnumerator Cooldown(float time)
 	{
-		skillDeltaTime = 0f;
-		while (true)
+        if (playScene == null)
+            playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+        skillDeltaTime = 0f;
+		while (!bisUsableSkill)
 		{
-			if (skillDeltaTime < time)
-			{
-				skillDeltaTime += Time.deltaTime;
-				if (skillDeltaTime > time)
-					bisUsableSkill = true;
-			}
-			yield return null;
+            skillDeltaTime += Time.deltaTime;
+            playScene.skillFade.fillAmount = skillDeltaTime / time;
+            playScene.skillCount.text = ((int)(time - skillDeltaTime)).ToString();
+            if (skillDeltaTime > time)
+            {
+                playScene.skillFade.fillAmount = 0;
+                playScene.skillCount.text = "";
+                bisUsableSkill = true;
+            }
+            yield return null;
 		}
 	}
 }

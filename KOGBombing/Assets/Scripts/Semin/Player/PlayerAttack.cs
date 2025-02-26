@@ -125,7 +125,6 @@ public class PlayerAttack : PlayerBehavior
                 {
                     if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // 중간에 취소
 					{
-                        Debug.Log("cancel");
 						blackBoard.bombUI.ActiveInteract(false);
 						isChangableAnim = true;
 						bombInteractTime = 0;
@@ -177,7 +176,7 @@ public class PlayerAttack : PlayerBehavior
                             ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.BLUETEAM)
                             && colliders[i].CompareTag("Bomb")
                         )
-                       )
+                       ) 
                     {
                         if(colliders[i].CompareTag("Bomb"))
                         {
@@ -190,7 +189,8 @@ public class PlayerAttack : PlayerBehavior
                         blackBoard.playerStatus.isBombDefuse = false;
                         return INode.ENodeState.Running;
                     }
-                }
+					else ChangeWeapon(WeaponType.GUN);
+				}
             }
 
         }

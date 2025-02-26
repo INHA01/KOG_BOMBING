@@ -12,6 +12,10 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
     {
         return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
     }
+    public bool IsGroggy()
+    {
+        return animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
+    }
     public bool IsBombInteract()
     {
         return !blackBoard.playerStatus.isBombInteract;

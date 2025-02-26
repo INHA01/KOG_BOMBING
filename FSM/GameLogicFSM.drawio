@@ -1,9 +1,12 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.1 Chrome/112.0.5615.87 Electron/24.1.2 Safari/537.36" modified="2025-02-19T00:14:58.373Z" version="21.2.1" etag="cO2hgnMN6MBMpkPKupQ2" type="device">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.1 Chrome/112.0.5615.87 Electron/24.1.2 Safari/537.36" modified="2025-02-19T05:29:53.004Z" version="21.2.1" etag="eMP2gyTpD2c_F2d3CSz8" type="device">
   <diagram name="페이지-1" id="qsMyMIJTtJl387BWLE7k">
-    <mxGraphModel dx="678" dy="595" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1969" dy="1134" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-65" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="585" width="1130" height="515" as="geometry" />
+        </mxCell>
         <mxCell id="ovZiylqTLVrIvCY7d7Cw-2" value="캐릭터 선택" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="260" y="280" width="80" height="80" as="geometry" />
         </mxCell>
@@ -115,14 +118,12 @@
         <mxCell id="91n7fDjYp4Qx0MaL3Qp6-41" value="게임 종료" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
           <mxGeometry x="1010" y="1000" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-42" value="" style="endArrow=classic;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-39" target="91n7fDjYp4Qx0MaL3Qp6-39">
+        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-42" value="" style="endArrow=classic;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;curved=1;" edge="1" parent="1" source="91n7fDjYp4Qx0MaL3Qp6-39">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="800" y="1020" as="sourcePoint" />
-            <mxPoint x="930" y="1020" as="targetPoint" />
+            <mxPoint x="440" y="860" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="930" y="790" />
-              <mxPoint x="812" y="760" />
-              <mxPoint x="740" y="820" />
+              <mxPoint x="650" y="730" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -148,7 +149,7 @@
           <mxGeometry x="670" y="920" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="91n7fDjYp4Qx0MaL3Qp6-52" value="라운드가 끝났을 때" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="770" y="738" width="130" height="30" as="geometry" />
+          <mxGeometry x="565" y="770" width="130" height="30" as="geometry" />
         </mxCell>
         <mxCell id="91n7fDjYp4Qx0MaL3Qp6-53" value="전반전, 후반전이&lt;br&gt;끝났을 때" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="890" y="855" width="110" height="40" as="geometry" />
@@ -167,9 +168,6 @@
         </mxCell>
         <mxCell id="91n7fDjYp4Qx0MaL3Qp6-59" value="공수 교대가 끝났을 때" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="590" y="640" width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="91n7fDjYp4Qx0MaL3Qp6-60" value="모든 플레이어&lt;br&gt;준비 대기" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="100" y="750" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

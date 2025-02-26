@@ -4,6 +4,9 @@ using UnityEngine;
 using Orpul1;
 using Photon.Pun;
 using Semin;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using ExitGames.Client.Photon;
+using Photon.Realtime;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -11,12 +14,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     GameDirector gameDirector;
     [SerializeField]
     PlayerMaterialController playerMaterialController;
+    RaiseEventOptions options = new RaiseEventOptions();
     
 
-    TeamUIController teamUIController = new TeamUIController();
     float groggyTime;
     Coroutine groggyCoroutine;
-
     
     private void Start()
     {
@@ -28,8 +30,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
+        options.Receivers = ReceiverGroup.All;
         //StartCoroutine(DamageTest(2f, 350));
-	}
+    }
     void SetOtherTeamInfo()
     {
         if (!playerData.pv.IsMine)
@@ -74,13 +77,40 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
 
-        teamUIController.UpdateTeamUI();
-
+        
         if (playerData.pv.IsMine)
+        {
+            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
+        }
     }
     public INode.ENodeState SuccessNode()
     {
+        return INode.ENodeState.Success;
+    }
+
+    public bool CanRespawnPlayer()
+    {
+        if (!blackBoard.canRespawn) return false;
+        return true;
+    }
+    public INode.ENodeState RespawnNode()
+    {
+        Debug.Log("ResapwnPlayer");
+        blackBoard.playerStatus.isLive = true;
+        blackBoard.hpBar.SetStopHpUI(false);
+        blackBoard.playerStatus.groggyValue = 150;
+        blackBoard.playerStatus.groggyable = true;
+        blackBoard.playerStatus.isGroggy = false;
+        blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
+        blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
+        blackBoard.hpBar.HideGroggy();
+
+        SetActiveState(true);
+        this.transform.position = blackBoard.spawnPoint;
+        this.transform.rotation = blackBoard.initRotation;
+        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+        blackBoard.canRespawn = false;
         return INode.ENodeState.Success;
     }
     public bool IsDie()
@@ -133,24 +163,23 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     private void Death()
     {
-		if (playerData.pv.IsMine)
+        if (playerData.pv.IsMine)
 		{
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-			if (playerTeam == ETeam.REDTEAM)
-				GameDirector.blueScore++;
-			else
-				GameDirector.redScore++;
+            blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", EPlayerState.WAITROUND } });
 
-			//gameDirector.pv.RPC("UpdateScores", RpcTarget.AllBuffered, GameDirector.blueScore, GameDirector.redScore);
-			StartCoroutine(RespawnDelay(3.0f));
-		}
+            blackBoard.hpBar.SetStopHpUI(true);
+            blackBoard.playerStatus.isLive = false;
+            SetActiveState(false);
+        }
 		if (groggyCoroutine != null)
 			StopCoroutine(groggyCoroutine);
 		blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
 		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-		blackBoard.playerStatus.groggyable = true;
+        blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
 		blackBoard.speedDebuffPercent = 1f;
 		blackBoard.hpBar.InitializeValues();
@@ -164,6 +193,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         int time = 1;
         while (groggyTime <= 15f)
         {
+            if (!blackBoard.playerStatus.isGroggy) break;
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
@@ -181,23 +211,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
     }
 
-    IEnumerator RespawnDelay(float time)
-    {
-        Managers.UI.ShowPopupUI<UIPopup>("DieCanvas");
-        blackBoard.hpBar.SetStopHpUI(true);
-        blackBoard.playerStatus.isLive = false;
-        SetActiveState(false);
-        yield return new WaitForSeconds(time);
-        blackBoard.playerStatus.isLive = true;
-        blackBoard.hpBar.SetStopHpUI(false);
-        blackBoard.playerStatus.groggyValue = 150;
-        SetActiveState(true);
-        this.transform.position = blackBoard.spawnPoint;
-        this.transform.rotation = blackBoard.initRotation;
-		blackBoard.speedDebuffPercent = 1f;
-		blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-        Managers.UI.ClosePopupUI("DieCanvas");
-    }
     private void SetActiveState(bool isDie)
     {
         for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
@@ -223,7 +236,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
     }
-    [PunRPC]
+   /* [PunRPC]
     public void OnResurrect()
     {
         blackBoard.playerStatus.hp = 50f;
@@ -231,7 +244,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
 		blackBoard.speedDebuffPercent = 1f;
-    }
+    }*/
     [PunRPC]
     private void Rigidity(float time)
     {
@@ -242,9 +255,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState FindAlivePlayer()
     {
         List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
-        Debug.Log($"TeamPlayer {blackBoards.Count}");
         for (int i = 0; i < blackBoards.Count; i++)
         {
+            if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
             if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
             if (blackBoards[i].playerStatus.isLive)
@@ -254,7 +267,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 return INode.ENodeState.Success;
             }
         }
-        Debug.Log("All Team Player Die");
         blackBoard.gmlookTarget = null;
         return INode.ENodeState.Fail;
     }

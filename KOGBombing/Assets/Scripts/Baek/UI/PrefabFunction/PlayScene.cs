@@ -1,6 +1,7 @@
 using Orpul1;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,6 +51,16 @@ public class PlayScene : MonoBehaviour
         if (GameDirector.blueScore < 10)
             blueScoreIcon.sprite = blueScoreImages[GameDirector.blueScore];*/
     }
+    public void Reset()
+    {
+        if (dicTeamProfile.Count == 0) return;
+        for(int i=0; i<dicTeamProfile.Count; i++)
+        {
+            TeamProfile profile = dicTeamProfile.ElementAt(i).Value;
+            Destroy(profile.gameObject);
+        }
+        dicTeamProfile.Clear();
+    }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
@@ -63,5 +74,16 @@ public class PlayScene : MonoBehaviour
     {
         if (!dicTeamProfile.ContainsKey(nickname)) return;
         dicTeamProfile[nickname].UpdateUI();
+    }
+    public void UpdateScore(ETeam team, int score)
+    {
+        if(team == ETeam.REDTEAM)
+        {
+            redScoreIcon.sprite = redScoreImages[score];
+        }
+        else if(team == ETeam.BLUETEAM)
+        {
+            blueScoreIcon.sprite = blueScoreImages[score];
+        }
     }
 }

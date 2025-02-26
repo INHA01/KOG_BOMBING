@@ -1,5 +1,8 @@
 public enum EPlayerState
 {
-    Ready,
-    Start,
+    WAIT,
+    READY,
+    START,
+    WAITROUND,
+    DIE
 }

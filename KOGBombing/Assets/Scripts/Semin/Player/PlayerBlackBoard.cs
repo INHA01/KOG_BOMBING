@@ -7,6 +7,7 @@ using Orpul1;
 public class PlayerBlackBoard : MonoBehaviour
 {
     public Collider playerCollider;
+    public Collider playerInteractCollider;
     public Rigidbody rigidBody;
     public Quaternion initRotation;
     public Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
@@ -16,14 +17,18 @@ public class PlayerBlackBoard : MonoBehaviour
     public BombUI bombUI;
     public GameObject fieldOfView;
     public GameObject gmlookTarget;
+    public GameObject interactUIObj;
     public Vector2 speedValue;
 	public float speedDebuffPercent = 1;
 	public Vector2 mousePos;
     public Vector3 spawnPoint;
     public ETeam eTeam;
+    public ISetTeamCountAble setTeam;
+    public IBombStateAble setBombState;
     public string nickname;
     public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
+    public bool canRespawn;
     [HideInInspector] public PlayerStatus playerStatus;
 }
 

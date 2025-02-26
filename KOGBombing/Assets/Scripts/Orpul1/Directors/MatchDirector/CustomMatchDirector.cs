@@ -17,7 +17,8 @@ namespace Orpul1
         public override void Match()
         {
             isCustomMatch = true;
-            matchUIController.CustomListUIActive();
+            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL);
+            //matchUIController.CustomListUIActive();
             base.Match();
         }
         public void OnLeftLobbyBtn()
@@ -43,8 +44,9 @@ namespace Orpul1
             {
                 Debug.Log($"CustomMatch JoinRoom");
                 base.OnJoinedRoom();
-                matchUIController.CustomRoomUIActive();
-                matchUIController.UpdateRoomOwner();
+                UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
+                //matchUIController.CustomRoomUIActive();
+                //matchUIController.UpdateRoomOwner();
             }
         }
 
@@ -53,7 +55,8 @@ namespace Orpul1
             if (isCustomMatch)
             {
                 base.OnPlayerLeftRoom(otherPlayer);
-                matchUIController.UpdateRoomOwner();
+                UIEventBus.Publish(UIEventBus.UIEventType.SETMASTER);
+                //matchUIController.UpdateRoomOwner();
             }
         }
 
@@ -72,7 +75,10 @@ namespace Orpul1
 
         protected override IEnumerator CoStartDelay()
         {
-            matchUIController.DeactiveCustomRoomBtn();
+            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVECUSTOMROOMPANEL);
+            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
+            UIEventBus.Publish(UIEventBus.UIEventType.STARTGAME);
+            //matchUIController.DeactiveCustomRoomBtn();
             float time = Time.time + delayTime;
 
             while (Time.time < time) yield return null;

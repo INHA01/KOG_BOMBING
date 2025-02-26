@@ -1,24 +1,27 @@
+using System.Collections;
 using System.Text;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class DisplayPlayerPresenter : MonoBehaviour
 {
     [SerializeField] DisplayPlayerView view;
-    DisplayPlayerModel model = new DisplayPlayerModel();
+    DisplayPlayerModel model;
     
     public void Init(StringBuilder nickname, StringBuilder level)
     {
-        model.stbNickname.Clear();
-        model.stbLevel.Clear();
-        model.stbNickname.Append(nickname.ToString());
-        model.stbLevel.Append(level.ToString());
-        view.tmpNickname.text = nickname.ToString();
-        view.tmpLevel.text = level.ToString();
+        model = new DisplayPlayerModel(UpdateUI);
+        model.SetPlayerInfo(nickname, level);
     }
 
     public void SetTeam(Transform trTeam)
     {
         transform.SetParent(trTeam);
+    }
+    public void UpdateUI()
+    {
+        view.tmpNickname.text = model.PlayerNickname.ToString();
+        view.tmpLevel.text = model.PlayerLevel.ToString();
     }
     
 }

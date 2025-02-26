@@ -17,8 +17,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PhotonDataManager PunData { get { return Instance._punData; } }
-    public static CameraManager camData { get { return Instance._camData; } }
-
+    public static CameraManager CamData { get { return Instance._camData; } }
     void Start()
     {
         Init();

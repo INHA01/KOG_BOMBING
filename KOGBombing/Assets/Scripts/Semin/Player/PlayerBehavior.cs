@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
@@ -16,6 +17,7 @@ public class PlayerBehavior : MonoBehaviour
         playerData = GetComponent<PlayerData>();
     }
 
+    [PunRPC]
     protected void ChangeWeapon(WeaponType type)
     {
         for (int i = 0; i < playerData.weapons.Count; i++)

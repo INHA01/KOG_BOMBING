@@ -5,6 +5,7 @@ using Semin;
 using UnityEngine.InputSystem;
 using Orpul1;
 using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun;
 public class PlayerAttack : PlayerBehavior
 {
     ISupportWeapon supportWeapon;
@@ -98,7 +99,7 @@ public class PlayerAttack : PlayerBehavior
         yield return new WaitForSeconds(waitTime);
 
         animChange = null;
-        ChangeWeapon(type);
+		playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, type);
     }
 
     public INode.ENodeState ShootBullet()
@@ -130,7 +131,7 @@ public class PlayerAttack : PlayerBehavior
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
 						blackBoard.playerStatus.isBombInteract = false;
-						ChangeWeapon(WeaponType.GUN);
+						playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 						return INode.ENodeState.Fail;
                     }
@@ -148,7 +149,7 @@ public class PlayerAttack : PlayerBehavior
 						blackBoard.inputs[EKey.NUM_2] = false;
                         blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
-						ChangeWeapon(WeaponType.GUN);
+						playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 						//playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
 						return INode.ENodeState.Success;
@@ -189,7 +190,8 @@ public class PlayerAttack : PlayerBehavior
                         blackBoard.playerStatus.isBombDefuse = false;
                         return INode.ENodeState.Running;
                     }
-					else ChangeWeapon(WeaponType.GUN);
+					else
+						playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, WeaponType.GUN);
 				}
             }
 
@@ -203,8 +205,8 @@ public class PlayerAttack : PlayerBehavior
             if (isChangableAnim)
             {
                 playerData.supportWeapon.Use();
-                ChangeWeapon(WeaponType.NONE);
-                animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
+				playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, WeaponType.NONE);
+				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Landmine);
             }
@@ -323,7 +325,7 @@ public class PlayerAttack : PlayerBehavior
 
                 playerData.skill.SetSkill(new DashSkillInfo(playerData.canAttackPoint, transform.forward, 2f, blackBoard));
 				playerData.skill.Use();
-				ChangeWeapon(WeaponType.NONE);
+				playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuffPercent *= 1.5f;
 				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
@@ -334,7 +336,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     StopCoroutine(animChange);
 					animChange = null;
-					ChangeWeapon(WeaponType.GUN);
+					playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, WeaponType.GUN);
 				}
 				return INode.ENodeState.Running;
 			}
@@ -381,9 +383,9 @@ public class PlayerAttack : PlayerBehavior
             playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, false);
             playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
             playerData.bomb.Disable();
-        }
-        ChangeWeapon(weaponType);
-    }
+		}
+		playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, weaponType);
+	}
     public void OnUseAttackConsum(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
@@ -409,8 +411,8 @@ public class PlayerAttack : PlayerBehavior
             playerData.supportWeapon.Disable();
         }
 
-        ChangeWeapon(weaponType);
-    }
+		playerData.pv.RPC("ChangeWeapon", RpcTarget.AllBuffered, weaponType);
+	}
 
 
     public void OnUseSkill(InputValue value)

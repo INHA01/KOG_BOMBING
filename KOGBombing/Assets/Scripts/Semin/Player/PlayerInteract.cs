@@ -102,7 +102,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         blackBoard.hpBar.HideGroggy();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         ChangeWeapon(WeaponType.GUN);
-		blackBoard.speedDebuffPercent = 1f;
+		blackBoard.speedDebuffPercent *= 2f;
     }
 
     public void Rescue()

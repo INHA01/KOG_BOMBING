@@ -126,4 +126,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         Debug.Log($"RespawnPlayer {blackBoard.nickname}");
     }
 
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Player"))
+			Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
+	}
 }

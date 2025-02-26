@@ -112,29 +112,48 @@ public class PlayerAttack : PlayerBehavior
         {
             Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(playerData.shootStartPos.position);
             RaycastHit hit;
-            if (!isChangableAnim)
+            if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
                 float waitTime = 5.0f;
                 if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime))
                 {
                     bombInteractTime += Time.deltaTime;
                     blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
-                    // 여기에 공격팀은 폭탄 설치  , 수비팀은 해제 애니메이션 추가
                     return INode.ENodeState.Running;
                 }
                 else
                 {
-                    if (bombInteractTime >= waitTime)
-                    {
-                        playerData.bomb.Use();
+                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // 중간에 취소
+					{
+						blackBoard.bombUI.ActiveInteract(false);
+						isChangableAnim = true;
+						bombInteractTime = 0;
+						blackBoard.inputs[EKey.NUM_2] = false;
+						blackBoard.playerStatus.isBombInteract = false;
+						ChangeWeapon(WeaponType.GUN);
+						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+						return INode.ENodeState.Fail;
                     }
-                    blackBoard.bombUI.ActiveInteract(false);
-                    isChangableAnim = true;
-                    bombInteractTime = 0;
-                    blackBoard.inputs[EKey.NUM_2] = false;
-                    blackBoard.playerStatus.isBombInteract = false;
-                    ChangeWeapon(WeaponType.GUN);
-                    return INode.ENodeState.Success;
+                    if (isChangableAnim && bombInteractTime >= waitTime)
+					{
+						playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
+						animChange = StartCoroutine(WaitForChangeAnim(0.7f, WeaponType.GUN));
+					}
+					if (animChange == null)
+					{
+						playerData.bomb.Use();
+						blackBoard.bombUI.ActiveInteract(false);
+						isChangableAnim = true;
+						bombInteractTime = 0;
+						blackBoard.inputs[EKey.NUM_2] = false;
+                        blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+						blackBoard.playerStatus.isBombInteract = false;
+						ChangeWeapon(WeaponType.GUN);
+						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+						//playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
+						return INode.ENodeState.Success;
+					}
+					return INode.ENodeState.Running;
                 }
             }
             if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
@@ -144,7 +163,8 @@ public class PlayerAttack : PlayerBehavior
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
             {
                 Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-                for (int i = 0; i < colliders.Length; i++)
+				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
+				for (int i = 0; i < colliders.Length; i++)
                 {
                     if (
                         (
@@ -165,9 +185,9 @@ public class PlayerAttack : PlayerBehavior
                         }
                         blackBoard.bombUI.ActiveInteract(true);
                         bombInteractTime = 0;
-                        isChangableAnim = false;
                         blackBoard.playerStatus.isBombInteract = true;
                         blackBoard.playerStatus.isBombDefuse = false;
+                        return INode.ENodeState.Running;
                     }
                 }
             }

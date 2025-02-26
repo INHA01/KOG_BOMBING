@@ -18,7 +18,8 @@ public class DeployableBomb : DeployableBase
 		{
 			count = 1;
 			objectPool = gameObject.AddComponent<ObjectPool>();
-			objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb"));
+			PooledObject child = Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
+			objectPool.SetObjectToPool(child);
 			objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
 			objectPool.initPoolSize = count;
 		}
@@ -51,7 +52,7 @@ public class DeployableBomb : DeployableBase
         {
 		    Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
             bomb.transform.position = playerData.ConsumPos.position;
-            bomb.NotifySet();
+            bomb.Notify();
             bomb.SetTeam((int)team);
             bomb.Use();
         }

@@ -118,6 +118,7 @@ public class PlayerAttack : PlayerBehavior
                 if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime))
                 {
                     bombInteractTime += Time.deltaTime;
+                    blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
                     // 여기에 공격팀은 폭탄 설치  , 수비팀은 해제 애니메이션 추가
                     return INode.ENodeState.Running;
                 }
@@ -134,6 +135,7 @@ public class PlayerAttack : PlayerBehavior
                             blackBoard.playerStatus.isBombDefuse = true;
                         }
                     }
+                    blackBoard.bombUI.ActiveInteract(false);
                     isChangableAnim = true;
                     bombInteractTime = 0;
                     blackBoard.inputs[EKey.NUM_2] = false;
@@ -168,6 +170,7 @@ public class PlayerAttack : PlayerBehavior
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
                         }
+                        blackBoard.bombUI.ActiveInteract(true);
                         bombInteractTime = 0;
                         isChangableAnim = false;
                         blackBoard.playerStatus.isBombInteract = true;

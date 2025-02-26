@@ -8,9 +8,13 @@ public class Bomb : AttackConsum
 {
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
-    void Awake()
+    UIPopup _uiScene;
+    public void NotifySet()
     {
         // 폭탄 설치 모든 플레이어들에게 Notify
+        //PhotonNetwork.RaiseEvent();
+        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
+        _uiScene.GetComponent<BombNotify>().NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)
     {
@@ -18,6 +22,8 @@ public class Bomb : AttackConsum
         if (player != null && player.playerStatus.isBombDefuse)
         {
             player.playerStatus.isBombDefuse = false;
+            // 폭탄 해제 모든 플레이어들에게 Notify
+            _uiScene.GetComponent<BombNotify>().NotifyBombDefuse();
             Release();
             //RPCDestroy();
         }

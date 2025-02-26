@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
@@ -16,11 +17,11 @@ public class PlayerBehavior : MonoBehaviour
         playerData = GetComponent<PlayerData>();
     }
 
-    protected void ChangeWeapon(WeaponType type)
+    protected void ChangeWeapon(int type)
     {
         for (int i = 0; i < playerData.weapons.Count; i++)
         {
-            if (playerData.weapons[i].type == type)
+            if (playerData.weapons[i].type == (WeaponType)type)
                 playerData.weapons[i].obj.SetActive(true);
             else playerData.weapons[i].obj.SetActive(false);
         }

@@ -88,10 +88,50 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.365
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8081551
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5889698
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.00000038929252
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000030908243
+      objectReference: {fileID: 0}
+    - target: {fileID: 8226780111664626988, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 72.168
+      objectReference: {fileID: 0}
     - target: {fileID: 8439591712475644047, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8746188663386597270, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -171,6 +211,12 @@ MonoBehaviour:
   - Type: 3
     SynchronizeType: 1
     Name: CharacterType
+  - Type: 9
+    SynchronizeType: 2
+    Name: BombPlant
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsBombDefuse
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

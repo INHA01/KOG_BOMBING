@@ -10,7 +10,13 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     IInteractAble iInteractObj;
     public bool isInteracting = false;
     bool isReviving = false;
-    public INode.ENodeState CanBehavior()
+
+	[PunRPC]
+	private void ChangeWeaponInteract(int type)
+	{
+		ChangeWeapon(type);
+	}
+	public INode.ENodeState CanBehavior()
     {
         if (blackBoard.inputs[EKey.ESC])
             return INode.ENodeState.Success;
@@ -65,22 +71,22 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         return INode.ENodeState.Success;
     }
 
-   /*
-    [PunRPC]
-    private void RPCProcess()
-    {
-        
-        Debug.Log("RPC Process Interact");
-        StartCoroutine(CoRevive());
-    }
-    [PunRPC]
-    private void RPCAbort()
-    {
-        Debug.Log("RPC Abort Interact");
-        isReviving = false;
-    }*/
+	/*
+	 [PunRPC]
+	 private void RPCProcess()
+	 {
 
-    /*IEnumerator CoRevive()
+		 Debug.Log("RPC Process Interact");
+		 StartCoroutine(CoRevive());
+	 }
+	 [PunRPC]
+	 private void RPCAbort()
+	 {
+		 Debug.Log("RPC Abort Interact");
+		 isReviving = false;
+	 }*/
+
+	/*IEnumerator CoRevive()
     {
         if (isReviving) yield break;
         isReviving = true;
@@ -93,7 +99,8 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         }
         OnResurrect();
     }*/
-    [PunRPC]
+
+	[PunRPC]
     public void OnResurrect()
     {
         blackBoard.playerStatus.hp = 50f;
@@ -101,7 +108,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         blackBoard.hpBar.HideGroggy();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-        ChangeWeapon(WeaponType.GUN);
+        playerData.pv.RPC("ChangeWeaponInteract", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 		blackBoard.speedDebuffPercent *= 2f;
     }
 

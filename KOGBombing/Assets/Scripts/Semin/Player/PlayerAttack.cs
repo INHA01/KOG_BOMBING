@@ -5,6 +5,7 @@ using Semin;
 using UnityEngine.InputSystem;
 using Orpul1;
 using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun;
 public class PlayerAttack : PlayerBehavior
 {
     ISupportWeapon supportWeapon;
@@ -35,8 +36,16 @@ public class PlayerAttack : PlayerBehavior
         if (!playerData.pv.IsMine) return;
         if (attackRange != null)
             attackRange.ShowAttackArea();
+	}
+
+	[PunRPC]
+    private void ChangeWeaponAttack(int type)
+    {
+        ChangeWeapon(type);
     }
-    public bool IsAttackTeam()
+
+
+	public bool IsAttackTeam()
     {
         return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM;
     }
@@ -98,7 +107,7 @@ public class PlayerAttack : PlayerBehavior
         yield return new WaitForSeconds(waitTime);
 
         animChange = null;
-        ChangeWeapon(type);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)type);
     }
 
     public INode.ENodeState ShootBullet()
@@ -112,29 +121,49 @@ public class PlayerAttack : PlayerBehavior
         {
             Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(playerData.shootStartPos.position);
             RaycastHit hit;
-            if (!isChangableAnim)
+            if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
                 float waitTime = 5.0f;
                 if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime))
                 {
                     bombInteractTime += Time.deltaTime;
                     blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
-                    // 여기에 공격팀은 폭탄 설치  , 수비팀은 해제 애니메이션 추가
+                    return INode.ENodeState.Running;
                 }
                 else
                 {
-                    if (bombInteractTime >= waitTime)
-                    {
-                        playerData.bomb.Use();
+                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // 중간에 취소
+					{
+						blackBoard.bombUI.ActiveInteract(false);
+						isChangableAnim = true;
+						bombInteractTime = 0;
+						blackBoard.inputs[EKey.NUM_2] = false;
+						blackBoard.playerStatus.isBombInteract = false;
+						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+						return INode.ENodeState.Fail;
                     }
-                    blackBoard.bombUI.ActiveInteract(false);
-                    isChangableAnim = true;
-                    bombInteractTime = 0;
-                    blackBoard.inputs[EKey.NUM_2] = false;
-                    blackBoard.playerStatus.isBombInteract = false;
-                    ChangeWeapon(WeaponType.GUN);
+                    if (isChangableAnim && bombInteractTime >= waitTime)
+					{
+						playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
+						animChange = StartCoroutine(WaitForChangeAnim(0.7f, WeaponType.GUN));
+					}
+					if (animChange == null)
+					{
+						playerData.bomb.Use();
+						blackBoard.bombUI.ActiveInteract(false);
+						isChangableAnim = true;
+						bombInteractTime = 0;
+						blackBoard.inputs[EKey.NUM_2] = false;
+                        blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+						blackBoard.playerStatus.isBombInteract = false;
+						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+						//playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
+						return INode.ENodeState.Success;
+					}
+					return INode.ENodeState.Running;
                 }
-                return INode.ENodeState.Success;
             }
             if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
@@ -143,7 +172,8 @@ public class PlayerAttack : PlayerBehavior
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
             {
                 Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-                for (int i = 0; i < colliders.Length; i++)
+				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
+				for (int i = 0; i < colliders.Length; i++)
                 {
                     if (
                         (
@@ -155,16 +185,22 @@ public class PlayerAttack : PlayerBehavior
                             ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.BLUETEAM)
                             && colliders[i].CompareTag("Bomb")
                         )
-                       )
+                       ) 
                     {
+                        if(colliders[i].CompareTag("Bomb"))
+                        {
+                            Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
+                            playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
+                        }
                         blackBoard.bombUI.ActiveInteract(true);
                         bombInteractTime = 0;
-                        isChangableAnim = false;
                         blackBoard.playerStatus.isBombInteract = true;
                         blackBoard.playerStatus.isBombDefuse = false;
                         return INode.ENodeState.Running;
                     }
-                }
+					else
+						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+				}
             }
 
         }
@@ -177,8 +213,8 @@ public class PlayerAttack : PlayerBehavior
             if (isChangableAnim)
             {
                 playerData.supportWeapon.Use();
-                ChangeWeapon(WeaponType.NONE);
-                animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
+				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				animChange = StartCoroutine(WaitForChangeAnim(1.5f, (int)WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Landmine);
             }
@@ -281,8 +317,8 @@ public class PlayerAttack : PlayerBehavior
     }
 
     public INode.ENodeState DashSkill()
-	{
-		if (blackBoard.characterType != CharacterType.Uni) 
+    {
+        if (blackBoard.characterType != CharacterType.Uni)
             return INode.ENodeState.Fail;
 
 		if (playerData.skill is DashSkill dash)
@@ -297,7 +333,7 @@ public class PlayerAttack : PlayerBehavior
 
                 playerData.skill.SetSkill(new DashSkillInfo(playerData.canAttackPoint, transform.forward, 2f, blackBoard));
 				playerData.skill.Use();
-				ChangeWeapon(WeaponType.NONE);
+				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuffPercent *= 1.5f;
 				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
@@ -308,7 +344,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     StopCoroutine(animChange);
 					animChange = null;
-					ChangeWeapon(WeaponType.GUN);
+					playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 				}
 				return INode.ENodeState.Running;
 			}
@@ -331,7 +367,8 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (playerData.bomb is SupportWeaponBase weapon)
+        if (blackBoard.inputs[EKey.Q] || blackBoard.inputs[EKey.NUM_1]) return;
+		if (playerData.bomb is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -351,17 +388,18 @@ public class PlayerAttack : PlayerBehavior
         }
         else
         {
-            //playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, false);
-            //playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+            playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
             playerData.bomb.Disable();
-        }
-        ChangeWeapon(weaponType);
-    }
+		}
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
+	}
     public void OnUseAttackConsum(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (playerData.supportWeapon is SupportWeaponBase weapon)
+		if (blackBoard.inputs[EKey.NUM_2] || blackBoard.inputs[EKey.Q]) return;
+		if (playerData.supportWeapon is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
 
         isChangableAnim = true;
@@ -381,15 +419,16 @@ public class PlayerAttack : PlayerBehavior
             playerData.supportWeapon.Disable();
         }
 
-        ChangeWeapon(weaponType);
-    }
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
+	}
 
 
     public void OnUseSkill(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (!playerData.skill.isUsableSkill()) return;
+		if (blackBoard.inputs[EKey.NUM_2] || blackBoard.inputs[EKey.NUM_1]) return;
+		if (!playerData.skill.isUsableSkill()) return;
 
         isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;

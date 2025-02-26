@@ -57,7 +57,8 @@ public abstract class ThrowableBase : SupportWeaponBase
 
 		if (distance > maxDistance * 2 / 3)
 		{
-			lineRendererToRange.gameObject.SetActive(true);
+			if (playerData.pv.IsMine)
+				lineRendererToRange.gameObject.SetActive(true);
 			if (distance >= maxDistance)
 				this.targetPos = zeroCurPos + normalizedDirection * maxDistance;
 		}

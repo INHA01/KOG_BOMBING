@@ -21,6 +21,8 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		Left,
 		Skill,
 		DashEnd,
+		BombDefuse,
+		BombPlant,
 		MAX
 	}
 

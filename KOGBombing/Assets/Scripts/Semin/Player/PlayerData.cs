@@ -10,6 +10,7 @@ public class PlayerData : MonoBehaviour
     public Transform shootStartPos;
     public Transform shootEndPos;
     public Vector3 canAttackPoint;
+    public Vector3 shootDirection;
     public float maxLength;
     public Vector3 mousePos;
 
@@ -24,6 +25,7 @@ public class PlayerData : MonoBehaviour
     [Header("Player Info")]
     public Rigidbody rigidBody;
 	public float timeWithoutDamage;
+    public GameObject minimapIcon;
 
     [Header("Model Anim")]
     [SerializeField] public GameObject playerObj;
@@ -43,7 +45,8 @@ public class PlayerData : MonoBehaviour
     [SerializeField] public Transform ConsumPos;
 
     [Header("Interact")]
-    public bool IsGroggyInteracting = false;
+    public bool isInteract = false;
+    public bool isGroggyInteracting = false;
 
     [Header("Skill")]
     [SerializeField] public ISkill skill;

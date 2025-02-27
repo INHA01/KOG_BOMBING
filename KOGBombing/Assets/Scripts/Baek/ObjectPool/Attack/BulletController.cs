@@ -14,10 +14,13 @@ public class BulletController : PooledObject
    [SerializeField] protected Rigidbody rb;
     protected float destroyDistance;
     protected float distance;
+    public Vector3 direction;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
+    public float Damage { get { return damage; } }
+
     protected virtual void FixedUpdate()
     {
-        rb.velocity = transform.forward * moveSpeed;
+        rb.velocity = direction * moveSpeed;
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {
@@ -34,8 +37,14 @@ public class BulletController : PooledObject
         return true;
     }
     protected virtual void OnTriggerEnter(Collider other)
-    {
-        if(other.tag != "Bullet")
+	{
+		if (other.CompareTag("IgnoreBullet"))
+		{
+            if (other.GetComponent<Landmine>() != null) return;
+		}
+        if (other.CompareTag("Bomb")) return;
+
+		if (other.tag != "Bullet")
         {
             if (other.tag == "Player")
             {

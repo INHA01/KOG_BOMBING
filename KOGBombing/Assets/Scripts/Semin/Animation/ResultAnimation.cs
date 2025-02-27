@@ -6,6 +6,8 @@ public class ResultAnimation : MonoBehaviour
 {
     Animator animator;
     public bool isMvp;
+    public bool isUni;
+    [SerializeField] GameObject gun;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -19,6 +21,16 @@ public class ResultAnimation : MonoBehaviour
 			animator = GetComponent<Animator>();
 
 		if (isMvp)
-			animator.SetTrigger("Mvp");
+        {
+            gun.SetActive(!isUni);
+            animator.SetTrigger("Mvp");
+        }
 	}
+    void WeaponActive(int yes)
+    {
+        if(yes == 1)
+            gun.SetActive(true);
+        else
+            gun.SetActive(false);
+    }
 }

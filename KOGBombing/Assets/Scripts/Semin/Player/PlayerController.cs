@@ -26,12 +26,29 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     
     bool isInitComplete = false;
     void Awake()
-	{
+    {
         isInitComplete = false;
         InitPlayerData();
+        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
 
         if (playerData.pv.IsMine)
+        {
+            playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.green;
             playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == team)
+            {
+                playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+            else
+            {
+                Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
+                color.a = 0;
+                playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
+            }
+        }
     }
 
 	private void Start()
@@ -92,7 +109,11 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         if (!playerData.pv.IsMine) return;
 
         if (playerData.animator != null)
-            playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
+        {
+            if (playerData.isInteract)
+				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
+			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
+        }
     }
 
     public void DoDestory()

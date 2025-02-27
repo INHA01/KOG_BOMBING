@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using Photon.Pun;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DashSkill : MonoBehaviour, ISkill
@@ -72,6 +73,7 @@ public class DashSkill : MonoBehaviour, ISkill
 
 		// >> Managers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
 		PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
+		playerData.isInteract = true;
 		while (time < 0.5f)
 		{
 			time += Time.deltaTime;
@@ -96,7 +98,8 @@ public class DashSkill : MonoBehaviour, ISkill
 			yield return null;
 		}
 		particle.Stop();
-        particle.gameObject.SetActive(false);
+		playerData.isInteract = false;
+		particle.gameObject.SetActive(false);
         isRunning = false;
 		time = 0;
         blackBoard.speedDebuffPercent *= 1.5f;

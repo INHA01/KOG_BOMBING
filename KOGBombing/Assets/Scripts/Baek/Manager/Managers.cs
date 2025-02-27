@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
-
+using Orpul1;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance;
@@ -13,11 +13,15 @@ public class Managers : MonoBehaviour
     ResourceManager _resource = new ResourceManager();
     PhotonDataManager _punData = new PhotonDataManager();
     CameraManager _camData = new CameraManager();
+    PlayerPointManager _pointData = new PlayerPointManager();
+    RoundInfoManager _roundData = new RoundInfoManager();
     public static UserDataManager UserData { get { return Instance._userData; } }
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PhotonDataManager PunData { get { return Instance._punData; } }
     public static CameraManager CamData { get { return Instance._camData; } }
+    public static PlayerPointManager PointData { get {return Instance._pointData; } }
+    public static RoundInfoManager RoundData { get { return Instance._roundData; } }
     void Start()
     {
         Init();

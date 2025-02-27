@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Orpul1;
 
-public interface IRunEventAble
+public interface IRunGameEventAble
 {
     public void RunEvent(EGameEvent eventType);
 

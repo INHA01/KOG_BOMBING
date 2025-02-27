@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class PlayerInfo : MonoBehaviour
+public class PlayerPointInfo
 {
     private StringBuilder nickname = new StringBuilder();
     private int killPoint;

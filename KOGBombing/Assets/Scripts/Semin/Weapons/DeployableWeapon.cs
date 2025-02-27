@@ -46,6 +46,7 @@ public class DeployableWeapon : DeployableBase
 		Landmine landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
 		landmine.transform.position = playerData.ConsumPos.position;
 		landmine.SetTeam((int)team);
+		landmine.SetPlayerIndex(playerIndex);
 		landmine.Use();
 	}
 }

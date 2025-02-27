@@ -15,7 +15,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [SerializeField]
     PlayerMaterialController playerMaterialController;
     RaiseEventOptions options = new RaiseEventOptions();
-    
+    PlayPointController playerPointController = new PlayPointController();
 
     float groggyTime;
     Coroutine groggyCoroutine;
@@ -23,7 +23,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-        //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
             SetOtherTeamInfo();
         else blackBoard.hpBar.SetIsMyTeam(true);
@@ -31,10 +30,16 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
-		//StartCoroutine(DamageTest(2f, 350));
 	}
-
-	[PunRPC]
+    private void OnEnable()
+    {
+        playerPointController.Initialize();
+    }
+    private void OnDisable()
+    {
+        playerPointController.Initialize();
+    }
+    [PunRPC]
 	private void ChangeWeaponHit(int type)
 	{
 		ChangeWeapon(type);
@@ -50,11 +55,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
     }
 
-    IEnumerator DamageTest(float time, float damage)
+   /* IEnumerator DamageTest(float time, float damage)
     {
         yield return new WaitForSeconds(time);
         OnDamaged(damage);
-    }
+    }*/
 
 
 	[PunRPC]
@@ -80,10 +85,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
 	}
 
-	public void OnDamaged(float damage)
+	public void OnDamaged(float damage, int playerIndex)
     {
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
-
+        playerPointController.SetAttackPlayer(playerIndex);
         
         if (playerData.pv.IsMine)
         {
@@ -158,7 +163,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				blackBoard.speedDebuffPercent *= 0.1f;
 
 				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
-				//ChangeWeapon(WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				groggyCoroutine = StartCoroutine(Groggy());
 			}
@@ -177,6 +181,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
             blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", EPlayerState.WAITROUND } });
+            playerPointController.OnDeathPoint();
+            playerPointController.OnKillPoint();
+            playerPointController.OnAssistPoint();
 
             blackBoard.hpBar.SetStopHpUI(true);
             blackBoard.playerStatus.isLive = false;
@@ -245,15 +252,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
     }
-	/* [PunRPC]
-	 public void OnResurrect()
-	 {
-		 blackBoard.playerStatus.hp = 50f;
-		 blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
-		 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-		 ChangeWeapon(WeaponType.GUN);
-		 blackBoard.speedDebuffPercent *= 2f;
-	 }*/
 	[PunRPC]
     private void Rigidity(float time)
     {

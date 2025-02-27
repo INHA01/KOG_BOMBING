@@ -9,13 +9,13 @@ namespace Orpul1
 {
     public class RoundEventListner:MonoBehaviour,ISetTeamCountAble,IBombStateAble
     {
-        IRunEventAble runEvent;
+        IRunGameEventAble runEvent;
         RaiseEventOptions options = new RaiseEventOptions();
         private void Start()
         {
             options.Receivers = ReceiverGroup.All;
         }
-        public void Initialize(IRunEventAble runEvent)
+        public void Initialize(IRunGameEventAble runEvent)
         {
             this.runEvent = runEvent;
         }

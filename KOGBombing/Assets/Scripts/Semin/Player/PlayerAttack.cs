@@ -27,8 +27,9 @@ public class PlayerAttack : PlayerBehavior
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+        int playerIndex = (int)playerData.pv.Owner.CustomProperties["TeamIndex"];
         SetSupportWeapon((int)playerTeam);
-        playerData.supportWeapon.SetTeam(playerTeam);
+        playerData.supportWeapon.SetTeam(playerTeam, playerIndex);
         InitSkill();
     }
     private void Update()

@@ -8,6 +8,7 @@ public class BulletController : PooledObject
 {
     [SerializeField] protected float moveSpeed;
     [HideInInspector] public ETeam eTeamBullet;
+    [HideInInspector] public int playerIndex;
     [SerializeField] protected int damage = 20;
 
    [SerializeField] protected Rigidbody rb;
@@ -45,7 +46,7 @@ public class BulletController : PooledObject
                 // << :
                 IDamageAble player = other.transform.GetComponent<IDamageAble>();
                 if (player != null)
-                    player.OnDamaged(damage);
+                    player.OnDamaged(damage, playerIndex);
             }
             distance = 0;
             Release();

@@ -21,7 +21,7 @@ public class TeamScoreBoardPresenter : MonoBehaviour, ISetScoreable<ETeamScore>
 
     public void SetScore(ETeamScore type, int score)
     {
-        model.SetScore(type, score);
+        model.SetScore(type, model.Score);
     }
 
     public void UpdateUI(ETeamScore type)

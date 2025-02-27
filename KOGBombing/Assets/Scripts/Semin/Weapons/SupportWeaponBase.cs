@@ -8,6 +8,7 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 {
 	[SerializeField] public AttackConsum consum;
 	protected ETeam team;
+	protected int playerIndex;
 	protected float range;
 	protected float damage;
 	protected int count = 10;
@@ -33,10 +34,11 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 		this.type = type;
 		this.playerData = playerData;
     }
-	public void SetTeam(ETeam team)
+	public void SetTeam(ETeam team, int playerIndex)
 	{
 		this.team = team;
-	}
+		this.playerIndex = playerIndex;
+    }
 
 	public abstract void SetWeapon(SupportWeaponInfo info);
 	public virtual void Use()

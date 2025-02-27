@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface IUpdateScore
 {
-    public void UpdatePlayerScore();
-    public void UpdateTeamScore();
+    public void UpdatePlayerScore(StringBuilder playerIndex, EPlayerScore updateType);
+    public void UpdateTeamScore(ETeam teamType,ETeamScore updateType);
 
 }

@@ -122,7 +122,7 @@ namespace Semin
 					IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
 					if (player != null)
 					{
-						player.OnDamaged(Damage);
+						player.OnDamaged(Damage, playerIndex);
 						player.OnRigidity(rigidityTime);
 					}
 				}

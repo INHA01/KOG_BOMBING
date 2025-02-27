@@ -46,7 +46,7 @@ public class Molotov : AttackConsum
 
 			IDamageAble player = other.transform.GetComponent<IDamageAble>();
 			if (player != null)
-				player.OnDamaged(Damage);
+				player.OnDamaged(Damage, playerIndex);
 		}
 		
 	}

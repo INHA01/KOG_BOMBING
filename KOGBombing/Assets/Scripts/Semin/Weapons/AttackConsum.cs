@@ -13,7 +13,9 @@ namespace Semin
         protected SphereCollider attackCollider;
         public abstract float Damage { get; }
 		protected ETeam team;
+        protected int playerIndex;
         public ETeam Team { get { return team; } }
+        public int PlayerIndex { get { return playerIndex; } }
 		public WeaponType type;
 
         public abstract void Use();
@@ -22,7 +24,10 @@ namespace Semin
 		{
 			this.team = (ETeam)team;
         }
-
+        public virtual void SetPlayerIndex(int playerIndex)
+        {
+            this.playerIndex = playerIndex; 
+        }
         protected bool IsOtherTeam(PhotonView pView)
         {
             ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];

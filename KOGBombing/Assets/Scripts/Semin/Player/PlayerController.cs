@@ -40,10 +40,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 
 		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
         isInitComplete = true;
-        /*if(playerData.pv.IsMine)
-		{
-			StartCoroutine(WaitSetTeamUI());
-		}*/
     }
 
     public void SetTeamUI(TeamUIController controller)

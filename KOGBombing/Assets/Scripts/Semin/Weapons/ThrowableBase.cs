@@ -130,6 +130,7 @@ public abstract class ThrowableBase : SupportWeaponBase
 		AttackConsum grenade = molotov.GetComponent<AttackConsum>();
 
 		grenade.SetTeam((int)team);
+		grenade.SetPlayerIndex(playerIndex);
 
 		while (elapsedTime < throwDuration)
 		{

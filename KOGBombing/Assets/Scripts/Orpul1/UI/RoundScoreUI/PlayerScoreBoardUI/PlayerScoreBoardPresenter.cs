@@ -24,7 +24,7 @@ public class PlayerScoreBoardPresenter : MonoBehaviour, ISetScoreable<EPlayerSco
 
     public void SetScore(EPlayerScore type, int score)
     {
-        model.SetScore(type, score);
+        model.SetScore(type, model.Score);
     }
 
 }

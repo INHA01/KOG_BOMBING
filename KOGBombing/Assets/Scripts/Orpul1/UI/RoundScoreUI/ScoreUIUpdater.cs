@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
@@ -17,15 +18,21 @@ public class ScoreUIUpdater : MonoBehaviour, IUpdateScore
 
     Dictionary<string, ISetScoreable<EPlayerScore>> dicPlayerScore = new Dictionary<string, ISetScoreable<EPlayerScore>>();
     Dictionary<ETeam, ISetScoreable<ETeamScore>> dicTeamScore = new Dictionary<ETeam, ISetScoreable<ETeamScore>>();
+    List<StringBuilder> playerNicknameList;
 
     void Start()
     {
         SetTeamScore();
         SetPlayerScore();
-        UpdatePlayerScore();
-        UpdateTeamScore();
+        /*UpdatePlayerScore();
+        UpdateTeamScore();*/
     }
+    private void SetPlayersMapping()
+    {
+        int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+        playerNicknameList = new List<StringBuilder>(playerCount);
 
+    }
     private void SetPlayerScore()
     {
         Player[] players = PhotonNetwork.PlayerList;
@@ -46,13 +53,13 @@ public class ScoreUIUpdater : MonoBehaviour, IUpdateScore
         }
     }
 
-    public void UpdatePlayerScore()
+    public void UpdatePlayerScore(StringBuilder nickname, EPlayerScore updateType)
     {
-        throw new System.NotImplementedException();
+        dicPlayerScore[nickname.ToString()].SetScore(updateType, 1);
     }
 
-    public void UpdateTeamScore()
+    public void UpdateTeamScore(ETeam team, ETeamScore updateType)
     {
-        throw new System.NotImplementedException();
+        dicTeamScore[team].SetScore(updateType, 1);
     }
 }

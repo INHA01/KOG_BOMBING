@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamageAble
 {
-    public void OnDamaged(float damage);
+    public void OnDamaged(float damage, int playerIndex);
     public void OnRigidity(float time);
 
 }

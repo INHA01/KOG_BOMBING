@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Orpul1
 {
-    public class RoundController:IRunEventAble
+    public class RoundController:IRunGameEventAble
     {
         GameProcessData logicContext;
         EventUIController eventUIController;

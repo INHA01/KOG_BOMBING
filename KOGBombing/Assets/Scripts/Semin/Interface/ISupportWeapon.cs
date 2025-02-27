@@ -7,6 +7,6 @@ public interface ISupportWeapon
 {
 	public void Disable();
 	public void SetWeapon(SupportWeaponInfo info);
-	public void SetTeam(ETeam team);
+	public void SetTeam(ETeam team, int playerIndex);
 	public void Use();
 }

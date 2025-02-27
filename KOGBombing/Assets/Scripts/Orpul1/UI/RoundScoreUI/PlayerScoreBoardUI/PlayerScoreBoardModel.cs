@@ -11,6 +11,8 @@ public class PlayerScoreBoardModel
     Action<EPlayerScore> updateUI;
     Dictionary<EPlayerScore, StringBuilder> dicScoreText = new Dictionary<EPlayerScore, StringBuilder>();
     public Dictionary<EPlayerScore, StringBuilder> TextValues = new Dictionary<EPlayerScore, StringBuilder>();
+    int score = 0;
+    public int Score { get { return score; } }
     public PlayerScoreBoardModel(Action<EPlayerScore> updateUI)
     {
         this.updateUI = updateUI;
@@ -25,8 +27,9 @@ public class PlayerScoreBoardModel
     }
     public void SetScore(EPlayerScore type, int score)
     {
+        this.score = score;
         dicScoreText[type].Clear();
-        dicScoreText[type].Append(score);
+        dicScoreText[type].Append(this.score);
         updateUI(type);
     }
     

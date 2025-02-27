@@ -10,7 +10,8 @@ public class TeamScoreBoardModel : MonoBehaviour
     Action<ETeamScore> updateUI;
     Dictionary<ETeamScore, StringBuilder> dicScoreText = new Dictionary<ETeamScore, StringBuilder>();
     public Dictionary<ETeamScore, StringBuilder> ScoreText { get { return dicScoreText; } }
-    
+    int score = 0;
+    public int Score { get { return score; } }
     public TeamScoreBoardModel(Action<ETeamScore> updateUI)
     {
         this.updateUI = updateUI;
@@ -27,8 +28,9 @@ public class TeamScoreBoardModel : MonoBehaviour
     }
     public void SetScore(ETeamScore type, int score)
     {
+        this.score = score;
         dicScoreText[type].Clear();
-        dicScoreText[type].Append(score);
+        dicScoreText[type].Append(this.score);
         updateUI(type);
     }
 }

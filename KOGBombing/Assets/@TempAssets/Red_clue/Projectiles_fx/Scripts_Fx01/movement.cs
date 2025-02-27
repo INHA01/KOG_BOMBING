@@ -51,6 +51,7 @@ public class movement : BulletController
 		{
 			if (other.GetComponent<Landmine>() != null) return;
 		}
+		if (other.CompareTag("Bomb")) return;
 
 		if (leftOver.Count > 0)
         {

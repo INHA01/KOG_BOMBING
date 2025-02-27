@@ -41,6 +41,7 @@ public class BulletController : PooledObject
 		{
             if (other.GetComponent<Landmine>() != null) return;
 		}
+        if (other.CompareTag("Bomb")) return;
 
 		if (other.tag != "Bullet")
         {

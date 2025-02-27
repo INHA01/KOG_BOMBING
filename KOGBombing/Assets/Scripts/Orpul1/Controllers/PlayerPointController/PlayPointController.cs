@@ -27,9 +27,10 @@ public class PlayPointController
 
     RaiseEventOptions options = new RaiseEventOptions();
     IUpdateScore updateScore;
-
-    public PlayPointController()
+    PhotonView pv;
+    public PlayPointController(PhotonView pv)
     {
+        this.pv = pv;
         UIPopup _uiPopup = Managers.UI.GetPopupUI<UIPopup>("BattleBoardCanvas");
         updateScore = _uiPopup.GetComponent<BattleBoardUpdater>();
 
@@ -89,6 +90,7 @@ public class PlayPointController
     }
     public void KillPointEvent(EventData punEvent)
     {
+        if (!pv.IsMine) return;
         if(punEvent.Code == (int)EPointType.KILL)
         {
             object[] customDatas = (object[])punEvent.CustomData;
@@ -106,7 +108,8 @@ public class PlayPointController
     }
     public void AssistPointEvent(EventData punEvent)
     {
-        if(punEvent.Code == (int)EPointType.ASSIST)
+        if (!pv.IsMine) return;
+        if (punEvent.Code == (int)EPointType.ASSIST)
         {
             List<string> assistPlayerList = (List<string>)punEvent.CustomData;
             int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
@@ -124,6 +127,7 @@ public class PlayPointController
     }
     public void DeathPointEvent(EventData punEvent)
     {
+        if (!pv.IsMine) return;
         if (punEvent.Code == (int)EPointType.DEATH) 
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
@@ -132,6 +136,7 @@ public class PlayPointController
     }
     public void MissionPointEvent(EventData punEvent)
     {
+        if (!pv.IsMine) return;
         if (punEvent.Code == (int)EPointType.MISSION)
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);

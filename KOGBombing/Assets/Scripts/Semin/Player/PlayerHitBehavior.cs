@@ -7,7 +7,6 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
-using UnityEngine.Rendering.UI;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -16,11 +15,15 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [SerializeField]
     PlayerMaterialController playerMaterialController;
     RaiseEventOptions options = new RaiseEventOptions();
-    PlayPointController playerPointController = new PlayPointController();
+    PlayPointController playerPointController;
 
     float groggyTime;
     Coroutine groggyCoroutine;
-    
+    protected override void Awake()
+    {
+        base.Awake();
+        playerPointController = new PlayPointController();
+    }
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
@@ -38,7 +41,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     private void OnDisable()
     {
-        playerPointController.Initialize();
+        playerPointController.Disable();
     }
     [PunRPC]
 	private void ChangeWeaponHit(int type)
@@ -88,9 +91,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 	public void OnDamaged(float damage, int playerIndex)
     {
+        Debug.Log($"OnDamged index {playerIndex}");
         playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
         playerPointController.SetAttackPlayer(playerIndex);
-        
+
         if (playerData.pv.IsMine)
         {
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
@@ -117,8 +121,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.isGroggy = false;
         blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
         blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
+        blackBoard.isSetScore = false;
         blackBoard.hpBar.HideGroggy();
-
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
@@ -129,6 +133,21 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;
+    }
+    public INode.ENodeState SetPlayerScore()
+    {
+        if (!blackBoard.isSetScore)
+        {
+            if (playerData.pv.IsMine)
+            {
+                playerPointController.OnKillPoint();
+                playerPointController.OnDeathPoint();
+                playerPointController.OnAssistPoint();
+                blackBoard.isSetScore = true;
+                return INode.ENodeState.Success;
+            }
+        }
+        return INode.ENodeState.Fail;
     }
     public bool IsTargetDie()
     {
@@ -165,7 +184,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
 				blackBoard.speedDebuffPercent *= 0.1f;
 
-				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+                playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				groggyCoroutine = StartCoroutine(Groggy());
 			}
@@ -184,9 +203,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
             blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", EPlayerState.WAITROUND } });
-            playerPointController.OnDeathPoint();
-            playerPointController.OnKillPoint();
-            playerPointController.OnAssistPoint();
+            
 
             blackBoard.hpBar.SetStopHpUI(true);
             blackBoard.playerStatus.isLive = false;

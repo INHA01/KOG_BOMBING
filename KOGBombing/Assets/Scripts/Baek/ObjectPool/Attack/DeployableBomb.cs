@@ -9,9 +9,9 @@ public class DeployableBomb : DeployableBase
 {
     Vector3 position;
     ObjectPool objectPool;
-	public override void SetTeam(ETeam team)
+	public override void SetTeam(ETeam team, int playerIndex)
 	{
-		base.SetTeam(team);
+        base.SetTeam(team, playerIndex);
 
 		if (team == ETeam.REDTEAM)
 		{

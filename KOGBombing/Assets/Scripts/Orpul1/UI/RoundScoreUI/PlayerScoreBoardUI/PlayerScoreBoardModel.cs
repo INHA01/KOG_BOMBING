@@ -10,7 +10,7 @@ public class PlayerScoreBoardModel
 {
     Action<EPlayerScore> updateUI;
     Dictionary<EPlayerScore, StringBuilder> dicScoreText = new Dictionary<EPlayerScore, StringBuilder>();
-    public Dictionary<EPlayerScore, StringBuilder> TextValues = new Dictionary<EPlayerScore, StringBuilder>();
+    public Dictionary<EPlayerScore, StringBuilder> TextValues { get { return dicScoreText; } }
     int score = 0;
     public int Score { get { return score; } }
     public PlayerScoreBoardModel(Action<EPlayerScore> updateUI)
@@ -23,6 +23,8 @@ public class PlayerScoreBoardModel
     }
     public void SetNickname(string nickname)
     {
+        TextValues[EPlayerScore.NICKNAME].Clear();
+        TextValues[EPlayerScore.NICKNAME].Append(nickname);
         updateUI(EPlayerScore.NICKNAME);
     }
     public void SetScore(EPlayerScore type, int score)

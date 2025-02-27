@@ -140,6 +140,7 @@ MonoBehaviour:
   guid: ba3de5e932228a846ba878b12bcb23a2
   position: {x: 512, y: -531}
   children:
+  - {fileID: -1567745938999925633}
   - {fileID: 649707792052996928}
   - {fileID: -975095478299540825}
 --- !u!114 &-7147036626057015698
@@ -190,7 +191,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: ce6a3b0bc811c2b47b961e2b75d439f1
-  position: {x: 201, y: -531}
+  position: {x: 200, y: -531}
   children:
   - {fileID: -7802083987999387392}
   - {fileID: -5335882687480156656}
@@ -437,6 +438,23 @@ MonoBehaviour:
   - {fileID: -8340223700539422723}
   - {fileID: -3281831052019774864}
   - {fileID: -8805397999584832426}
+--- !u!114 &-1567745938999925633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 3eeb7986d68bf3f44999249279be6067
+  position: {x: 662.99994, y: -441.9999}
+  paramName: 
+  method: SetPlayerScore
+  className: PlayerHitBehavior
 --- !u!114 &-1446105872691957205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,6 +593,7 @@ MonoBehaviour:
   - {fileID: -5335882687480156656}
   - {fileID: -6932081876933467733}
   - {fileID: -3829355589323812755}
+  - {fileID: -1567745938999925633}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0

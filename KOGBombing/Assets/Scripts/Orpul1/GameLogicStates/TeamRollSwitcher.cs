@@ -30,6 +30,7 @@ namespace Orpul1
 
         public override void ExitState()
         {
+            
         }
         private void DestroyGameObject()
         {

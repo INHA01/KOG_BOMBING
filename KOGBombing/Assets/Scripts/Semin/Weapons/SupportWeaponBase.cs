@@ -34,7 +34,7 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 		this.type = type;
 		this.playerData = playerData;
     }
-	public void SetTeam(ETeam team, int playerIndex)
+	public virtual void SetTeam(ETeam team, int playerIndex)
 	{
 		this.team = team;
 		this.playerIndex = playerIndex;

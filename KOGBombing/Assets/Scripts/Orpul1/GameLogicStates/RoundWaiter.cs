@@ -27,7 +27,6 @@ namespace Orpul1
             GameEventBus.Publish(GameEventBus.EGameEvent.DOORCLOSE);
             SetPlayerPosi();
             time = 0;
-            //Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().ChangeRound();
             base.EnterState();
         }
         public override void UpdateState()

@@ -281,6 +281,8 @@ GameObject:
   - component: {fileID: 3794693946494944336}
   - component: {fileID: 475251348038037586}
   - component: {fileID: 4445905110323793478}
+  - component: {fileID: 5581450572905441548}
+  - component: {fileID: 5644141055070497217}
   m_Layer: 5
   m_Name: record
   m_TagString: Untagged
@@ -350,6 +352,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5581450572905441548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860828414571143123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf2cbd398894e8479c5fcdc6abf1342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view: {fileID: 5644141055070497217}
+--- !u!114 &5644141055070497217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860828414571143123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9da3753e4b40c4468eeb3ad141a469b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tmpNickname: {fileID: 3030357033616219736}
+  tmpKillScore: {fileID: 5441593957929436168}
+  tmpAsistScore: {fileID: 6689589375240654784}
+  tmpDeathScore: {fileID: 7115576683600628647}
+  tmpMissionScore: {fileID: 3669684963314293217}
 --- !u!1 &3106119693673029200
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class TeamScoreBoardModel : MonoBehaviour
+public class TeamScoreBoardModel
 {
     Action<ETeamScore> updateUI;
     Dictionary<ETeamScore, StringBuilder> dicScoreText = new Dictionary<ETeamScore, StringBuilder>();
@@ -19,12 +19,6 @@ public class TeamScoreBoardModel : MonoBehaviour
         {
             dicScoreText.Add((ETeamScore)i, new StringBuilder());
         }
-    }
-    public void SetTeamTitle(StringBuilder title)
-    {
-        dicScoreText[ETeamScore.HALFROUND].Clear();
-        dicScoreText[ETeamScore.HALFROUND].Append(title);
-        updateUI(ETeamScore.HALFROUND);
     }
     public void SetScore(ETeamScore type, int score)
     {

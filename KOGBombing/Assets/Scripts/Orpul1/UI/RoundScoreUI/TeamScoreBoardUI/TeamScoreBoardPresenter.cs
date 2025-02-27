@@ -10,13 +10,13 @@ public class TeamScoreBoardPresenter : MonoBehaviour, ISetScoreable<ETeamScore>
     TeamScoreBoardModel model;
 
 
-    private void Start()
+    private void Awake()
     {
         model = new TeamScoreBoardModel(UpdateUI);
     }
     public void SetTitle(StringBuilder title)
     {
-        model.SetTeamTitle(title);
+        
     }
 
     public void SetScore(ETeamScore type, int score)

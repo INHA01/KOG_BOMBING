@@ -30,7 +30,7 @@ public class PlayerAttack : PlayerBehavior
         int playerIndex = (int)playerData.pv.Owner.CustomProperties["TeamIndex"];
         SetSupportWeapon((int)playerTeam);
         playerData.supportWeapon.SetTeam(playerTeam, playerIndex);
-        playerData.bomb.SetTeam(playerTeam);
+        playerData.bomb.SetTeam(playerTeam, playerIndex);
         InitSkill();
     }
     private void Update()

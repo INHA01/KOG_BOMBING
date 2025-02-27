@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using UnityEngine;
 
@@ -17,24 +19,44 @@ public enum EPointType
 public class PlayPointController
 {
     List<bool> attackPlayerIndexList;
-    List<string> playerNicknameList;
+    string[] playerNicknameList;
     List<string> assistPlayerList = new List<string>();
     int lastAttackPlayerIndex = -1;
     PlayerPointInfo playerPoint = new PlayerPointInfo();
-    ScoreUIUpdater scoreUIUpdater = new ScoreUIUpdater();
+    BattleBoardUpdater scoreUIUpdater;
 
     RaiseEventOptions options = new RaiseEventOptions();
+    IUpdateScore updateScore;
+
     public PlayPointController()
     {
-        Player[] players = PhotonNetwork.PlayerList;
-        attackPlayerIndexList = new List<bool>(players.Length) { false };
-        playerNicknameList = new List<string>(players.Length);
-        for(int i=0; i<players.Length; i++)
+        UIPopup _uiPopup = Managers.UI.GetPopupUI<UIPopup>("BattleBoardCanvas");
+        updateScore = _uiPopup.GetComponent<BattleBoardUpdater>();
+
+        ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+
+        int playerSize = 0;
+        if(currentTeam == ETeam.REDTEAM)
         {
-            int playerIndex = (int)players[i].CustomProperties["TeamIndex"];
-            playerNicknameList[playerIndex] = players[i].NickName;
+            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+        }
+        else
+        {
+            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
         }
 
+        attackPlayerIndexList = new List<bool>(playerSize) { false };
+        playerNicknameList = new string[playerSize];
+        
+        Player[] players = PhotonNetwork.PlayerList;
+        for(int i=0; i<players.Length; i++)
+        {
+            if ((ETeam)players[i].CustomProperties["Team"] == currentTeam) continue;
+            int playerIndex = (int)players[i].CustomProperties["TeamIndex"];
+            Debug.Log($"nickname {players[i].NickName}");
+            playerNicknameList[playerIndex] = players[i].NickName;
+        }
+        
         options.Receivers = ReceiverGroup.All;
     }
     public void Initialize()
@@ -44,15 +66,26 @@ public class PlayPointController
         {
             attackPlayerIndexList[i] = false;
         }
-        PhotonNetwork.NetworkingClient.EventReceived -= KillPointEvent;
-        PhotonNetwork.NetworkingClient.EventReceived -= AssistPointEvent;
-        PhotonNetwork.NetworkingClient.EventReceived += KillPointEvent;
-        PhotonNetwork.NetworkingClient.EventReceived += AssistPointEvent;
+        UnsubscribeEvent();
+        SubscribeEvent();
     }
     public void Disable()
     {
+        UnsubscribeEvent();
+    }
+    private void SubscribeEvent()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += KillPointEvent;
+        PhotonNetwork.NetworkingClient.EventReceived += DeathPointEvent;
+        PhotonNetwork.NetworkingClient.EventReceived += AssistPointEvent;
+        PhotonNetwork.NetworkingClient.EventReceived += MissionPointEvent;
+    }
+    private void UnsubscribeEvent()
+    {
         PhotonNetwork.NetworkingClient.EventReceived -= KillPointEvent;
+        PhotonNetwork.NetworkingClient.EventReceived -= DeathPointEvent;
         PhotonNetwork.NetworkingClient.EventReceived -= AssistPointEvent;
+        PhotonNetwork.NetworkingClient.EventReceived -= MissionPointEvent;
     }
     public void KillPointEvent(EventData punEvent)
     {
@@ -61,12 +94,14 @@ public class PlayPointController
             object[] customDatas = (object[])punEvent.CustomData;
             int killPlayerIndex = (int)customDatas[0];
             string killedPlayer = (string)customDatas[1];
+            Debug.Log($"On Event killEvent {killPlayerIndex} ,  {killedPlayer}");
             int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
             if(killPlayerIndex == currentPlayerIndex)
             {
                 playerPoint.SetKillPoint(playerPoint.KillPoint + 1);
             }
-            scoreUIUpdater.UpdatePlayerScore(new StringBuilder(playerNicknameList[killPlayerIndex]), EPlayerScore.KILLSCORE);
+
+            updateScore.UpdatePlayerScore(new StringBuilder(killedPlayer),EPlayerScore.KILLSCORE);
         }
     }
     public void AssistPointEvent(EventData punEvent)
@@ -79,10 +114,11 @@ public class PlayPointController
             {
                 playerPoint.SetAsistePoint(playerPoint.AsistPoint + 1);
             }
-            for(int i=0; i<assistPlayerList.Count; i++)
+            for (int i=0; i<assistPlayerList.Count; i++)
             {
+                Debug.Log($"OnAssist Event {assistPlayerList[i]}");
                 StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
-                scoreUIUpdater.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
+                updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
             }
         }
     }
@@ -91,43 +127,51 @@ public class PlayPointController
         if (punEvent.Code == (int)EPointType.DEATH) 
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
-            scoreUIUpdater.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
+            updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
         }
     }
     public void MissionPointEvent(EventData punEvent)
     {
-        if (punEvent.Code == (int)EPointType.DEATH)
+        if (punEvent.Code == (int)EPointType.MISSION)
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
-            scoreUIUpdater.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
+            updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);
         }
     }
     public void OnDeathPoint()
     {
-        PhotonNetwork.RaiseEvent((int)EPointType.KILL, PhotonNetwork.LocalPlayer.NickName, options, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent((int)EPointType.DEATH, PhotonNetwork.LocalPlayer.NickName, options, SendOptions.SendReliable);
         playerPoint.SetDeathPoint(playerPoint.DeathPoint + 1);
     }
     public void OnMissionPoint()
     {
-        PhotonNetwork.RaiseEvent((int)EPointType.KILL, PhotonNetwork.LocalPlayer.NickName, options, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent((int)EPointType.MISSION, PhotonNetwork.LocalPlayer.NickName, options, SendOptions.SendReliable);
         playerPoint.SetMissionPoint(playerPoint.MissionPoint + 1);
     }
     public void OnKillPoint()
     {
-        object[] killCustomDatas = new object[] { lastAttackPlayerIndex, PhotonNetwork.LocalPlayer.NickName };
+        object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] };
         PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어 당한 플레이어 정보
     }
     public void OnAssistPoint()
     {
         //보낼 값들 다시 확인
         attackPlayerIndexList[lastAttackPlayerIndex] = false;
-        assistPlayerList.RemoveAt(lastAttackPlayerIndex);
-
-        PhotonNetwork.RaiseEvent((int)EPointType.ASSIST, assistPlayerList, options, SendOptions.SendReliable); // 공격 기여한 플레이어들 정보
+        
+        if (assistPlayerList.Contains(playerNicknameList[lastAttackPlayerIndex]))
+            assistPlayerList.RemoveAt(lastAttackPlayerIndex);
+        if (assistPlayerList.Count != 0) 
+            PhotonNetwork.RaiseEvent((int)EPointType.ASSIST, assistPlayerList, options, SendOptions.SendReliable); // 공격 기여한 플레이어들 정보
     }
     public void SetAttackPlayer(int index)
     {
-        assistPlayerList.Add(playerNicknameList[index]);
+        Debug.Log($"AttackPlayer {playerNicknameList[index]} index{index}");
+        if (!assistPlayerList.Contains(playerNicknameList[index]))
+        {
+            Debug.Log($"Add AttackPlayer {index}");
+            assistPlayerList.Add(playerNicknameList[index].ToString());
+        }
+        
         lastAttackPlayerIndex = index;
     }
 }

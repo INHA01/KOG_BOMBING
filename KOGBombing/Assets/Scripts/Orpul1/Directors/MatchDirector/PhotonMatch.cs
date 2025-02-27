@@ -33,21 +33,9 @@ namespace Orpul1
         {
             Debug.Log("JoinRoom!");
             ETeam playerTeam = SetTeam();
-            int teamIndex = 0;
-            if (playerTeam == ETeam.REDTEAM)
-            {
-                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"] + 1;
-            }
-            else
-            {
-                teamIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"] + 1;
-            }
-
 
             Debug.Log($"SetTeam  {(ETeam)playerTeam}");
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "Team", playerTeam } });
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", teamIndex } });
-            Debug.Log($"Teamindex {teamIndex}");
         }
 
         public override void OnJoinedLobby()
@@ -97,12 +85,14 @@ namespace Orpul1
                 if(team== ETeam.REDTEAM)
                 {
                     players[i].SetCustomProperties(new PhotonHashTable { { "TeamIndex", redTeamIndex } });
+                    Debug.Log($"{players[i].NickName} index {redTeamIndex}");
                     redTeamIndex++;
 
                 }
                 else if(team == ETeam.BLUETEAM)
                 {
                     players[i].SetCustomProperties(new PhotonHashTable { { "TeamIndex", blueTeamIndex } });
+                    Debug.Log($"{players[i].NickName} index {blueTeamIndex}");
                     blueTeamIndex++;
                 }
             }
@@ -124,28 +114,11 @@ namespace Orpul1
                 return ETeam.REDTEAM;
             }
         }
-        private void SetPlayerIndex()
-        {
-            Player[] players = PhotonNetwork.PlayerList;
-            ETeam playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-            Debug.Log($"team : {playerTeam}");
-            int playerTeamIndex = 0;
-            for (int i = 0; i < players.Length; i++)
-            {
-                if (playerTeam != (ETeam)players[i].CustomProperties["Team"]) continue;
-                playerTeamIndex++;
-                if (PhotonNetwork.LocalPlayer == players[i]) break;
-            }
-
-            Debug.Log($"teamIndex {playerTeamIndex}");
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { "TeamIndex", playerTeamIndex } });
-        }
         protected virtual IEnumerator CoStartDelay()
         {
             float time = Time.time + delayTime;
             Debug.Log($"Prev Delay {Time.time}");
             while (Time.time < time) yield return null;
-            SetPlayerIndex();
             Debug.Log($"After delay {Time.time}");
             if(PhotonNetwork.IsMasterClient)
             {

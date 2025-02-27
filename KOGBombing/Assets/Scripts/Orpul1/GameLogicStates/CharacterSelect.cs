@@ -10,11 +10,21 @@ public class CharacterSelect : GameProcessLogic
 {
     UIPopup _uiScene;
     bool isSelectCharacter = false;
+    IHalfRoundUISetable halfRound;
+    ERoundState roundState;
     private void Start()
     {
+        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>("BattleBoardCanvas");
+        Managers.UI.ClosePopupUI("BattleBoardCanvas");
+        if (_uiPopup != null)
+        {
+            halfRound = _uiPopup.GetComponent<BattleBoardUpdater>();
+        }
+        roundState = ERoundState.FIRSTHALF;
     }
     public override void EnterState()
     {
+        halfRound.SetHalfRound(roundState);
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
         _uiScene.GetComponent<ChoosePlayer>().Init();
         EventBusSystem.Subscribe(EndSelectCharacter);
@@ -32,6 +42,7 @@ public class CharacterSelect : GameProcessLogic
 
     public override void ExitState()
     {
+        roundState = ERoundState.SECONDHALF;
         EventBusSystem.Unsubscribe(EndSelectCharacter);
     }
 

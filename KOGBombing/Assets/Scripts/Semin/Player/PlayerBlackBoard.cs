@@ -29,6 +29,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
     public bool canRespawn;
+    public bool isSetScore = false;
     [HideInInspector] public PlayerStatus playerStatus;
 }
 

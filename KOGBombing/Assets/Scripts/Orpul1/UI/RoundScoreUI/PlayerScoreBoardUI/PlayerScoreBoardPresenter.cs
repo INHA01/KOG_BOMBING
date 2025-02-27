@@ -8,7 +8,7 @@ public class PlayerScoreBoardPresenter : MonoBehaviour, ISetScoreable<EPlayerSco
     [SerializeField]
     PlayerScoreBoardView view;
     PlayerScoreBoardModel model;
-    private void Start()
+    private void Awake()
     {
         model = new PlayerScoreBoardModel(UpdateUI);
     }
@@ -24,7 +24,7 @@ public class PlayerScoreBoardPresenter : MonoBehaviour, ISetScoreable<EPlayerSco
 
     public void SetScore(EPlayerScore type, int score)
     {
-        model.SetScore(type, model.Score);
+        model.SetScore(type, model.Score + score);
     }
 
 }

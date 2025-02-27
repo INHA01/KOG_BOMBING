@@ -494,6 +494,7 @@ MonoBehaviour:
   shootStartPos: {fileID: 3328951802869612583}
   shootEndPos: {fileID: 1368636139714485546}
   canAttackPoint: {x: 0, y: 0, z: 0}
+  shootDirection: {x: 0, y: 0, z: 0}
   maxLength: 13
   mousePos: {x: 0, y: 0, z: 0}
   attackRangePrefab: {fileID: 4025673733828750908, guid: 4dd30b73c0991f64fbd56857a2ac5a4b,
@@ -505,6 +506,7 @@ MonoBehaviour:
   pv: {fileID: 2047044685979704218}
   rigidBody: {fileID: 1272812946582949491}
   timeWithoutDamage: 0
+  minimapIcon: {fileID: 1190640062829256390}
   playerObj: {fileID: 772106139481323054}
   playerLookObj: {fileID: 1368636139714485546}
   animator: {fileID: 7300479445460102179}
@@ -784,7 +786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8806536098679808430
 Transform:
   m_ObjectHideFlags: 0

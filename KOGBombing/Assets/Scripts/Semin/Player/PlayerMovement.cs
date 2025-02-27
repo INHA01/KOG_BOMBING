@@ -43,7 +43,6 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
             planePos.y += 1.22f;
             Plane GroupPlane = new Plane(Vector3.up, planePos);
             float rayLength;
-            Debug.DrawRay(cameraRay.origin, cameraRay.direction * 100, Color.red);
             if (GroupPlane.Raycast(cameraRay, out rayLength))
             {
                 Vector3 pointTolook = cameraRay.GetPoint(rayLength);

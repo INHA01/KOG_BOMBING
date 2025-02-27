@@ -25,6 +25,7 @@ public class PlayerData : MonoBehaviour
     [Header("Player Info")]
     public Rigidbody rigidBody;
 	public float timeWithoutDamage;
+    public GameObject minimapIcon;
 
     [Header("Model Anim")]
     [SerializeField] public GameObject playerObj;

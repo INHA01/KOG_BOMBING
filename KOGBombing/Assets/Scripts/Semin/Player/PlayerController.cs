@@ -26,12 +26,27 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     
     bool isInitComplete = false;
     void Awake()
-	{
+    {
         isInitComplete = false;
         InitPlayerData();
+        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
 
         if (playerData.pv.IsMine)
+        {
+            playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.green;
             playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == team)
+            {
+                playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+            else
+            {
+                playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }
     }
 
 	private void Start()

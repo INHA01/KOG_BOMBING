@@ -30,6 +30,7 @@ public class PlayerAttack : PlayerBehavior
         int playerIndex = (int)playerData.pv.Owner.CustomProperties["TeamIndex"];
         SetSupportWeapon((int)playerTeam);
         playerData.supportWeapon.SetTeam(playerTeam, playerIndex);
+        playerData.bomb.SetTeam(playerTeam);
         InitSkill();
     }
     private void Update()
@@ -133,7 +134,7 @@ public class PlayerAttack : PlayerBehavior
                 }
                 else
                 {
-                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Áß°£¿¡ Ãë¼Ò
+                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 					{
 						blackBoard.bombUI.ActiveInteract(false);
 						isChangableAnim = true;
@@ -173,7 +174,6 @@ public class PlayerAttack : PlayerBehavior
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
             {
                 Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
 				for (int i = 0; i < colliders.Length; i++)
                 {
                     if (
@@ -192,17 +192,17 @@ public class PlayerAttack : PlayerBehavior
                         {
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
-                        }
+						}
+                        playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                         blackBoard.bombUI.ActiveInteract(true);
                         bombInteractTime = 0;
                         blackBoard.playerStatus.isBombInteract = true;
                         blackBoard.playerStatus.isBombDefuse = false;
                         return INode.ENodeState.Running;
                     }
-					else
-						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 				}
-            }
+				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+			}
 
         }
         return INode.ENodeState.Fail;
@@ -260,7 +260,7 @@ public class PlayerAttack : PlayerBehavior
             if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
                 //playerData.consumTargetPos = hit.point;
-                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.22f, 0), hit.point,
                     playerData.playerObj.transform.eulerAngles.y));
             }
 
@@ -303,7 +303,7 @@ public class PlayerAttack : PlayerBehavior
 
         if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
         {
-            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.22f, 0), hit.point,
                 playerData.playerObj.transform.eulerAngles.y));
         }
 
@@ -380,7 +380,7 @@ public class PlayerAttack : PlayerBehavior
             //playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, true);
             if (playerData.bomb is SupportWeaponBase baseWeapon)
             {
-                // °ø°ÝÆÀÀÎ °æ¿ì ÆøÅºÀåÂø, ¼öºñÆÀ¿¡ °æ¿ì ÇØÁ¦ÀÌ¹Ç·Î ¸Ç¼Õ
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹Ç·ï¿½ ï¿½Ç¼ï¿½
                 if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
                     weaponType = WeaponType.BOMB;
                 else

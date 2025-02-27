@@ -7,6 +7,7 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using UnityEngine.Rendering.UI;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -140,6 +141,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void Damage(float damage)
 	{
+        if (blackBoard.playerStatus.invincibility) return; // ���� �� Damage �� ����
+
 		float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
 		playerMaterialController.Hit();
@@ -205,27 +208,28 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     IEnumerator Groggy()
     {
-        groggyTime = 0;
+        blackBoard.playerStatus.invincibility = true;
+        yield return new WaitForSeconds(2f);
+		blackBoard.playerStatus.invincibility = false;
+		groggyTime = 0;
         int time = 1;
-        while (groggyTime <= 15f)
+        while (blackBoard.playerStatus.groggyValue > 0)
         {
             if (!blackBoard.playerStatus.isGroggy) break;
+            if (playerData.IsGroggyInteracting) yield return null;
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
-                time++;
-                blackBoard.playerStatus.groggyValue -= blackBoard.playerStatus.maxGroggy / 10;
+                blackBoard.playerStatus.groggyValue -= blackBoard.playerStatus.maxGroggy / 50;
                 blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
-            }
-            if (blackBoard.playerStatus.groggyValue <= 0)
-            {
-                Death();
-				blackBoard.hpBar.SetGroggyValue(0);
-				yield break;
-            }
+				groggyTime = 0;
+			}
             yield return null;
-        }
-    }
+		}
+		Death();
+		blackBoard.hpBar.SetGroggyValue(0);
+		yield break;
+	}
 
     private void SetActiveState(bool isDie)
     {

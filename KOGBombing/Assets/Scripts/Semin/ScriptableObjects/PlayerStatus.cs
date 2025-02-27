@@ -29,8 +29,9 @@ namespace Semin
         public bool groggyable;
         public bool isBombInteract;
         public bool isBombDefuse;
+        public bool invincibility;
 
-        public CharacterType CharacterType { get { return type; } }
+		public CharacterType CharacterType { get { return type; } }
 	}
 
 }

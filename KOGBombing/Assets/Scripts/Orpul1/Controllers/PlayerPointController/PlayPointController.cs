@@ -23,7 +23,7 @@ public class PlayPointController
     PlayerPointInfo playerPoint = new PlayerPointInfo();
     ScoreUIUpdater scoreUIUpdater = new ScoreUIUpdater();
 
-    RaiseEventOptions options;
+    RaiseEventOptions options = new RaiseEventOptions();
     public PlayPointController()
     {
         Player[] players = PhotonNetwork.PlayerList;

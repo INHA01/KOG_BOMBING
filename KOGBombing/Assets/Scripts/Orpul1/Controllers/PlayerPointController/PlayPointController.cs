@@ -69,6 +69,7 @@ public class PlayPointController
         {
             attackPlayerIndexList[i] = false;
         }
+        assistPlayerList.Clear();
         UnsubscribeEvent();
         SubscribeEvent();
     }
@@ -113,14 +114,14 @@ public class PlayPointController
         if (!pv.IsMine) return;
         if (punEvent.Code == (int)EPointType.ASSIST)
         {
-            List<string> assistPlayerList = (List<string>)punEvent.CustomData;
-            int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
-            if (assistPlayerList[currentPlayerIndex] == PhotonNetwork.LocalPlayer.NickName)
+            string[] assistPlayerList = (string[])punEvent.CustomData;
+            
+            for (int i=0; i<assistPlayerList.Length; i++)
             {
-                playerPoint.SetAsistePoint(playerPoint.AsistPoint + 1);
-            }
-            for (int i=0; i<assistPlayerList.Count; i++)
-            {
+                if (assistPlayerList[i] == PhotonNetwork.LocalPlayer.NickName)
+                {
+                    playerPoint.SetAsistePoint(playerPoint.AsistPoint + 1);
+                }
                 Debug.Log($"OnAssist Event {assistPlayerList[i]}");
                 StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
                 updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
@@ -167,16 +168,19 @@ public class PlayPointController
     public void OnAssistPoint()
     {
         //보낼 값들 다시 확인
-        attackPlayerIndexList[lastAttackPlayerIndex] = false;
+        //attackPlayerIndexList[lastAttackPlayerIndex] = false;
         
         if (assistPlayerList.Contains(playerNicknameList[lastAttackPlayerIndex]))
-            assistPlayerList.RemoveAt(lastAttackPlayerIndex);
+            assistPlayerList.Remove(playerNicknameList[lastAttackPlayerIndex]);
         if (assistPlayerList.Count != 0) 
-            PhotonNetwork.RaiseEvent((int)EPointType.ASSIST, assistPlayerList, options, SendOptions.SendReliable); // 공격 기여한 플레이어들 정보
+            PhotonNetwork.RaiseEvent((int)EPointType.ASSIST, assistPlayerList.ToArray(), options, SendOptions.SendReliable); // 공격 기여한 플레이어들 정보
     }
     public void SetAttackPlayer(int index)
     {
-        Debug.Log($"AttackPlayer {playerNicknameList[index]} index{index}");
+        if (index == -1) return;
+
+        Debug.Log($"attackPlayerindex{index}");
+        Debug.Log($"AttackPlayer {playerNicknameList[index]}");
         if (!assistPlayerList.Contains(playerNicknameList[index]))
         {
             Debug.Log($"Add AttackPlayer {index}");

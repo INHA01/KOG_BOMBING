@@ -106,8 +106,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	public void OnDamaged(float damage, int playerIndex)
     {
         Debug.Log($"OnDamged index {playerIndex}");
-        playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage);
-        playerPointController.SetAttackPlayer(playerIndex);
+        playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage,playerIndex);
 
         if (playerData.pv.IsMine)
         {
@@ -157,6 +156,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 playerPointController.OnKillPoint();
                 playerPointController.OnDeathPoint();
                 playerPointController.OnAssistPoint();
+                playerPointController.Initialize();
                 blackBoard.isSetScore = true;
                 return INode.ENodeState.Success;
             }
@@ -172,12 +172,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         return false;
     }
     [PunRPC]
-    private void Damage(float damage)
+    private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
 		if (playerData.isGroggyInteracting) return;
+        if(playerData.pv.IsMine)
+            playerPointController.SetAttackPlayer(playerIndex);
 
-		float decreaseHp = blackBoard.playerStatus.defence - damage;
+        float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
 		playerMaterialController.Hit();
 		if (decreaseHp < 0)
@@ -254,7 +256,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
-                Damage(blackBoard.playerStatus.maxGroggy / 10);
+                Damage(blackBoard.playerStatus.maxGroggy / 10, -1);
 				groggyTime = 0;
 			}
             yield return null;

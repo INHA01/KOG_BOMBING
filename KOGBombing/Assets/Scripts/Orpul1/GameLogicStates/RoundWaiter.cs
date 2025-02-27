@@ -5,6 +5,7 @@ using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -66,6 +67,8 @@ namespace Orpul1
         void DoCountDown()
         {
             time += Time.deltaTime;
+            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().timer;
+            timeTMP.text = string.Format("{0:00}:{1:00}", (int)(gamestartInterval - time) / 60, (int)(gamestartInterval - time) % 60);
             if (time > gamestartInterval)
             {
                 Debug.Log($"Round Start");

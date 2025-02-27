@@ -160,6 +160,7 @@ public class PlayPointController
     }
     public void OnKillPoint()
     {
+        if (lastAttackPlayerIndex == -1) return;
         object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] };
         PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어 당한 플레이어 정보
     }
@@ -181,7 +182,6 @@ public class PlayPointController
             Debug.Log($"Add AttackPlayer {index}");
             assistPlayerList.Add(playerNicknameList[index].ToString());
         }
-        
         lastAttackPlayerIndex = index;
     }
 }

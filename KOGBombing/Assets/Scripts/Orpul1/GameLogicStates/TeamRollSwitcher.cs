@@ -20,6 +20,7 @@ namespace Orpul1
         }
         public override void UpdateState()
         {
+            transitionState((int)EGameState.GAMEEND);
             time += Time.deltaTime;
             if (time > waitRoundInterval)
             {

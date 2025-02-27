@@ -27,7 +27,7 @@ public enum ResultTeam
 public class ResultPlayer : MonoBehaviour
 {
     [SerializeField] GameObject[] players = new GameObject[2];
-    [SerializeField] TextMeshProUGUI[] texts = new TextMeshProUGUI[4];
+    public TextMeshProUGUI[] texts = new TextMeshProUGUI[4];
     [SerializeField] GameObject[] resultTeam = new GameObject[2];
     public ResultPlayerType playerType;
     public ResultTeam team;
@@ -35,7 +35,6 @@ public class ResultPlayer : MonoBehaviour
     {
         for(int i = 0; i < (int)ResultText.Max; i++)
         {
-            texts[i].text = "0";
             if(i == (int)playerType)
                 players[i].SetActive(true);
             if(i == (int)team)

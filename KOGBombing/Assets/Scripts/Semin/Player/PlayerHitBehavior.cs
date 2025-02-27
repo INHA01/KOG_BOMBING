@@ -25,10 +25,18 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
         //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
+        if (playerData.pv.IsMine)
+			playerMaterialController.SetLayerToMyPlayer();
+
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
             SetOtherTeamInfo();
-        else blackBoard.hpBar.SetIsMyTeam(true);
-        blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
+        else
+        {
+            blackBoard.hpBar.SetIsMyTeam(true);
+			playerMaterialController.SetLayerToMyPlayer();
+		}
+
+		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;

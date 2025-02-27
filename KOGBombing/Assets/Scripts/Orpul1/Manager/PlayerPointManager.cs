@@ -21,5 +21,29 @@ namespace Orpul1
         {
             return dicPlayers[key];
         }
+        public void AddPoint(string key, EPointType type)
+        {
+            int score = 0;
+            switch (type)
+            {
+                case EPointType.KILL:
+                    score = dicPlayers[key].KillPoint;
+                    dicPlayers[key].SetKillPoint(score + 1);
+                    break;
+                case EPointType.DEATH:
+                    score = dicPlayers[key].DeathPoint;
+                    dicPlayers[key].SetKillPoint(score + 1);
+                    break;
+                case EPointType.ASSIST:
+                    score = dicPlayers[key].AsistPoint;
+                    dicPlayers[key].SetKillPoint(score + 1);
+                    break;
+                case EPointType.MISSION:
+                    score = dicPlayers[key].MissionPoint;
+                    dicPlayers[key].SetKillPoint(score + 1);
+                    break;
+            }
+        }
+
     }
 }

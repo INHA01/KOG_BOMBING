@@ -52,6 +52,8 @@ public class PlayPointController
         Player[] players = PhotonNetwork.PlayerList;
         for(int i=0; i<players.Length; i++)
         {
+            Managers.PointData.AddPlayerInfo(players[i].NickName, new PlayerPointInfo());
+
             if ((ETeam)players[i].CustomProperties["Team"] == currentTeam) continue;
             int playerIndex = (int)players[i].CustomProperties["TeamIndex"];
             Debug.Log($"nickname {players[i].NickName}");
@@ -95,15 +97,15 @@ public class PlayPointController
         {
             object[] customDatas = (object[])punEvent.CustomData;
             int killPlayerIndex = (int)customDatas[0];
-            string killedPlayer = (string)customDatas[1];
-            Debug.Log($"On Event killEvent {killPlayerIndex} ,  {killedPlayer}");
+            string attackPlayer = (string)customDatas[1];
+            Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
             int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
             if(killPlayerIndex == currentPlayerIndex)
             {
                 playerPoint.SetKillPoint(playerPoint.KillPoint + 1);
             }
-
-            updateScore.UpdatePlayerScore(new StringBuilder(killedPlayer),EPlayerScore.KILLSCORE);
+            Managers.PointData.AddPlayerInfo(attackPlayer, new PlayerPointInfo());
+            updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer),EPlayerScore.KILLSCORE);
         }
     }
     public void AssistPointEvent(EventData punEvent)
@@ -122,6 +124,7 @@ public class PlayPointController
                 Debug.Log($"OnAssist Event {assistPlayerList[i]}");
                 StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
                 updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
+                Managers.PointData.AddPlayerInfo(targetPlayer.ToString(), new PlayerPointInfo());
             }
         }
     }
@@ -132,6 +135,8 @@ public class PlayPointController
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
             updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
+            Managers.PointData.AddPlayerInfo(targetPlayer.ToString(), new PlayerPointInfo());
+
         }
     }
     public void MissionPointEvent(EventData punEvent)

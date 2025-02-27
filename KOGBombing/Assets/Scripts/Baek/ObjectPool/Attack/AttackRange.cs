@@ -43,12 +43,20 @@ public class AttackRange
     {
         if (!playerData.pv.IsMine) return;
         Vector3 direction = playerData.mousePos - playerData.shootStartPos.position;
+        if (
+            (playerData.playerObj.transform.position - playerData.shootStartPos.position).magnitude
+            >
+            (playerData.playerObj.transform.position - playerData.mousePos).magnitude
+            )
+        {
+            direction = playerData.shootStartPos.position - playerData.mousePos;
+        }
         float mousePosLength = direction.magnitude;
+
         float attackRangeLength = mousePosLength;
 
         bool rayHit = false;
         Ray shootRay = new Ray(playerData.shootStartPos.position, direction);
-        Debug.DrawRay(shootRay.origin, shootRay.direction * playerData.maxLength,Color.green);
         Vector3 hitPoint = Vector3.zero;
         RaycastHit[] hits = Physics.RaycastAll(shootRay, playerData.maxLength);
         for (int i = 0; i < hits.Length; i++)
@@ -73,13 +81,14 @@ public class AttackRange
         else
             noAttackRange.SetActive(false);
 
-        Vector3 canAttackPoint = playerData.shootStartPos.position + direction.normalized * attackRangeLength;
-        canAttackPoint.y -= 0.8f;
 
         Vector3 startPos = playerData.shootStartPos.position;
         startPos.y -= 0.8f;
 
+        Vector3 canAttackPoint = startPos + direction.normalized * attackRangeLength;
+
         playerData.canAttackPoint = canAttackPoint;
+        playerData.shootDirection = direction.normalized;
         SetPoint(lineRenderer1, startPos, canAttackPoint);
         Vector3 canNotAttackPoint = new Vector3(playerData.mousePos.x, canAttackPoint.y, playerData.mousePos.z);
         SetPoint(lineRenderer2, canAttackPoint, canNotAttackPoint);

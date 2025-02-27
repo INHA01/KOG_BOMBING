@@ -13,10 +13,11 @@ public class BulletController : PooledObject
    [SerializeField] protected Rigidbody rb;
     protected float destroyDistance;
     protected float distance;
+    public Vector3 direction;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     protected virtual void FixedUpdate()
     {
-        rb.velocity = transform.forward * moveSpeed;
+        rb.velocity = direction * moveSpeed;
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {

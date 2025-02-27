@@ -15,7 +15,6 @@ public class Bomb : AttackConsum
         // 폭탄 설치 모든 플레이어들에게 Notify
         NotifySet();
     }
-    [PunRPC]
     void NotifySet()
     {
         if (_uiScene == null)

@@ -16,8 +16,8 @@ public class PlayScene : MonoBehaviour
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
     // ResourceManager 사용할지 고민 중
-    [SerializeField] Sprite[] blueScoreImages;
-    [SerializeField] Sprite[] redScoreImages;
+    Sprite[] blueScoreImages = new Sprite[10];
+    Sprite[] redScoreImages = new Sprite[10];
     [SerializeField] Image blueScoreIcon;
     [SerializeField] Image redScoreIcon;
     [Header("Map")]
@@ -29,7 +29,27 @@ public class PlayScene : MonoBehaviour
     [SerializeField] public GameObject[] subWeaponFades = new GameObject[2];
 
     [SerializeField] float sensitivity = 100f;
-
+    void Start()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            blueScoreImages[i] = Resources.Load<Sprite>($"UISettings/Play/Play_UI_Score/Number/T_GUI_Bg_Exit_Number_"+i.ToString()+"_Blue");
+            redScoreImages[i] = Resources.Load<Sprite>($"UISettings/Play/Play_UI_Score/Number/T_GUI_Bg_Exit_Number_" + i.ToString() + "_Red");
+        }
+        blueScoreIcon.sprite = blueScoreImages[0];
+        redScoreIcon.sprite = redScoreImages[0];
+    }
+    void OnDisable()
+    {
+        for (int i = 0; i < subWeaponFades.Length; i++)
+        {
+            subWeaponFades[i].SetActive(false);
+        }
+        maps[0].SetActive(true);
+        maps[1].SetActive(false);
+        blueScoreIcon.sprite = blueScoreImages[0];
+        redScoreIcon.sprite = redScoreImages[0];
+    }
     void FixedUpdate()
     {
         magazineCount.text = weapon.MagazineCount + "/4";
@@ -50,20 +70,12 @@ public class PlayScene : MonoBehaviour
         }
         dicTeamProfile.Clear();
     }
-    public void ChangeRound()
-    {
-        for(int i=0; i < subWeaponFades.Length; i++)
-        {
-            subWeaponFades[i].SetActive(false);
-        }
-        maps[0].SetActive(true);
-        maps[1].SetActive(false);
-    }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
+        go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();
         profile.Init(blackBoard);
         dicTeamProfile.Add(blackBoard.nickname, profile);

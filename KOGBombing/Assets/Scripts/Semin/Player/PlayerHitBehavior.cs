@@ -213,7 +213,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         yield return new WaitForSeconds(2f);
 		blackBoard.playerStatus.invincibility = false;
 		groggyTime = 0;
-        float time = 0.2f;
+        float time = 1f;
         while (blackBoard.playerStatus.groggyValue > 0)
 		{
 			if (!blackBoard.playerStatus.isGroggy) break;
@@ -221,7 +221,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
-                Damage(blackBoard.playerStatus.maxGroggy / 50);
+                Damage(blackBoard.playerStatus.maxGroggy / 10);
 				groggyTime = 0;
 			}
             yield return null;

@@ -47,7 +47,7 @@ public class PlayeRescue : InteractObject
     [PunRPC]
     private void RPCSetIsGroggyInteracting(bool isInteracting)
 	{
-		playerData.IsGroggyInteracting = isInteracting;
+		playerData.isGroggyInteracting = isInteracting;
 	}
 
     public override bool ProcessInteract(PhotonView pView)

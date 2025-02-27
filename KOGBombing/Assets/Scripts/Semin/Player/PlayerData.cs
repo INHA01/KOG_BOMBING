@@ -44,7 +44,8 @@ public class PlayerData : MonoBehaviour
     [SerializeField] public Transform ConsumPos;
 
     [Header("Interact")]
-    public bool IsGroggyInteracting = false;
+    public bool isInteract = false;
+    public bool isGroggyInteracting = false;
 
     [Header("Skill")]
     [SerializeField] public ISkill skill;

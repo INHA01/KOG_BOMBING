@@ -142,7 +142,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Damage(float damage)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
-		if (playerData.IsGroggyInteracting) return;
+		if (playerData.isGroggyInteracting) return;
 
 		float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
@@ -217,7 +217,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         while (blackBoard.playerStatus.groggyValue > 0)
 		{
 			if (!blackBoard.playerStatus.isGroggy) break;
-            if (playerData.IsGroggyInteracting) yield return null;
+            if (playerData.isGroggyInteracting) yield return null;
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {

@@ -52,10 +52,10 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 
     public INode.ENodeState ProcessInteractNode()
     {
-        Debug.Log("Process Interact");
-        isInteracting = true;
+		isInteracting = true;
         bool isSuccess = iInteractObj.ProcessInteract(playerData.pv);
-        if(!isSuccess) return INode.ENodeState.Fail;
+		playerData.isInteract = true;
+		if (!isSuccess) return INode.ENodeState.Fail;
 
         return INode.ENodeState.Success;
 
@@ -68,7 +68,8 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         isInteracting = false;
         iInteractObj = null;
         blackBoard.inputs[EKey.F] = false;
-        return INode.ENodeState.Success;
+		playerData.isInteract = false;
+		return INode.ENodeState.Success;
     }
 
 	/*

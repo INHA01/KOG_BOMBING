@@ -105,8 +105,7 @@ public class PlayPointController
             {
                 playerPoint.SetKillPoint(playerPoint.KillPoint + 1);
             }
-            Managers.PointData.AddPlayerInfo(attackPlayer, new PlayerPointInfo());
-            updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer),EPlayerScore.KILLSCORE);
+            Managers.PointData.AddPoint(attackPlayer.ToString(), EPointType.KILL);
         }
     }
     public void AssistPointEvent(EventData punEvent)
@@ -125,7 +124,7 @@ public class PlayPointController
                 Debug.Log($"OnAssist Event {assistPlayerList[i]}");
                 StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
                 updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
-                Managers.PointData.AddPlayerInfo(targetPlayer.ToString(), new PlayerPointInfo());
+                Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.ASSIST);
             }
         }
     }
@@ -136,8 +135,7 @@ public class PlayPointController
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
             updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
-            Managers.PointData.AddPlayerInfo(targetPlayer.ToString(), new PlayerPointInfo());
-
+            Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.DEATH);
         }
     }
     public void MissionPointEvent(EventData punEvent)
@@ -147,6 +145,7 @@ public class PlayPointController
         {
             StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
             updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);
+            Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.MISSION);
         }
     }
     public void OnDeathPoint()

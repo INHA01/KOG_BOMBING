@@ -106,17 +106,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactUI: {fileID: 5912446062715464259}
   showOutlineObj: {fileID: 5167987260642423818}
-  interactLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  defualtLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  interactCollider: {fileID: 950755228203417475}
+  interactLayer: 10
+  defualtLayer: 0
   interactTime: 0
   pView: {fileID: 5025844350980101262}
   otherDoor: {fileID: 0}
   animator: {fileID: 6289052687641937776}
-  interactCollider: {fileID: 950755228203417475}
 --- !u!114 &5025844350980101262
 MonoBehaviour:
   m_ObjectHideFlags: 0

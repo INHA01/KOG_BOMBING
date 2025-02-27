@@ -22,7 +22,9 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     private void Start()
     {
         interactTime = 3;
+        openOtherDoor -= otherDoor.OpenDoor;
         openOtherDoor += otherDoor.OpenDoor;
+        
     }
     private void OnEnable()
     {

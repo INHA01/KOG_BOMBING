@@ -32,15 +32,15 @@ namespace Orpul1
                     break;
                 case EPointType.DEATH:
                     score = dicPlayers[key].DeathPoint;
-                    dicPlayers[key].SetKillPoint(score + 1);
+                    dicPlayers[key].SetDeathPoint(score + 1);
                     break;
                 case EPointType.ASSIST:
                     score = dicPlayers[key].AsistPoint;
-                    dicPlayers[key].SetKillPoint(score + 1);
+                    dicPlayers[key].SetAsistePoint(score + 1);
                     break;
                 case EPointType.MISSION:
                     score = dicPlayers[key].MissionPoint;
-                    dicPlayers[key].SetKillPoint(score + 1);
+                    dicPlayers[key].SetMissionPoint(score + 1);
                     break;
             }
         }

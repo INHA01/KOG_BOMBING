@@ -101,11 +101,8 @@ public class PlayPointController
             string attackPlayer = (string)customDatas[1];
             Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
             int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
-            if(killPlayerIndex == currentPlayerIndex)
-            {
-                playerPoint.SetKillPoint(playerPoint.KillPoint + 1);
-            }
-            Managers.PointData.AddPoint(attackPlayer.ToString(), EPointType.KILL);
+            updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
+            Managers.PointData.AddPoint(attackPlayer, EPointType.KILL);
         }
     }
     public void AssistPointEvent(EventData punEvent)
@@ -117,10 +114,6 @@ public class PlayPointController
             
             for (int i=0; i<assistPlayerList.Length; i++)
             {
-                if (assistPlayerList[i] == PhotonNetwork.LocalPlayer.NickName)
-                {
-                    playerPoint.SetAsistePoint(playerPoint.AsistPoint + 1);
-                }
                 Debug.Log($"OnAssist Event {assistPlayerList[i]}");
                 StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
                 updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
@@ -151,12 +144,10 @@ public class PlayPointController
     public void OnDeathPoint()
     {
         PhotonNetwork.RaiseEvent((int)EPointType.DEATH, PhotonNetwork.LocalPlayer.NickName, options, SendOptions.SendReliable);
-        playerPoint.SetDeathPoint(playerPoint.DeathPoint + 1);
     }
     public void OnMissionPoint()
     {
         PhotonNetwork.RaiseEvent((int)EPointType.MISSION, PhotonNetwork.LocalPlayer.NickName, options, SendOptions.SendReliable);
-        playerPoint.SetMissionPoint(playerPoint.MissionPoint + 1);
     }
     public void OnKillPoint()
     {

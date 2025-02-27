@@ -15,9 +15,9 @@ public abstract class InteractObject : Subject, IInteractAble
     protected Collider interactCollider;
 
     [SerializeField]
-    LayerMask interactLayer;
+    protected int interactLayer;
     [SerializeField]
-    LayerMask defualtLayer;
+    protected int defualtLayer;
     [SerializeField]
     protected float interactTime = 0;
 

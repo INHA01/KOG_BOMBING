@@ -259,7 +259,7 @@ public class PlayerAttack : PlayerBehavior
             if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
                 //playerData.consumTargetPos = hit.point;
-                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.22f, 0), hit.point,
                     playerData.playerObj.transform.eulerAngles.y));
             }
 
@@ -302,7 +302,7 @@ public class PlayerAttack : PlayerBehavior
 
         if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
         {
-            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.6f, 0), hit.point,
+            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.22f, 0), hit.point,
                 playerData.playerObj.transform.eulerAngles.y));
         }
 

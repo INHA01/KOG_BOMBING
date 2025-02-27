@@ -85,7 +85,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		while (time < 1.5f)
 		{
 			time += Time.deltaTime;
-			movement = playerData.animator.transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedDebuffPercent * 1.6f;
+			movement = playerData.animator.transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedDebuffPercent * 1.22f;
 			movement.y = blackBoard.rigidBody.velocity.y;
             blackBoard.rigidBody.velocity = movement;
 			if (Vector3.Distance(playerData.animator.transform.position, position) < 1f)

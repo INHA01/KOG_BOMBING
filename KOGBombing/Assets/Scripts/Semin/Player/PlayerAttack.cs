@@ -136,6 +136,7 @@ public class PlayerAttack : PlayerBehavior
                     if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // 중간에 취소
 					{
 						blackBoard.bombUI.ActiveInteract(false);
+						playerData.isInteract = false;
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
@@ -160,6 +161,7 @@ public class PlayerAttack : PlayerBehavior
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+						playerData.isInteract = false;
 						//playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
 						return INode.ENodeState.Success;
 					}
@@ -193,6 +195,7 @@ public class PlayerAttack : PlayerBehavior
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
 						}
                         playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
+                        playerData.isInteract = true;
                         blackBoard.bombUI.ActiveInteract(true);
                         bombInteractTime = 0;
                         blackBoard.playerStatus.isBombInteract = true;

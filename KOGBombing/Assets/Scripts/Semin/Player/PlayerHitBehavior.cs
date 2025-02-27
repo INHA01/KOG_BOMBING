@@ -25,10 +25,18 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
         //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
+        if (playerData.pv.IsMine)
+			playerMaterialController.SetLayerToMyPlayer();
+
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
             SetOtherTeamInfo();
-        else blackBoard.hpBar.SetIsMyTeam(true);
-        blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
+        else
+        {
+            blackBoard.hpBar.SetIsMyTeam(true);
+			playerMaterialController.SetLayerToMyPlayer();
+		}
+
+		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
@@ -39,6 +47,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	private void ChangeWeaponHit(int type)
 	{
 		ChangeWeapon(type);
+	}
+
+    public void SetInvincibility(bool isInvincibility)
+    {
+        blackBoard.playerStatus.invincibility = isInvincibility;
 	}
 
 	void SetOtherTeamInfo()
@@ -136,7 +149,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void Damage(float damage)
 	{
-        if (blackBoard.playerStatus.invincibility) return; // 무적 시 Damage 안 받음
+		if (blackBoard.playerStatus.invincibility) return;
+		if (playerData.isGroggyInteracting) return;
 
 		float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
@@ -149,6 +163,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 blackBoard.playerStatus.groggyValue += decreaseGroggy;
         }
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
+		blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
 		playerData.timeWithoutDamage = 0;
 
         if (blackBoard.playerStatus.hp <= 0)
@@ -163,6 +178,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
 				//ChangeWeapon(WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
+				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				groggyCoroutine = StartCoroutine(Groggy());
 			}
             else if (blackBoard.playerStatus.groggyValue <= 0)
@@ -205,23 +221,19 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         yield return new WaitForSeconds(2f);
 		blackBoard.playerStatus.invincibility = false;
 		groggyTime = 0;
-        int time = 1;
+        float time = 1f;
         while (blackBoard.playerStatus.groggyValue > 0)
-        {
-            if (!blackBoard.playerStatus.isGroggy) break;
-            if (playerData.IsGroggyInteracting) yield return null;
+		{
+			if (!blackBoard.playerStatus.isGroggy) break;
+            if (playerData.isGroggyInteracting) yield return null;
             groggyTime += Time.deltaTime;
             if (groggyTime >= time)
             {
-                blackBoard.playerStatus.groggyValue -= blackBoard.playerStatus.maxGroggy / 50;
-                blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
+                Damage(blackBoard.playerStatus.maxGroggy / 10);
 				groggyTime = 0;
 			}
             yield return null;
 		}
-		Death();
-		blackBoard.hpBar.SetGroggyValue(0);
-		yield break;
 	}
 
     private void SetActiveState(bool isDie)

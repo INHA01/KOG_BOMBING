@@ -18,6 +18,7 @@ public class PlayerCamera : ViewObserver
 	public float CameraSpeed = 10.0f;
 	Vector3 TargetPos;
 	Coroutine shake;
+    PlayerData playerData;
 
     [SerializeField] float sensitivity = 300.0f;
 	[SerializeField] Quaternion initRotation = Quaternion.Euler(55f, 45f, 0);
@@ -28,6 +29,7 @@ public class PlayerCamera : ViewObserver
 		{
 			target = GameObject.FindWithTag("Player");
         }
+        playerData = target.GetComponent<PlayerData>();
         TargetPos = new Vector3(
                     target.transform.position.x + offsetX + shakeX,
                     target.transform.position.y + offsetY + shakeY,
@@ -41,7 +43,8 @@ public class PlayerCamera : ViewObserver
 	{
 		if(Input.GetMouseButton(1))
 		{
-			TargetRotation();
+			if (!playerData.isInteract)
+			    TargetRotation();
 		}
     }
     protected override void SetPlayerSight(int isZoom)

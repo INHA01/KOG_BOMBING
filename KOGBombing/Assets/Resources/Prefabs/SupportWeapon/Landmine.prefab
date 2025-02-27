@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5966966566835099253}
   m_Layer: 0
   m_Name: Landmine
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,6 +57,7 @@ MonoBehaviour:
   rigidityTime: 3
   damage: 30
   activeTime: 60
+  hp: 400
   decal: {fileID: 6320281090802026223}
 --- !u!135 &4850578772142234696
 SphereCollider:
@@ -534,8 +535,58 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f8802bcb684d9f24b896dd0c2adb8965,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1914929768166636368}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f8802bcb684d9f24b896dd0c2adb8965,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4566813544612570073}
   m_SourcePrefab: {fileID: 100100000, guid: f8802bcb684d9f24b896dd0c2adb8965, type: 3}
+--- !u!1 &6147197777121545652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f8802bcb684d9f24b896dd0c2adb8965,
+    type: 3}
+  m_PrefabInstance: {fileID: 6453185609055580389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1914929768166636368
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147197777121545652}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 1.98
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.77, z: -0.02179885}
+--- !u!114 &4566813544612570073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147197777121545652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c8de7d5458ea941adb1fe6349d29d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  landmine: {fileID: 9143231483034674756}
 --- !u!4 &6774798552185362190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f8802bcb684d9f24b896dd0c2adb8965,

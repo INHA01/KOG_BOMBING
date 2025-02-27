@@ -15,6 +15,8 @@ public class BulletController : PooledObject
     protected float distance;
     public Vector3 direction;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
+    public float Damage { get { return damage; } }
+
     protected virtual void FixedUpdate()
     {
         rb.velocity = direction * moveSpeed;
@@ -34,8 +36,14 @@ public class BulletController : PooledObject
         return true;
     }
     protected virtual void OnTriggerEnter(Collider other)
-    {
-        if(other.tag != "Bullet")
+	{
+		if (other.CompareTag("IgnoreBullet"))
+		{
+            if (other.GetComponent<Landmine>() != null) return;
+		}
+        if (other.CompareTag("Bomb")) return;
+
+		if (other.tag != "Bullet")
         {
             if (other.tag == "Player")
             {

@@ -31,6 +31,12 @@ public class PlayerMaterialController : MonoBehaviour
 		}
 	}
 
+	public void SetLayerToMyPlayer()
+	{
+		for (int i = 0; i < changeMaterialMeshs.Count; i++)
+			changeMaterialMeshs[i].layer = LayerMask.NameToLayer("MyPlayer");
+	}
+
 	public void SetMaterialToHide()
 	{
 		int index = 0;

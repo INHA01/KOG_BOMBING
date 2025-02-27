@@ -16,6 +16,7 @@ namespace Semin
 		[Range(0f, 10f), SerializeField] private float rigidityTime;
 		[Range(1f, 100f), SerializeField] private float damage;
 		[Range(0f, 100f), SerializeField] private float activeTime;
+		[Range(0f, 1000f), SerializeField] private float hp;
 		[SerializeField] SRPCircleRegionProjector decal;
 		public override float Damage { get { return damage; } }
 		PhotonView pView;
@@ -42,12 +43,17 @@ namespace Semin
 			attackCollider.isTrigger = true;
 			attackCollider.gameObject.SetActive(true);
 			//pView.RPC("SetDecal", RpcTarget.AllBuffered);
+			LandmineDamage dam = transform.GetChild(0).GetComponent<LandmineDamage>();
+			dam.Initialize(this.team, hp);
 			SetDecal();
 		}
 
 
 		private void OnTriggerEnter(Collider other)
 		{
+			if (other.CompareTag("Bullet"))
+				return;
+
 			Molotov molotov = other.GetComponent<Molotov>();
 			if (molotov != null)
 			{

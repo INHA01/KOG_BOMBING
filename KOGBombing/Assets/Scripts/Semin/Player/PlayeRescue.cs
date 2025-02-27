@@ -71,14 +71,24 @@ public class PlayeRescue : InteractObject
         float deltaTime = 0;
         while(deltaTime<interactTime)
         {
+            if (interactState == InteractState.NONE)
+			{
+				interactUI.ProgressInteract(0);
+				break;
+            }
+
             deltaTime += Time.deltaTime;
             interactUI.ProgressInteract(deltaTime);
             yield return null;
         }
-        playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.AllBuffered);
-        rescuePlayer.Rescue();
-        interactCollider.enabled = false;
+        if (deltaTime >= interactTime)
+        {
+			playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.AllBuffered);
+			rescuePlayer.Rescue();
+			interactCollider.enabled = false;
+		}        
 	}
+
     protected override void OnTriggerEnter(Collider other)
     {
         

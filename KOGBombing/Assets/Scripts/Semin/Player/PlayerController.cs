@@ -44,7 +44,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             }
             else
             {
-                playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.red;
+                Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
+                color.a = 0;
+                playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
             }
         }
     }

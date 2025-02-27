@@ -8,7 +8,7 @@ using UnityEngine;
 public class FOVMeshCollider : MonoBehaviour
 {
 	public BoxCollider boxCollider;
-
+	
 	private void Awake()
 	{
 		boxCollider = GetComponent<BoxCollider>();
@@ -29,6 +29,13 @@ public class FOVMeshCollider : MonoBehaviour
 		ETeam playerTeam = player.blackBoard.eTeam;
 		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
 		{
+			PlayerData playerData = other.GetComponent<PlayerData>();
+			if (!playerData.pv.IsMine)
+			{
+				Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
+				color.a = 1;
+				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
+			}
 			player.blackBoard.hpBar.ShowOtherTeamUI();
 			if (player.blackBoard.playerStatus.isGroggy)
 				player.blackBoard.hpBar.ShowGroggy();
@@ -41,6 +48,13 @@ public class FOVMeshCollider : MonoBehaviour
 		if (player == null) return;
 		if (!player.blackBoard.hpBar.IsShowUI())
 		{
+			PlayerData playerData = other.GetComponent<PlayerData>();
+			if (!playerData.pv.IsMine)
+			{
+				Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
+				color.a = 1;
+				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
+			}
 			player.blackBoard.hpBar.ShowOtherTeamUI();
 			if (player.blackBoard.playerStatus.isGroggy)
 				player.blackBoard.hpBar.ShowGroggy();
@@ -54,6 +68,15 @@ public class FOVMeshCollider : MonoBehaviour
 
 		ETeam playerTeam = player.blackBoard.eTeam;
 		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
+		{
+			PlayerData playerData = other.GetComponent<PlayerData>();
+			if (!playerData.pv.IsMine)
+			{
+				Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
+				color.a = 0;
+				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
+			}
 			player.blackBoard.hpBar.HideOtherTeamUI();
+		}
 	}
 }

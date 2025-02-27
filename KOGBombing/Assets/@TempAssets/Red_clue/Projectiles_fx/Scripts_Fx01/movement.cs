@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using Orpul1;
+using Photon.Pun;
+using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -44,7 +46,13 @@ public class movement : BulletController
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (leftOver.Count > 0)
+
+		if (other.CompareTag("IgnoreBullet"))
+		{
+			if (other.GetComponent<Landmine>() != null) return;
+		}
+
+		if (leftOver.Count > 0)
         {
             for (int i = 0; i < leftOver.Count; i++)
             {

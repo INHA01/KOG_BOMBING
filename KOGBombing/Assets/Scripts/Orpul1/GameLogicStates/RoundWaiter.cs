@@ -15,12 +15,19 @@ namespace Orpul1
     {
         bool canCountDown = false;
         [SerializeField]
+        RoundDoorController[] roundDoorController;
+
+        [SerializeField]
         float gamestartInterval = 5;
         [SerializeField]
         float time = 0;
         
         public override void EnterState()
         {
+            for (int i = 0; i < roundDoorController.Length; i++)
+            {
+                roundDoorController[i].CloseDoor();
+            }
             readyPlayerCnt = 0;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "State", (int)EPlayerState.WAITROUND } });
             PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;
@@ -39,6 +46,10 @@ namespace Orpul1
         public override void ExitState()
         {
             PhotonNetwork.NetworkingClient.EventReceived -= OoCountDown;
+            for(int i=0; i< roundDoorController.Length; i++)
+            {
+                roundDoorController[i].OpenDoor();
+            }
         }
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable hashtable)

@@ -70,7 +70,7 @@ namespace Orpul1
             minCamaraObj.GetComponent<MinimapCamera>().target = playerObj;
             cameraObj.GetComponent<PlayerCamera>().target = playerObj;
             cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
-            cameraObj.transform.SetParent(playerObj.transform);
+            cameraObj.GetComponent<PlayerCamera>().SettingTargetPos(playerObj.transform);
             playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(), spawnPosi, gameObject);
             playerObj.GetComponent<ITeamUIInitAble>().SetTeamUI(gameData.teamUIController);
             gameData.playerObj = playerObj;

@@ -39,9 +39,13 @@ public class AttackRange
         area.SetPosition(0, start);
         area.SetPosition(1, end);
     }
-    public void ShowAttackArea()
+    public void ShowAttackArea(bool active)
     {
         if (!playerData.pv.IsMine) return;
+        attackRange.SetActive(active);
+        noAttackRange.SetActive(active);
+        if(!active) return;
+
         Vector3 direction = playerData.mousePos - playerData.shootStartPos.position;
         if (
             (playerData.playerObj.transform.position - playerData.shootStartPos.position).magnitude

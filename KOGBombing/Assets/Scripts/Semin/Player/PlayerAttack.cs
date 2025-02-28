@@ -37,7 +37,7 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (attackRange != null)
-            attackRange.ShowAttackArea();
+            attackRange.ShowAttackArea(blackBoard.playerStatus.isLive);
 	}
 
 	[PunRPC]

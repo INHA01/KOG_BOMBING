@@ -23,6 +23,12 @@ public class PlayerCamera : ViewObserver
     [SerializeField] float sensitivity = 300.0f;
 	[SerializeField] Quaternion initRotation = Quaternion.Euler(55f, 45f, 0);
 
+    public void SettingTargetPos(Transform parent)
+    {
+        this.transform.SetParent(parent);
+        this.transform.localPosition = new Vector3(offsetX, offsetY, offsetZ);
+		transform.rotation = initRotation;
+    }
     private void Start()
 	{
 		if (target == null)
@@ -30,13 +36,6 @@ public class PlayerCamera : ViewObserver
 			target = GameObject.FindWithTag("Player");
         }
         playerData = target.GetComponent<PlayerData>();
-        TargetPos = new Vector3(
-                    target.transform.position.x + offsetX + shakeX,
-                    target.transform.position.y + offsetY + shakeY,
-                    target.transform.position.z + offsetZ
-                    );
-        transform.position = TargetPos;
-		transform.rotation = initRotation;
 		SetSubject(target.GetComponent<PlayerInputListner>(),true);
     }
     void FixedUpdate()
@@ -46,6 +45,7 @@ public class PlayerCamera : ViewObserver
 			if (!playerData.isInteract)
 			    TargetRotation();
 		}
+        transform.position = new Vector3(transform.position.x + shakeX, transform.position.y + shakeY, transform.position.z);
     }
     protected override void SetPlayerSight(int isZoom)
     {

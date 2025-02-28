@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Orpul1;
 using Photon.Pun;
@@ -9,6 +10,8 @@ using UnityEngine.UI;
 
 public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetable
 {
+    [SerializeField]
+    Image[] teamPanels = new Image[2];
     [SerializeField]
     Transform[] playerScoreParent;
     [SerializeField]
@@ -38,16 +41,33 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
     }
     private void SetPlayerScore()
     {
-        Player[] players = PhotonNetwork.PlayerList;
-        Debug.Log($"SetPlayerScore {players.Length} ");
-        for (int i = 0; i < players.Length; i++) 
-        {
-            int index = (int)players[i].CustomProperties["TeamIndex"];
-            ETeam team = (ETeam)players[i].CustomProperties["Team"];
-            ISetScoreable<EPlayerScore> playerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[(int)team])
+        ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[(int)mine])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
-            playerScoreUI.SetTitle(new StringBuilder(players[i].NickName));
-            dicPlayerScore.Add(players[i].NickName, playerScoreUI);
+        myPlayerScoreUI.SetTitle(new StringBuilder(PhotonNetwork.LocalPlayer.NickName));
+        dicPlayerScore.Add(PhotonNetwork.LocalPlayer.NickName, myPlayerScoreUI);
+
+        string teamPanel = mine == ETeam.REDTEAM ? "Red" : "Blue";
+        string otherTeamPanel = mine == ETeam.REDTEAM ? "Blue" : "Red";
+        teamPanels[0].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + teamPanel + "_BG" );
+        teamPanels[1].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + otherTeamPanel + "_BG");
+
+
+        Dictionary<string , Player> players = new Dictionary<string, Player>();
+        foreach (Player player in PhotonNetwork.PlayerListOthers)
+        {
+            players.Add(player.NickName, player);
+        }
+        
+        for (int i = 0; i < players.Count; i++) 
+        {
+            //순서대로 탐색
+            ETeam team = (ETeam)players.ElementAt(i).Value.CustomProperties["Team"];
+            int parentIndex = team == mine ? 0 : 1;
+            ISetScoreable<EPlayerScore> playerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[parentIndex])
+                                                        .GetComponent<ISetScoreable<EPlayerScore>>();
+            playerScoreUI.SetTitle(new StringBuilder(players.ElementAt(i).Value.NickName));
+            dicPlayerScore.Add(players.ElementAt(i).Value.NickName, playerScoreUI);
         }
     }
 

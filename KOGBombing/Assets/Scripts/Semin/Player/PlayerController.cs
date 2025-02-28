@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         {
             if (playerData.isInteract)
 				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
-			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuffPercent, transform);
+			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
         }
     }
 

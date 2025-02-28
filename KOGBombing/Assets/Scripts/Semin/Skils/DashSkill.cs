@@ -87,7 +87,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		while (time < 1.5f)
 		{
 			time += Time.deltaTime;
-			movement = playerData.animator.transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedDebuffPercent * 1.22f;
+			movement = playerData.animator.transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedDebuff.GetValue();
 			movement.y = blackBoard.rigidBody.velocity.y;
             blackBoard.rigidBody.velocity = movement;
 			if (Vector3.Distance(playerData.animator.transform.position, position) < 1f)
@@ -102,7 +102,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		particle.gameObject.SetActive(false);
         isRunning = false;
 		time = 0;
-        blackBoard.speedDebuffPercent *= 1.5f;
+        blackBoard.speedDebuff.skillValue = 1.5f;
 		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
 		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		while (time < buffTime)
@@ -110,7 +110,7 @@ public class DashSkill : MonoBehaviour, ISkill
 			time += Time.deltaTime;
 			yield return null;
 		}
-        blackBoard.speedDebuffPercent /= 1.5f;
+		blackBoard.speedDebuff.skillValue = 1f;
 		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
 		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		dash = null;

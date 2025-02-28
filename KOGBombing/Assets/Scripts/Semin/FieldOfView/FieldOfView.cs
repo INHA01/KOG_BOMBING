@@ -9,7 +9,10 @@ namespace Semin
 {
 	public class FieldOfView : ViewObserver
 	{
-		public bool playerSight = false;
+        [Header("Photon")]
+        public PhotonView pv;
+
+        public bool playerSight = false;
         public float viewRadius;
 		[Range(0, 360)]
 		public float viewAngle;
@@ -40,6 +43,11 @@ namespace Semin
 			Attach(true);
         }
         protected override void SetPlayerSight(int isZoom)
+		{
+            pv.RPC("ExtractView", RpcTarget.All, isZoom);
+        }
+		[PunRPC]
+		void ExtractView(int isZoom)
 		{
             if (playerSight)
             {

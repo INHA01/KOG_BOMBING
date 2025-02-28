@@ -20,7 +20,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] GameObject maxAttackRangePrefab;
 
     [Header("Photon")]
-    [SerializeField] public PhotonView pv;
+    public PhotonView pv;
 
     [Header("Player Info")]
     public Rigidbody rigidBody;

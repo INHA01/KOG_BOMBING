@@ -117,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   subject: {fileID: -7677719124921718330}
   finshLerpTime: 0.3
+  pv: {fileID: 2047044685979704218}
   playerSight: 1
   viewRadius: 6
   viewAngle: 60
@@ -145,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   subject: {fileID: -7677719124921718330}
   finshLerpTime: 0.3
+  pv: {fileID: 2047044685979704218}
   playerSight: 0
   viewRadius: 2.5
   viewAngle: 360
@@ -542,7 +544,8 @@ MonoBehaviour:
     type: 3
   consumTargetPos: {x: 0, y: 0, z: 0}
   ConsumPos: {fileID: 7676723418722959363}
-  IsGroggyInteracting: 0
+  isInteract: 0
+  isGroggyInteracting: 0
 --- !u!114 &3900849375641417542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,6 +671,7 @@ MonoBehaviour:
   characterType: 0
   SOplayerStatus: {fileID: 11400000, guid: d57402e405a5d7a4da349a45ea0b6a1a, type: 2}
   canRespawn: 0
+  isSetScore: 0
   playerStatus: {fileID: 0}
 --- !u!114 &777691158875268194
 MonoBehaviour:
@@ -761,12 +765,8 @@ MonoBehaviour:
   interactUI: {fileID: 4464070514176222570}
   showOutlineObj: {fileID: 8607103005998974962}
   interactCollider: {fileID: 6643903595792908521}
-  interactLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  defualtLayer:
-    serializedVersion: 2
-    m_Bits: 256
+  interactLayer: 0
+  defualtLayer: 0
   interactTime: 3
   blackBoard: {fileID: 6782088153960012666}
   playerData: {fileID: 9216994139945491648}

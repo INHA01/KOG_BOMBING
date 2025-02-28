@@ -134,14 +134,18 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.isGroggy = false;
         blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
         blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
-        blackBoard.isSetScore = false;
-        blackBoard.hpBar.HideGroggy();
+		blackBoard.speedDebuffPercent = 1f;
+		blackBoard.isSetScore = false;
+		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		blackBoard.hpBar.InitializeValues();
+		blackBoard.hpBar.HideGroggy();
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         blackBoard.canRespawn = false;
-        return INode.ENodeState.Success;
+
+		return INode.ENodeState.Success;
     }
     public bool IsDie()
     {

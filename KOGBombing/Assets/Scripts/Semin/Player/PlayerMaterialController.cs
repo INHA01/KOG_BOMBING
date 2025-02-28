@@ -22,7 +22,7 @@ public class PlayerMaterialController : MonoBehaviour
 	{
 		this.changeMaterials = changeMaterials;
 		SetMaterialToHide();
-		hpBar.HideOtherTeamUI();
+		//hpBar.HideOtherTeamUI();
 		//hitMaterial = Managers.Resource.Load<Material>("Materials/HitHideMaterial");
 		for ( int i = 0; i < changeMaterialMeshs.Count; i++ )
 		{

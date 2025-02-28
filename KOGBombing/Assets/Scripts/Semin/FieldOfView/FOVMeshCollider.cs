@@ -36,9 +36,9 @@ public class FOVMeshCollider : MonoBehaviour
 				color.a = 1;
 				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
 			}
-			player.blackBoard.hpBar.ShowOtherTeamUI();
-			if (player.blackBoard.playerStatus.isGroggy)
-				player.blackBoard.hpBar.ShowGroggy();
+			//player.blackBoard.hpBar.ShowOtherTeamUI();
+			//if (player.blackBoard.playerStatus.isGroggy)
+			//	player.blackBoard.hpBar.ShowGroggy();
 		}
 	}
 
@@ -55,9 +55,9 @@ public class FOVMeshCollider : MonoBehaviour
 				color.a = 1;
 				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
 			}
-			player.blackBoard.hpBar.ShowOtherTeamUI();
-			if (player.blackBoard.playerStatus.isGroggy)
-				player.blackBoard.hpBar.ShowGroggy();
+			//player.blackBoard.hpBar.ShowOtherTeamUI();
+			//if (player.blackBoard.playerStatus.isGroggy)
+			//	player.blackBoard.hpBar.ShowGroggy();
 		}
 	}
 
@@ -76,7 +76,7 @@ public class FOVMeshCollider : MonoBehaviour
 				color.a = 0;
 				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
 			}
-			player.blackBoard.hpBar.HideOtherTeamUI();
+			//player.blackBoard.hpBar.HideOtherTeamUI();
 		}
 	}
 }

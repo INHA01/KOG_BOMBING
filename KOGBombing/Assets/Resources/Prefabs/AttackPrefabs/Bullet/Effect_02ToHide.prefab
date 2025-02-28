@@ -9758,7 +9758,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8454041222056111984
 Transform:
   m_ObjectHideFlags: 0
@@ -14828,10 +14828,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1868bd8891e78044e99f2ac587f36ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
+  moveSpeed: 30
   eTeamBullet: 0
   playerIndex: 0
-  damage: 10
+  damage: 8
   rb: {fileID: 1014140846394175071}
   direction: {x: 0, y: 0, z: 0}
   fireRate: 5

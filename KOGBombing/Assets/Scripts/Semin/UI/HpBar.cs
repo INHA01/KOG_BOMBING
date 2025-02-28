@@ -132,8 +132,8 @@ public class HpBar : MonoBehaviour
         {
             team = otherTeam;
             isOtherTeam = true;
-            //myTeam.SetActive(false);
-            otherTeam.SetActive(false);
+            myTeam.SetActive(false);
+            otherTeam.SetActive(true);
         }
 
         Debug.Log(team.transform.GetChild(0).gameObject);  

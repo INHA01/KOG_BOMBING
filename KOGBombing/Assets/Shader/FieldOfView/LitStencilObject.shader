@@ -696,12 +696,13 @@ Shader "Custom/LitStencilObject"
                 "LightMode" = "DepthNormals"
             }
             
-        ZWrite On
-        Stencil
-        {
-            Ref 1
-            Comp Always
-        }
+            ZWrite On
+            Stencil
+            {
+                Ref 1
+                Comp Always
+            }
+
             // -------------------------------------
             // Render State Commands
             ZWrite On

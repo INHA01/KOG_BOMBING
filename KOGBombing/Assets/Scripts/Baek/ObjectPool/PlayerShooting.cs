@@ -53,7 +53,7 @@ public class PlayerShooting : MonoBehaviour
     }
 
     [PunRPC]
-    void BulletSpawn()
+    void BulletSpawn(Vector3 shootDirection)
     {
         GameObject bullet = magazine.GetPooledObject().gameObject;
 		if (bullet == null)
@@ -62,7 +62,7 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
         //Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
-        bullet.GetComponent<BulletController>().direction = playerData.shootDirection.normalized;
+        bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties["Team"];  // << : �߰��� �ڵ�(�ٸ� ���� �����ϱ� ���� ����)
         bullet.GetComponent<BulletController>().playerIndex = (int)playerData.pv.Owner.CustomProperties["TeamIndex"];
@@ -76,7 +76,7 @@ public class PlayerShooting : MonoBehaviour
         while (bulletCount > 0)
         {
             animator.Shoot();
-            playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered);
+            playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered, playerData.shootDirection);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}

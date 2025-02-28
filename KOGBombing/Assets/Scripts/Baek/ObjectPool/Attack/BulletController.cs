@@ -42,23 +42,20 @@ public class BulletController : PooledObject
 		{
             if (other.GetComponent<Landmine>() != null) return;
 		}
-        if (other.CompareTag("Bomb")) return;
+        if (other.CompareTag("Bomb")|| other.CompareTag("Bullet")) return;
 
-		if (other.tag != "Bullet")
+        if (other.tag == "Player")
         {
-            if (other.tag == "Player")
-            {
-                // >> : �� ����
-                PhotonView pView = other.GetComponent<PhotonView>();
-                if (!pView) return;
-                if (!IsOtherTeam(pView)) return;
-                // << :
-                IDamageAble player = other.transform.GetComponent<IDamageAble>();
-                if (player != null)
-                    player.OnDamaged(damage, playerIndex);
-            }
-            distance = 0;
-            Release();
+            // >> : �� ����
+            PhotonView pView = other.GetComponent<PhotonView>();
+            if (!pView) return;
+            if (!IsOtherTeam(pView)) return;
+            // << :
+            IDamageAble player = other.transform.GetComponent<IDamageAble>();
+            if (player != null)
+                player.OnDamaged(damage, playerIndex);
         }
+        distance = 0;
+        Release();
     }
 }

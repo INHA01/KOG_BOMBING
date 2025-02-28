@@ -46,14 +46,12 @@ public class movement : BulletController
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-
-		if (other.CompareTag("IgnoreBullet"))
+        if (other.CompareTag("IgnoreBullet"))
 		{
-			if (other.GetComponent<Landmine>() != null) return;
+            if (other.GetComponent<Landmine>() != null) return;
 		}
-		if (other.CompareTag("Bomb")) return;
-
-		if (leftOver.Count > 0)
+        if (other.CompareTag("Bomb") || other.CompareTag("Bullet")) return;
+        if (leftOver.Count > 0)
         {
             for (int i = 0; i < leftOver.Count; i++)
             {

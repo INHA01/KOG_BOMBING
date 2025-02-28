@@ -111,7 +111,9 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.pv.RPC("ChangeWeaponInteract", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 		blackBoard.speedDebuffPercent *= 10f;
-    }
+        playerData.isGroggyInteracting = false;
+
+	}
 
     public void Rescue()
     {

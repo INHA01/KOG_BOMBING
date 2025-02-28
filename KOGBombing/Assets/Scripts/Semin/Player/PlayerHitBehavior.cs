@@ -279,10 +279,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (stream.IsWriting)
         {
             stream.SendNext(blackBoard.playerStatus.isLive);
+            stream.SendNext(blackBoard.playerStatus.hp);
+            stream.SendNext(blackBoard.playerStatus.defence);
         }
         else if (stream.IsReading)
         {
             bool isLive = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.hp = (float)stream.ReceiveNext();
+            blackBoard.playerStatus.defence = (float)stream.ReceiveNext();
             SetActiveState(isLive);
         }
     }

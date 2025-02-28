@@ -19,8 +19,6 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     [SerializeField]
     GameObject minimapCamera;
 
-    UIPopup _uiScene;
-
     public float time = 180;
     public int blueScore = 0;
     public int redScore = 0;
@@ -79,7 +77,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     void SelectPlayer()
     {
-        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
+        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
     }
     void SpawnPlayer()
     {
@@ -91,8 +89,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         cameraObj.GetComponent<PlayerCamera>().minimapCamera = minCamaraObj;
         cameraObj.transform.SetParent(playerObj.transform);
         playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(),spawnPosi.position, gameObject);
-        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
-        _uiScene.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
+        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
+        _uiPopup.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         EventBusSystem.Unsubscribe(SpawnPlayer);
         Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
         Managers.CamData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);

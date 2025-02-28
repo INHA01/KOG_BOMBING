@@ -17,8 +17,10 @@ namespace Orpul1
         public void OnCreateRoomBtn()
         {
             if (!PhotonNetwork.InLobby) return;
+            int option = view.tmpDropDPlayerCnt.value;
             StringBuilder roomName = new StringBuilder(view.tmpInputRoomName.text);
-            StringBuilder playerCount = new StringBuilder(view.tmpDropDPlayerCnt.value);
+            StringBuilder playerCount = new StringBuilder(view.tmpDropDPlayerCnt.options[option].text);
+            Debug.Log($"set room maxplayer {playerCount}");
             model.SetRoomInfo(roomName, playerCount);
         }
         public void UpdateUI()

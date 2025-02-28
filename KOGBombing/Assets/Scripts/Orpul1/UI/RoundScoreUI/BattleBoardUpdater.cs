@@ -42,7 +42,7 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
     private void SetPlayerScore()
     {
         ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-        ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[(int)mine])
+        ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[0])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
         myPlayerScoreUI.SetTitle(new StringBuilder(PhotonNetwork.LocalPlayer.NickName));
         dicPlayerScore.Add(PhotonNetwork.LocalPlayer.NickName, myPlayerScoreUI);

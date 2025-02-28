@@ -14787,8 +14787,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.30373946, y: 1, z: 0.3437804}
-  m_Center: {x: -0.0035704523, y: -0.2936808, z: 0.4247291}
+  m_Size: {x: 0.4, y: 0.4, z: 0.4}
+  m_Center: {x: 0, y: 0, z: 0.4}
 --- !u!54 &1014140846394175071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14830,8 +14830,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   eTeamBullet: 0
+  playerIndex: 0
   damage: 20
   rb: {fileID: 1014140846394175071}
+  direction: {x: 0, y: 0, z: 0}
   fireRate: 5
   muzzlePrefab: {fileID: 2061081232328806123, guid: 06d442fadb716a3419a6774c6ca402d5,
     type: 3}

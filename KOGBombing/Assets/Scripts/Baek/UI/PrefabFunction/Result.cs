@@ -16,8 +16,13 @@ public class Result : MonoBehaviour
 {
     [SerializeField] GameObject[] resultText = new GameObject[2];
     ResultType type;
+    int[] teamScore = new int[2] { 0, 0 };
+    int[] teamKillScore = new int[2] { 0, 0 };
+    int[] teamDeathScore = new int[2] { 0, 0 };
     void Awake()
     {
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        type = GetWinTeam() == myTeam ? ResultType.Win : ResultType.Lose;
         for(int i = 0; i < (int)ResultType.Max; i++)
         {
             if(i==(int)type)
@@ -28,42 +33,43 @@ public class Result : MonoBehaviour
         Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
     }
 
-    private bool IsWin()
+    private ETeam GetWinTeam()
     {
-        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-        if (Managers.RoundData.WinTeam != myTeam) return false;
-        if(isSameScore())
+        int winResult = Managers.RoundData.WinTeam;
+        switch(winResult)
         {
-            GetSameScoreWinTeam();
+            case 1:
+                return ETeam.REDTEAM;
+                
+            case 0:
+                return ETeam.BLUETEAM;
         }
-        return true;
+        return GetSameScoreWinTeam();
     }
-    private bool isSameScore()
-    {
-        int redTeamScore = Managers.RoundData.TeamScore[(int)ETeam.REDTEAM];
-        int blueTeamScore = Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM];
-        if (redTeamScore != blueTeamScore) return false;
-        return true;
-    }
+
+    /// <summary>
+    /// °ø°Ý ÆÀ ½Â¸®: 1,
+    /// ¹æ¾î ÆÀ ½Â¸®: 0,
+    /// µ¿Á¡: -1
+    /// </summary>
+    /// <returns>int</returns>
     private ETeam GetSameScoreWinTeam()
     {
-        int calcResult = CalcMissionPoint();
-        if(calcResult == 1)
+        int calcMissionScore = CalcMissionPoint();
+        if(calcMissionScore == 1)
         {
             return ETeam.REDTEAM;
         }
-        else if(calcResult == 0)
+        else if(calcMissionScore == 0)
         {
             return ETeam.BLUETEAM;
         }
-        return ETeam.REDTEAM;
+        return CalcKillDeathScore();
     }
     private int CalcMissionPoint()
     {
         Player[] players = PhotonNetwork.PlayerList;
-        int[] teamScore = new int[2] { 0, 0 };
-        int[] teamKillScore = new int[2] { 0, 0 };
-        int[] teamDeathScore = new int[2] { 0, 0 };
+        
         for (int i = 0; i < players.Length; i++)
         {
             PlayerPointInfo pointInfo = Managers.PointData.GetPlayerInfo(players[i].NickName);
@@ -81,6 +87,7 @@ public class Result : MonoBehaviour
             }
         }
         int scoreResult = teamScore[(int)ETeam.REDTEAM] - teamScore[(int)ETeam.BLUETEAM];
+
         if (scoreResult > 0)
         {
             return 1;
@@ -90,6 +97,14 @@ public class Result : MonoBehaviour
             return 0;
         }
         return -1;
+    }
+    private ETeam CalcKillDeathScore()
+    {
+        int redTeamScore = teamKillScore[(int)ETeam.REDTEAM] / (teamDeathScore[(int)ETeam.REDTEAM] + 1);
+        int blueTeamScore = teamKillScore[(int)ETeam.BLUETEAM] / (teamDeathScore[(int)ETeam.BLUETEAM] + 1);
+        if (redTeamScore > blueTeamScore)
+            return ETeam.REDTEAM;
+        return ETeam.BLUETEAM;
     }
 
     public void ReturnLobby()

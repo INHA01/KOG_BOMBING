@@ -14,14 +14,12 @@ namespace Orpul1
         public int[] TeamScore { get { return teamScore; } }
         public int[] TeamKillScore { get { return teamkillScore; } }
         public int[] TeamMissionScore{ get { return teamMissionScore; } }
-        public ETeam WinTeam
-        { get 
-            { 
-                if(teamScore[(int)ETeam.REDTEAM] > teamScore[(int)ETeam.REDTEAM])
-                {
-                    return ETeam.REDTEAM;
-                }
-                return ETeam.BLUETEAM; 
+        public int WinTeam
+        { 
+            get 
+            {
+                int result = teamScore[(int)ETeam.REDTEAM] - teamScore[(int)ETeam.BLUETEAM];
+                return result;
             } 
         }
 

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Orpul1;
 using UnityEngine;
 
 public class PlayerPointInfo
 {
     private StringBuilder nickname = new StringBuilder();
+    private ETeam playerTeam;
     private int killPoint;
     private int deathPoint;
     private int asistPoint;

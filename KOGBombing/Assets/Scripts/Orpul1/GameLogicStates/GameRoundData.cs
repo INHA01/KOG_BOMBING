@@ -9,13 +9,14 @@ namespace Orpul1
     [Serializable]
     public class GameRoundData
     {
-        public int[] teamScores = new int[2] { 0, 0 }; //private
-        public int[] teamCounts = new int[2] { 0, 0 }; //private
+        private int[] teamScores = new int[2] { 0, 0 }; 
+        private int[] teamCounts = new int[2] { 0, 0 }; 
+        private int processRoundCnt = 0; 
         public int[] TeamScores { get { return teamScores; } }
         public int[] TeamCounts { get { return teamCounts; } }
+        public int ProcessRoundCnt { get { return processRoundCnt; } }
         public int maxRound = 10;
         public int winRound = 4;
-        public int processRoundCnt = 0; //private
         public int switchRound = 2;
         public bool isAlreadySwitchRoll = false;
         bool isEndRound = false;
@@ -100,6 +101,7 @@ namespace Orpul1
             int score = teamScores[(int)ETeam.REDTEAM];
             teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
             teamScores[(int)ETeam.BLUETEAM] = score;
+            
             Debug.Log("Swap Team Score");
         }
         public void RoundTimeOver()
@@ -117,6 +119,8 @@ namespace Orpul1
             if (IsEndGame())
             {
                 teamUIController.EndRound();
+                Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
+                Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
                 return EGameState.GAMEEND;
             }
 
@@ -141,7 +145,6 @@ namespace Orpul1
         }
         private bool IsNextRound()
         {
-            //processRoundCnt % switchRound == 0
             int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
             if (switchRollScore == 3&& !isAlreadySwitchRoll)
             {

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace Orpul1
@@ -7,6 +9,7 @@ namespace Orpul1
     public class PlayerPointManager
     {
         private Dictionary<string, PlayerPointInfo> dicPlayers = new Dictionary<string, PlayerPointInfo>();
+        
         public void AddPlayerInfo(string key, PlayerPointInfo info)
         {
             if (dicPlayers.ContainsKey(key)) return;

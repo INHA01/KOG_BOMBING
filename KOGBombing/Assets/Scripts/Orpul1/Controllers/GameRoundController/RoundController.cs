@@ -50,7 +50,7 @@ namespace Orpul1
             float scoreGap = Mathf.Abs(attackTeamScore - defenseTeamScore);
 
             if (scoreGap >= roundData.winRound) return true;
-            if (roundData.processRoundCnt > roundData.maxRound) return true;
+            if (roundData.ProcessRoundCnt > roundData.maxRound) return true;
             return false;
         }
         public void OnSetTeamCount(EventData punEvent)

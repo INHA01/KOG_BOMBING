@@ -8,27 +8,35 @@ namespace Orpul1
     public class RoundInfoManager
     {
         int[] teamScore = new int[2];
-        int processRoundCnt = 0;
+        int[] teamkillScore = new int[2];
+        int[] teamMissionScore = new int[2];
         ETeam winTeam;
         public int[] TeamScore { get { return teamScore; } }
-        public ETeam WinTeam { get { return winTeam; } }
-
-        public int ProcessRoundCnt { get { return processRoundCnt; } }
-        ERoundState roundState = ERoundState.FIRSTHALF;
-        public ERoundState RoundState { get { return roundState; } }
-        public void SetProcessRoundCount(int count)
-        {
-            processRoundCnt = count;
+        public int[] TeamKillScore { get { return teamkillScore; } }
+        public int[] TeamMissionScore{ get { return teamMissionScore; } }
+        public ETeam WinTeam
+        { get 
+            { 
+                if(teamScore[(int)ETeam.REDTEAM] > teamScore[(int)ETeam.REDTEAM])
+                {
+                    return ETeam.REDTEAM;
+                }
+                return ETeam.BLUETEAM; 
+            } 
         }
-        public void SetRoundState(ERoundState state)
+
+        public void SetTeamKillScore(ETeam type, int score)
         {
-            roundState = state;
+            teamkillScore[(int)type] = score;
+        }
+        public void SetTeamMissionScore(ETeam type, int score)
+        {
+            teamMissionScore[(int)type] = score;
         }
         public void SetTeamScore(ETeam type, int score)
         {
-            teamScore[0] = score;
+            teamScore[(int)type] = score;
         }
-
     }
 
 }

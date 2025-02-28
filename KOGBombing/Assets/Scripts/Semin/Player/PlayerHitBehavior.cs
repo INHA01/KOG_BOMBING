@@ -203,10 +203,16 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             {
                 blackBoard.playerStatus.isGroggy = true;
 				blackBoard.playerStatus.groggyable = false;
-                animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
 				blackBoard.speedDebuff.groggyValue = 0.1f;
 
-                playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
+				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
+                animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
+				if (playerData.skill is ThrowableSkill skill)
+					skill.Disable();
+				playerData.supportWeapon.Disable();
+
+				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				groggyCoroutine = StartCoroutine(Groggy());

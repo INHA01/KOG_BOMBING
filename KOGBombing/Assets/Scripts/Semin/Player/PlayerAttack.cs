@@ -339,7 +339,7 @@ public class PlayerAttack : PlayerBehavior
 				playerData.skill.Use();
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
-                blackBoard.speedDebuffPercent *= 1.5f;
+                blackBoard.speedDebuff.skillValue = 2f;
 				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
 			}
 			if (animChange != null)
@@ -356,7 +356,6 @@ public class PlayerAttack : PlayerBehavior
 			{
 				isChangableAnim = true;
 				blackBoard.inputs[EKey.Q] = false;
-                blackBoard.speedDebuffPercent /= 1.5f;
 
 				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
 				playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);

@@ -110,7 +110,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         blackBoard.hpBar.HideGroggy();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.pv.RPC("ChangeWeaponInteract", RpcTarget.AllBuffered, (int)WeaponType.GUN);
-		blackBoard.speedDebuffPercent *= 10f;
+        blackBoard.speedDebuff.groggyValue = 1;
         playerData.isGroggyInteracting = false;
 
 	}

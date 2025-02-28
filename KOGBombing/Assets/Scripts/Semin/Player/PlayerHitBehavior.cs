@@ -7,6 +7,7 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -134,7 +135,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.isGroggy = false;
         blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
         blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
-		blackBoard.speedDebuffPercent = 1f;
+        blackBoard.speedDebuff.Initialize();
 		blackBoard.isSetScore = false;
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
 		blackBoard.hpBar.InitializeValues();
@@ -203,7 +204,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 blackBoard.playerStatus.isGroggy = true;
 				blackBoard.playerStatus.groggyable = false;
                 animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
-				blackBoard.speedDebuffPercent *= 0.1f;
+				blackBoard.speedDebuff.groggyValue = 0.1f;
 
                 playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
@@ -239,7 +240,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
-		blackBoard.speedDebuffPercent = 1f;
+        blackBoard.speedDebuff.Initialize();
 		blackBoard.hpBar.InitializeValues();
         blackBoard.hpBar.HideGroggy();
 		this.transform.position = blackBoard.spawnPoint;
@@ -294,7 +295,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	[PunRPC]
     private void Rigidity(float time)
     {
-		blackBoard.speedDebuffPercent *= 0.5f;
+		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
 
@@ -332,6 +333,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     IEnumerator ResetRigidity(float time)
     {
         yield return new WaitForSeconds(time);
-		blackBoard.speedDebuffPercent *= 2.0f;
+		blackBoard.speedDebuff.rigidityValue = 1.0f;
     }
 }

@@ -102,8 +102,8 @@ public class PlayerInputListner : Subject
         int pressed = value.isPressed ? 1 : 0;
         Notify(pressed);
         if (pressed == 1)
-            blackBoard.speedDebuffPercent *= 0.5f;
-        else blackBoard.speedDebuffPercent *= 2f;
+            blackBoard.speedDebuff.slowMoveValue = 0.5f;
+        else blackBoard.speedDebuff.slowMoveValue = 1f;
     }
     public void OnOpenBattleboard(InputValue value)
     {

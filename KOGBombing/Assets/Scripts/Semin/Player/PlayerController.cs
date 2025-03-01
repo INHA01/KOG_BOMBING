@@ -130,12 +130,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     }
     public void DoRespawn()
     {
-        //TODO: 행동트리 리스폰 관련 작업 추가할 것
         Debug.Log($"Set Respawn");
         blackBoard.canRespawn = true;
-
-        //playerData.pv.RPC("RespawnPlayer", RpcTarget.AllBuffered);
-        //blackBoard.canRespawn = true;
     }
     [PunRPC]
     private void RespawnPlayer()

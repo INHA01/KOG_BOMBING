@@ -11,9 +11,11 @@ namespace Orpul1
     {
         IRunGameEventAble runEvent;
         RaiseEventOptions options = new RaiseEventOptions();
+        ETeam playerTeam;
         private void Start()
         {
             options.Receivers = ReceiverGroup.All;
+            playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
         }
         public void Initialize(IRunGameEventAble runEvent)
         {
@@ -25,31 +27,18 @@ namespace Orpul1
             switch (bombState)
             {
                 case EBombState.SET:
-                    runEvent.RunEvent(EGameEvent.SETBOMB);
-                    break;
-                case EBombState.CLEAR:
                     {
-                        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == ETeam.REDTEAM)
-                        {
-                            runEvent.RunEvent(EGameEvent.LOSS);
-                        }
-                        else
-                        {
-                            runEvent.RunEvent(EGameEvent.WIN);
-                        }
+                        runEvent.RunEvent(RoundEndType.BOMBSET);
                     }
-
                     break;
-                case EBombState.EXPLOSION:
+                case EBombState.CLEAR: // ¹æ¾îÆÀ ½Â¸®
                     {
-                        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == ETeam.REDTEAM)
-                        {
-                            runEvent.RunEvent(EGameEvent.WIN);
-                        }
-                        else
-                        {
-                            runEvent.RunEvent(EGameEvent.LOSS);
-                        }
+                        runEvent.RunEvent(RoundEndType.BOMBCLEAR);
+                    }
+                    break;
+                case EBombState.EXPLOSION: //°ø°Ý ÆÀ ½Â¸®
+                    {
+                        runEvent.RunEvent(RoundEndType.BOMBEXPLOSION);
                     }
                     break;
             }

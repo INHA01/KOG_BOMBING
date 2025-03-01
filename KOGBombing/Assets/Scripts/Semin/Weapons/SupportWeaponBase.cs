@@ -20,7 +20,10 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 
     public virtual void SetConsum(WeaponType type, PlayerData playerData)
 	{
-        playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+		if(playScene == null)
+            playScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+        else
+            playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
         switch (type)
 		{
 			case WeaponType.LANDMINE:

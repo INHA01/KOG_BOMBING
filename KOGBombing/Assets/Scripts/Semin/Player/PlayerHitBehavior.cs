@@ -121,32 +121,20 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public INode.ENodeState RespawnNode()
     {
+        if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
         playerData.pv.RPC("PunRespawn", RpcTarget.AllBuffered);
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-
         return INode.ENodeState.Success;
     }
     [PunRPC]
     private void PunRespawn()
     {
         Debug.Log("ResapwnPlayer");
-        blackBoard.playerStatus.isLive = true;
-        blackBoard.hpBar.SetStopHpUI(false);
-        blackBoard.playerStatus.groggyValue = 150;
-        blackBoard.playerStatus.groggyable = true;
-        blackBoard.playerStatus.isGroggy = false;
-        blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
-        blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
-        blackBoard.speedDebuff.Initialize();
-        blackBoard.isSetScore = false;
+        blackBoard.Initialize();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-        blackBoard.hpBar.InitializeValues();
-        blackBoard.hpBar.HideGroggy();
-        blackBoard.hpBar.ShowHpUI();
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-        blackBoard.canRespawn = false;
     }
     public bool IsDie()
     {
@@ -154,12 +142,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public INode.ENodeState SetDeactiveUI()
     {
+        if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
         playerData.pv.RPC("PunDeactiveUI", RpcTarget.AllBuffered);
         return INode.ENodeState.Success;
     }
     [PunRPC]
     private void PunDeactiveUI()
     {
+        Debug.Log("PunDeactiveUI");
         blackBoard.hpBar.HideGroggy();
         blackBoard.hpBar.HideHpUI();
     }

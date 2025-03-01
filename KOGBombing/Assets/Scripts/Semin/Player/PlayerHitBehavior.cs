@@ -124,6 +124,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
         playerData.pv.RPC("PunRespawn", RpcTarget.AllBuffered);
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+        
         return INode.ENodeState.Success;
     }
     [PunRPC]
@@ -284,27 +285,24 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
+        if (stream.IsWriting) 
         {
-            stream.SendNext(blackBoard.playerStatus.isLive);
-            stream.SendNext(blackBoard.playerStatus.hp);
-            stream.SendNext(blackBoard.playerStatus.defence);
-            stream.SendNext(blackBoard.playerStatus.groggyable);
-            stream.SendNext(blackBoard.playerStatus.groggyValue);
-            stream.SendNext(blackBoard.playerStatus.isGroggy);
+            object[] sendHitInfo = new object[]
+            { blackBoard.playerStatus.isLive, blackBoard.playerStatus.hp,
+            blackBoard.playerStatus.defence,blackBoard.playerStatus.groggyable,
+            blackBoard.playerStatus.groggyValue,blackBoard.playerStatus.isGroggy};
+            stream.SendNext(sendHitInfo);
         }
         else if (stream.IsReading)
         {
-            bool isLive = (bool)stream.ReceiveNext();
-            blackBoard.playerStatus.hp = (float)stream.ReceiveNext();
-            blackBoard.playerStatus.defence = (float)stream.ReceiveNext();
-            blackBoard.playerStatus.groggyable = (bool)stream.ReceiveNext();
-            blackBoard.playerStatus.groggyValue = (float)stream.ReceiveNext();
-            blackBoard.playerStatus.isGroggy = (bool)stream.ReceiveNext();
-            if(blackBoard.playerStatus.isGroggy == false)
-                blackBoard.hpBar.HideGroggy();
+            object[] reciveHitInfo = (object[])stream.ReceiveNext();
+            SetActiveState((bool)reciveHitInfo[0]);
+            blackBoard.playerStatus.hp = (float)reciveHitInfo[1];
+            blackBoard.playerStatus.defence = (float)reciveHitInfo[2];
+            blackBoard.playerStatus.groggyable = (bool)reciveHitInfo[3];
+            blackBoard.playerStatus.groggyValue = (float)reciveHitInfo[4];
+            blackBoard.playerStatus.isGroggy = (bool)reciveHitInfo[5];
 
-            SetActiveState(isLive);
         }
     }
 

@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: f60b1d4b76311bf45b8c4bb2df3b5b54
-  position: {x: 348.0001, y: -531}
+  position: {x: 349, y: -731.80005}
   child: {fileID: -7170902545123407570}
   method: IsDie
   paramName: 
@@ -138,9 +138,9 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: ba3de5e932228a846ba878b12bcb23a2
-  position: {x: 512, y: -531}
+  position: {x: 513, y: -731.80005}
   children:
-  - {fileID: -1567745938999925633}
+  - {fileID: 7780571593512279722}
   - {fileID: 649707792052996928}
   - {fileID: -975095478299540825}
 --- !u!114 &-7147036626057015698
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: ce6a3b0bc811c2b47b961e2b75d439f1
-  position: {x: 200, y: -531}
+  position: {x: 201, y: -731.80005}
   children:
   - {fileID: -7802083987999387392}
   - {fileID: -5335882687480156656}
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 7cc41908cfba48b4a90d5b6b0f0646f1
-  position: {x: 350, y: -442}
+  position: {x: 351, y: -642.80005}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -281,6 +281,23 @@ MonoBehaviour:
   paramName: 
   method: RotatePlayer
   className: PlayerMovement
+--- !u!114 &-4965493617326162921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 6d11af19884fb1e4bbc3f26afb0ae711
+  position: {x: 825, y: -604.5}
+  paramName: 
+  method: SetDeactiveUI
+  className: PlayerHitBehavior
 --- !u!114 &-4123719882947693958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,7 +400,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c95596c467b5ac840876b7e15f37ada0
-  position: {x: 509, y: -811}
+  position: {x: 510, y: -1011.80005}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -451,7 +468,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 3eeb7986d68bf3f44999249279be6067
-  position: {x: 662.99994, y: -441.9999}
+  position: {x: 825, y: -512}
   paramName: 
   method: SetPlayerScore
   className: PlayerHitBehavior
@@ -504,7 +521,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 90fe78d4596405847881b1e226417bd4
-  position: {x: 663, y: -642}
+  position: {x: 664, y: -842.80005}
   paramName: 
   method: SuccessNode
   className: PlayerHitBehavior
@@ -594,6 +611,8 @@ MonoBehaviour:
   - {fileID: -6932081876933467733}
   - {fileID: -3829355589323812755}
   - {fileID: -1567745938999925633}
+  - {fileID: 7780571593512279722}
+  - {fileID: -4965493617326162921}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,7 +662,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 656fe56fce444bd42a36a3cbf6c2e546
-  position: {x: 663, y: -531}
+  position: {x: 664, y: -731.80005}
   children:
   - {fileID: 1613006539770928240}
   - {fileID: 1584241473073964167}
@@ -677,7 +696,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2780f2f49acad5a4c97d7dbeb8af335d
-  position: {x: 509, y: -734}
+  position: {x: 510, y: -934.80005}
   paramName: 
   method: RespawnNode
   className: PlayerHitBehavior
@@ -694,7 +713,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 9631d5fe104d79c4ab6eb48bc55efc0f
-  position: {x: 824, y: -625}
+  position: {x: 825, y: -825.80005}
   paramName: 
   method: SetCameraTarget
   className: PlayerHitBehavior
@@ -711,7 +730,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 151e5b5d541a37a448f78535d4b0eb4f
-  position: {x: 824, y: -531}
+  position: {x: 825, y: -731.80005}
   child: {fileID: 6077192041609901196}
   method: IsTargetDie
   paramName: 
@@ -806,7 +825,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 4bbab7893a3d0354da96e88f6f890a35
-  position: {x: 201, y: -783}
+  position: {x: 202, y: -983.80005}
   child: {fileID: 8710056310030271584}
   method: CanRespawnPlayer
   paramName: 
@@ -912,7 +931,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c05b2d6b371aad7499246dd349a37006
-  position: {x: 985, y: -531}
+  position: {x: 986, y: -731.80005}
   paramName: 
   method: FindAlivePlayer
   className: PlayerHitBehavior
@@ -964,7 +983,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: a5823d0448a98dd4a9b5f5f36f4f9fa2
-  position: {x: 202, y: -878.48004}
+  position: {x: 203, y: -1078.8}
   paramName: 
   method: CanBehavior
   className: PlayerInteract
@@ -1002,6 +1021,23 @@ MonoBehaviour:
   paramName: 
   method: FindInteractObjNode
   className: PlayerInteract
+--- !u!114 &7780571593512279722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1299a4a6d6a544fbab688e2cf99a08, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  guid: 63d5072f68b9ef64ba6bc052112b3a7c
+  position: {x: 664, y: -566}
+  children:
+  - {fileID: -1567745938999925633}
+  - {fileID: -4965493617326162921}
 --- !u!114 &8200657294350586246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,7 +1086,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 560f461ee9784f645bfa2141b6d49749
-  position: {x: 348, y: -783}
+  position: {x: 349, y: -983.80005}
   children:
   - {fileID: 1416728964697576737}
   - {fileID: -3137541061979543970}

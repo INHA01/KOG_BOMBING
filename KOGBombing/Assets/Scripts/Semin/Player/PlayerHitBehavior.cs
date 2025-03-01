@@ -7,6 +7,7 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using UnityEngine.Rendering;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -27,7 +28,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-        //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
         if (playerData.pv.IsMine)
 			playerMaterialController.SetLayerToMyPlayer();
 
@@ -73,7 +73,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
     }
 
-    [PunRPC]
+	[PunRPC]
 	private void SetRecoverDefence(float time)
 	{
 		StartCoroutine(RecoverDefence(time));
@@ -145,6 +145,17 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;
+    }
+    public INode.ENodeState SetDeactiveUI()
+    {
+        playerData.pv.RPC("PunDeactiveUI", RpcTarget.AllBuffered);
+        return INode.ENodeState.Fail;
+    }
+    [PunRPC]
+    private void PunDeactiveUI()
+    {
+        blackBoard.hpBar.HideGroggy();
+        blackBoard.hpBar.HideHpUI();
     }
     public INode.ENodeState SetPlayerScore()
     {
@@ -282,12 +293,21 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             stream.SendNext(blackBoard.playerStatus.isLive);
             stream.SendNext(blackBoard.playerStatus.hp);
             stream.SendNext(blackBoard.playerStatus.defence);
+            stream.SendNext(blackBoard.playerStatus.groggyable);
+            stream.SendNext(blackBoard.playerStatus.groggyValue);
+            stream.SendNext(blackBoard.playerStatus.isGroggy);
         }
         else if (stream.IsReading)
         {
             bool isLive = (bool)stream.ReceiveNext();
             blackBoard.playerStatus.hp = (float)stream.ReceiveNext();
             blackBoard.playerStatus.defence = (float)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyable = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyValue = (float)stream.ReceiveNext();
+            blackBoard.playerStatus.isGroggy = (bool)stream.ReceiveNext();
+            if(blackBoard.playerStatus.isGroggy == false)
+                blackBoard.hpBar.HideGroggy();
+
             SetActiveState(isLive);
         }
     }

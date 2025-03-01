@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BombInteraction : MonoBehaviour
 {
-    [SerializeField] Bomb bomb;
+    [SerializeField] Bomb bomb = null;
 	[SerializeField] PhotonView pv;
 
     public void SetBomb(Bomb bomb)
@@ -13,6 +13,12 @@ public class BombInteraction : MonoBehaviour
         this.bomb = bomb;
         pv = GetComponent<PhotonView>();
     }
+
+    public Bomb GetBomb()
+    {
+        return bomb;
+    }
+
 
     public void SetBombInteraction(bool isInteraction)
     {

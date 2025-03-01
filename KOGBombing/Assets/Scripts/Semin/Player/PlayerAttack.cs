@@ -155,7 +155,8 @@ public class PlayerAttack : PlayerBehavior
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 
-						bombInteraction.SetBombInteraction(false);
+                        if (bombInteraction.GetBomb() != null)
+						    bombInteraction.SetBombInteraction(false);
 						return INode.ENodeState.Fail;
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
@@ -202,7 +203,8 @@ public class PlayerAttack : PlayerBehavior
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
 
-							bombInteraction.SetBombInteraction(true);
+							if (bombInteraction.GetBomb() != null)
+								bombInteraction.SetBombInteraction(true);
 						}
                         playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                         playerData.isInteract = true;

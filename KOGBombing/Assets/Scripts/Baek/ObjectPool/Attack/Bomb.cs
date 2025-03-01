@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomb : AttackConsum
+public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
 {
     [SerializeField] float bombTime = 10f;
     float time = 0;
@@ -13,6 +13,7 @@ public class Bomb : AttackConsum
     BombNotify bombNotify;
 	bool isInteracting = false;
     PhotonView pv;
+    IBombStateAble setBombState;
 
 	private void Awake()
 	{
@@ -28,6 +29,7 @@ public class Bomb : AttackConsum
     {
         if (bombNotify == null)
             bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+        setBombState.BombEvent(EBombState.SET);
         bombNotify.NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)
@@ -39,6 +41,7 @@ public class Bomb : AttackConsum
             // 폭탄 해제 모든 플레이어들에게 Notify
             if (bombNotify == null)
                 bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+            setBombState.BombEvent(EBombState.CLEAR);
             bombNotify.NotifyBombDefuse();
             Release();
             //RPCDestroy();
@@ -71,8 +74,13 @@ public class Bomb : AttackConsum
             yield return null;
         }
         ShowParticle();
+        setBombState.BombEvent(EBombState.EXPLOSION);
         yield return new WaitForSeconds(0.5f);
         Release();
     }
 
+    public void Defendency(IBombStateAble setBombState)
+    {
+        this.setBombState = setBombState;
+    }
 }

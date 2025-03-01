@@ -73,6 +73,8 @@ public class PlayerAttack : PlayerBehavior
     void SetSupportWeapon(int team)
     {
         playerData.bomb = gameObject.AddComponent<DeployableBomb>();
+        GetComponent<DeployableBomb>().Defendency(blackBoard.setBombState);
+
         if (team == (int)ETeam.REDTEAM)
         {
             if (playerData.bomb is SupportWeaponBase bomb)

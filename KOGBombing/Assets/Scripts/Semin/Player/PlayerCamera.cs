@@ -87,7 +87,7 @@ public class PlayerCamera : ViewObserver
 	{
 		if (shake != null)
 			StopCoroutine(shake);
-		shake = StartCoroutine(StartShake(duration, magnitude));
+		//shake = StartCoroutine(StartShake(duration, magnitude));
 	}
 
 	IEnumerator StartShake(float duration, float magnitude)

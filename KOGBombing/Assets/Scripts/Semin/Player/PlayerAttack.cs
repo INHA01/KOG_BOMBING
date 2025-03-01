@@ -123,18 +123,16 @@ public class PlayerAttack : PlayerBehavior
     {
         if (playerData.bomb is DeployableBomb)
         {
-            Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(playerData.shootStartPos.position);
-            RaycastHit hit;
             if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
                 float waitTime = 5.0f;
-                if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime))
+                if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime)) // 폭탄 설치
                 {
                     bombInteractTime += Time.deltaTime;
                     blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
                     return INode.ENodeState.Running;
                 }
-                else
+                else // 폭탄 설치 취소 or 완료
                 {
                     if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Cancel
 					{
@@ -171,10 +169,6 @@ public class PlayerAttack : PlayerBehavior
 					}
 					return INode.ENodeState.Running;
                 }
-            }
-            if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
-            {
-                playerData.bomb.SetWeapon(new SupportWeaponInfo(hit.point));
             }
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
             {

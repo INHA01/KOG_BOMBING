@@ -7,7 +7,6 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
-using UnityEditor.Experimental.GraphView;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {

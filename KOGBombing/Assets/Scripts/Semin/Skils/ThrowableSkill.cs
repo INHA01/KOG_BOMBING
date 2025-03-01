@@ -92,4 +92,9 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	{
 		SetSpawnThrowWeapon();
 	}
+
+    public void LoadSkillIcon()
+    {
+        playScene.SetSkillIcon(CharacterType.Ned);
+    }
 }

@@ -28,11 +28,11 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 		{
 			case WeaponType.LANDMINE:
                 consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
-				playScene.SetSubWeapon(type);
+				playScene.SetSubWeaponIcon(type);
                 break;
 			case WeaponType.MOLOTOV:
 				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
-                playScene.SetSubWeapon(type);
+                playScene.SetSubWeaponIcon(type);
                 break;
 			case WeaponType.BOMB:
                 consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
@@ -61,10 +61,15 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 		return true;
 	}
 
-	public void InitializeCount(int count)
+	public virtual void InitializeCount(int count)
 	{
-		if (count == 1) 
+		if (count > 0) 
 			playScene.subWeaponFades[0].SetActive(false);
         this.count = count;
 	}
+
+    public virtual void LoadWeaponIcon()
+    {
+        playScene.SetSubWeaponIcon(type);
+    }
 }

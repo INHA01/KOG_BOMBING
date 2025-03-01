@@ -145,4 +145,8 @@ public class DashSkill : MonoBehaviour, ISkill
             yield return null;
 		}
 	}
+	public void LoadSkillIcon()
+	{
+        playScene.SetSkillIcon(CharacterType.Uni);
+    }
 }

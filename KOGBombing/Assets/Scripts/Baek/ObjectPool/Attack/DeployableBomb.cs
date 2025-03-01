@@ -26,8 +26,14 @@ public class DeployableBomb : DeployableBase
 			objectPool.initPoolSize = count;
 		}
 	}
+    public override void InitializeCount(int count)
+    {
+        if (count > 0)
+            playScene.subWeaponFades[1].SetActive(false);
+        this.count = count;
+    }
 
-	public override void Use()
+    public override void Use()
     {
         count--;
         PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();

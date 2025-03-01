@@ -123,6 +123,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
         playerData.pv.RPC("PunRespawn", RpcTarget.AllBuffered);
+        playerData.supportWeapon.LoadWeaponIcon();
+        playerData.skill.LoadSkillIcon();
+
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         
         return INode.ENodeState.Success;

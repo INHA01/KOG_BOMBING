@@ -107,7 +107,7 @@ public class PlayScene : MonoBehaviour
             blueScoreIcon.sprite = blueScoreImages[score];
         }
     }
-    public void SetSubWeapon(WeaponType type)
+    public void SetSubWeaponIcon(WeaponType type)
     {
         string name = type == WeaponType.LANDMINE ? "Landmine" : "Grenade_Flash";
         subWeaponIcon.sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");

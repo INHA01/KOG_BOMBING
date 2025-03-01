@@ -9,4 +9,5 @@ public interface ISkill
     public void SetSkill(SkillInfo info);
     public bool isUsableSkill();
     public void InitializeCount(int count);
+    public void LoadSkillIcon();
 }

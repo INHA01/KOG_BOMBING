@@ -10,4 +10,6 @@ public interface ISupportWeapon
 	public void SetTeam(ETeam team, int playerIndex);
 	public void Use();
 	public void InitializeCount(int count);
+
+	public void LoadWeaponIcon();
 }

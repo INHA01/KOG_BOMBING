@@ -15,7 +15,7 @@ public class PlayerAttack : PlayerBehavior
     bool isChangableAnim;
     Coroutine animChange;
     float bombInteractTime;
-
+    Bomb bomb;
     protected override void Awake()
     {
         base.Awake();
@@ -134,7 +134,7 @@ public class PlayerAttack : PlayerBehavior
                 }
                 else
                 {
-                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // �߰��� ���
+                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Cancel
 					{
 						blackBoard.bombUI.ActiveInteract(false);
 						playerData.isInteract = false;
@@ -144,6 +144,8 @@ public class PlayerAttack : PlayerBehavior
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+                        if (bomb != null)
+						    bomb.SetIsInteraction(false);
 						return INode.ENodeState.Fail;
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
@@ -194,6 +196,9 @@ public class PlayerAttack : PlayerBehavior
                         {
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
+                            bomb = colliders[i].GetComponent<Bomb>();
+                            if (bomb != null)
+							    colliders[i].GetComponent<Bomb>().SetIsInteraction(true);
 						}
                         playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                         playerData.isInteract = true;

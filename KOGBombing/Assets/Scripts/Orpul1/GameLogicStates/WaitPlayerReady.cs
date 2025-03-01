@@ -72,7 +72,7 @@ namespace Orpul1
         {
             while (readyPlayerCnt != curPlayerCnt)
             {
-                Debug.Log("WaitPlayerReady");
+                //Debug.Log("WaitPlayerReady");
                 yield return null;
             }
             Debug.Log("End CoWaitPlayer");

@@ -12,10 +12,16 @@ namespace Semin
         [Header("Photon")]
         public PhotonView pv;
 
-        public bool playerSight = false;
+		public bool playerSight = false;
         public float viewRadius;
+		public float zoomViewRadius;
 		[Range(0, 360)]
 		public float viewAngle;
+		[Range(0, 360)]
+		public float zoomViewAngle;
+
+		protected float initViewAngle;
+		protected float initViewRadius;
 
 		public LayerMask targetMask;
 		public LayerMask obstacleMask;
@@ -28,9 +34,9 @@ namespace Semin
 		public float edgeDstThreshold;
 
 		public MeshFilter viewMeshFilter;
-		Mesh viewMesh;
+		protected Mesh viewMesh;
 
-        void Start()
+		protected void Start()
 		{
 			viewMesh = new Mesh();
 			viewMesh.name = "View Mesh";
@@ -38,17 +44,21 @@ namespace Semin
 			DrawFieldOfView();
 			viewMeshFilter.mesh = viewMesh;
 
+			initViewAngle = viewAngle;
+			initViewRadius = viewRadius;
+
 			StartCoroutine("FindTargetsWithDelay", .2f);
 			
 			Attach(true);
-        }
-        protected override void SetPlayerSight(int isZoom)
+		}
+
+		protected override void SetPlayerSight(int isZoom)
 		{
-			if (!pv.IsMine) return;
-            //pv.RPC("ExtractView", RpcTarget.AllBuffered, isZoom);
-            ExtractView(isZoom);
-        }
-		void ExtractView(int isZoom)
+			//if (!pv.IsMine) return;
+			//pv.RPC("ExtractView", RpcTarget.AllBuffered, isZoom);
+		}
+
+		public void ExtractView(int isZoom)
 		{
             if (playerSight)
             {
@@ -58,12 +68,13 @@ namespace Semin
                     lerpValue = null;
                 }
                 if (isZoom == 1)
-                    lerpValue = StartCoroutine(LerpValue(30, 12));
+                    lerpValue = StartCoroutine(LerpValue(zoomViewAngle, zoomViewRadius));
                 else
-                    lerpValue = StartCoroutine(LerpValue(60, 6));
+                    lerpValue = StartCoroutine(LerpValue(initViewAngle, initViewRadius));
             }
         }
-        private IEnumerator LerpValue(float changeAngle , float changeRadius)
+
+		protected IEnumerator LerpValue(float changeAngle , float changeRadius)
         {
             float elapsedTime = 0f;
 
@@ -75,7 +86,7 @@ namespace Semin
                 yield return null;
             }
         }
-        IEnumerator FindTargetsWithDelay(float delay)
+		protected IEnumerator FindTargetsWithDelay(float delay)
 		{
 			while (true)
 			{
@@ -85,12 +96,12 @@ namespace Semin
 			}
 		}
 
-		void LateUpdate()
+		protected virtual void LateUpdate()
 		{
 			DrawFieldOfView();
 		}
 
-		void FindVisibleTargets()
+		protected void FindVisibleTargets()
 		{
 			visibleTargets.Clear();
 			Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
@@ -110,7 +121,7 @@ namespace Semin
 			}
 		}
 
-		void DrawFieldOfView()
+		protected void DrawFieldOfView()
 		{
 			int stepCount = Mathf.RoundToInt(viewAngle * meshResolution);
 			float stepAngleSize = viewAngle / stepCount;
@@ -167,7 +178,7 @@ namespace Semin
 		}
 
 
-		EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
+		protected EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
 		{
 			float minAngle = minViewCast.angle;
 			float maxAngle = maxViewCast.angle;
@@ -196,7 +207,7 @@ namespace Semin
 		}
 
 
-		ViewCastInfo ViewCast(float globalAngle)
+		protected ViewCastInfo ViewCast(float globalAngle)
 		{
 			Vector3 dir = DirFromAngle(globalAngle, true);
 			RaycastHit hit;

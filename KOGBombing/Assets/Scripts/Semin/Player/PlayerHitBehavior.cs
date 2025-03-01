@@ -7,6 +7,7 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using UnityEngine.Rendering;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -27,7 +28,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-        //Debug.Log($"Character: {gameObject.name}, PlayerTeam: {playerTeam}, Local: {(ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]}");
         if (playerData.pv.IsMine)
 			playerMaterialController.SetLayerToMyPlayer();
 
@@ -73,13 +73,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
     }
 
-   /* IEnumerator DamageTest(float time, float damage)
-    {
-        yield return new WaitForSeconds(time);
-        OnDamaged(damage);
-    }*/
-
-
 	[PunRPC]
 	private void SetRecoverDefence(float time)
 	{
@@ -96,6 +89,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			{
 				float value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
 				blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
+                value = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 5;
+                blackBoard.playerStatus.hp = Mathf.Min(value, blackBoard.playerStatus.maxHp);
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				playerData.timeWithoutDamage = 9f;
 			}
@@ -126,6 +121,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public INode.ENodeState RespawnNode()
     {
+        playerData.pv.RPC("PunRespawn", RpcTarget.AllBuffered);
+        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+
+        return INode.ENodeState.Success;
+    }
+    [PunRPC]
+    private void PunRespawn()
+    {
         Debug.Log("ResapwnPlayer");
         blackBoard.playerStatus.isLive = true;
         blackBoard.hpBar.SetStopHpUI(false);
@@ -135,21 +138,30 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
         blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.speedDebuff.Initialize();
-		blackBoard.isSetScore = false;
-		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-		blackBoard.hpBar.InitializeValues();
-		blackBoard.hpBar.HideGroggy();
+        blackBoard.isSetScore = false;
+        animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+        blackBoard.hpBar.InitializeValues();
+        blackBoard.hpBar.HideGroggy();
+        blackBoard.hpBar.ShowHpUI();
         SetActiveState(true);
         this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
         blackBoard.canRespawn = false;
-
-		return INode.ENodeState.Success;
     }
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;
+    }
+    public INode.ENodeState SetDeactiveUI()
+    {
+        playerData.pv.RPC("PunDeactiveUI", RpcTarget.AllBuffered);
+        return INode.ENodeState.Success;
+    }
+    [PunRPC]
+    private void PunDeactiveUI()
+    {
+        blackBoard.hpBar.HideGroggy();
+        blackBoard.hpBar.HideHpUI();
     }
     public INode.ENodeState SetPlayerScore()
     {
@@ -287,12 +299,21 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             stream.SendNext(blackBoard.playerStatus.isLive);
             stream.SendNext(blackBoard.playerStatus.hp);
             stream.SendNext(blackBoard.playerStatus.defence);
+            stream.SendNext(blackBoard.playerStatus.groggyable);
+            stream.SendNext(blackBoard.playerStatus.groggyValue);
+            stream.SendNext(blackBoard.playerStatus.isGroggy);
         }
         else if (stream.IsReading)
         {
             bool isLive = (bool)stream.ReceiveNext();
             blackBoard.playerStatus.hp = (float)stream.ReceiveNext();
             blackBoard.playerStatus.defence = (float)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyable = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyValue = (float)stream.ReceiveNext();
+            blackBoard.playerStatus.isGroggy = (bool)stream.ReceiveNext();
+            if(blackBoard.playerStatus.isGroggy == false)
+                blackBoard.hpBar.HideGroggy();
+
             SetActiveState(isLive);
         }
     }

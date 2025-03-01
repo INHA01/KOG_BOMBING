@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 6786506344979437206}
   - component: {fileID: 4970186942349010887}
   - component: {fileID: 3026917014417153677}
-  - component: {fileID: 9218072504105106236}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -120,8 +119,10 @@ MonoBehaviour:
   finshLerpTime: 0.3
   pv: {fileID: 2047044685979704218}
   playerSight: 1
-  viewRadius: 6
-  viewAngle: 60
+  viewRadius: 15
+  zoomViewRadius: 25
+  viewAngle: 135
+  zoomViewAngle: 75
   targetMask:
     serializedVersion: 2
     m_Bits: 128
@@ -148,9 +149,11 @@ MonoBehaviour:
   subject: {fileID: -7677719124921718330}
   finshLerpTime: 0.3
   pv: {fileID: 2047044685979704218}
-  playerSight: 0
-  viewRadius: 2.5
+  playerSight: 1
+  viewRadius: 3.5
+  zoomViewRadius: 3
   viewAngle: 360
+  zoomViewAngle: 360
   targetMask:
     serializedVersion: 2
     m_Bits: 128
@@ -162,22 +165,6 @@ MonoBehaviour:
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 4882022951795573986}
---- !u!114 &9218072504105106236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 772106139481323054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!1 &992032920591149900
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +312,7 @@ GameObject:
   - component: {fileID: 8207651971063068235}
   - component: {fileID: 6189942069491501681}
   - component: {fileID: 1785431844168192495}
+  - component: {fileID: 8112072814584161312}
   m_Layer: 8
   m_Name: SinglePlayer
   m_TagString: Player
@@ -602,7 +590,6 @@ MonoBehaviour:
   - {fileID: 8894044268401136495}
   - {fileID: 777691158875268194}
   - {fileID: -4870366558248218115}
-  - {fileID: 9218072504105106236}
   - {fileID: 7799719852954471310}
   - {fileID: 7300479445460102179}
   sceneViewId: 0
@@ -770,6 +757,22 @@ MonoBehaviour:
   interactTime: 3
   blackBoard: {fileID: 6782088153960012666}
   playerData: {fileID: 9216994139945491648}
+--- !u!114 &8112072814584161312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bdef6eff238f5641a06d19f525d2817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subject: {fileID: -7677719124921718330}
+  finshLerpTime: 0.3
+  fovTargetObject: {fileID: 772106139481323054}
+  pv: {fileID: 2047044685979704218}
 --- !u!1 &1190640062829256390
 GameObject:
   m_ObjectHideFlags: 0

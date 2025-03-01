@@ -120,8 +120,10 @@ MonoBehaviour:
   finshLerpTime: 0.3
   pv: {fileID: 2047044685979704218}
   playerSight: 1
-  viewRadius: 6
-  viewAngle: 60
+  viewRadius: 15
+  zoomViewRadius: 25
+  viewAngle: 135
+  zoomViewAngle: 75
   targetMask:
     serializedVersion: 2
     m_Bits: 128
@@ -148,9 +150,11 @@ MonoBehaviour:
   subject: {fileID: -7677719124921718330}
   finshLerpTime: 0.3
   pv: {fileID: 2047044685979704218}
-  playerSight: 0
-  viewRadius: 2.5
+  playerSight: 1
+  viewRadius: 4
+  zoomViewRadius: 3
   viewAngle: 360
+  zoomViewAngle: 360
   targetMask:
     serializedVersion: 2
     m_Bits: 128

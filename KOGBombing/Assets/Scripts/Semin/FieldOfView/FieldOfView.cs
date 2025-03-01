@@ -14,8 +14,14 @@ namespace Semin
 
         public bool playerSight = false;
         public float viewRadius;
+		public float zoomViewRadius;
 		[Range(0, 360)]
 		public float viewAngle;
+		[Range(0, 360)]
+		public float zoomViewAngle;
+
+		private float initViewAngle;
+		private float initViewRadius;
 
 		public LayerMask targetMask;
 		public LayerMask obstacleMask;
@@ -38,6 +44,9 @@ namespace Semin
 			DrawFieldOfView();
 			viewMeshFilter.mesh = viewMesh;
 
+			initViewAngle = viewAngle;
+			initViewRadius = viewRadius;
+
 			StartCoroutine("FindTargetsWithDelay", .2f);
 			
 			Attach(true);
@@ -45,10 +54,11 @@ namespace Semin
         protected override void SetPlayerSight(int isZoom)
 		{
 			if (!pv.IsMine) return;
-            pv.RPC("ExtractView", RpcTarget.AllBuffered, isZoom);
-        }
+			ExtractView(isZoom);
+		}
+
 		[PunRPC]
-		void ExtractView(int isZoom)
+		public void ExtractView(int isZoom)
 		{
             if (playerSight)
             {
@@ -58,11 +68,12 @@ namespace Semin
                     lerpValue = null;
                 }
                 if (isZoom == 1)
-                    lerpValue = StartCoroutine(LerpValue(30, 12));
+                    lerpValue = StartCoroutine(LerpValue(zoomViewAngle, zoomViewRadius));
                 else
-                    lerpValue = StartCoroutine(LerpValue(60, 6));
+                    lerpValue = StartCoroutine(LerpValue(initViewAngle, initViewRadius));
             }
         }
+
         private IEnumerator LerpValue(float changeAngle , float changeRadius)
         {
             float elapsedTime = 0f;

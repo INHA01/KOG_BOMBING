@@ -1,4 +1,5 @@
 using Orpul1;
+using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,12 @@ using UnityEngine.UI;
 
 public class PlayScene : MonoBehaviour
 {
+    enum SkillIcon
+    {
+        Active,
+        Cool,
+        Max
+    }
     [Header ("View")]
     [SerializeField] TextMeshProUGUI magazineCount;
     [SerializeField] Image chargeBar;
@@ -15,18 +22,22 @@ public class PlayScene : MonoBehaviour
     Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
-    // ResourceManager 사용할지 고민 중
     Sprite[] blueScoreImages = new Sprite[10];
     Sprite[] redScoreImages = new Sprite[10];
     [SerializeField] Image blueScoreIcon;
     [SerializeField] Image redScoreIcon;
     [Header("Map")]
     [SerializeField] GameObject[] maps;
-    [Header("Attack")]
-    [HideInInspector] public PlayerShooting weapon;
-    [SerializeField] public Image skillFade;
-    [SerializeField] public TextMeshProUGUI skillCount;
+
+    [Header("Skill")]
+    public Image skillFade;
+    [SerializeField] GameObject[] skillIcon = new GameObject[2];
+    public TextMeshProUGUI skillCount;
+    [Header("SubWeapon")]
     [SerializeField] public GameObject[] subWeaponFades = new GameObject[2];
+    [SerializeField]Image subWeaponIcon;
+    
+    [HideInInspector] public PlayerShooting weapon;
 
     [SerializeField] float sensitivity = 100f;
     void Start()
@@ -95,5 +106,21 @@ public class PlayScene : MonoBehaviour
         {
             blueScoreIcon.sprite = blueScoreImages[score];
         }
+    }
+    public void SetSubWeapon(WeaponType type)
+    {
+        string name = type == WeaponType.LANDMINE ? "Landmine" : "Grenade_Flash";
+        subWeaponIcon.sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");
+    }
+    public void SetSkillIcon(CharacterType type)
+    {
+        string name = type == CharacterType.Ned ? "Ned" : "Uni";
+        skillIcon[0].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
+        skillIcon[1].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
+    }
+    public void SetSkillActive(bool isActive)
+    {
+        skillIcon[(int)SkillIcon.Active].SetActive(isActive);
+        skillIcon[(int)SkillIcon.Cool].SetActive(!isActive);
     }
 }

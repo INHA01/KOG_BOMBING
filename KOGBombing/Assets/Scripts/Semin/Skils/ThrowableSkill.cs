@@ -10,7 +10,6 @@ public class ThrowableSkill : ThrowableBase, ISkill
 {
 	bool bisUsableSkill;
 	float skillDeltaTime;
-    PlayScene playScene;
     protected override void Start()
 	{
         bisUsableSkill = true;
@@ -18,10 +17,9 @@ public class ThrowableSkill : ThrowableBase, ISkill
 
 	IEnumerator Cooldown(float time)
 	{
-		if(playScene == null)
-            playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
         skillDeltaTime = 0f;
-		while (!bisUsableSkill)
+		playScene.SetSkillActive(false);
+        while (!bisUsableSkill)
         {
             skillDeltaTime += Time.deltaTime;
             playScene.skillFade.fillAmount = skillDeltaTime / time;
@@ -32,13 +30,17 @@ public class ThrowableSkill : ThrowableBase, ISkill
                 playScene.skillFade.fillAmount = 0;
                 playScene.skillCount.text = "";
                 bisUsableSkill = true;
+                playScene.SetSkillActive(true);
             }
             yield return null;
 		}
 	}
 	public void InitializationSkill(PlayerData playerData)
 	{
-		consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
+        playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+        playScene.SetSkillIcon(CharacterType.Ned);
+
+        consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
 		type = WeaponType.SHOCK_GRENADE;
 		this.playerData = playerData;
 

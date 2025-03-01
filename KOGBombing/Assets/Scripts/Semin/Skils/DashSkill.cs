@@ -5,6 +5,7 @@ using System.Reflection;
 using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
+using Semin;
 
 public class DashSkill : MonoBehaviour, ISkill
 {
@@ -23,6 +24,9 @@ public class DashSkill : MonoBehaviour, ISkill
 	PlayScene playScene;
 	public void InitializationSkill(PlayerData playerData)
 	{
+        playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+		playScene.SetSkillIcon(CharacterType.Uni);
+
         bisUsableSkill = true;
         this.playerData = playerData;
 		particle.gameObject.SetActive(false);
@@ -124,10 +128,9 @@ public class DashSkill : MonoBehaviour, ISkill
 
 	IEnumerator Cooldown(float time)
 	{
-        if (playScene == null)
-            playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
         skillDeltaTime = 0f;
-		while (!bisUsableSkill)
+		playScene.SetSkillActive(false);
+        while (!bisUsableSkill)
 		{
             skillDeltaTime += Time.deltaTime;
             playScene.skillFade.fillAmount = skillDeltaTime / time;
@@ -137,6 +140,7 @@ public class DashSkill : MonoBehaviour, ISkill
                 playScene.skillFade.fillAmount = 0;
                 playScene.skillCount.text = "";
                 bisUsableSkill = true;
+				playScene.SetSkillActive(true);
             }
             yield return null;
 		}

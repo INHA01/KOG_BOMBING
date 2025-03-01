@@ -45,9 +45,9 @@ namespace Semin
         protected override void SetPlayerSight(int isZoom)
 		{
 			if (!pv.IsMine) return;
-            pv.RPC("ExtractView", RpcTarget.AllBuffered, isZoom);
+            //pv.RPC("ExtractView", RpcTarget.AllBuffered, isZoom);
+            ExtractView(isZoom);
         }
-		[PunRPC]
 		void ExtractView(int isZoom)
 		{
             if (playerSight)

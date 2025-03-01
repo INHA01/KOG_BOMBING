@@ -5,6 +5,6 @@ using UnityEngine;
 public enum EBombState
 {
     EXPLOSION,
-    SET,
     CLEAR,
+    SET,
 }

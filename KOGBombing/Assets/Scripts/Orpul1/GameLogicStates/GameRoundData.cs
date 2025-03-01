@@ -6,6 +6,18 @@ using UnityEngine;
 
 namespace Orpul1
 {
+    public enum RoundEndType
+    {
+        NONE,
+        BOMBEXPLOSION,
+        BOMBCLEAR,
+        BOMBSET,
+
+        TIMEOVER,
+        GAMEEND,
+        ALLDIEATTACK,
+        ALLDIEDEFENCE,
+    }
     [Serializable]
     public class GameRoundData
     {
@@ -24,17 +36,7 @@ namespace Orpul1
         RoundEndType roundEndType = RoundEndType.NONE;
         public RoundEndType EndRoundType { get { return roundEndType; } }
         public bool IsEndRound { get { return isEndRound; } }
-        public enum RoundEndType
-        {
-            NONE,
-            BOMBEXPLOSION,
-            BOMBCLEAR,
-            
-            TIMEOVER,
-            GAMEEND,
-            ATTACKTEAMEXTERMINATE,
-            DEFENCETEAMEXTERMINATE,
-        }
+        
         
         public GameRoundData()
         {
@@ -62,12 +64,12 @@ namespace Orpul1
             if (teamCounts[teamType] == 0)
             {
                 Debug.Log("EXTERMINATE Team");
-                roundEndType = RoundEndType.ATTACKTEAMEXTERMINATE + teamType;
+                roundEndType = RoundEndType.ALLDIEATTACK + teamType;
                 isEndRound = true;
             }
         }
 
-        public void SetEndRound(GameRoundData.RoundEndType endType, bool isEndRound)
+        public void SetEndRound(RoundEndType endType, bool isEndRound)
         {
             Debug.Log($"endType {endType.ToString()}, isEndRound {isEndRound}");
             this.roundEndType = endType;
@@ -80,13 +82,13 @@ namespace Orpul1
                 //Defence team win condition
                 case RoundEndType.TIMEOVER:
                 case RoundEndType.BOMBCLEAR:
-                case RoundEndType.ATTACKTEAMEXTERMINATE:
+                case RoundEndType.ALLDIEATTACK:
                     teamScores[(int)ETeam.REDTEAM]++;
                     break;
 
                 //Attack team win condition
                 case RoundEndType.BOMBEXPLOSION:
-                case RoundEndType.DEFENCETEAMEXTERMINATE:
+                case RoundEndType.ALLDIEDEFENCE:
                     teamScores[(int)ETeam.BLUETEAM]++;
                     break;
             }

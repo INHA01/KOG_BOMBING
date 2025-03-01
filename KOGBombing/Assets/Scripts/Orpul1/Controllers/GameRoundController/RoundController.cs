@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 namespace Orpul1
@@ -10,13 +11,21 @@ namespace Orpul1
     public class RoundController:IRunGameEventAble
     {
         GameProcessData logicContext;
+        IRespawnAble respawnPlayer;
         EventUIController eventUIController;
         GameRoundData roundData = new GameRoundData();
-        [SerializeField]
+        TextMeshProUGUI timeTMP;
+        float roundInterval = 0;
+        float time = 0;
+        bool isStopTime = false;
         public bool IsEndRound { get { return roundData.IsEndRound; } }
 
-        public void Initialize(GameProcessData logicContext)
+        public void Initialize(GameProcessData logicContext, float roundTime)
         {
+            roundInterval = roundTime;
+            isStopTime = false;
+            time = 0;
+            timeTMP = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().timer;
             this.logicContext = logicContext;
             eventUIController = new EventUIController(logicContext.teamUIController);
             int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
@@ -66,10 +75,10 @@ namespace Orpul1
             if (punEvent.Code != (int)PunEventType.ENDROUND) return;
             Debug.Log("On ENDROUND Event");
             object[] datas = (object[])punEvent.CustomData;
-            roundData.SetEndRound((GameRoundData.RoundEndType)datas[0], (bool)datas[1]);
+            roundData.SetEndRound((RoundEndType)datas[0], (bool)datas[1]);
             Managers.UI.ClosePopupUI("DieCanvas");
         }
-        public void SetRoundTimeOver()
+        private void SetRoundTimeOver()
         {
             roundData.RoundTimeOver();
         }
@@ -94,14 +103,30 @@ namespace Orpul1
             return gameState;
         }
 
-       public void DoRemoveEvents()
+        public void DoRemoveEvents()
         {
             roundData.RemoveEvents();
         }
-
-        public void RunEvent(EGameEvent eventType)
+        public void DoRoundCountDown()
         {
-            // >> TODO: 이벤트 처리 + 이벤트 UI 띄우기
+            if (isStopTime) return;
+            time += Time.deltaTime;
+            timeTMP.text = string.Format("{0:00}:{1:00}", (int)(roundInterval - time) / 60, (int)(roundInterval - time) % 60);
+            if (time > roundInterval)
+            {
+                SetRoundTimeOver();
+                time = 0;
+            }
+        }
+        public void RunEvent(RoundEndType eventType)
+        {
+            if(eventType == RoundEndType.BOMBSET)
+            {
+                //시간 정지
+                isStopTime = true;
+                return;
+            }
+            roundData.SetEndRound(eventType, true);
         }
     }
 }

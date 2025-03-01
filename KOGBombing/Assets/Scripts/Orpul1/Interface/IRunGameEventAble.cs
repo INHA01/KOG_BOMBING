@@ -4,6 +4,6 @@ using Orpul1;
 
 public interface IRunGameEventAble
 {
-    public void RunEvent(EGameEvent eventType);
+    public void RunEvent(RoundEndType eventType);
 
 }

@@ -119,6 +119,16 @@ public class PlayerAttack : PlayerBehavior
         playerShooting.Shoot();
         return INode.ENodeState.Success;
     }
+
+	private void CancleBomb()
+	{
+		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+		playerData.bomb.Disable();
+	}
+
     public INode.ENodeState BombInteract()
     {
         if (playerData.bomb is DeployableBomb)
@@ -145,7 +155,8 @@ public class PlayerAttack : PlayerBehavior
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 
-                        bombInteraction.SetBombInteraction(false);
+                        if (bombInteraction.GetBomb() != null)
+						    bombInteraction.SetBombInteraction(false);
 						return INode.ENodeState.Fail;
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
@@ -160,7 +171,7 @@ public class PlayerAttack : PlayerBehavior
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-                        blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+						blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
@@ -192,7 +203,8 @@ public class PlayerAttack : PlayerBehavior
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
 
-							bombInteraction.SetBombInteraction(true);
+							if (bombInteraction.GetBomb() != null)
+								bombInteraction.SetBombInteraction(true);
 						}
                         playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                         playerData.isInteract = true;
@@ -209,6 +221,15 @@ public class PlayerAttack : PlayerBehavior
         }
         return INode.ENodeState.Fail;
     }
+
+
+    private void CancleSupportWeapon()
+	{
+		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
+		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+		playerData.supportWeapon.Disable();
+	}
+
     public INode.ENodeState LayingLandmine()
     {
         if (playerData.supportWeapon is DeployableWeapon deploy)
@@ -251,8 +272,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
                     blackBoard.inputs[EKey.NUM_1] = false;
-                    playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
-                    playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+                    CancleSupportWeapon();
                     playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                     isChangableAnim = true;
                     return INode.ENodeState.Success;
@@ -278,6 +298,14 @@ public class PlayerAttack : PlayerBehavior
 
         return INode.ENodeState.Running;
     }
+
+    private void CancleSkill()
+    {
+		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
+		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+		if (playerData.skill is ThrowableSkill skill)
+			skill.Disable();
+	}
 
     public INode.ENodeState SetSkill()
     {
@@ -369,10 +397,11 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-        if (blackBoard.inputs[EKey.Q] || blackBoard.inputs[EKey.NUM_1]) return;
 		if (playerData.bomb is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
-        isChangableAnim = true;
+		ResetAttackInput();
+
+		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
 
@@ -400,11 +429,11 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-		if (blackBoard.inputs[EKey.NUM_2] || blackBoard.inputs[EKey.Q]) return;
 		if (playerData.supportWeapon is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
+		ResetAttackInput();
 
-        isChangableAnim = true;
+		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.NUM_1] = !blackBoard.inputs[EKey.NUM_1];
 
@@ -416,9 +445,7 @@ public class PlayerAttack : PlayerBehavior
         }
         else
         {
-            playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
-            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-            playerData.supportWeapon.Disable();
+            CancleSupportWeapon();
         }
 
 		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
@@ -429,17 +456,17 @@ public class PlayerAttack : PlayerBehavior
     {
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
-		if (blackBoard.inputs[EKey.NUM_2] || blackBoard.inputs[EKey.NUM_1]) return;
 		if (!playerData.skill.isUsableSkill()) return;
+        ResetAttackInput();
 
-        isChangableAnim = true;
+		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.Q] = !blackBoard.inputs[EKey.Q];
 
 		if (blackBoard.inputs[EKey.Q])
 		{
 			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, true);
-            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill); // Uni Test
+            //playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill); // Uni Test
 			if (playerData.skill is ThrowableSkill baseWeapon)
 				weaponType = baseWeapon.type;
 		}
@@ -449,6 +476,27 @@ public class PlayerAttack : PlayerBehavior
 			playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
 			if (playerData.skill is ThrowableSkill skill)
 				skill.Disable();
+		}
+
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
+	}
+
+    public void ResetAttackInput()
+	{
+		if (blackBoard.inputs[EKey.NUM_2])
+		{
+			CancleBomb();
+			blackBoard.inputs[EKey.NUM_2] = false;
+		}
+		if (blackBoard.inputs[EKey.NUM_1])
+		{
+			CancleSupportWeapon();
+			blackBoard.inputs[EKey.NUM_1] = false;
+		}
+		if (blackBoard.inputs[EKey.Q])
+		{
+			CancleSkill();
+			blackBoard.inputs[EKey.Q] = false;
 		}
 	}
 }

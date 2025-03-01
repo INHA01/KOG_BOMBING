@@ -54,4 +54,9 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 			return false;
 		return true;
 	}
+
+	public void InitializeCount(int count)
+	{
+		this.count = count;
+	}
 }

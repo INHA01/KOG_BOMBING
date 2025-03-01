@@ -66,4 +66,10 @@ public class PlayerData : MonoBehaviour
         DecalProjector decalProjector = maxAttackRange.GetComponent<DecalProjector>();
         decalProjector.size = new Vector3(maxLength, 5, 0.2f);
     }
+
+    public void InitializeCount()
+    {
+        supportWeapon.InitializeCount(1);
+        bomb.InitializeCount(1);
+    }
 }

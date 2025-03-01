@@ -133,7 +133,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.Initialize();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
-        this.transform.position = blackBoard.spawnPoint;
+        playerData.InitializeCount();
+
+		this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
     }
     public bool IsDie()

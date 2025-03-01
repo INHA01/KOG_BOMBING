@@ -64,11 +64,9 @@ public class Bomb : AttackConsum
         time = bombTime;
         while (time > 0)
         {
-            Debug.Log($"IsInteraction: {isInteracting}");
             while (isInteracting) yield return null;
             time -= Time.deltaTime;
             bombNotify.SetTimeCount(time);
-            Debug.Log("Bomb, Time: " + time);
 
             yield return null;
         }

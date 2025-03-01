@@ -106,7 +106,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (playerData.pv.IsMine)
         {
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
-            blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.25f);
+            blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
         }
     }
     public INode.ENodeState SuccessNode()

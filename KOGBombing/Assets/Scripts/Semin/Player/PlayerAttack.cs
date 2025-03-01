@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 using Orpul1;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
-using UnityEditor.SceneManagement;
 public class PlayerAttack : PlayerBehavior
 {
     ISupportWeapon supportWeapon;

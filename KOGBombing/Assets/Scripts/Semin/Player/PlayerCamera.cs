@@ -97,14 +97,14 @@ public class PlayerCamera : ViewObserver
 		{
 			shakeX = Random.Range(-1f, 1f) * magnitude;
 			shakeY = Random.Range(-1f, 1f) * magnitude;
-            transform.position = new Vector3(transform.position.x + shakeX, transform.position.y + shakeY, transform.position.z);
+            this.transform.position = new Vector3(transform.position.x + shakeX, transform.position.y + shakeY, transform.position.z);
 
             elapsed += Time.deltaTime;
 			yield return null;
+            this.transform.localPosition = new Vector3(offsetX, offsetY, offsetZ);
 		}
 		shakeX = 0;
 		shakeY = 0;
-        this.transform.localPosition = new Vector3(offsetX, offsetY, offsetZ);
         shake = null;
 	}
 }

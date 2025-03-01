@@ -104,7 +104,7 @@ public class PlayerCamera : ViewObserver
 		}
 		shakeX = 0;
 		shakeY = 0;
-        SettingTargetPos(target.transform);
+        this.transform.localPosition = new Vector3(offsetX, offsetY, offsetZ);
         shake = null;
 	}
 }

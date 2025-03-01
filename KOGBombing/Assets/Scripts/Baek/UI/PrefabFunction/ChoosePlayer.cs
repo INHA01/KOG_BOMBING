@@ -44,6 +44,7 @@ public class ChoosePlayer : Subject
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
         go.GetComponent<ChooseAvatar>().SetSubject(this, true);
 
+        Notify((int)type);
         //SetIcon(true);
         StartCoroutine(CountDown());
     }

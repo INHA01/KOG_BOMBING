@@ -16,7 +16,6 @@ public class PlayerCamera : ViewObserver
 	float shakeY = 0;
 
 	public float CameraSpeed = 10.0f;
-	Vector3 TargetPos;
 	Coroutine shake;
     PlayerData playerData;
 
@@ -45,7 +44,6 @@ public class PlayerCamera : ViewObserver
 			if (!playerData.isInteract)
 			    TargetRotation();
 		}
-        transform.position = new Vector3(transform.position.x + shakeX, transform.position.y + shakeY, transform.position.z);
     }
     protected override void SetPlayerSight(int isZoom)
     {
@@ -83,14 +81,7 @@ public class PlayerCamera : ViewObserver
     public void SetTarget(GameObject target)
 	{
 		this.target = target;
-		this.transform.parent = target.transform;
-        TargetPos = new Vector3(
-                    target.transform.position.x + offsetX + shakeX,
-                    target.transform.position.y + offsetY + shakeY,
-                    target.transform.position.z + offsetZ
-                    );
-        transform.position = TargetPos;
-        transform.rotation = initRotation;
+        SettingTargetPos(target.transform);
     }
 	public void Shake(float duration, float magnitude)
 	{
@@ -101,16 +92,19 @@ public class PlayerCamera : ViewObserver
 
 	IEnumerator StartShake(float duration, float magnitude)
 	{
-		float elapsed = 0.0f;
+        float elapsed = 0.0f;
 		while (elapsed < duration)
 		{
 			shakeX = Random.Range(-1f, 1f) * magnitude;
 			shakeY = Random.Range(-1f, 1f) * magnitude;
-			elapsed += Time.deltaTime;
+            transform.position = new Vector3(transform.position.x + shakeX, transform.position.y + shakeY, transform.position.z);
+
+            elapsed += Time.deltaTime;
 			yield return null;
 		}
 		shakeX = 0;
 		shakeY = 0;
-		shake = null;
+        SettingTargetPos(target.transform);
+        shake = null;
 	}
 }

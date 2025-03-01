@@ -6,21 +6,23 @@ using UnityEngine;
 
 public class Bomb : AttackConsum
 {
+    [SerializeField] float bombTime = 10f;
+    float time = 0;
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
-    UIPopup _uiScene;
-    bool isInteracting = false;
-    
-    public void Notify()
+    BombNotify bombNotify;
+	bool isInteracting = false;
+
+	public void Notify()
     {
         // 폭탄 설치 모든 플레이어들에게 Notify
         NotifySet();
     }
     void NotifySet()
     {
-        if (_uiScene == null)
-            _uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
-        _uiScene.GetComponent<BombNotify>().NotifyBombSet();
+        if (bombNotify == null)
+            bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+        bombNotify.NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)
     {
@@ -29,9 +31,9 @@ public class Bomb : AttackConsum
         {
             player.playerStatus.isBombDefuse = false;
             // 폭탄 해제 모든 플레이어들에게 Notify
-            if(_uiScene == null)
-				_uiScene = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas");
-			_uiScene.GetComponent<BombNotify>().NotifyBombDefuse();
+            if (bombNotify == null)
+                bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+            bombNotify.NotifyBombSet();
             Release();
             //RPCDestroy();
         }
@@ -58,17 +60,17 @@ public class Bomb : AttackConsum
         destroyCoroutine = StartCoroutine(SetTimerToDestroy());
     }
     IEnumerator SetTimerToDestroy()
-	{
-		float time = 0;
-        while (true)
+    {
+        time = bombTime;
+        while (time > 0)
         {
             while (isInteracting) yield return null;
-            if (time >= 10.0f)
-                break;
-            Debug.Log("Show, Time: " + time);
-            time += Time.deltaTime;
+            time -= Time.deltaTime;
+            bombNotify.SetTimeCount(time);
+            Debug.Log("Bomb, Time: " + time);
+
             yield return null;
-		}
+        }
         ShowParticle();
         yield return new WaitForSeconds(0.5f);
         Release();

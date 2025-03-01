@@ -287,7 +287,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting) 
+        if (stream.IsWriting)
         {
             object[] sendHitInfo = new object[]
             { blackBoard.playerStatus.isLive, blackBoard.playerStatus.hp,
@@ -304,7 +304,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.playerStatus.groggyable = (bool)reciveHitInfo[3];
             blackBoard.playerStatus.groggyValue = (float)reciveHitInfo[4];
             blackBoard.playerStatus.isGroggy = (bool)reciveHitInfo[5];
-
         }
     }
 

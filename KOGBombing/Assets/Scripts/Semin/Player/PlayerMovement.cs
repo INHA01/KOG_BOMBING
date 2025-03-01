@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PlayerController;
 
-public class PlayerMovement : PlayerBehavior, IPunObservable
+public class PlayerMovement : PlayerBehavior
 {
 
     public bool IsNotGroggy()
@@ -54,7 +54,7 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
 
         return INode.ENodeState.Success;
     }
-
+/*
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -71,5 +71,5 @@ public class PlayerMovement : PlayerBehavior, IPunObservable
            //float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
            // transform.position += blackBoard.rigidBody.velocity * lag;
         }
-    }
+    }*/
 }

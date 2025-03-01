@@ -11,8 +11,15 @@ public class Bomb : AttackConsum
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
     BombNotify bombNotify;
+	bool isInteracting = false;
+    PhotonView pv;
 
-    public void Notify()
+	private void Awake()
+	{
+		pv = GetComponent<PhotonView>();
+	}
+
+	public void Notify()
     {
         // 폭탄 설치 모든 플레이어들에게 Notify
         NotifySet();
@@ -37,6 +44,12 @@ public class Bomb : AttackConsum
             //RPCDestroy();
         }
     }
+
+    public void SetIsInteraction(bool isInteraction)
+	{
+		isInteracting = isInteraction;
+	}
+
     [PunRPC]
     private void RPCDestroy()
     {
@@ -51,9 +64,11 @@ public class Bomb : AttackConsum
         time = bombTime;
         while (time > 0)
         {
-            yield return null;
+            while (isInteracting) yield return null;
             time -= Time.deltaTime;
             bombNotify.SetTimeCount(time);
+
+            yield return null;
         }
         ShowParticle();
         yield return new WaitForSeconds(0.5f);

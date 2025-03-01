@@ -42,7 +42,7 @@ namespace Orpul1
         public override void UpdateState()
         {
             DoRoundCountDown();
-            Debug.Log("UpdateGameProcess");
+            //Debug.Log("UpdateGameProcess");
             if (!roundController.IsEndRound) return;
             if(PhotonNetwork.IsMasterClient)
             {

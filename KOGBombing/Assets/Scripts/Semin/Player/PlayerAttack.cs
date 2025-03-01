@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using Orpul1;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
+using UnityEditor.SceneManagement;
 public class PlayerAttack : PlayerBehavior
 {
     ISupportWeapon supportWeapon;
@@ -15,6 +16,7 @@ public class PlayerAttack : PlayerBehavior
     bool isChangableAnim;
     Coroutine animChange;
     float bombInteractTime;
+    BombInteraction bombInteraction;
 
     protected override void Awake()
     {
@@ -23,6 +25,7 @@ public class PlayerAttack : PlayerBehavior
         attackRange = new AttackRange();
         attackRange.Init(playerData.playerObj.transform, playerData);
         playerShooting.Init(playerData.animator, attackRange);
+        bombInteraction = gameObject.AddComponent<BombInteraction>();
     }
     private void Start()
     {
@@ -134,7 +137,7 @@ public class PlayerAttack : PlayerBehavior
                 }
                 else
                 {
-                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // �߰��� ���
+                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Cancel
 					{
 						blackBoard.bombUI.ActiveInteract(false);
 						playerData.isInteract = false;
@@ -144,6 +147,8 @@ public class PlayerAttack : PlayerBehavior
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+
+                        bombInteraction.SetBombInteraction(false);
 						return INode.ENodeState.Fail;
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
@@ -163,7 +168,6 @@ public class PlayerAttack : PlayerBehavior
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 						playerData.isInteract = false;
-						//playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
 						return INode.ENodeState.Success;
 					}
 					return INode.ENodeState.Running;
@@ -194,6 +198,8 @@ public class PlayerAttack : PlayerBehavior
                         {
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
+
+							bombInteraction.SetBombInteraction(true);
 						}
                         playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                         playerData.isInteract = true;

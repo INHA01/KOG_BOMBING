@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 8207651971063068235}
   - component: {fileID: 6189942069491501681}
   - component: {fileID: 1785431844168192495}
-  - component: {fileID: 8112072814584161312}
+  - component: {fileID: 1028599783360021738}
   m_Layer: 8
   m_Name: SinglePlayer
   m_TagString: Player
@@ -775,7 +775,7 @@ MonoBehaviour:
   interactTime: 3
   blackBoard: {fileID: 6782088153960012666}
   playerData: {fileID: 9216994139945491648}
---- !u!114 &8112072814584161312
+--- !u!114 &1028599783360021738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -966,7 +966,7 @@ Transform:
   m_GameObject: {fileID: 3582241701207593215}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalPosition: {x: 0, y: -1.525, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1480,7 +1480,7 @@ Transform:
   m_GameObject: {fileID: 7202236666654096169}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 1}
+  m_LocalPosition: {x: 0, y: -1.525, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

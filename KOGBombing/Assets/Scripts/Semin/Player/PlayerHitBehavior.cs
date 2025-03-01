@@ -74,14 +74,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
     }
 
-   /* IEnumerator DamageTest(float time, float damage)
-    {
-        yield return new WaitForSeconds(time);
-        OnDamaged(damage);
-    }*/
-
-
-	[PunRPC]
+    [PunRPC]
 	private void SetRecoverDefence(float time)
 	{
 		StartCoroutine(RecoverDefence(time));
@@ -97,6 +90,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			{
 				float value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
 				blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
+                value = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 5;
+                blackBoard.playerStatus.hp = Mathf.Min(value, blackBoard.playerStatus.maxHp);
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				playerData.timeWithoutDamage = 9f;
 			}

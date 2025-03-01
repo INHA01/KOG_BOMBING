@@ -1,5 +1,6 @@
 using Orpul1;
 using Photon.Pun;
+using Photon.Realtime;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,12 +10,14 @@ public class DeployableBomb : DeployableBase
 {
     Vector3 position;
     ObjectPool objectPool;
+    public BombInteraction bombInteraction;
 	public override void SetTeam(ETeam team, int playerIndex)
 	{
         base.SetTeam(team, playerIndex);
 
 		if (team == ETeam.REDTEAM)
 		{
+            bombInteraction = GetComponent<BombInteraction>();
 			count = 1;
 			objectPool = gameObject.AddComponent<ObjectPool>();
 			PooledObject child = Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
@@ -55,7 +58,10 @@ public class DeployableBomb : DeployableBase
             bomb.Notify();
             bomb.SetTeam((int)team);
             bomb.Use();
-        }
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < players.Length; i++)
+                players[i].GetComponent<BombInteraction>().SetBomb(bomb);
+		}
 		else
 		{
             PlayerBlackBoard blackBoard = this.GetComponent<PlayerBlackBoard>();

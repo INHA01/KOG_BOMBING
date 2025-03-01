@@ -12,6 +12,12 @@ public class Bomb : AttackConsum
     Coroutine destroyCoroutine;
     BombNotify bombNotify;
 	bool isInteracting = false;
+    PhotonView pv;
+
+	private void Awake()
+	{
+		pv = GetComponent<PhotonView>();
+	}
 
 	public void Notify()
     {
@@ -40,14 +46,8 @@ public class Bomb : AttackConsum
     }
 
     public void SetIsInteraction(bool isInteraction)
-    {
-        RPCSetIsInteraction(isInteraction);
-    }
-
-    [PunRPC]
-    public void RPCSetIsInteraction(bool isInteraction)
-    {
-		this.isInteracting = isInteraction;
+	{
+		isInteracting = isInteraction;
 	}
 
     [PunRPC]
@@ -64,6 +64,7 @@ public class Bomb : AttackConsum
         time = bombTime;
         while (time > 0)
         {
+            Debug.Log($"IsInteraction: {isInteracting}");
             while (isInteracting) yield return null;
             time -= Time.deltaTime;
             bombNotify.SetTimeCount(time);

@@ -29,8 +29,24 @@ public class PlayerBlackBoard : MonoBehaviour
     public string nickname;
     public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
-    public bool canRespawn;
+    public bool canRespawn = false;
     public bool isSetScore = false;
     [HideInInspector] public PlayerStatus playerStatus;
+    public void Initialize()
+    {
+        speedDebuff.Initialize();
+        playerStatus.hp = playerStatus.maxHp;
+        playerStatus.defence = playerStatus.maxDefence;
+        playerStatus.isLive = true;
+        playerStatus.groggyValue = 150;
+        playerStatus.groggyable = true;
+        playerStatus.isGroggy = false;
+        canRespawn = false;
+        isSetScore = false;
+        hpBar.SetStopHpUI(false);
+        hpBar.InitializeValues();
+        hpBar.HideGroggy();
+        hpBar.ShowHpUI();
+    }
 }
 

@@ -66,26 +66,13 @@ public class HpBar : MonoBehaviour
     }
     public void ShowHpUI()
     {
-        if (!isOtherTeam)
-        {
-            myTeam.SetActive(true);
-        }
-        else
-        {
-            otherTeam.SetActive(true);
-        }
-        
+        myTeam.SetActive(!isOtherTeam);
+        otherTeam.SetActive(isOtherTeam);
     }
     public void HideHpUI()
     {
-        if (!isOtherTeam)
-        {
-            myTeam.SetActive(true);
-        }
-        else
-        {
-            myTeam.SetActive(false);
-        }
+        myTeam.SetActive(false);
+        otherTeam.SetActive(false);
     }
     
 

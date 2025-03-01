@@ -18,6 +18,23 @@ MonoBehaviour:
   method: CheckInput
   paramName: LMOUSEBUTTON
   className: PlayerInputListner
+--- !u!114 &-8389100774706129543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: d8d3eb5f08db541418e1ab92065c8347
+  position: {x: 825, y: -643}
+  paramName: 
+  method: DeactiveRescueCollider
+  className: PlayeRescue
 --- !u!114 &-8340223700539422723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +311,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 6d11af19884fb1e4bbc3f26afb0ae711
-  position: {x: 825, y: -604.5}
+  position: {x: 825, y: -566}
   paramName: 
   method: SetDeactiveUI
   className: PlayerHitBehavior
@@ -400,7 +417,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c95596c467b5ac840876b7e15f37ada0
-  position: {x: 510, y: -1011.80005}
+  position: {x: 509, y: -1022.5}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -468,7 +485,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 3eeb7986d68bf3f44999249279be6067
-  position: {x: 825, y: -512}
+  position: {x: 825, y: -474}
   paramName: 
   method: SetPlayerScore
   className: PlayerHitBehavior
@@ -613,6 +630,7 @@ MonoBehaviour:
   - {fileID: -1567745938999925633}
   - {fileID: 7780571593512279722}
   - {fileID: -4965493617326162921}
+  - {fileID: -8389100774706129543}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,7 +714,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2780f2f49acad5a4c97d7dbeb8af335d
-  position: {x: 510, y: -934.80005}
+  position: {x: 509, y: -932}
   paramName: 
   method: RespawnNode
   className: PlayerHitBehavior
@@ -1038,6 +1056,7 @@ MonoBehaviour:
   children:
   - {fileID: -1567745938999925633}
   - {fileID: -4965493617326162921}
+  - {fileID: -8389100774706129543}
 --- !u!114 &8200657294350586246
 MonoBehaviour:
   m_ObjectHideFlags: 0

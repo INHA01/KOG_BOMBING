@@ -64,12 +64,30 @@ public class HpBar : MonoBehaviour
 	{
 		groggyObject.gameObject.SetActive(false);
     }
-
+    public void ShowHpUI()
+    {
+        if (!isOtherTeam)
+        {
+            myTeam.SetActive(true);
+        }
+        else
+        {
+            otherTeam.SetActive(true);
+        }
+        
+    }
     public void HideHpUI()
     {
-        myTeam.SetActive(false);
-        otherTeam.SetActive(false);
+        if (!isOtherTeam)
+        {
+            myTeam.SetActive(true);
+        }
+        else
+        {
+            myTeam.SetActive(false);
+        }
     }
+    
 
     public void SetGroggyValue(float groggyValue)
 	{

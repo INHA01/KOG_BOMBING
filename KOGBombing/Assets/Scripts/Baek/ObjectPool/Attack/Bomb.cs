@@ -1,10 +1,18 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
+
+public struct BombData
+{
+    public string nickname;
+    public IBombStateAble bombState;
+}
+public class Bomb : AttackConsum,IDefendencyAble<BombData>
 {
     [SerializeField] float bombTime = 10f;
     float time = 0;
@@ -13,14 +21,17 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
     BombNotify bombNotify;
 	bool isInteracting = false;
     PhotonView pv;
-    IBombStateAble setBombState;
+    BombData bombData;
+    RaiseEventOptions options = new RaiseEventOptions();
+    int bombEventCode = 50;
 
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
-	}
+        options.Receivers = ReceiverGroup.All;
 
-	public void Notify()
+    }
+    public void Notify()
     {
         // 폭탄 설치 모든 플레이어들에게 Notify
         NotifySet();
@@ -29,8 +40,8 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
     {
         if (bombNotify == null)
             bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
-        if (setBombState != null)
-            setBombState.BombEvent(EBombState.SET);
+        if (bombData.bombState != null)
+            bombData.bombState.BombEvent(EBombState.SET);
         bombNotify.NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)
@@ -42,14 +53,16 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
             // 폭탄 해제 모든 플레이어들에게 Notify
             if (bombNotify == null)
                 bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
-            if (setBombState != null)
-                setBombState.BombEvent(EBombState.CLEAR);
+            if (bombData.bombState != null)
+                bombData.bombState.BombEvent(EBombState.CLEAR);
+            //폭탄 해체한 플레이어 미션 포인트 + 1 이벤트
+            if (PhotonNetwork.IsMasterClient)
+                PhotonNetwork.RaiseEvent((int)EPointType.MISSION, player.nickname, options, SendOptions.SendReliable);
             bombNotify.NotifyBombDefuse();
             Release();
             //RPCDestroy();
         }
     }
-
     public void SetIsInteraction(bool isInteraction)
 	{
 		isInteracting = isInteraction;
@@ -76,14 +89,18 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
             yield return null;
         }
         ShowParticle();
-        if(setBombState != null)
-            setBombState.BombEvent(EBombState.EXPLOSION);
+        if(bombData.bombState!= null)
+            bombData.bombState.BombEvent(EBombState.EXPLOSION);
+        //폭탄 설치한 플레이어 미션 포인트 + 1 이벤트
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.RaiseEvent((int)EPointType.MISSION, bombData.nickname, options, SendOptions.SendReliable);
+
         yield return new WaitForSeconds(0.5f);
         Release();
     }
 
-    public void Defendency(IBombStateAble setBombState)
+    public void Defendency(BombData bombData)
     {
-        this.setBombState = setBombState;
+        this.bombData = bombData;
     }
 }

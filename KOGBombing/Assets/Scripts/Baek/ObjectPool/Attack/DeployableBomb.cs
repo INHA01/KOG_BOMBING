@@ -6,12 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeployableBomb : DeployableBase,IDefendencyAble<IBombStateAble>
+public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
 {
     Vector3 position;
     ObjectPool objectPool;
     public BombInteraction bombInteraction;
-    IBombStateAble bombDefendency;
+    BombData bombData;
+    
     public override void SetTeam(ETeam team, int playerIndex)
 	{
         base.SetTeam(team, playerIndex);
@@ -61,7 +62,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<IBombStateAble>
 		if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
         {
 		    Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
-            bomb.GetComponent<IDefendencyAble<IBombStateAble>>().Defendency(bombDefendency);
+            bomb.GetComponent<IDefendencyAble<BombData>>().Defendency(bombData);
             bomb.transform.position = playerData.ConsumPos.position;
             bomb.Notify();
             bomb.SetTeam((int)team);
@@ -77,8 +78,8 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<IBombStateAble>
 		}
 	}
 
-    public void Defendency(IBombStateAble bombState)
+    public void Defendency(BombData bombData)
     {
-        bombDefendency = bombState;
+        this.bombData = bombData;
     }
 }

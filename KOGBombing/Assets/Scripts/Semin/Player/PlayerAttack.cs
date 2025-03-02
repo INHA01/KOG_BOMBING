@@ -73,7 +73,8 @@ public class PlayerAttack : PlayerBehavior
     void SetSupportWeapon(int team)
     {
         playerData.bomb = gameObject.AddComponent<DeployableBomb>();
-        GetComponent<DeployableBomb>().Defendency(blackBoard.setBombState);
+        
+        GetComponent<DeployableBomb>().Defendency(GetBombData());
 
         if (team == (int)ETeam.REDTEAM)
         {
@@ -93,6 +94,15 @@ public class PlayerAttack : PlayerBehavior
         }
     }
 
+    private BombData GetBombData()
+    {
+        BombData bombData = new BombData()
+        {
+            nickname = blackBoard.nickname,
+            bombState = blackBoard.setBombState
+        };
+        return bombData;
+    }
     void InitSkill()
     {
         switch (blackBoard.characterType)

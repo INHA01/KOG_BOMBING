@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Michsky.UI.Shift;
 using Orpul1;
 using Photon.Pun;
 using UnityEngine;
@@ -16,15 +17,20 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     [SerializeField] PhotonView pView;
     [SerializeField] DoorInteractBehavior otherDoor;
     [SerializeField] Animator animator;
-
+    [SerializeField] GameObject doorUI;
+    IActiveable activeAlertUI;
+    IResetAble interactUICamera;
     Action openOtherDoor;
    
     private void Start()
     {
         interactTime = 3;
+        activeAlertUI = doorUI.GetComponent<IActiveable>();
         openOtherDoor -= otherDoor.OpenDoor;
         openOtherDoor += otherDoor.OpenDoor;
-        
+        interactUICamera = lookUiCamera.GetComponent<IResetAble>();
+
+
     }
     private void OnEnable()
     {
@@ -52,6 +58,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     }
     public void OpenDoor()
     {
+        activeAlertUI.Active();
         interactState = InteractState.COMPLETE;
         interactCollider.enabled = false;
         SetOutline(false);
@@ -63,6 +70,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         interactState = InteractState.NONE;
         interactCollider.enabled = true;
         animator.SetTrigger(EDoorAni.TriCloseDoor.ToString());
+        interactUICamera.DoReset();
     }
     [PunRPC]
     private void AbortInteractDoor()

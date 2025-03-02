@@ -9,6 +9,8 @@ public abstract class InteractObject : Subject, IInteractAble
 {
     [SerializeField]
     protected InteractPresenter interactUI;
+    [SerializeField] 
+    protected GameObject lookUiCamera;
     [SerializeField]
     GameObject showOutlineObj;
     [SerializeField] 

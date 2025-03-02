@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
-
-public class LookCamera : MonoBehaviour
+using Orpul1;
+public class LookCamera : MonoBehaviour,IResetAble
 {
     [SerializeField] Transform trCamera;
     bool canStart = false;
+
+    public void DoReset()
+    {
+        StartCoroutine(CoWaitInit());
+    }
+
     private void Awake()
     {
         StartCoroutine(CoWaitInit());

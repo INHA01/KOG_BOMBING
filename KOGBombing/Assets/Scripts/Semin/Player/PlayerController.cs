@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
 using Orpul1;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRespawnAble
+public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         Debug.Log($"DestroyPlayer {blackBoard.nickname}");
         Destroy(gameObject);
     }
-    public void DoRespawn()
+    public void DoReset()
     {
         Debug.Log($"Set Respawn");
         blackBoard.canRespawn = true;

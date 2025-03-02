@@ -1,7 +1,9 @@
 using Orpul1;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +13,14 @@ public class Lobby : MonoBehaviour
     [SerializeField] GameObject selectMode;
     [SerializeField] GameObject gameStartButton;
     [SerializeField] NetworkDirector networkDirector;
+    [SerializeField] TextMeshProUGUI userName;
 
     LobbyModeSelect _lobbyModeSelect;
+    void Start()
+    {
+        //PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
+        userName.text = PhotonNetwork.LocalPlayer.NickName;
+    }
     public void OnPlayClick()
     {
         playButton.SetActive(false);

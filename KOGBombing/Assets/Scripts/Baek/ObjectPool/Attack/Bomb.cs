@@ -14,7 +14,7 @@ public struct BombData
 }
 public class Bomb : AttackConsum,IDefendencyAble<BombData>
 {
-    [SerializeField] float bombTime = 10f;
+    [SerializeField] float bombTime = 20f;
     float time = 0;
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
@@ -24,7 +24,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>
     BombData bombData;
     RaiseEventOptions options = new RaiseEventOptions();
     int bombEventCode = 50;
-
+    public float BombTime { get { return bombTime; } } 
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
@@ -40,6 +40,8 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>
     {
         if (bombNotify == null)
             bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+        else
+            bombNotify.gameObject.SetActive(true);
         if (bombData.bombState != null)
             bombData.bombState.BombEvent(EBombState.SET);
         bombNotify.NotifyBombSet();

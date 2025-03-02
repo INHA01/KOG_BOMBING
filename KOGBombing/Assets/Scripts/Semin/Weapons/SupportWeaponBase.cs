@@ -20,19 +20,14 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 
     public virtual void SetConsum(WeaponType type, PlayerData playerData)
 	{
-		if(playScene == null)
-            playScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
-        else
-            playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+
         switch (type)
 		{
 			case WeaponType.LANDMINE:
                 consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
-				playScene.SetSubWeaponIcon(type);
                 break;
 			case WeaponType.MOLOTOV:
 				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
-                playScene.SetSubWeaponIcon(type);
                 break;
 			case WeaponType.BOMB:
                 consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
@@ -40,6 +35,15 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
         }
 		this.type = type;
 		this.playerData = playerData;
+		if(playerData.pv.IsMine)
+		{
+			if(playScene == null)
+				playScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+			else
+				playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+			if(type != WeaponType.BOMB)
+				playScene.SetSubWeaponIcon(type);
+		}
     }
     public virtual void SetTeam(ETeam team, int playerIndex)
 	{
@@ -50,7 +54,8 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 	public abstract void SetWeapon(SupportWeaponInfo info);
 	public virtual void Use()
 	{
-		playScene.subWeaponFades[0].SetActive(true);
+		if(playerData.pv.IsMine)
+			playScene.subWeaponFades[0].SetActive(true);
     }
 	public virtual void Disable() { }
 
@@ -63,7 +68,7 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 
 	public virtual void Initialize(int count)
 	{
-		if (count > 0) 
+		if (count > 0 && playerData.pv.IsMine) 
 			playScene.subWeaponFades[0].SetActive(false);
         this.count = count;
 	}

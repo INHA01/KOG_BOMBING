@@ -13,8 +13,10 @@ namespace Orpul1
         public StringBuilder selectCharacterPath = new StringBuilder();
         public TeamUIController teamUIController = new TeamUIController();
         public GameRoundData debugRoundData;
+        public Transform bombPos;
         private void Start()
         {
+            teamUIController.Init(bombPos.position);
             options.Receivers = ReceiverGroup.All;
         }
     }

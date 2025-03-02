@@ -15,6 +15,8 @@ namespace Orpul1
         {
             time = 0;
             Debug.Log("RoundEndWaiter Start");
+            Managers.UI.ClosePopupUI("BombNotifyCanvas");
+            Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(0);
         }
         public override void UpdateState()
         {
@@ -25,6 +27,7 @@ namespace Orpul1
 
         public override void ExitState()
         {
+            Managers.UI.ClosePopupUI("WinnerCanvas");
             gameData.playerObj.GetComponent<IRespawnAble>().DoRespawn();
         }
 

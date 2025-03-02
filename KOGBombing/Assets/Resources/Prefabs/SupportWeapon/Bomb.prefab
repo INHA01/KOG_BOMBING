@@ -548,7 +548,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 4434074960492833691}
   type: 3
-  bombTime: 10
+  isActive: 0
+  bombTime: 20
 --- !u!65 &-5606174201140544190
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -588,7 +589,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 7904172551095390406}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

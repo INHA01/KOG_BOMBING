@@ -33,24 +33,34 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
         /*UpdatePlayerScore();
         UpdateTeamScore();*/
     }
+    void OnEnable()
+    { 
+        LoadTeamPanelIcon();
+    }
     private void SetPlayersMapping()
     {
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
         playerNicknameList = new List<StringBuilder>(playerCount);
 
     }
-    private void SetPlayerScore()
+    ETeam LoadTeamPanelIcon()
     {
         ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        string teamPanel = mine == ETeam.REDTEAM ? "Red" : "Blue";
+        string otherTeamPanel = mine == ETeam.REDTEAM ? "Blue" : "Red";
+        teamPanels[0].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + teamPanel + "_BG");
+        teamPanels[1].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + otherTeamPanel + "_BG");
+        return mine;
+    }
+    private void SetPlayerScore()
+    {
+        ETeam mine = LoadTeamPanelIcon();
         ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[0])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
         myPlayerScoreUI.SetTitle(new StringBuilder(PhotonNetwork.LocalPlayer.NickName));
         dicPlayerScore.Add(PhotonNetwork.LocalPlayer.NickName, myPlayerScoreUI);
 
-        string teamPanel = mine == ETeam.REDTEAM ? "Red" : "Blue";
-        string otherTeamPanel = mine == ETeam.REDTEAM ? "Blue" : "Red";
-        teamPanels[0].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + teamPanel + "_BG" );
-        teamPanels[1].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + otherTeamPanel + "_BG");
+        
 
 
         Dictionary<string , Player> players = new Dictionary<string, Player>();

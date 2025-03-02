@@ -40,7 +40,7 @@ public class PlayScene : MonoBehaviour
     [HideInInspector] public PlayerShooting weapon;
 
     [SerializeField] float sensitivity = 100f;
-    void Start()
+    void Awake()
     {
         for(int i = 0; i < 10; i++)
         {
@@ -52,7 +52,7 @@ public class PlayScene : MonoBehaviour
         scoreImgs[(int)ETeam.REDTEAM].sprite = scoreImageList[(int)ETeam.REDTEAM][0];
         scoreImgs[(int)ETeam.BLUETEAM].sprite = scoreImageList[(int)ETeam.BLUETEAM][0];
     }
-    void OnDisable()
+    void OnEnable()
     {
         for (int i = 0; i < subWeaponFades.Length; i++)
         {
@@ -65,8 +65,12 @@ public class PlayScene : MonoBehaviour
     }
     void FixedUpdate()
     {
-        magazineCount.text = weapon.MagazineCount + "/4";
-        chargeBar.fillAmount = weapon.ReloadTime;
+        // 호출 순서 엉켜서 에러 발생 weapon에 넣어주기 전에 호출되는 듯?
+        if (weapon != null)
+        {
+            magazineCount.text = weapon.MagazineCount + "/4";
+            chargeBar.fillAmount = weapon.ReloadTime;
+        }
         if(Input.GetKeyDown(KeyCode.M))
         {
             maps[0].SetActive(!maps[0].activeSelf);
@@ -112,6 +116,7 @@ public class PlayScene : MonoBehaviour
         string name = type == CharacterType.Ned ? "Ned" : "Uni";
         skillIcon[0].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
         skillIcon[1].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
+        SetSkillActive(true);
     }
     public void SetSkillActive(bool isActive)
     {

@@ -3,22 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 public class Winner : MonoBehaviour
 {
-    [SerializeField] GameObject redWin;
-    [SerializeField] GameObject blueWin;
-    private void Awake()
+    [SerializeField] Image winner;
+    [SerializeField] GameObject activeResultButton;
+    int redTeamCnt = 0;
+    int blueTeamCnt = 0;
+    public void SetWiner(int end)
     {
-        if (GameDirector.redScore > GameDirector.blueScore)
+        if(end == 0)
         {
-            redWin.SetActive(true);
-            blueWin.SetActive(false);
+            if(redTeamCnt != Managers.RoundData.TeamScore[(int)ETeam.REDTEAM])
+            {
+                redTeamCnt = Managers.RoundData.TeamScore[(int)ETeam.REDTEAM];
+                winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_RedWin_BG");
+            }
+            else if(blueTeamCnt != Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM])
+            {
+                blueTeamCnt = Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM];
+                winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_BlueWin_BG");
+            }
         }
         else
         {
-            blueWin.SetActive(true);
-            redWin.SetActive(false);
+            if(Managers.RoundData.WinTeam > 0)
+            {
+                winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_RedWin_BG");
+            }
+            else
+            {
+                winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_BlueWin_BG");
+            }
         }
+        activeResultButton.SetActive(end == 1);
     }
     public void OpenResult()
     {

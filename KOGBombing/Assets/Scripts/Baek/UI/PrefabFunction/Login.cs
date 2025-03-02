@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class Login : MonoBehaviourPunCallbacks
 {
+    enum TextType
+    {
+        EMAIL,
+        PW,
+        MAX,
+    }
     [SerializeField] GameObject _login;
     [SerializeField] GameObject _serverSelect;
+    [SerializeField] TMPro.TMP_InputField[] _inputFields = new TMPro.TMP_InputField[(int)TextType.MAX];
     public void OnLoginClick()
     {
         _login.SetActive(false);
@@ -17,8 +24,10 @@ public class Login : MonoBehaviourPunCallbacks
         _serverSelect.SetActive(true);
     }
     public void OnStartClick()
-    { 
+    {
+        if (_inputFields[(int)TextType.EMAIL].text == "")
+            _inputFields[(int)TextType.EMAIL].text = Managers.UserData.userData.nickName + (Random.Range(0, 100) * Time.deltaTime).ToString();
+        Managers.UserData.userData.nickName = _inputFields[(int)TextType.EMAIL].text;
         LoadingSceneManager.LoadScene("LobbyScene");
     }
-
 }

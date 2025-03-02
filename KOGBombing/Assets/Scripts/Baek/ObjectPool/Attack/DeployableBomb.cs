@@ -30,7 +30,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
 	}
     public override void Initialize(int count)
     {
-        if (count > 0)
+        if (count > 0 && playerData.pv.IsMine)
             playScene.subWeaponFades[1].SetActive(false);
         this.count = count;
     }
@@ -38,8 +38,11 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
     public override void Use()
     {
         count--;
-        PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
-        playScene.subWeaponFades[1].SetActive(true);
+        if(playerData.pv.IsMine)
+        {
+            PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+            playScene.subWeaponFades[1].SetActive(true);
+        }
         playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);
     }
 

@@ -13,6 +13,11 @@ public class BombNotify : MonoBehaviour
     [SerializeField] GameObject bombDefuse;
 
     Coroutine bombSetCoroutine;
+    Bomb bomb;
+    public void Init(Bomb bomb)
+    {
+        this.bomb = bomb;
+    }
     public void SetTimeCount(float time)
     {
         timeCount.text = string.Format("{0:00}:{1:00}", (int)time, (int)((time - (int)time) * 100));
@@ -54,8 +59,6 @@ public class BombNotify : MonoBehaviour
             bombImage.color = color;
             time += Time.deltaTime;
         }
-        bombUI.SetActive(false);
         bomb.SetActive(false);
-
     }
 }

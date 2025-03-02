@@ -13,7 +13,11 @@ public class TeamUIController
     private Action<ETeam, int> updateScore;
     List<Player> teamPlayerList  = new List<Player>();
     RaiseEventOptions options = new RaiseEventOptions();
-    
+    Vector3 bombPos;
+    public void Init(Vector3 bombPos)
+    {
+        this.bombPos = bombPos;
+    }
     public void SetTeamUI(PlayerShooting playerShooting)
     {
         options.Receivers = ReceiverGroup.All;
@@ -24,6 +28,7 @@ public class TeamUIController
         ETeam otherPlayerTeam;
 
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
+        _uiScene.GetComponent<ShowCursor>().BombPos = bombPos;
         _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
         _uiScene.GetComponent<PlayScene>().Reset();
         for (int i = 0; i < players.Length; i++)

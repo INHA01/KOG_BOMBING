@@ -15,7 +15,7 @@ namespace Orpul1
         PhotonMatch customMatch;
         private void Start()
         {
-            PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName + (Random.Range(0,100)*Time.deltaTime).ToString();
+            PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
         }
         public void Match(int mode)
         {

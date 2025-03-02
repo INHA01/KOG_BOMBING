@@ -10565,6 +10565,12 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!4 &1105941818 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7602037014246047303, guid: 010348e31eb63904298dda4f6de31c56,
+    type: 3}
+  m_PrefabInstance: {fileID: 1714757957}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &1134798869
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11473,6 +11479,7 @@ MonoBehaviour:
     winRound: 4
     switchRound: 2
     isAlreadySwitchRoll: 0
+  bombPos: {fileID: 1105941818}
 --- !u!114 &1317832639
 MonoBehaviour:
   m_ObjectHideFlags: 0

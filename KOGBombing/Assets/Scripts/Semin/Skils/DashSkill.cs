@@ -24,8 +24,11 @@ public class DashSkill : MonoBehaviour, ISkill
 	PlayScene playScene;
 	public void InitializationSkill(PlayerData playerData)
 	{
-        playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
-		playScene.SetSkillIcon(CharacterType.Uni);
+		if(playerData.pv.IsMine)
+		{
+			playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+			playScene.SetSkillIcon(CharacterType.Uni);
+		}
 
         bisUsableSkill = true;
         this.playerData = playerData;

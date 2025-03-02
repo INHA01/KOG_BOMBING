@@ -16,6 +16,7 @@ namespace Orpul1
         SPAWNPLAYER,
         ROUNDWAIT,
         GAMESTART,
+        ROUNDENDWAIT,
         SWITCHTEAMROLL,
         GAMEEND,
         END,

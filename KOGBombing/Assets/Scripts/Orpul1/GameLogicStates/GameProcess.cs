@@ -16,9 +16,11 @@ namespace Orpul1
         float roundInterval;
 
         RoundController roundController = new RoundController();
+        ISetDataAble<EGameState> setNextEndRoundGameState;
         private void Start()
         {
             GetComponent<RoundEventListner>().Initialize(roundController);
+            setNextEndRoundGameState = GetComponent<RoundEndWaiter>();
         }
         private void OnDisable()
         {
@@ -26,7 +28,6 @@ namespace Orpul1
         }
         public override void EnterState()
         {
-            
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { EPropertyType.STATE.ToString(), EPlayerState.START} });
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
@@ -45,9 +46,9 @@ namespace Orpul1
                 PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, datas, gameData.options, SendOptions.SendReliable);
             }
             roundController.SetTeamScore();
-            int nextState = (int)roundController.GetGameState();
+            setNextEndRoundGameState.SetData(roundController.GetGameState());
 
-            transitionState(nextState);
+            transitionState((int)EGameState.ROUNDENDWAIT);
         }
 
         public override void ExitState()

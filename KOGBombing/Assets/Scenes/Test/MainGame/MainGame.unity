@@ -11272,6 +11272,7 @@ GameObject:
   - component: {fileID: 1317832633}
   - component: {fileID: 1317832632}
   - component: {fileID: 1317832631}
+  - component: {fileID: 1317832640}
   - component: {fileID: 1317832637}
   - component: {fileID: 1317832636}
   - component: {fileID: 1317832638}
@@ -11363,7 +11364,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData: {fileID: 0}
   roundInterval: 180
-  time: 0
 --- !u!114 &1317832632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11485,6 +11485,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d8c621da5024948bc0c48636de8a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1317832640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d1503b6df021dd47b0c68b5e18f25b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameData: {fileID: 0}
+  roundEndTime: 5
 --- !u!64 &1319289927
 MeshCollider:
   m_ObjectHideFlags: 0

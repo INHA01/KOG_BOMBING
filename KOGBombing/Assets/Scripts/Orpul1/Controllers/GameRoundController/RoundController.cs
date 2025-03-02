@@ -95,10 +95,6 @@ namespace Orpul1
         public EGameState GetGameState()
         {
             EGameState gameState = roundData.GetNextState();
-            if(gameState == EGameState.ROUNDWAIT)
-            {
-                logicContext.playerObj.GetComponent<IRespawnAble>().DoRespawn();
-            }
             return gameState;
         }
 

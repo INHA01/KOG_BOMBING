@@ -6,30 +6,41 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
 {
-    public class RoundEndWaiter : PhotonPlayerWaitLogic
+    public class RoundEndWaiter : GameProcessLogic, ISetDataAble<EGameState>
     {
+        [SerializeField] float roundEndTime;
+        float time = 0;
+        EGameState nextGameState = EGameState.ROUNDWAIT;
         public override void EnterState()
         {
-            base.EnterState();
-            //PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { ""} })
+            time = 0;
         }
         public override void UpdateState()
         {
+            if(!IsEndWaitRoundEnd()) return;
+            transitionState((int)nextGameState);
         }
+
         public override void ExitState()
         {
+            gameData.playerObj.GetComponent<IRespawnAble>().DoRespawn();
         }
 
-        protected override void SetCurReadyPlayer()
+        private bool IsEndWaitRoundEnd()
         {
+            time+= Time.deltaTime;
+            if (time > roundEndTime) 
+            {
+                time = 0;
+                return true;
+            }
+            return false;
         }
 
-        protected override IEnumerator CoWaitPlayer()
+        public void SetData(EGameState state)
         {
-            yield return null;
+            nextGameState = state;
         }
-
-       
     }
 
 }

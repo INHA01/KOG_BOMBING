@@ -17,6 +17,15 @@ namespace Orpul1
             options.Receivers = ReceiverGroup.All;
             playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         }
+        private void OnEnable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= PunBombEvent;
+            PhotonNetwork.NetworkingClient.EventReceived += PunBombEvent;
+        }
+        private void OnDisable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= PunBombEvent;
+        }
         public void Initialize(IRunGameEventAble runEvent)
         {
             this.runEvent = runEvent;
@@ -24,24 +33,13 @@ namespace Orpul1
 
         public void BombEvent(EBombState bombState)
         {
-            switch (bombState)
-            {
-                case EBombState.SET:
-                    {
-                        runEvent.RunEvent(RoundEndType.BOMBSET);
-                    }
-                    break;
-                case EBombState.CLEAR: // ¹æ¾îÆÀ ½Â¸®
-                    {
-                        runEvent.RunEvent(RoundEndType.BOMBCLEAR);
-                    }
-                    break;
-                case EBombState.EXPLOSION: //°ø°Ý ÆÀ ½Â¸®
-                    {
-                        runEvent.RunEvent(RoundEndType.BOMBEXPLOSION);
-                    }
-                    break;
-            }
+            PhotonNetwork.RaiseEvent((int)PunEventType.RUNEVENT, bombState, options, SendOptions.SendReliable);
+        }
+        private void PunBombEvent(EventData punEvent)
+        {
+            if (punEvent.Code != (int)PunEventType.RUNEVENT) return;
+            
+            runEvent.RunEvent((RoundEndType)punEvent.CustomData + 1);
         }
         public void SetTeamCount(int teamType)
         {

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Orpul1
 {
-    public abstract class GameProcessLogic : MonoBehaviourPunCallbacks, IState
+    public abstract class GameProcessLogic : MonoBehaviour, IState
     {
         [SerializeField]
         protected GameProcessData gameData;

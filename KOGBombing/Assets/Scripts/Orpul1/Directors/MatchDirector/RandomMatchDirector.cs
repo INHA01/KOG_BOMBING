@@ -111,7 +111,7 @@ namespace Orpul1
                 IsOpen = true,
                 MaxPlayers = maxPlayer,
                 PublishUserId = true,
-                CustomRoomProperties = new PhotonHashTable { { (int)EPropertyType.REDTEAM, 0 }, { (int)EPropertyType.BLUETEAM, 0 }, { (int)EPropertyType.ROOMSTATE, "Ready" } },
+                CustomRoomProperties = new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), 0 }, { EPropertyType.BLUETEAM.ToString(), 0 }, { EPropertyType.ROOMSTATE.ToString(), "Ready" } },
             };
 
 
@@ -138,7 +138,7 @@ namespace Orpul1
             if (PhotonNetwork.IsMasterClient)
             {
                 yield return gameStartDelay;
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.ROOMSTATE, "Start" } });
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.ROOMSTATE.ToString(), "Start" } });
             }
         }
     }

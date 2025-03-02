@@ -27,8 +27,8 @@ namespace Orpul1
             timeTMP = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().timer;
             this.logicContext = logicContext;
             eventUIController = new EventUIController(logicContext.teamUIController);
-            int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.REDTEAM];
-            int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.BLUETEAM];
+            int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
+            int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
             logicContext.debugRoundData = roundData;
             this.roundData.Initialize(logicContext.teamUIController);
             this.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);

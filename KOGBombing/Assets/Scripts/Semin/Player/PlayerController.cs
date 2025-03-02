@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         isInitComplete = false;
         InitPlayerData();
-        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
 
         if (playerData.pv.IsMine)
         {
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         }
         else
         {
-            if ((ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == team)
+            if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == team)
             {
                 playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.blue;
             }
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 
 	private void Start()
 	{
-        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
 		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
         isInitComplete = true;
@@ -76,12 +76,12 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         if (playerData.pv.IsMine)
         {
             blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
-            blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+            blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         }
         else
         {
             blackBoard.nickname = playerData.pv.Owner.NickName;
-            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
+            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
         }
     }
 	[PunRPC]

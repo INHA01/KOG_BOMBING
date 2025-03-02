@@ -29,7 +29,7 @@ namespace Orpul1
                 roundDoorController[i].CloseDoor();
             }
             readyPlayerCnt = 0;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.STATE, (int)EPlayerState.WAITROUND } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), (int)EPlayerState.WAITROUND } });
             PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;
             canCountDown = false;
             GameEventBus.Publish(GameEventBus.EGameEvent.DOORCLOSE);
@@ -56,8 +56,8 @@ namespace Orpul1
         {
             if (!PhotonNetwork.IsMasterClient) return;
             if (dicReadyPlayer[targetPlayer.NickName] == true) return;
-            if (!targetPlayer.CustomProperties.ContainsKey((int)EPropertyType.STATE)) return;
-            if ((int)targetPlayer.CustomProperties[(int)EPropertyType.STATE] != (int)EPlayerState.WAITROUND) return;
+            if (!targetPlayer.CustomProperties.ContainsKey(EPropertyType.STATE.ToString())) return;
+            if ((int)targetPlayer.CustomProperties[EPropertyType.STATE.ToString()] != (int)EPlayerState.WAITROUND) return;
             
             readyPlayerCnt++;
             Debug.Log($"player {targetPlayer.NickName} change WAITROUND state!");
@@ -93,7 +93,7 @@ namespace Orpul1
             for (int i = 0; i < players.Length; i++)
             {
                 if (dicReadyPlayer[players[i].NickName] == true) continue;
-                if ((int)players[i].CustomProperties[(int)EPropertyType.STATE] == (int)EPlayerState.WAITROUND)
+                if ((int)players[i].CustomProperties[EPropertyType.STATE.ToString()] == (int)EPlayerState.WAITROUND)
                 {
                     dicReadyPlayer[players[i].NickName] = true;
                     readyPlayerCnt++;

@@ -21,7 +21,7 @@ public class Result : MonoBehaviour
     int[] teamDeathScore = new int[2] { 0, 0 };
     void Awake()
     {
-        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         type = GetWinTeam() == myTeam ? ResultType.Win : ResultType.Lose;
         for(int i = 0; i < (int)ResultType.Max; i++)
         {
@@ -73,7 +73,7 @@ public class Result : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             PlayerPointInfo pointInfo = Managers.PointData.GetPlayerInfo(players[i].NickName);
-            if ((ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM] == ETeam.REDTEAM)
+            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
             {
                 teamScore[(int)ETeam.REDTEAM] += pointInfo.MissionPoint;
                 teamKillScore[(int)ETeam.REDTEAM] += pointInfo.KillPoint;

@@ -35,7 +35,7 @@ namespace Orpul1
             ETeam playerTeam = SetTeam();
 
             Debug.Log($"SetTeam  {(ETeam)playerTeam}");
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.TEAM, playerTeam } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), playerTeam } });
         }
 
         public override void OnJoinedLobby()
@@ -45,25 +45,25 @@ namespace Orpul1
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log("PlayerLeftRoom");
-            if ((int)otherPlayer.CustomProperties[(int)EPropertyType.TEAM] == (int)ETeam.REDTEAM) 
+            if ((int)otherPlayer.CustomProperties[EPropertyType.TEAM.ToString()] == (int)ETeam.REDTEAM) 
             {
-                int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.REDTEAM];
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.REDTEAM, redTeam - 1 } });
+                int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), redTeam - 1 } });
             }
             else
             {
-                int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.BLUETEAM];
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.BLUETEAM, blueTeam - 1 } });
+                int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.BLUETEAM.ToString(), blueTeam - 1 } });
             }
         }
 
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
-            if (propertiesThatChanged.ContainsKey((int)EPropertyType.ROOMSTATE))
+            if (propertiesThatChanged.ContainsKey(EPropertyType.ROOMSTATE.ToString()))
             {
-                if ((string)propertiesThatChanged[(int)EPropertyType.ROOMSTATE] == "Start")
+                if ((string)propertiesThatChanged[EPropertyType.ROOMSTATE.ToString()] == "Start")
                 {
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.STATE, EPlayerState.WAIT } });
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });
 
                     SetPlayerTeamIndex();
 
@@ -81,17 +81,17 @@ namespace Orpul1
 
             for(int i=0; i<players.Length; i++)
             {
-                ETeam team = (ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM];
+                ETeam team = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
                 if(team== ETeam.REDTEAM)
                 {
-                    players[i].SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.TEAMINDEX, redTeamIndex } });
+                    players[i].SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), redTeamIndex } });
                     Debug.Log($"{players[i].NickName} index {redTeamIndex}");
                     redTeamIndex++;
 
                 }
                 else if(team == ETeam.BLUETEAM)
                 {
-                    players[i].SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.TEAMINDEX, blueTeamIndex } });
+                    players[i].SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), blueTeamIndex } });
                     Debug.Log($"{players[i].NickName} index {blueTeamIndex}");
                     blueTeamIndex++;
                 }
@@ -99,8 +99,8 @@ namespace Orpul1
         }
         protected ETeam SetTeam()
         {
-            int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.REDTEAM];
-            int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.BLUETEAM];
+            int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
+            int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
             ETeam team = ETeam.REDTEAM;// Set RedTeam
             int playerCount = redTeamCnt + 1;
             EPropertyType type = EPropertyType.REDTEAM;
@@ -111,7 +111,7 @@ namespace Orpul1
                 playerCount = blueTeamCnt + 1;
                 type = EPropertyType.BLUETEAM;
             }
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { (int)type, playerCount} });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { type.ToString(), playerCount} });
             return team;
         }
         protected virtual IEnumerator CoStartDelay()

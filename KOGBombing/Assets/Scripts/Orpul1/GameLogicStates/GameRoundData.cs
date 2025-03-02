@@ -83,13 +83,13 @@ namespace Orpul1
                 case RoundEndType.TIMEOVER:
                 case RoundEndType.BOMBCLEAR:
                 case RoundEndType.ALLDIEATTACK:
-                    teamScores[(int)ETeam.REDTEAM]++;
+                    teamScores[(int)ETeam.BLUETEAM]++;
                     break;
 
                 //Attack team win condition
                 case RoundEndType.BOMBEXPLOSION:
                 case RoundEndType.ALLDIEDEFENCE:
-                    teamScores[(int)ETeam.BLUETEAM]++;
+                    teamScores[(int)ETeam.REDTEAM]++;
                     break;
             }
 

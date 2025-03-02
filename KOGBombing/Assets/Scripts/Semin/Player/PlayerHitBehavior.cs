@@ -27,11 +27,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     private void Start()
     {
-        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
         if (playerData.pv.IsMine)
 			playerMaterialController.SetLayerToMyPlayer();
 
-        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] != playerTeam)
+        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
             SetOtherTeamInfo();
         else
         {
@@ -236,9 +236,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (playerData.pv.IsMine)
 		{
-			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
+			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
             blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.STATE, EPlayerState.WAITROUND } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
 
 
 

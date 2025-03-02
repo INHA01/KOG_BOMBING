@@ -25,7 +25,7 @@ public class ChoosePlayer : Subject
     }
     public virtual void Init()
     {
-        ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         if (eTeam == ETeam.BLUETEAM)
         {
             Color32 weekBlue = new Color32(0, 0, 255, 60);

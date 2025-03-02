@@ -41,7 +41,7 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
     }
     private void SetPlayerScore()
     {
-        ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[0])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
         myPlayerScoreUI.SetTitle(new StringBuilder(PhotonNetwork.LocalPlayer.NickName));
@@ -62,7 +62,7 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
         for (int i = 0; i < players.Count; i++) 
         {
             //순서대로 탐색
-            ETeam team = (ETeam)players.ElementAt(i).Value.CustomProperties[(int)EPropertyType.TEAM];
+            ETeam team = (ETeam)players.ElementAt(i).Value.CustomProperties[EPropertyType.TEAM.ToString()];
             int parentIndex = team == mine ? 0 : 1;
             ISetScoreable<EPlayerScore> playerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[parentIndex])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();

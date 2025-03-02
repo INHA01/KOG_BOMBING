@@ -217,7 +217,7 @@ namespace Semin
 				if (hit.transform.GetComponent<PlayerController>() != null)
 				{
 					ETeam team = hit.transform.GetComponent<PlayerController>().blackBoard.eTeam;
-					if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] != team)
+					if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != team)
 					{
 						HpBar hp = hit.transform.GetComponent<PlayerController>().blackBoard.hpBar;
 						hp.SetHpValue(50, 50);

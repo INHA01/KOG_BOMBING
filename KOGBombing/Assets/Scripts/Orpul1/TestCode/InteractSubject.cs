@@ -30,7 +30,7 @@ namespace Orpul1
         }
         public bool ProcessInteract(PhotonView pView)
         {
-            EInteractState state = (EInteractState)pv.Owner.CustomProperties[(int)EPropertyType.STATE];
+            EInteractState state = (EInteractState)pv.Owner.CustomProperties[EPropertyType.STATE.ToString()];
             if (state == EInteractState.DONE || state == EInteractState.INTERACTING) 
             {
                 return false;
@@ -38,7 +38,7 @@ namespace Orpul1
             if (coroutine == null)
             {
                 Debug.Log("상호작용 시작");
-                pv.Owner.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.STATE, EInteractState.INTERACTING} });
+                pv.Owner.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EInteractState.INTERACTING} });
 
                 coroutine = StartCoroutine(CoInteract());
             }
@@ -46,7 +46,7 @@ namespace Orpul1
         }
         public void AbortInteract()
         {
-            EInteractState state = (EInteractState)pv.Owner.CustomProperties[(int)EPropertyType.STATE];
+            EInteractState state = (EInteractState)pv.Owner.CustomProperties[EPropertyType.STATE.ToString()];
             Debug.Log($"abort state : {state}");
             if (state == EInteractState.DONE)
             {
@@ -56,7 +56,7 @@ namespace Orpul1
             {
                 Debug.Log("상호작용 중단!");
                 StopCoroutine(coroutine);
-                pv.Owner.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.STATE, EInteractState.WAIT } });
+                pv.Owner.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EInteractState.WAIT } });
                 coroutine = null;
             }
         }
@@ -72,7 +72,7 @@ namespace Orpul1
             Debug.Log("상호작용 완료 이벤트!");
             coroutine = null;
             isDoneInteract = true;
-            pv.Owner.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.STATE, EInteractState.DONE } });
+            pv.Owner.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EInteractState.DONE } });
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

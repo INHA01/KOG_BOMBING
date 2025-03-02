@@ -34,16 +34,16 @@ public class PlayPointController
         UIPopup _uiPopup = Managers.UI.GetPopupUI<UIPopup>("BattleBoardCanvas");
         updateScore = _uiPopup.GetComponent<BattleBoardUpdater>();
 
-        ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
 
         int playerSize = 0;
         if(currentTeam == ETeam.REDTEAM)
         {
-            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.BLUETEAM];
+            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
         }
         else
         {
-            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.REDTEAM];
+            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
         }
 
         attackPlayerIndexList = new List<bool>(playerSize) { false };
@@ -54,8 +54,8 @@ public class PlayPointController
         {
             Managers.PointData.AddPlayerInfo(players[i].NickName, new PlayerPointInfo());
 
-            if ((ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM] == currentTeam) continue;
-            int playerIndex = (int)players[i].CustomProperties[(int)EPropertyType.TEAMINDEX];
+            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] == currentTeam) continue;
+            int playerIndex = (int)players[i].CustomProperties[EPropertyType.TEAMINDEX.ToString()];
             Debug.Log($"nickname {players[i].NickName}");
             playerNicknameList[playerIndex] = players[i].NickName;
         }
@@ -100,7 +100,7 @@ public class PlayPointController
             int killPlayerIndex = (int)customDatas[0];
             string attackPlayer = (string)customDatas[1];
             Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
-            int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAMINDEX];
+            int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
             updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
             Managers.PointData.AddPoint(attackPlayer, EPointType.KILL);
         }

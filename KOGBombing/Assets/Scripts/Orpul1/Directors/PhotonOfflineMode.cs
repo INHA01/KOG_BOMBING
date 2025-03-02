@@ -26,8 +26,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PhotonNetwork.OfflineMode = true;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.TEAM, ETeam.BLUETEAM } });
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.TEAMINDEX, 0 } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), ETeam.BLUETEAM } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), 0 } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
         StartCoroutine(TimeCount());
@@ -56,7 +56,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { (int)EPropertyType.REDTEAM, 1 } });
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), 1 } });
         InitEvent();
         SpawnPlayer();
     }

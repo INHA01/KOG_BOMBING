@@ -45,8 +45,8 @@ namespace Orpul1
         Vector3 SetSpawnPoint()
         {
             int spawnIndex = 0;
-            int teamSpawnSpot = (int)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAMINDEX];
-            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] == ETeam.BLUETEAM)
+            int teamSpawnSpot = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.BLUETEAM)
                 spawnIndex = 1;
             Vector3 spawnPosi = teamSpawnPoints[spawnIndex].position;
             spawnPosi.x += (teamSpawnSpot % 2) * 0.5f - 1 * 2;

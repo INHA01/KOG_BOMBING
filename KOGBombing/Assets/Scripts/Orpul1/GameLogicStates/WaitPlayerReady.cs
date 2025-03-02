@@ -22,7 +22,7 @@ namespace Orpul1
             curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
             gameData.options.Receivers = ReceiverGroup.All;
             PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.STATE, EPlayerState.READY } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.READY } });
             base.EnterState();
         }
 
@@ -41,8 +41,8 @@ namespace Orpul1
         {
             if (!PhotonNetwork.IsMasterClient) return;
             if (dicReadyPlayer[targetPlayer.NickName] == true) return;
-            if (!targetPlayer.CustomProperties.ContainsKey((int)EPropertyType.STATE)) return;
-            if ((int)targetPlayer.CustomProperties[(int)EPropertyType.STATE] != (int)EPlayerState.READY) return;
+            if (!targetPlayer.CustomProperties.ContainsKey(EPropertyType.STATE.ToString())) return;
+            if ((int)targetPlayer.CustomProperties[EPropertyType.STATE.ToString()] != (int)EPlayerState.READY) return;
 
             readyPlayerCnt++;
             dicReadyPlayer[targetPlayer.NickName] = true;
@@ -60,7 +60,7 @@ namespace Orpul1
             for (int i = 0; i < players.Length; i++)
             {
                 if (dicReadyPlayer[players[i].NickName] == true) continue;
-                if ((int)players[i].CustomProperties[(int)EPropertyType.STATE] == (int)EPlayerState.READY)
+                if ((int)players[i].CustomProperties[EPropertyType.STATE.ToString()] == (int)EPlayerState.READY)
                 {
                     dicReadyPlayer[players[i].NickName] = true;
                     readyPlayerCnt++;

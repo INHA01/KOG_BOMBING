@@ -9,9 +9,9 @@ public class Magazine : ObjectPool
     protected override void Init()
     {
         PlayerData playerData = GetComponent<PlayerData>();
-        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
+        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
-        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] != playerTeam)
+        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
             SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/AttackPrefabs/Bullet/Effect_02ToHide"));
         GameObject parentInstance = Instantiate(parentPrefab);
         parent = parentInstance.transform;

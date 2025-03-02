@@ -24,8 +24,8 @@ public class PlayScene : MonoBehaviour
     public TextMeshProUGUI timer;
     Sprite[] blueScoreImages = new Sprite[10];
     Sprite[] redScoreImages = new Sprite[10];
-    [SerializeField] Image blueScoreIcon;
-    [SerializeField] Image redScoreIcon;
+    List<Sprite[]> scoreImageList = new List<Sprite[]>();
+    [SerializeField] Image[] scoreImgs;
     [Header("Map")]
     [SerializeField] GameObject[] maps;
 
@@ -47,8 +47,10 @@ public class PlayScene : MonoBehaviour
             blueScoreImages[i] = Resources.Load<Sprite>($"UISettings/Play/Play_UI_Score/Number/T_GUI_Bg_Exit_Number_"+i.ToString()+"_Blue");
             redScoreImages[i] = Resources.Load<Sprite>($"UISettings/Play/Play_UI_Score/Number/T_GUI_Bg_Exit_Number_" + i.ToString() + "_Red");
         }
-        blueScoreIcon.sprite = blueScoreImages[0];
-        redScoreIcon.sprite = redScoreImages[0];
+        scoreImageList.Add(redScoreImages);
+        scoreImageList.Add(blueScoreImages);
+        scoreImgs[(int)ETeam.REDTEAM].sprite = scoreImageList[(int)ETeam.REDTEAM][0];
+        scoreImgs[(int)ETeam.BLUETEAM].sprite = scoreImageList[(int)ETeam.BLUETEAM][0];
     }
     void OnDisable()
     {
@@ -58,8 +60,8 @@ public class PlayScene : MonoBehaviour
         }
         maps[0].SetActive(true);
         maps[1].SetActive(false);
-        blueScoreIcon.sprite = blueScoreImages[0];
-        redScoreIcon.sprite = redScoreImages[0];
+        scoreImgs[(int)ETeam.REDTEAM].sprite = scoreImageList[(int)ETeam.REDTEAM][0];
+        scoreImgs[(int)ETeam.BLUETEAM].sprite = scoreImageList[(int)ETeam.BLUETEAM][0];
     }
     void FixedUpdate()
     {
@@ -98,14 +100,7 @@ public class PlayScene : MonoBehaviour
     }
     public void UpdateScore(ETeam team, int score)
     {
-        if(team == ETeam.REDTEAM)
-        {
-            redScoreIcon.sprite = redScoreImages[score];
-        }
-        else if(team == ETeam.BLUETEAM)
-        {
-            blueScoreIcon.sprite = blueScoreImages[score];
-        }
+        scoreImgs[(int)team].sprite = scoreImageList[(int)team][score]; 
     }
     public void SetSubWeaponIcon(WeaponType type)
     {

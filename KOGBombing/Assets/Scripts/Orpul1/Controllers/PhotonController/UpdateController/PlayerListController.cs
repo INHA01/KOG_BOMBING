@@ -23,7 +23,7 @@ namespace Orpul1
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
             if (PhotonNetwork.IsMasterClient)
             {
-                PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { {(int)EPropertyType.TEAM, ETeam.REDTEAM } });
+                PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { {EPropertyType.TEAM.ToString(), ETeam.REDTEAM } });
             }
             Player[] players = PhotonNetwork.PlayerList;
             for(int i=0; i<players.Length; i++)
@@ -59,7 +59,7 @@ namespace Orpul1
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)
         {
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
-            if (targetPlayer.CustomProperties.ContainsKey((int)EPropertyType.TEAM))
+            if (targetPlayer.CustomProperties.ContainsKey(EPropertyType.TEAM.ToString()))
             {
                 SwapPlayerTeam(targetPlayer);
             }
@@ -70,9 +70,9 @@ namespace Orpul1
             if(!dicPlayerInfo.ContainsKey(playerInfo.NickName))
             {
                 ETeam teamIndex = 0;
-                if (playerInfo.CustomProperties.ContainsKey((int)EPropertyType.TEAM))
+                if (playerInfo.CustomProperties.ContainsKey(EPropertyType.TEAM.ToString()))
                 {
-                    teamIndex = (ETeam)playerInfo.CustomProperties[(int)EPropertyType.TEAM];
+                    teamIndex = (ETeam)playerInfo.CustomProperties[EPropertyType.TEAM.ToString()];
                     Debug.Log($"{playerInfo.NickName} set {teamIndex.ToString()}");
                 }
                 else
@@ -89,7 +89,7 @@ namespace Orpul1
         private void SwapPlayerTeam(Player playerInfo)
         {
             int teamIndex = (int)ETeam.BLUETEAM;
-            if ((int)playerInfo.CustomProperties[(int)EPropertyType.TEAM] == (int)ETeam.REDTEAM)
+            if ((int)playerInfo.CustomProperties[EPropertyType.TEAM.ToString()] == (int)ETeam.REDTEAM)
             {
                 teamIndex = (int)ETeam.REDTEAM;
             }
@@ -99,7 +99,7 @@ namespace Orpul1
         private ETeam GetTeamIndex()
         {
             Room curRoom = PhotonNetwork.CurrentRoom;
-            if ((int)curRoom.CustomProperties[(int)EPropertyType.REDTEAM] > (int)curRoom.CustomProperties[(int)EPropertyType.BLUETEAM])
+            if ((int)curRoom.CustomProperties[EPropertyType.REDTEAM.ToString()] > (int)curRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()])
             {
                 return ETeam.BLUETEAM;
             }

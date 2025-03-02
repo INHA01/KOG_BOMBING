@@ -58,7 +58,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<IBombStateAble>
     protected override IEnumerator PutAfterAnim()
     {
         yield return null;
-		if ((ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == ETeam.REDTEAM)
+		if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
         {
 		    Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
             IDefendencyAble<IBombStateAble> defendencyAble = bomb;

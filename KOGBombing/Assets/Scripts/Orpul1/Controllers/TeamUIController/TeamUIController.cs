@@ -20,7 +20,7 @@ public class TeamUIController
        
         Player[] players = PhotonNetwork.PlayerList;
         UIPopup _uiScene = null;
-        ETeam selfPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        ETeam selfPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
         ETeam otherPlayerTeam;
 
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
@@ -28,7 +28,7 @@ public class TeamUIController
         _uiScene.GetComponent<PlayScene>().Reset();
         for (int i = 0; i < players.Length; i++)
         {
-            otherPlayerTeam = (ETeam)players[i].CustomProperties["Team"];
+            otherPlayerTeam = (ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM];
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);

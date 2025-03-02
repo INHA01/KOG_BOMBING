@@ -30,7 +30,7 @@ namespace Semin
         }
         protected bool IsOtherTeam(PhotonView pView)
         {
-            ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
+            ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[(int)EPropertyType.TEAM];
 
             //Debug.Log($"otherTeam: {otherTeam}, mine: {team}");
             //customproperties Team 변수를 ETeam타입으로 변경 중

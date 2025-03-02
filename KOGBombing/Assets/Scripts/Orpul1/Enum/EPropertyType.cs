@@ -8,5 +8,6 @@ public enum EPropertyType
     TEAMINDEX,
     REDTEAM,
     BLUETEAM,
-    STATE
+    STATE,
+    ROOMSTATE
 }

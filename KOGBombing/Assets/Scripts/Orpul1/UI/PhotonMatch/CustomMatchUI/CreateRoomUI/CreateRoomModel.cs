@@ -32,7 +32,7 @@ namespace Orpul1
                 IsVisible = true,
                 IsOpen = true,
                 PublishUserId = true,
-                CustomRoomProperties = new PhotonHashTable { { "RT", 0 }, { "BT", 0 }, { "RoomState", "Ready" } },
+                CustomRoomProperties = new PhotonHashTable { { (int)EPropertyType.REDTEAM, 0 }, { (int)EPropertyType.BLUETEAM, 0 }, { (int)EPropertyType.ROOMSTATE, "Ready" } },
             };
             PhotonNetwork.CreateRoom(stbRoomName.ToString(), options);
             updateUI();

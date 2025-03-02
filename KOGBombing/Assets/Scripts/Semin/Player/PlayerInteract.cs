@@ -72,34 +72,6 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 		return INode.ENodeState.Success;
     }
 
-	/*
-	 [PunRPC]
-	 private void RPCProcess()
-	 {
-
-		 Debug.Log("RPC Process Interact");
-		 StartCoroutine(CoRevive());
-	 }
-	 [PunRPC]
-	 private void RPCAbort()
-	 {
-		 Debug.Log("RPC Abort Interact");
-		 isReviving = false;
-	 }*/
-
-	/*IEnumerator CoRevive()
-    {
-        if (isReviving) yield break;
-        isReviving = true;
-        int reviveInterval = 3;
-        float time = Time.time + reviveInterval;
-        while (time > Time.time) 
-        {
-            if (!isReviving) yield break;
-            yield return null;
-        }
-        OnResurrect();
-    }*/
 
 	[PunRPC]
     public void OnResurrect()

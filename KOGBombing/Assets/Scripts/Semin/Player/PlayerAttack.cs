@@ -28,8 +28,8 @@ public class PlayerAttack : PlayerBehavior
     }
     private void Start()
     {
-        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
-        int playerIndex = (int)playerData.pv.Owner.CustomProperties["TeamIndex"];
+        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
+        int playerIndex = (int)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAMINDEX];
         SetSupportWeapon((int)playerTeam);
         playerData.supportWeapon.SetTeam(playerTeam, playerIndex);
         playerData.bomb.SetTeam(playerTeam, playerIndex);
@@ -51,12 +51,12 @@ public class PlayerAttack : PlayerBehavior
 
 	public bool IsAttackTeam()
     {
-        return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM;
+        return (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == ETeam.REDTEAM;
     }
 
     public bool IsDefenceTeam()
     {
-        return (ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.BLUETEAM;
+        return (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == ETeam.BLUETEAM;
     }
 
     public bool IsUni()
@@ -190,12 +190,12 @@ public class PlayerAttack : PlayerBehavior
                 {
                     if (
                         (
-                            ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
+                            ((ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == ETeam.REDTEAM)
                             && colliders[i].CompareTag("BombInteract")
                         )
                         ||
                         (
-                            ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.BLUETEAM)
+                            ((ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == ETeam.BLUETEAM)
                             && colliders[i].CompareTag("Bomb")
                         )
                        ) 
@@ -413,7 +413,7 @@ public class PlayerAttack : PlayerBehavior
             if (playerData.bomb is SupportWeaponBase baseWeapon)
             {
                 // �������� ��� ��ź����, �������� ��� �����̹Ƿ� �Ǽ�
-                if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == ETeam.REDTEAM)
+                if ((ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == ETeam.REDTEAM)
                     weaponType = WeaponType.BOMB;
                 else
                     weaponType = WeaponType.NONE;

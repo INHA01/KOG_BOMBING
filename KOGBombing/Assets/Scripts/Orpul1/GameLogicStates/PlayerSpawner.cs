@@ -17,7 +17,6 @@ namespace Orpul1
         [SerializeField]
         GameObject minimapCamera;
 
-        StringBuilder characterPath;
         bool isSpawnPlayer = false;
 
         public override void EnterState()
@@ -36,11 +35,6 @@ namespace Orpul1
         }
 
 
-        public void SetPlayerCharacter(StringBuilder path)
-        {
-            Debug.Log($"playerpaht:{path.ToString()}");
-            characterPath = path;
-        }
         void SpawnPlayer()
         {
             Debug.Log($"SpawnPlayer()");
@@ -51,8 +45,8 @@ namespace Orpul1
         Vector3 SetSpawnPoint()
         {
             int spawnIndex = 0;
-            int teamSpawnSpot = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
-            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == ETeam.BLUETEAM)
+            int teamSpawnSpot = (int)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAMINDEX];
+            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] == ETeam.BLUETEAM)
                 spawnIndex = 1;
             Vector3 spawnPosi = teamSpawnPoints[spawnIndex].position;
             spawnPosi.x += (teamSpawnSpot % 2) * 0.5f - 1 * 2;

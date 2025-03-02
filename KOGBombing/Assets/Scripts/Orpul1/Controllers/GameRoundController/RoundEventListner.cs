@@ -15,7 +15,7 @@ namespace Orpul1
         private void Start()
         {
             options.Receivers = ReceiverGroup.All;
-            playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+            playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
         }
         public void Initialize(IRunGameEventAble runEvent)
         {

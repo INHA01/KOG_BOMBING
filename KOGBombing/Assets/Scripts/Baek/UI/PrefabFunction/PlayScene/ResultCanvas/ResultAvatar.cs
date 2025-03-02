@@ -11,11 +11,11 @@ public class ResultAvatar : MonoBehaviour
     void Start()
     {
         int index = 0;
-        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
         Player[] players = PhotonNetwork.PlayerList;
         for(int i = 0; i < players.Length; i++)
         {
-            if ((ETeam)players[i].CustomProperties["Team"] == team)
+            if ((ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM] == team)
             {
                 GameObject avatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultPlayer");
                 avatar.transform.SetParent(avatarParents[index++].transform);

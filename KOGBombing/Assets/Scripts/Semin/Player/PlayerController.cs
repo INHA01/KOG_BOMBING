@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         isInitComplete = false;
         InitPlayerData();
-        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
 
         if (playerData.pv.IsMine)
         {
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         }
         else
         {
-            if ((ETeam)playerData.pv.Owner.CustomProperties["Team"] == team)
+            if ((ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM] == team)
             {
                 playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.blue;
             }
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 
 	private void Start()
 	{
-        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
 
 		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
         isInitComplete = true;
@@ -76,12 +76,12 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         if (playerData.pv.IsMine)
         {
             blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
-            blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+            blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
         }
         else
         {
             blackBoard.nickname = playerData.pv.Owner.NickName;
-            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
         }
     }
 	[PunRPC]

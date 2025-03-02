@@ -47,8 +47,8 @@ public class PhotonChoosePlayer : ChoosePlayer
     public override void Init()
     {
         InitAvatar();
-        eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-        playerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
+        eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
+        playerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAMINDEX];
 
         PhotonNetwork.NetworkingClient.EventReceived += OnSelectEvent;
         mTeamPlayerList = GetTeamPlayer(eTeam);
@@ -79,10 +79,10 @@ public class PhotonChoosePlayer : ChoosePlayer
         Player[] players = PhotonNetwork.PlayerList;
         for(int i=0; i<players.Length; i++)
         {
-            if ((ETeam)players[i].CustomProperties["Team"] == eTeam)
+            if ((ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM] == eTeam)
             {
                 teamPlayerList.Add(players[i]);
-                mTeamIndex.Enqueue((int)players[i].CustomProperties["TeamIndex"]);
+                mTeamIndex.Enqueue((int)players[i].CustomProperties[(int)EPropertyType.TEAMINDEX]);
             }
         }
         return teamPlayerList;

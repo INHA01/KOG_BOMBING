@@ -27,7 +27,7 @@ public class FOVMeshCollider : MonoBehaviour
 		if (player == null) return;
 
 		ETeam playerTeam = player.blackBoard.eTeam;
-		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
+		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] != playerTeam)
 		{
 			PlayerData playerData = other.GetComponent<PlayerData>();
 			if (!playerData.pv.IsMine)
@@ -67,7 +67,7 @@ public class FOVMeshCollider : MonoBehaviour
 		if (player == null) return;
 
 		ETeam playerTeam = player.blackBoard.eTeam;
-		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] != playerTeam)
+		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] != playerTeam)
 		{
 			PlayerData playerData = other.GetComponent<PlayerData>();
 			if (!playerData.pv.IsMine)

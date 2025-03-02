@@ -54,22 +54,4 @@ public class PlayerMovement : PlayerBehavior
 
         return INode.ENodeState.Success;
     }
-/*
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(transform.rotation);
-            //stream.SendNext(blackBoard.rigidBody.velocity);
-
-        }
-        else if (stream.IsReading)
-        {
-            transform.rotation = (Quaternion)stream.ReceiveNext();
-            //blackBoard.rigidBody.velocity = (Vector3)stream.ReceiveNext();
-
-           //float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-           // transform.position += blackBoard.rigidBody.velocity * lag;
-        }
-    }*/
 }

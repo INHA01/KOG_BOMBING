@@ -50,7 +50,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 		objectPool.initPoolSize = count;
 		decal.size = new Vector3(consum.GetComponent<ShockGrenade>().Range, consum.GetComponent<ShockGrenade>().Range, decal.size.z);
 
-		team = (ETeam)playerData.pv.Owner.CustomProperties["Team"];
+		team = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];
 	}
 
 	public void SetSkill(SkillInfo info)

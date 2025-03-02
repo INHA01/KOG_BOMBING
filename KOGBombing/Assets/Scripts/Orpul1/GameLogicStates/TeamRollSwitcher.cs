@@ -47,17 +47,17 @@ namespace Orpul1
         private void SwapTeamCount()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
-            int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "RT", blueTeamCnt } });
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { "BT", redTeamCnt } });
+            int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.REDTEAM];
+            int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.BLUETEAM];
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.REDTEAM, blueTeamCnt } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.BLUETEAM, redTeamCnt } });
         }
         private void SwitchTeamRoll()
         {
             ETeam setTeam = ETeam.REDTEAM;
-            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == ETeam.REDTEAM)
+            if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM] == ETeam.REDTEAM)
                 setTeam = ETeam.BLUETEAM;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { "Team", setTeam } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { (int)EPropertyType.TEAM, setTeam } });
 
         }
     }

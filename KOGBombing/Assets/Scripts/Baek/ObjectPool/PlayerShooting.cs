@@ -64,8 +64,8 @@ public class PlayerShooting : MonoBehaviour
         //Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
         bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
-        bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties["Team"];  // << : �߰��� �ڵ�(�ٸ� ���� �����ϱ� ���� ����)
-        bullet.GetComponent<BulletController>().playerIndex = (int)playerData.pv.Owner.CustomProperties["TeamIndex"];
+        bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM];  // << : �߰��� �ڵ�(�ٸ� ���� �����ϱ� ���� ����)
+        bullet.GetComponent<BulletController>().playerIndex = (int)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAMINDEX];
         bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
         bullet.transform.rotation = playerData.playerObj.transform.rotation;
         bullet.SetActive(true);

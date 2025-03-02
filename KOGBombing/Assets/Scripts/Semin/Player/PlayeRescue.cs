@@ -32,7 +32,7 @@ public class PlayeRescue : InteractObject
     [PunRPC]
     private void RPCActiveRescueCollider()
     {
-        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"]!= (ETeam)playerData.pv.Owner.CustomProperties["Team"]) return;
+        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM]!= (ETeam)playerData.pv.Owner.CustomProperties[(int)EPropertyType.TEAM]) return;
 
         interactCollider.enabled = true;
         interactUI.ActivePanel();
@@ -53,7 +53,7 @@ public class PlayeRescue : InteractObject
     public override bool ProcessInteract(PhotonView pView)
     {
         if (pView == null) return false;
-        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties["Team"];
+        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[(int)EPropertyType.TEAM];
 
         if (otherTeam != blackBoard.eTeam) return false;
         if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;

@@ -31,7 +31,7 @@ public class BulletController : PooledObject
 
     protected bool IsOtherTeam(PhotonView pView)
     {
-        ETeam mineTeam = (ETeam)pView.Owner.CustomProperties["Team"];
+        ETeam mineTeam = (ETeam)pView.Owner.CustomProperties[(int)EPropertyType.TEAM];
         
         if (mineTeam == eTeamBullet) return false;
         return true;

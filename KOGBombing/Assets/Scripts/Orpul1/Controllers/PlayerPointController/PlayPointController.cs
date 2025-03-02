@@ -34,16 +34,16 @@ public class PlayPointController
         UIPopup _uiPopup = Managers.UI.GetPopupUI<UIPopup>("BattleBoardCanvas");
         updateScore = _uiPopup.GetComponent<BattleBoardUpdater>();
 
-        ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+        ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAM];
 
         int playerSize = 0;
         if(currentTeam == ETeam.REDTEAM)
         {
-            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties["BT"];
+            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.BLUETEAM];
         }
         else
         {
-            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties["RT"];
+            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[(int)EPropertyType.REDTEAM];
         }
 
         attackPlayerIndexList = new List<bool>(playerSize) { false };
@@ -54,8 +54,8 @@ public class PlayPointController
         {
             Managers.PointData.AddPlayerInfo(players[i].NickName, new PlayerPointInfo());
 
-            if ((ETeam)players[i].CustomProperties["Team"] == currentTeam) continue;
-            int playerIndex = (int)players[i].CustomProperties["TeamIndex"];
+            if ((ETeam)players[i].CustomProperties[(int)EPropertyType.TEAM] == currentTeam) continue;
+            int playerIndex = (int)players[i].CustomProperties[(int)EPropertyType.TEAMINDEX];
             Debug.Log($"nickname {players[i].NickName}");
             playerNicknameList[playerIndex] = players[i].NickName;
         }
@@ -100,7 +100,7 @@ public class PlayPointController
             int killPlayerIndex = (int)customDatas[0];
             string attackPlayer = (string)customDatas[1];
             Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
-            int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["TeamIndex"];
+            int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[(int)EPropertyType.TEAMINDEX];
             updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
             Managers.PointData.AddPoint(attackPlayer, EPointType.KILL);
         }
@@ -156,10 +156,7 @@ public class PlayPointController
         PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어 당한 플레이어 정보
     }
     public void OnAssistPoint()
-    {
-        //보낼 값들 다시 확인
-        //attackPlayerIndexList[lastAttackPlayerIndex] = false;
-        
+    {        
         if (assistPlayerList.Contains(playerNicknameList[lastAttackPlayerIndex]))
             assistPlayerList.Remove(playerNicknameList[lastAttackPlayerIndex]);
         if (assistPlayerList.Count != 0) 

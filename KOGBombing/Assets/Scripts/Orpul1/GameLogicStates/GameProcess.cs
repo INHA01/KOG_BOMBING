@@ -27,7 +27,7 @@ namespace Orpul1
         public override void EnterState()
         {
             
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.START} });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { (int)EPropertyType.STATE, EPlayerState.START} });
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
             PhotonNetwork.NetworkingClient.EventReceived += roundController.OnSetTeamCount;
@@ -54,7 +54,7 @@ namespace Orpul1
         {
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { "State", EPlayerState.READY } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { (int)EPropertyType.STATE, EPlayerState.READY } });
         }
 
     }

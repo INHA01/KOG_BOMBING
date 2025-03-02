@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using DTT.AreaOfEffectRegions;
 using Unity.IO.LowLevel.Unsafe;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace Semin
 {
@@ -31,6 +32,7 @@ namespace Semin
 		public override void Use()
 		{
 			destroyCoroutine = StartCoroutine(SetTimerToDestroy());
+			isActive = true;
 		}
 
 		//[PunRPC]
@@ -94,6 +96,7 @@ namespace Semin
 			yield return new WaitForSeconds(activeTime);
 			//PhotonNetwork.Destroy(gameObject);
 			Release();
+			isActive = false;
 		}
 
 		IEnumerator ShowDecal()
@@ -138,6 +141,7 @@ namespace Semin
 				StopCoroutine(destroyCoroutine);
 			yield return new WaitForSeconds(0.5f);
 			Release();
+			isActive = false;
 		}
 		public void DestroyLandmine()
 		{
@@ -148,6 +152,7 @@ namespace Semin
 		private void RPCDestroy()
 		{
             Release();
+            isActive = false;
         }
 		private void OnDrawGizmos()
 		{

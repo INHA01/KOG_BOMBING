@@ -61,7 +61,7 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 		return true;
 	}
 
-	public virtual void InitializeCount(int count)
+	public virtual void Initialize(int count)
 	{
 		if (count > 0) 
 			playScene.subWeaponFades[0].SetActive(false);

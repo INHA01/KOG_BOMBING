@@ -9,6 +9,7 @@ public class DeployableWeapon : DeployableBase
 {
 	private Vector3 position;
 	ObjectPool objectPool;
+	Landmine landmine;
 
 	private void Awake()
 	{
@@ -17,6 +18,13 @@ public class DeployableWeapon : DeployableBase
 		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Landmine"));
 		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
 		objectPool.initPoolSize = count;
+    }
+
+    public override void Initialize(int count)
+    {
+        base.Initialize(count);
+		if (landmine != null && landmine.isActive)
+			landmine.Release();
     }
 
     public override void Use()
@@ -43,7 +51,7 @@ public class DeployableWeapon : DeployableBase
     protected override IEnumerator PutAfterAnim()
 	{
 		yield return new WaitForSeconds(1.3f);
-		Landmine landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
+		landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
 		landmine.transform.position = playerData.ConsumPos.position;
 		landmine.SetTeam((int)team);
 		landmine.SetPlayerIndex(playerIndex);

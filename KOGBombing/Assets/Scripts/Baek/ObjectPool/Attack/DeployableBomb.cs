@@ -27,7 +27,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<IBombStateAble>
 			objectPool.initPoolSize = count;
 		}
 	}
-    public override void InitializeCount(int count)
+    public override void Initialize(int count)
     {
         if (count > 0)
             playScene.subWeaponFades[1].SetActive(false);

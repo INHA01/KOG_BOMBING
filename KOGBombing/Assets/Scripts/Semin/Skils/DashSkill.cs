@@ -32,7 +32,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		particle.gameObject.SetActive(false);
 	}
 
-	public void InitializeCount(int count)
+	public void Initialize(int count)
 	{
 
 	}

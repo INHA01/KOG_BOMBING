@@ -69,7 +69,7 @@ public class PlayerData : MonoBehaviour
 
     public void InitializeCount()
     {
-        supportWeapon.InitializeCount(1);
-        bomb.InitializeCount(1);
+        supportWeapon.Initialize(1);
+        bomb.Initialize(1);
     }
 }

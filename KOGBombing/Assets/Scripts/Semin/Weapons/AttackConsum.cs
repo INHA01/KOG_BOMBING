@@ -17,7 +17,7 @@ namespace Semin
         public ETeam Team { get { return team; } }
         public int PlayerIndex { get { return playerIndex; } }
 		public WeaponType type;
-
+        public bool isActive;
         public abstract void Use();
 
 		public virtual void SetTeam(int team)

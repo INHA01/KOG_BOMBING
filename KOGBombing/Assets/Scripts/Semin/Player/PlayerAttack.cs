@@ -401,7 +401,7 @@ public class PlayerAttack : PlayerBehavior
         if (blackBoard.playerStatus.groggyable == false) return;
 		if (playerData.bomb is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
-		ResetAttackInput();
+		ResetAttackInput(EKey.NUM_2);
 
 		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -433,7 +433,7 @@ public class PlayerAttack : PlayerBehavior
         if (blackBoard.playerStatus.groggyable == false) return;
 		if (playerData.supportWeapon is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
-		ResetAttackInput();
+		ResetAttackInput(EKey.NUM_1);
 
 		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -459,7 +459,7 @@ public class PlayerAttack : PlayerBehavior
         if (!playerData.pv.IsMine) return;
         if (blackBoard.playerStatus.groggyable == false) return;
 		if (!playerData.skill.isUsableSkill()) return;
-        ResetAttackInput();
+        ResetAttackInput(EKey.Q);
 
 		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
@@ -483,19 +483,19 @@ public class PlayerAttack : PlayerBehavior
 		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
 	}
 
-    public void ResetAttackInput()
+    public void ResetAttackInput(EKey input)
 	{
-		if (blackBoard.inputs[EKey.NUM_2])
+		if (input != EKey.NUM_2 && blackBoard.inputs[EKey.NUM_2])
 		{
 			CancleBomb();
 			blackBoard.inputs[EKey.NUM_2] = false;
 		}
-		if (blackBoard.inputs[EKey.NUM_1])
+		if (input != EKey.NUM_1 && blackBoard.inputs[EKey.NUM_1])
 		{
 			CancleSupportWeapon();
 			blackBoard.inputs[EKey.NUM_1] = false;
 		}
-		if (blackBoard.inputs[EKey.Q])
+		if (input != EKey.Q && blackBoard.inputs[EKey.Q])
 		{
 			CancleSkill();
 			blackBoard.inputs[EKey.Q] = false;

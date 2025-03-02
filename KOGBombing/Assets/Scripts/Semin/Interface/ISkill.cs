@@ -8,6 +8,6 @@ public interface ISkill
     public void InitializationSkill(PlayerData playerData);
     public void SetSkill(SkillInfo info);
     public bool isUsableSkill();
-    public void InitializeCount(int count);
+    public void Initialize(int count);
     public void LoadSkillIcon();
 }

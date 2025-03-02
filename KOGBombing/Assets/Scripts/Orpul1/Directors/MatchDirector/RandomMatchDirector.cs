@@ -24,11 +24,13 @@ namespace Orpul1
             {
                 isMatching = false;
                 isRandomMatch = false;
+                UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
                 if (PhotonNetwork.InRoom) PhotonNetwork.LeaveRoom();
                 if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
             }
             else
             {
+                UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEWAITMATCHPANEL);
                 isMatching = true;
                 isRandomMatch = true;
                 Debug.Log("Join RandomLobby");
@@ -38,22 +40,20 @@ namespace Orpul1
        
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
-            if (isRandomMatch)
-                base.OnRoomPropertiesUpdate(propertiesThatChanged);
+            if (!isRandomMatch) return;
+            base.OnRoomPropertiesUpdate(propertiesThatChanged);
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (isRandomMatch)
-                base.OnPlayerEnteredRoom(newPlayer);
+            if (!isRandomMatch) return;
+            base.OnPlayerEnteredRoom(newPlayer);
         }
         public override void OnJoinedLobby()
         {
-            if (isRandomMatch)
-            {
-                Debug.Log($"randomMatch {isRandomMatch}");
-                base.OnJoinedLobby();
-                PhotonNetwork.JoinRandomRoom();
-            }
+            if (!isRandomMatch) return;
+            Debug.Log($"randomMatch {isRandomMatch}");
+            base.OnJoinedLobby();
+            PhotonNetwork.JoinRandomRoom();
         }
 
         public override void OnJoinedRoom()
@@ -69,41 +69,34 @@ namespace Orpul1
 
         public override void OnLeftRoom()
         {
-            if (isRandomMatch)
-            {
-                PhotonNetwork.LeaveRoom();
-            }
+            if (!isRandomMatch) return;
+            PhotonNetwork.LeaveRoom();
         }
         public override void OnLeftLobby()
         {
-            if (isRandomMatch)
-            {
-                Debug.Log("RandomMatch LeftLobby");
-                isMatching = false;
-            }
+            if (!isRandomMatch) return;
+            Debug.Log("RandomMatch LeftLobby");
+            isMatching = false;
         }
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
-            if (isRandomMatch)
-            {
-                Debug.Log("failrandomRoom");
-                StringBuilder roomName = new StringBuilder();
-                roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
+            if (!isRandomMatch) return;
+            Debug.Log("failrandomRoom");
+            StringBuilder roomName = new StringBuilder();
+            roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
+            PhotonNetwork.CreateRoom(roomName.ToString(), SetRoomOption());
+            Debug.Log("joinFail Create Room");
 
-                PhotonNetwork.CreateRoom(roomName.ToString(), SetRoomOption());
-                Debug.Log("joinFail Create Room");
-            }
         }
        
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
-            if (isRandomMatch)
-                Debug.Log("CreateRoomFailed!");
+            if (!isRandomMatch) return;
+            Debug.Log("CreateRoomFailed!");
         }
 
         private RoomOptions SetRoomOption()
         {
-            
             Debug.Log($"{PhotonNetwork.LocalPlayer.NickName}");
             RoomOptions roomOpt = new RoomOptions()
             {
@@ -113,8 +106,6 @@ namespace Orpul1
                 PublishUserId = true,
                 CustomRoomProperties = new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), 0 }, { EPropertyType.BLUETEAM.ToString(), 0 }, { EPropertyType.ROOMSTATE.ToString(), "Ready" } },
             };
-
-
             return roomOpt;
         }
         protected override IEnumerator CoWaitMatch()

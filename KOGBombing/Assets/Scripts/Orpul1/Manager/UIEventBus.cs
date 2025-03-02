@@ -16,6 +16,8 @@ namespace Orpul1
             ACTIVEROOMLISTPANEL,
             ACTIVECUSTOMROOMPANEL,
             DEACTIVECUSTOMROOMPANEL,
+            ACTIVEWAITMATCHPANEL,
+            DEACTIVEWAITMATCHPAENL,
         }
         private static Dictionary<UIEventType, UnityEvent> dicUIEvent = new Dictionary<UIEventType, UnityEvent>();
         public static void Subscribe(UIEventType eventType, UnityAction action)

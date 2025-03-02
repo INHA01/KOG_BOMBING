@@ -61,8 +61,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<IBombStateAble>
 		if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
         {
 		    Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
-            IDefendencyAble<IBombStateAble> defendencyAble = bomb;
-            defendencyAble.Defendency(bombDefendency);
+            bomb.GetComponent<IDefendencyAble<IBombStateAble>>().Defendency(bombDefendency);
             bomb.transform.position = playerData.ConsumPos.position;
             bomb.Notify();
             bomb.SetTeam((int)team);

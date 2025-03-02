@@ -29,7 +29,8 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
     {
         if (bombNotify == null)
             bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
-        setBombState.BombEvent(EBombState.SET);
+        if (setBombState != null)
+            setBombState.BombEvent(EBombState.SET);
         bombNotify.NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)
@@ -41,7 +42,8 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
             // 폭탄 해제 모든 플레이어들에게 Notify
             if (bombNotify == null)
                 bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
-            setBombState.BombEvent(EBombState.CLEAR);
+            if (setBombState != null)
+                setBombState.BombEvent(EBombState.CLEAR);
             bombNotify.NotifyBombDefuse();
             Release();
             //RPCDestroy();
@@ -74,7 +76,8 @@ public class Bomb : AttackConsum,IDefendencyAble<IBombStateAble>
             yield return null;
         }
         ShowParticle();
-        setBombState.BombEvent(EBombState.EXPLOSION);
+        if(setBombState != null)
+            setBombState.BombEvent(EBombState.EXPLOSION);
         yield return new WaitForSeconds(0.5f);
         Release();
     }

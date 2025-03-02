@@ -59,19 +59,15 @@ namespace Orpul1
 
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
-            if (propertiesThatChanged.ContainsKey(EPropertyType.ROOMSTATE.ToString()))
-            {
-                if ((string)propertiesThatChanged[EPropertyType.ROOMSTATE.ToString()] == "Start")
-                {
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });
+            if (!propertiesThatChanged.ContainsKey(EPropertyType.ROOMSTATE.ToString())) return;
+            if ((string)propertiesThatChanged[EPropertyType.ROOMSTATE.ToString()] != "Start") return;
 
-                    SetPlayerTeamIndex();
-
-                    btnMatch.interactable = false;
-                    StartCoroutine(CoStartDelay());
-                   
-                }
-            }
+            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
+            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });
+            SetPlayerTeamIndex();
+            btnMatch.interactable = false;
+            StartCoroutine(CoStartDelay());
         }
        private void SetPlayerTeamIndex()
         {

@@ -28,7 +28,7 @@ namespace Orpul1
         public override void ExitState()
         {
             Managers.UI.ClosePopupUI("WinnerCanvas");
-            gameData.playerObj.GetComponent<IRespawnAble>().DoRespawn();
+            gameData.playerObj.GetComponent<IResetAble>().DoReset();
         }
 
         private bool IsEndWaitRoundEnd()

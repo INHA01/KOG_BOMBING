@@ -31,6 +31,7 @@ namespace Orpul1
         public int winRound = 4;
         public int switchRound = 2;
         public bool isAlreadySwitchRoll = false;
+        bool isSetBomb = false;
         bool isEndRound = false;
         TeamUIController teamUIController;
         RoundEndType roundEndType = RoundEndType.NONE;
@@ -49,6 +50,7 @@ namespace Orpul1
         public void Initialize(TeamUIController teamUIController)
         {
             isEndRound = false;
+            isSetBomb = false;
             this.teamUIController = teamUIController;
             roundEndType = RoundEndType.NONE;
         }
@@ -61,7 +63,7 @@ namespace Orpul1
             if (!PhotonNetwork.IsMasterClient) return;
             teamCounts[teamType]--;
             Debug.Log("DecreaseTeamCount");
-            if (teamCounts[teamType] == 0)
+            if (teamCounts[teamType] == 0&&!isSetBomb)
             {
                 Debug.Log("EXTERMINATE Team");
                 roundEndType = RoundEndType.ALLDIEATTACK + teamType;
@@ -111,10 +113,9 @@ namespace Orpul1
             roundEndType = RoundEndType.TIMEOVER;
             isEndRound = true;
         }
-        public void ExplosionBomb()
+        public void SetBomb()
         {
-            roundEndType = RoundEndType.BOMBEXPLOSION;
-            isEndRound = true;
+            isSetBomb = true;
         }
         public EGameState GetNextState()
         {

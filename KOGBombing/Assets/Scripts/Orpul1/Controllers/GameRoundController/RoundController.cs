@@ -119,6 +119,7 @@ namespace Orpul1
             {
                 //시간 정지
                 isStopTime = true;
+                roundData.SetBomb();
                 return;
             }
             roundData.SetEndRound(eventType, true);

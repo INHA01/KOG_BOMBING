@@ -14,10 +14,12 @@ namespace Orpul1
         public override void EnterState()
         {
             time = 0;
+            Debug.Log("RoundEndWaiter Start");
         }
         public override void UpdateState()
         {
             if(!IsEndWaitRoundEnd()) return;
+            Debug.Log("RoundEndWaiter End");
             transitionState((int)nextGameState);
         }
 

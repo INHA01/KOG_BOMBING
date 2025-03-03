@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Semin;
 using Orpul1;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerBlackBoard : MonoBehaviour
 {
@@ -47,9 +48,10 @@ public class PlayerBlackBoard : MonoBehaviour
         isSetScore = false;
         hpBar.SetStopHpUI(false);
         hpBar.InitializeValues();
-        hpBar.HideGroggy();
-        hpBar.ShowHpUI();
-        bombInteraction.SetBombInteraction(false);
+		hpBar.HideGroggy();
+        hpBar.ShowHpUI(); 
+        if (bombInteraction.GetBomb() != null)
+			bombInteraction.SetBombInteraction(false);
     }
 }
 

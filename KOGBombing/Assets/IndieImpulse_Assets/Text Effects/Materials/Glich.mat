@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1287173758592952932
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Glich
+  m_Shader: {fileID: 4800000, guid: e9b6fbc7abcc83947b98d46c31e0b43d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_156b7ec5476f4190889e2a6cd6ff4007:
+        m_Texture: {fileID: 2800000, guid: b4726beeb8c1693429f5d7dd1230b369, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: 8c5ad5af797f26f48826e60b96e6f996, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: ecd967213d60fe74783db250bbc69f69, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask2:
+        m_Texture: {fileID: 2800000, guid: 753f3489bbf49874bb78436a0cdc4b59, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Vector1_4d8b56e0454640158b6dc1b4b51434e1: 0.2
+    - Vector1_8e61b7d27a4748f3ab638d8c0b2d5259: 6.5
+    - Vector1_9ebfaa3bf3204f3cb526c9b3db7971cf: 7
+    - Vector1_fb5c21f8d85e4b0c86bd8894ebd82fd2: 1.7
+    - _NoiseScale: 84.1
+    - _Offset: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Speed: 50
+    - _Step: 1.43
+    m_Colors:
+    - Color_3550176a729943c49f30cc783b619071: {r: 0.73385864, g: 1.8153346, b: 4.94389,
+        a: 1}
+    - Vector2_461aefa53be142cc9dbbda8891244633: {r: 0, g: 0.1, b: 0, a: 0}
+    - Vector2_f642404391bf4abc8b502ae206a6894d: {r: 0, g: 0.15, b: 0, a: 0}
+    - _Color: {r: 0, g: 1.6222138, b: 7.3772106, a: 0}
+    - _MaskTilling: {r: 0.07, g: 1, b: 0, a: 0}
+    - _Tilling: {r: 1, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []

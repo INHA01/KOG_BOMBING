@@ -12,7 +12,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
     ObjectPool objectPool;
     public BombInteraction bombInteraction;
     BombData bombData;
-    
+    Bomb bomb;
     public override void SetTeam(ETeam team, int playerIndex)
 	{
         base.SetTeam(team, playerIndex);
@@ -64,7 +64,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         yield return null;
 		if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
         {
-		    Bomb bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
+		    bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
             bomb.GetComponent<IDefendencyAble<BombData>>().Defendency(bombData);
             bomb.transform.position = playerData.ConsumPos.position;
             bomb.Notify();
@@ -84,5 +84,10 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
     public void Defendency(BombData bombData)
     {
         this.bombData = bombData;
+    }
+    public void RoundReset()
+    { 
+        if(bomb != null)
+            bomb.Release();
     }
 }

@@ -14,7 +14,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public Camera viewCamera;
     public UIPopup _uiScene;
     public HpBar hpBar;
-    public BombUI bombUI;
+    public PlayerStatusUI bombUI;
     public GameObject fieldOfView;
     public GameObject gmlookTarget;
     public GameObject interactUIObj;

@@ -142,6 +142,8 @@ public class PlayerAttack : PlayerBehavior
 	}
     public INode.ENodeState ResetAttackData()
     {
+        if (playerData.bomb is DeployableBomb bomb)
+            bomb.RoundReset();
         playerShooting.RoundChange();
         return INode.ENodeState.Success;
     }

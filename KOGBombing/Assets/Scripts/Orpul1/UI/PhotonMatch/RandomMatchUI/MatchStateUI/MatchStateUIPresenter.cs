@@ -6,6 +6,11 @@ using UnityEngine;
 public class MatchStateUIPresenter : MonoBehaviour
 {
     [SerializeField] MatchStateUIView view;
+    [SerializeField] MatchStateUIModel model;
+    private void Awake()
+    {
+        model.Initialize(UpdateUI);
+    }
     private void OnEnable()
     {
         UIEventBus.Subscribe(UIEventBus.UIEventType.ACTIVEWAITMATCHPANEL, ActivePanel);
@@ -13,6 +18,7 @@ public class MatchStateUIPresenter : MonoBehaviour
     }
     private void OnDisable()
     {
+        model.AbortRoundAni();
         UIEventBus.UnSubscribe(UIEventBus.UIEventType.ACTIVEWAITMATCHPANEL, ActivePanel);
         UIEventBus.UnSubscribe(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL, DeactivePanel);
     }
@@ -22,10 +28,15 @@ public class MatchStateUIPresenter : MonoBehaviour
     }
     public void ActivePanel()
     {
+        model.ProcessRoundAni();
         view.waitMatchPanel.SetActive(true);
     }
     public void DeactivePanel()
     {
         view.waitMatchPanel.SetActive(false);
+    }
+    public void UpdateUI()
+    {
+        view.matchingImg.fillAmount = model.CountValue;
     }
 }

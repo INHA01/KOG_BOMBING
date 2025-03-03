@@ -29,6 +29,7 @@ namespace Orpul1
         }
         protected abstract IEnumerator CoWaitMatch();
         
+        
         public override void OnJoinedRoom()
         {
             Debug.Log("JoinRoom!");
@@ -38,10 +39,12 @@ namespace Orpul1
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), playerTeam } });
         }
 
+       
         public override void OnJoinedLobby()
         {
             Debug.Log("JoinLobby");
         }
+        
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log("PlayerLeftRoom");
@@ -56,14 +59,11 @@ namespace Orpul1
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.BLUETEAM.ToString(), blueTeam - 1 } });
             }
         }
-
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
             if (!propertiesThatChanged.ContainsKey(EPropertyType.ROOMSTATE.ToString())) return;
             if ((string)propertiesThatChanged[EPropertyType.ROOMSTATE.ToString()] != "Start") return;
 
-            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
-            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });
             SetPlayerTeamIndex();
             btnMatch.interactable = false;

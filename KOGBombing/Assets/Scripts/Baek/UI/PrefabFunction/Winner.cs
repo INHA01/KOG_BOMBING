@@ -6,6 +6,11 @@ using Photon.Pun;
 using UnityEngine.UI;
 public class Winner : MonoBehaviour
 {
+    string[] winUIPath = new string[2]
+    {
+        "UISettings/End/End_UI_RedWin_BG",
+        "UISettings/End/End_UI_BlueWin_BG"
+    };
     [SerializeField] Image winner;
     [SerializeField] GameObject activeResultButton;
     int redTeamCnt = -1;
@@ -14,17 +19,8 @@ public class Winner : MonoBehaviour
     {
         if(end == 0)
         {
-            
-            if(Managers.RoundData.RoundWinTeam == ETeam.REDTEAM)
-            {
-                redTeamCnt = Managers.RoundData.TeamScore[(int)ETeam.REDTEAM];
-                winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_RedWin_BG");
-            }
-            else if(Managers.RoundData.RoundWinTeam == ETeam.BLUETEAM)
-            {
-                blueTeamCnt = Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM];
-                winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_BlueWin_BG");
-            }
+            ETeam winTeam = Managers.RoundData.RoundWinTeam;
+            winner.sprite = Resources.Load<Sprite>(winUIPath[(int)winTeam]);
         }
         else
         {

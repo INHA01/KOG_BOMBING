@@ -4,13 +4,13 @@ using Orpul1;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowCursor : MonoBehaviour,IResetAble
+public class ShowCursor : MonoBehaviour
 {
     [SerializeField] Vector3 bombPos;
     [SerializeField] GameObject cursor;
     public Vector3 BombPos { get { return bombPos; }  set { bombPos = value; } }
     Camera main;
-    void Start()
+    void OnEnable()
     {
         main = Managers.CamData.GetCamera(ECameraType.MAINCAMERA).GetComponent<Camera>();
     }
@@ -25,8 +25,4 @@ public class ShowCursor : MonoBehaviour,IResetAble
         cursor.transform.position = cursorPos;
     }
 
-    public void DoReset()
-    {
-        main = Managers.CamData.GetCamera(ECameraType.MAINCAMERA).GetComponent<Camera>();
-    }
 }

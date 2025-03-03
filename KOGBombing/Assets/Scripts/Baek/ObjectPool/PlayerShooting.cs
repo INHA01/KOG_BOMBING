@@ -40,6 +40,11 @@ public class PlayerShooting : MonoBehaviour
         this.attackRange = attackRange;
         this.animator = animator;
     }
+    public void RoundChange()
+    {
+        magazineCount = InitMagazineCount;
+        bulletCount = InitBulletCount;
+    }
     public void Shoot()
     {
         if (magazineCount > 0 && shootingCoroutine == null)

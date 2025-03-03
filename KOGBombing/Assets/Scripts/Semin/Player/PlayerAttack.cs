@@ -140,9 +140,17 @@ public class PlayerAttack : PlayerBehavior
 		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		playerData.bomb.Disable();
 	}
-
+    public INode.ENodeState ResetAttackData()
+    {
+        playerShooting.RoundChange();
+        return INode.ENodeState.Success;
+    }
     public INode.ENodeState BombInteract()
     {
+        if((blackBoard.playerStatus.isLive == false)|| (blackBoard.playerStatus.isGroggy == true))
+        {
+            return INode.ENodeState.Fail;
+        }
         if (playerData.bomb is DeployableBomb)
         {
             if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)

@@ -5,12 +5,13 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Orpul1
 {
     public class RoundController:IRunGameEventAble
     {
-        GameProcessData logicContext;
+        GameProcessData gameData;
         EventUIController eventUIController;
         GameRoundData roundData = new GameRoundData();
         TextMeshProUGUI timeTMP;
@@ -19,18 +20,18 @@ namespace Orpul1
         bool isStopTime = false;
         public bool IsEndRound { get { return roundData.IsEndRound; } }
 
-        public void Initialize(GameProcessData logicContext, float roundTime)
+        public void Initialize(GameProcessData gameData, float roundTime)
         {
             roundInterval = roundTime;
             isStopTime = false;
             time = 0;
             timeTMP = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().timer;
-            this.logicContext = logicContext;
-            eventUIController = new EventUIController(logicContext.teamUIController);
+            this.gameData = gameData;
+            eventUIController = new EventUIController(gameData.teamUIController);
             int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
             int defenceTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
-            logicContext.debugRoundData = roundData;
-            this.roundData.Initialize(logicContext.teamUIController);
+            gameData.debugRoundData = roundData;
+            this.roundData.Initialize(gameData.teamUIController);
             this.roundData.SetTeamCount((int)ETeam.REDTEAM, attackTeamCnt);
             this.roundData.SetTeamCount((int)ETeam.BLUETEAM, defenceTeamCnt);
             roundData.SetTeamScore();
@@ -95,6 +96,7 @@ namespace Orpul1
         public EGameState GetGameState()
         {
             EGameState gameState = roundData.GetNextState();
+            gameData.playerSetGameState.SetGameState(gameState);
             return gameState;
         }
 

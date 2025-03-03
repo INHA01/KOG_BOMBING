@@ -384,6 +384,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (Managers.PunData.GetPlayerBlackBoard(nickname).playerStatus.isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.gmlookTarget);
+            blackBoard.viewCamera.transform.LookAt(blackBoard.gmlookTarget.transform);
             Debug.Log("Set Camera Look Alive Player");
             return INode.ENodeState.Success;
         }

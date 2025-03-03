@@ -229,6 +229,23 @@ MonoBehaviour:
   paramName: 
   method: ActiveRescueCollider
   className: PlayeRescue
+--- !u!114 &-6137478795078086819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: d42ac24cdc40ced4d97b7596f1625922
+  position: {x: 513, y: -984}
+  paramName: 
+  method: ResetAttackData
+  className: PlayerAttack
 --- !u!114 &-6072273451500266004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,7 +434,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c95596c467b5ac840876b7e15f37ada0
-  position: {x: 509, y: -1022.5}
+  position: {x: 513, y: -1061}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -631,6 +648,7 @@ MonoBehaviour:
   - {fileID: 7780571593512279722}
   - {fileID: -4965493617326162921}
   - {fileID: -8389100774706129543}
+  - {fileID: -6137478795078086819}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,7 +732,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2780f2f49acad5a4c97d7dbeb8af335d
-  position: {x: 509, y: -932}
+  position: {x: 513, y: -907}
   paramName: 
   method: RespawnNode
   className: PlayerHitBehavior
@@ -1108,6 +1126,7 @@ MonoBehaviour:
   position: {x: 349, y: -983.80005}
   children:
   - {fileID: 1416728964697576737}
+  - {fileID: -6137478795078086819}
   - {fileID: -3137541061979543970}
 --- !u!114 &9203852556320774010
 MonoBehaviour:

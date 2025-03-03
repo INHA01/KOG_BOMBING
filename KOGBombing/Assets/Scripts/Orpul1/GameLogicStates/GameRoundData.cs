@@ -63,6 +63,11 @@ namespace Orpul1
             if (!PhotonNetwork.IsMasterClient) return;
             teamCounts[teamType]--;
             Debug.Log("DecreaseTeamCount");
+            if (teamCounts[(int)ETeam.BLUETEAM] == 0)
+            {
+                roundEndType = RoundEndType.ALLDIEDEFENCE;
+                isEndRound = true;
+            }
             if (teamCounts[teamType] == 0&&!isSetBomb)
             {
                 Debug.Log("EXTERMINATE Team");

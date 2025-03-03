@@ -87,10 +87,21 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
                 playerData.timeWithoutDamage += Time.deltaTime;
 			if (playerData.timeWithoutDamage >= duration)
 			{
-				float value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
-				blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
-                value = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 5;
-                blackBoard.playerStatus.hp = Mathf.Min(value, blackBoard.playerStatus.maxHp);
+                float value = 0;
+                if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp가 채워지는 경우
+                {
+                    float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 10;
+                    value = blackBoard.playerStatus.maxHp / 100 * 10 - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
+                    blackBoard.playerStatus.hp = Mathf.Min(temp, blackBoard.playerStatus.maxHp);
+                    if (value <= 0) value = 0;
+                }
+                else  // defence만 채워지는 경우
+                {
+					value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
+					blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
+                    value = 0;
+				}
+				blackBoard.playerStatus.defence = Mathf.Min(blackBoard.playerStatus.defence + value, blackBoard.playerStatus.maxDefence);
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				playerData.timeWithoutDamage = 9f;
 			}

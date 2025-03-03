@@ -28,6 +28,7 @@ namespace Orpul1
         }
         public override void EnterState()
         {
+            gameData.playerSetGameState.SetGameState(EGameState.GAMESTART);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotnHashtable { { EPropertyType.STATE.ToString(), EPlayerState.START} });
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnSetTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived -= roundController.OnEndRound;

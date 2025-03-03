@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
@@ -31,6 +32,7 @@ namespace Orpul1
 
         public override void EnterState()
         {
+            gameData.playerSetGameState.SetGameState(EGameState.ROUNDWAIT);
             for (int i = 0; i < roundDoorController.Length; i++)
             {
                 roundDoorController[i].CloseDoor();

@@ -33,8 +33,8 @@ public class PlayerBlackBoard : MonoBehaviour
     public bool canRespawn = false;
     public bool isSetScore = false;
 	[HideInInspector] public BombInteraction bombInteraction;
-
 	[HideInInspector] public PlayerStatus playerStatus;
+    public EGameState currentGameState;
     public void Initialize()
     {
         speedDebuff.Initialize();

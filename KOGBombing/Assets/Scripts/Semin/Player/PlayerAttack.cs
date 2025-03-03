@@ -148,7 +148,7 @@ public class PlayerAttack : PlayerBehavior
     }
     public INode.ENodeState BombInteract()
     {
-        if((blackBoard.playerStatus.isLive == false)|| (blackBoard.playerStatus.isGroggy == true))
+        if((blackBoard.playerStatus.isLive == false)|| (blackBoard.playerStatus.isGroggy == true) || (blackBoard.playerStatus.canSettingBomb == false))
         {
             return INode.ENodeState.Fail;
         }

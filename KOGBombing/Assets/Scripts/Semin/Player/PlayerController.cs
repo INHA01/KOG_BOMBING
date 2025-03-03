@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
 using Orpul1;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble
+public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -144,4 +144,13 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 		if (other.CompareTag("Player"))
 			Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
 	}
+
+    public void SetGameState(EGameState state)
+    {
+        if (EGameState.ROUNDENDWAIT == state)
+            blackBoard.playerStatus.canSettingBomb = false;
+        
+        if (EGameState.ROUNDWAIT == state)
+            blackBoard.playerStatus.canSettingBomb = true;
+    }
 }

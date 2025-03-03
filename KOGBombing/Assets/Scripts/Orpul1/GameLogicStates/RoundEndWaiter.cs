@@ -13,6 +13,7 @@ namespace Orpul1
         EGameState nextGameState = EGameState.ROUNDWAIT;
         public override void EnterState()
         {
+            gameData.playerSetGameState.SetGameState(EGameState.ROUNDENDWAIT);
             time = 0;
             Debug.Log("RoundEndWaiter Start");
             Managers.UI.ClosePopupUI("BombNotifyCanvas");

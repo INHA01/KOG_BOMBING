@@ -8,18 +8,19 @@ public class Winner : MonoBehaviour
 {
     [SerializeField] Image winner;
     [SerializeField] GameObject activeResultButton;
-    int redTeamCnt = 0;
-    int blueTeamCnt = 0;
+    int redTeamCnt = -1;
+    int blueTeamCnt = -1;
     public void SetWiner(int end)
     {
         if(end == 0)
         {
-            if(redTeamCnt != Managers.RoundData.TeamScore[(int)ETeam.REDTEAM])
+            
+            if(Managers.RoundData.RoundWinTeam == ETeam.REDTEAM)
             {
                 redTeamCnt = Managers.RoundData.TeamScore[(int)ETeam.REDTEAM];
                 winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_RedWin_BG");
             }
-            else if(blueTeamCnt != Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM])
+            else if(Managers.RoundData.RoundWinTeam == ETeam.BLUETEAM)
             {
                 blueTeamCnt = Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM];
                 winner.sprite = Resources.Load<Sprite>("UISettings/End/End_UI_BlueWin_BG");

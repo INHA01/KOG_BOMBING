@@ -10,10 +10,18 @@ namespace Orpul1
         int[] teamScore = new int[2];
         int[] teamkillScore = new int[2];
         int[] teamMissionScore = new int[2];
-        ETeam winTeam;
+        private ETeam roundWinTeam;
+        public ETeam RoundWinTeam
+        {
+            get
+            {
+                return roundWinTeam;
+            }
+        }
         public int[] TeamScore { get { return teamScore; } }
         public int[] TeamKillScore { get { return teamkillScore; } }
         public int[] TeamMissionScore{ get { return teamMissionScore; } }
+        
         public int WinTeam
         { 
             get 
@@ -30,6 +38,10 @@ namespace Orpul1
         public void SetTeamMissionScore(ETeam type, int score)
         {
             teamMissionScore[(int)type] = score;
+        }
+        public void SetRoundWinTeam(ETeam type)
+        {
+            roundWinTeam = type;
         }
         public void SetTeamScore(ETeam type, int score)
         {

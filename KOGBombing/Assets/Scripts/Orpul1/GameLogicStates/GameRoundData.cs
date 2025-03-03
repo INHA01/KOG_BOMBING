@@ -85,12 +85,14 @@ namespace Orpul1
                 case RoundEndType.TIMEOVER:
                 case RoundEndType.BOMBCLEAR:
                 case RoundEndType.ALLDIEATTACK:
+                    Managers.RoundData.SetRoundWinTeam(ETeam.BLUETEAM);
                     teamScores[(int)ETeam.BLUETEAM]++;
                     break;
 
                 //Attack team win condition
                 case RoundEndType.BOMBEXPLOSION:
                 case RoundEndType.ALLDIEDEFENCE:
+                    Managers.RoundData.SetRoundWinTeam(ETeam.REDTEAM);
                     teamScores[(int)ETeam.REDTEAM]++;
                     break;
             }

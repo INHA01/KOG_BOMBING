@@ -207,7 +207,15 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (blackBoard.playerStatus.groggyable)  // Groggy
             {
-                blackBoard.playerStatus.isGroggy = true;
+                if (!CanGroggy())   // 팀원 한명도 없으면 바로 죽음
+				{
+					blackBoard.playerStatus.groggyable = false;
+					blackBoard.hpBar.SetGroggyValue(0);
+					Death();
+					return;
+				}
+
+				blackBoard.playerStatus.isGroggy = true;
 				blackBoard.playerStatus.groggyable = false;
 				blackBoard.speedDebuff.groggyValue = 0.1f;
 
@@ -229,6 +237,25 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				Death();
             }
         }
+    }
+    
+    private bool CanGroggy()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+
+		for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i] == gameObject) continue;
+            ETeam otherPlayerTeam = (ETeam)players[i].GetComponent<PlayerData>().pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
+            if (myTeam == otherPlayerTeam)  // 팀이 같다면 걔가 살아있는지 확인
+            {
+                Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
+                if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
+                    return true;
+            }
+		}
+        return false;
     }
 
     private void Death()

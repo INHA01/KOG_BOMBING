@@ -31,7 +31,8 @@ public class PlayerBlackBoard : MonoBehaviour
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;
-    [HideInInspector] public PlayerStatus playerStatus;
+	[HideInInspector] public BombInteraction bombInteraction;
+	[HideInInspector] public PlayerStatus playerStatus;
     public EGameState currentGameState;
     public void Initialize()
     {
@@ -46,8 +47,11 @@ public class PlayerBlackBoard : MonoBehaviour
         isSetScore = false;
         hpBar.SetStopHpUI(false);
         hpBar.InitializeValues();
-        hpBar.HideGroggy();
-        hpBar.ShowHpUI();
+		hpBar.HideGroggy();
+        hpBar.ShowHpUI(); 
+        if (bombInteraction.GetBomb() != null)
+			bombInteraction.SetBombInteraction(false);
     }
 }
+
 

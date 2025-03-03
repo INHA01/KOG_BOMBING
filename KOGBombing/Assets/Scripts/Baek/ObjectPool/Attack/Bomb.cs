@@ -1,4 +1,5 @@
 using ExitGames.Client.Photon;
+using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using Semin;
@@ -12,7 +13,7 @@ public struct BombData
     public string nickname;
     public IBombStateAble bombState;
 }
-public class Bomb : AttackConsum,IDefendencyAble<BombData>
+public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
 {
     [SerializeField] float bombTime = 20f;
     float time = 0;
@@ -105,4 +106,10 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>
     {
         this.bombData = bombData;
     }
+
+    public void DoReset()
+    {
+        Release();
+    }
+
 }

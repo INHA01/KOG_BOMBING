@@ -42,7 +42,10 @@ public class PlayScene : MonoBehaviour
     [SerializeField] float sensitivity = 100f;
     void Awake()
     {
-        for(int i = 0; i < 10; i++)
+        Canvas canvas = gameObject.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
+        for (int i = 0; i < 10; i++)
         {
             blueScoreImages[i] = Resources.Load<Sprite>($"UISettings/Play/Play_UI_Score/Number/T_GUI_Bg_Exit_Number_"+i.ToString()+"_Blue");
             redScoreImages[i] = Resources.Load<Sprite>($"UISettings/Play/Play_UI_Score/Number/T_GUI_Bg_Exit_Number_" + i.ToString() + "_Red");

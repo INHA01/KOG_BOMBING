@@ -5,7 +5,9 @@ using UnityEngine;
 public enum ECameraType
 {
     MAINCAMERA,
-    MINIMAPCAMERA
+    MINIMAPCAMERA,
+    EFFECTCAMERA,
+    MAX
 }
 public class CameraManager
 {

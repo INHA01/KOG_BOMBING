@@ -15,7 +15,6 @@ public class PlayerAttack : PlayerBehavior
     bool isChangableAnim;
     Coroutine animChange;
     float bombInteractTime;
-    BombInteraction bombInteraction;
 
     protected override void Awake()
     {
@@ -24,7 +23,7 @@ public class PlayerAttack : PlayerBehavior
         attackRange = new AttackRange();
         attackRange.Init(playerData.playerObj.transform, playerData);
         playerShooting.Init(playerData.animator, attackRange);
-        bombInteraction = gameObject.AddComponent<BombInteraction>();
+        blackBoard.bombInteraction = gameObject.AddComponent<BombInteraction>();
     }
     private void Start()
     {
@@ -177,8 +176,8 @@ public class PlayerAttack : PlayerBehavior
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 
-                        if (bombInteraction.GetBomb() != null)
-						    bombInteraction.SetBombInteraction(false);
+                        if (blackBoard.bombInteraction.GetBomb() != null)
+							blackBoard.bombInteraction.SetBombInteraction(false);
 						return INode.ENodeState.Fail;
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
@@ -225,8 +224,8 @@ public class PlayerAttack : PlayerBehavior
                             Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
                             playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
 
-							if (bombInteraction.GetBomb() != null)
-								bombInteraction.SetBombInteraction(true);
+							if (blackBoard.bombInteraction.GetBomb() != null)
+								blackBoard.bombInteraction.SetBombInteraction(true);
 						}
                         playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                         playerData.isInteract = true;

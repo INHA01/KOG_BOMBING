@@ -31,7 +31,9 @@ public class PlayerBlackBoard : MonoBehaviour
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;
-    [HideInInspector] public PlayerStatus playerStatus;
+	[HideInInspector] public BombInteraction bombInteraction;
+
+	[HideInInspector] public PlayerStatus playerStatus;
     public void Initialize()
     {
         speedDebuff.Initialize();
@@ -47,6 +49,8 @@ public class PlayerBlackBoard : MonoBehaviour
         hpBar.InitializeValues();
         hpBar.HideGroggy();
         hpBar.ShowHpUI();
+        bombInteraction.SetBombInteraction(false);
     }
 }
+
 

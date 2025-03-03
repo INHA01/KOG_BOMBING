@@ -17,6 +17,7 @@ namespace Orpul1
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI("PlayCanvas");
             Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(1);
+            Managers.PointData.SetBestPlayer();
             Managers.PunData.Init();
             Managers.CamData.InitCamera();
         }

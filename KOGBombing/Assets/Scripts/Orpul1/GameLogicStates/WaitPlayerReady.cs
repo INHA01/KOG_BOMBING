@@ -4,6 +4,7 @@ using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -23,6 +24,9 @@ namespace Orpul1
             gameData.options.Receivers = ReceiverGroup.All;
             PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.READY } });
+            Managers.RoundData.Initialize();
+            Managers.PointData.Initialize();
+            Managers.PointData.SetMyTeamPlayers();
             base.EnterState();
         }
 
@@ -36,7 +40,6 @@ namespace Orpul1
             if (isAllPlayerReady)
                 transitionState((int)EGameState.SELECT);
         }
-
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
         {
             if (!PhotonNetwork.IsMasterClient) return;

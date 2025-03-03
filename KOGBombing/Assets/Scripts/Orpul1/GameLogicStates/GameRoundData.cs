@@ -94,6 +94,7 @@ namespace Orpul1
                     Managers.RoundData.SetRoundWinTeam(ETeam.BLUETEAM);
                     switchRoundScores[(int)ETeam.BLUETEAM]++;
                     teamScores[(int)ETeam.BLUETEAM]++;
+                    Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
                     break;
 
                 //Attack team win condition
@@ -102,6 +103,7 @@ namespace Orpul1
                     Managers.RoundData.SetRoundWinTeam(ETeam.REDTEAM);
                     switchRoundScores[(int)ETeam.REDTEAM]++;
                     teamScores[(int)ETeam.REDTEAM]++;
+                    Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
                     break;
             }
 

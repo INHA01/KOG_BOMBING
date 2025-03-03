@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
+using Semin;
 using UnityEngine;
 
 public class CharacterSelect : GameProcessLogic
@@ -26,8 +28,8 @@ public class CharacterSelect : GameProcessLogic
     {
         halfRound.SetHalfRound(roundState);
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
-        _uiScene.GetComponent<ChoosePlayer>().Init();
         EventBusSystem.Subscribe(EndSelectCharacter);
+        _uiScene.GetComponent<ChoosePlayer>().Init();
         isSelectCharacter = false;
         gameData.selectCharacterPath.Clear();
         Debug.Log("Character Select State");
@@ -50,8 +52,9 @@ public class CharacterSelect : GameProcessLogic
     private void EndSelectCharacter()
     {
         Debug.Log("DoneSelectCharacter");
-        gameData.selectCharacterPath.Append(_uiScene.GetComponent<ChoosePlayer>().type.ToString());
+        CharacterType characterType = _uiScene.GetComponent<ChoosePlayer>().type;
+        gameData.selectCharacterPath.Append(characterType.ToString());
+        
         isSelectCharacter = true;
     }
-    
 }

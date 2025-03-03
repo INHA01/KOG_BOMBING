@@ -38,30 +38,6 @@ namespace Orpul1
         }
 
        
-
-        private bool IsNextRound()
-        {
-            int attackTeamScore = roundData.TeamScores[(int)ETeam.REDTEAM];
-            int defenseTeamScore = roundData.TeamScores[(int)ETeam.BLUETEAM];
-            int switchRollScore = Mathf.Max(attackTeamScore, defenseTeamScore);
-            if (switchRollScore == 3 && !roundData.isAlreadySwitchRoll)
-            {
-                roundData.isAlreadySwitchRoll = true;
-                return false;
-            }
-            return true;
-        }
-        private bool IsEndGame()
-        {
-            int attackTeamScore = roundData.TeamScores[(int)ETeam.REDTEAM];
-            int defenseTeamScore = roundData.TeamScores[(int)ETeam.BLUETEAM];
-
-            float scoreGap = Mathf.Abs(attackTeamScore - defenseTeamScore);
-
-            if (scoreGap >= roundData.winRound) return true;
-            if (roundData.ProcessRoundCnt > roundData.maxRound) return true;
-            return false;
-        }
         public void OnSetTeamCount(EventData punEvent)
         {
             if (punEvent.Code != (int)PunEventType.PLAYERDIE) return;

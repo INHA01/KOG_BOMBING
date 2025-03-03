@@ -1,3 +1,4 @@
+using Michsky.UI.Shift;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -22,6 +23,7 @@ public enum ResultTeam
 {
     Win,
     Lose,
+    NONE,
     Max
 }
 public class ResultPlayer : MonoBehaviour
@@ -33,12 +35,20 @@ public class ResultPlayer : MonoBehaviour
     public ResultTeam team;
     void Awake()
     {
-        for(int i = 0; i < (int)ResultText.Max; i++)
+        
+        /*for(int i = 0; i < (int)ResultText.Max; i++)
         {
             if(i == (int)playerType)
                 players[i].SetActive(true);
             if(i == (int)team)
                 resultTeam[i].SetActive(true);
-        }
+        }*/
+    }
+    public void SetResultPlayer()
+    {
+        players[(int)playerType].SetActive(true);
+        if (team == ResultTeam.NONE) return;
+        resultTeam[(int)team].SetActive(true);
+
     }
 }

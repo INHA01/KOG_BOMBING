@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
+using Semin;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,10 +24,14 @@ public class PhotonChoosePlayer : ChoosePlayer
     {
         option.Receivers = ReceiverGroup.All;
     }
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnSelectEvent;
+    }
     public override void Notify(int index)
     {
         base.Notify(index);
-        object[] sendMsg = new object[3] { index, playerTeamIndex, eTeam };
+        object[] sendMsg = new object[4] { index, playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam };
         PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);
     }
     private void OnSelectEvent(EventData punEvent)
@@ -37,7 +42,10 @@ public class PhotonChoosePlayer : ChoosePlayer
             object[] receiveMsg = (object[])punEvent.CustomData;
             int receiveChooseIndex = (int)receiveMsg[0];
             int receiveTeamIndex = (int)receiveMsg[1];
-            ETeam receiveTeamType = (ETeam)receiveMsg[2];
+            string playerNickname = (string)receiveMsg[2];
+            ETeam receiveTeamType = (ETeam)receiveMsg[3];
+            Debug.Log($"PlayerSelct {playerNickname}, {(CharacterType)receiveChooseIndex}");
+            Managers.RoundData.SetSelectCharacter(playerNickname, (CharacterType)receiveChooseIndex);
             if (receiveTeamType != eTeam) return;
             ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
             if (chooseAvatarIcon == null) return;

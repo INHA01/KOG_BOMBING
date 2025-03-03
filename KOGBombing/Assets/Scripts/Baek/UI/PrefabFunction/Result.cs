@@ -30,7 +30,8 @@ public class Result : MonoBehaviour
             else
                 resultText[i].gameObject.SetActive(false);
         }
-        Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
+        GameObject resultAvatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
+        resultAvatar.GetComponent<ISetWinTypeable>().SetWinType((ResultTeam)type);
     }
 
     private ETeam GetWinTeam()
@@ -41,7 +42,7 @@ public class Result : MonoBehaviour
             case 1:
                 return ETeam.REDTEAM;
                 
-            case 0:
+            case -1:
                 return ETeam.BLUETEAM;
         }
         return GetSameScoreWinTeam();

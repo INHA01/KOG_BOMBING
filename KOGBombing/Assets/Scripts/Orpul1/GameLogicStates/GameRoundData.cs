@@ -22,7 +22,8 @@ namespace Orpul1
     public class GameRoundData
     {
         private int[] teamScores = new int[2] { 0, 0 }; 
-        private int[] teamCounts = new int[2] { 0, 0 }; 
+        private int[] teamCounts = new int[2] { 0, 0 };
+        private int[] switchRoundScores = new int[2] { 0, 0 };
         private int processRoundCnt = 0; 
         public int[] TeamScores { get { return teamScores; } }
         public int[] TeamCounts { get { return teamCounts; } }
@@ -91,6 +92,7 @@ namespace Orpul1
                 case RoundEndType.BOMBCLEAR:
                 case RoundEndType.ALLDIEATTACK:
                     Managers.RoundData.SetRoundWinTeam(ETeam.BLUETEAM);
+                    switchRoundScores[(int)ETeam.BLUETEAM]++;
                     teamScores[(int)ETeam.BLUETEAM]++;
                     break;
 
@@ -98,6 +100,7 @@ namespace Orpul1
                 case RoundEndType.BOMBEXPLOSION:
                 case RoundEndType.ALLDIEDEFENCE:
                     Managers.RoundData.SetRoundWinTeam(ETeam.REDTEAM);
+                    switchRoundScores[(int)ETeam.REDTEAM]++;
                     teamScores[(int)ETeam.REDTEAM]++;
                     break;
             }
@@ -150,15 +153,16 @@ namespace Orpul1
             float scoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
 
             if (scoreGap >= winRound) return true;
-            if (teamScores[(int)ETeam.REDTEAM] > maxRound && teamScores[(int)ETeam.BLUETEAM] > maxRound) return true;
+            if (teamScores[(int)ETeam.REDTEAM] >= maxRound || teamScores[(int)ETeam.BLUETEAM] >= maxRound) return true;
             return false;
         }
         private bool IsNextRound()
         {
             int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
-            if (switchRollScore == 3&& !isAlreadySwitchRoll)
+            if (switchRoundScores[(int)ETeam.BLUETEAM] == 3 || switchRoundScores[(int)ETeam.REDTEAM] == 3) 
             {
-                isAlreadySwitchRoll = true;
+                switchRoundScores[(int)ETeam.REDTEAM] = 0;
+                switchRoundScores[(int)ETeam.BLUETEAM] = 0;
                 return false;
             }
             return true;

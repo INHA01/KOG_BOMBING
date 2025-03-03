@@ -104,6 +104,8 @@ public class PlayScene : MonoBehaviour
     }
     public void UpdateScore(ETeam team, int score)
     {
+        // 인덱스 값 넘음 10점 시
+        if (score > 9) return;
         scoreImgs[(int)team].sprite = scoreImageList[(int)team][score]; 
     }
     public void SetSubWeaponIcon(WeaponType type)

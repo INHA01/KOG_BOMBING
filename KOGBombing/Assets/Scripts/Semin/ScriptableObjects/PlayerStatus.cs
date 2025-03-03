@@ -30,7 +30,7 @@ namespace Semin
         public bool isBombInteract;
         public bool isBombDefuse;
         public bool invincibility;
-
+        public bool canSettingBomb;
 		public CharacterType CharacterType { get { return type; } }
 	}
 

@@ -67,6 +67,7 @@ namespace Orpul1
             cameraObj.GetComponent<PlayerCamera>().SettingTargetPos(playerObj.transform);
             playerObj.GetComponent<PlayerController>().Init(cameraObj.GetComponent<Camera>(), spawnPosi, gameObject);
             playerObj.GetComponent<ITeamUIInitAble>().SetTeamUI(gameData.teamUIController);
+            gameData.playerSetGameState = playerObj.GetComponent<ISetGameStateAble>();
             gameData.playerObj = playerObj;
             Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
             Managers.CamData.AddCamera(minCamaraObj, ECameraType.MINIMAPCAMERA);

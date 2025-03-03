@@ -14,6 +14,7 @@ namespace Orpul1
         public TeamUIController teamUIController = new TeamUIController();
         public GameRoundData debugRoundData;
         public Transform bombPos;
+        public ISetGameStateAble playerSetGameState;
         private void Start()
         {
             teamUIController.Init(bombPos.position);

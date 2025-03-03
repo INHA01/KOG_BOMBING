@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Semin;
 using Orpul1;
-using UnityEditor.Experimental.GraphView;
 
 public class PlayerBlackBoard : MonoBehaviour
 {

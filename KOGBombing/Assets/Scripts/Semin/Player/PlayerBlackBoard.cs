@@ -54,7 +54,10 @@ public class PlayerBlackBoard : MonoBehaviour
         observaTargetNickname.Clear();
 
         if (bombInteraction.GetBomb() != null)
+        {
 			bombInteraction.SetBombInteraction(false);
+            bombInteraction.SetBomb(null);
+        }
     }
 }
 

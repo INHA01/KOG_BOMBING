@@ -185,14 +185,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
         return INode.ENodeState.Fail;
     }
-    public bool IsTargetDie()
-    {
-        if (blackBoard.gmlookTarget == null) return true;
-        string name = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
-        if (Managers.PunData.GetPlayerBlackBoard(name).playerStatus.isLive) return true;
-        Debug.Log("IsTargetDie Return False");
-        return false;
-    }
+    
     [PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
@@ -339,7 +332,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         else if (stream.IsReading)
         {
             object[] reciveHitInfo = (object[])stream.ReceiveNext();
-            SetActiveState((bool)reciveHitInfo[0]);
+            bool isLive = (bool)reciveHitInfo[0];
+            SetActiveState(isLive);
+            blackBoard.playerStatus.isLive = isLive;
             blackBoard.playerStatus.hp = (float)reciveHitInfo[1];
             blackBoard.playerStatus.defence = (float)reciveHitInfo[2];
             blackBoard.playerStatus.groggyable = (bool)reciveHitInfo[3];
@@ -358,37 +353,47 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
-
+    public bool IsTargetDie()
+    {
+        if (blackBoard.observaTargetNickname == null) return true;
+        if (blackBoard.observaTargetNickname.Equals("")) return true;
+        bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
+        if (!isLiveTarget) return true;
+        Debug.Log("IsTargetDie Return False");
+        return false;
+    }
     public INode.ENodeState FindAlivePlayer()
     {
         List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
+        Debug.Log("Search Alive Player");
         for (int i = 0; i < blackBoards.Count; i++)
         {
             if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
             if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
             if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
-            if (blackBoards[i].playerStatus.isLive)
-            {
-                Debug.Log($"Find Target {blackBoards[i].nickname}");
-                blackBoard.gmlookTarget = blackBoards[i].rigidBody.gameObject;
-                return INode.ENodeState.Success;
-            }
+            if (!blackBoards[i].playerStatus.isLive) continue;
+
+            Debug.Log($"Find Target {blackBoards[i].nickname}");
+            blackBoard.observaTarget = blackBoards[i].rigidBody.gameObject;
+            blackBoard.observaTargetNickname.Clear();
+            blackBoard.observaTargetNickname.Append(blackBoards[i].nickname);
+            return INode.ENodeState.Success;
+
         }
-        blackBoard.gmlookTarget = null;
+        blackBoard.observaTarget = null;
         return INode.ENodeState.Fail;
     }
     public INode.ENodeState SetCameraTarget()
     {
-        string nickname = blackBoard.gmlookTarget.GetComponent<PhotonView>().Owner.NickName;
-
-        if (Managers.PunData.GetPlayerBlackBoard(nickname).playerStatus.isLive)
+        
+        if (Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive)
         {
-            blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.gmlookTarget);
-            blackBoard.viewCamera.transform.LookAt(blackBoard.gmlookTarget.transform);
+            blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.observaTarget);
+            blackBoard.viewCamera.transform.LookAt(blackBoard.observaTarget.transform);
             Debug.Log("Set Camera Look Alive Player");
             return INode.ENodeState.Success;
         }
-        blackBoard.gmlookTarget = null;
+        blackBoard.observaTarget = null;
         return INode.ENodeState.Fail;
     }
     IEnumerator ResetRigidity(float time)

@@ -17,7 +17,8 @@ namespace Orpul1
             time = 0;
             Debug.Log("RoundEndWaiter Start");
             BombNotify bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
-            bombNotify.ActiveFalseAll();
+            if(bombNotify!=null)
+                bombNotify.ActiveFalseAll();
             Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(0);
         }
         public override void UpdateState()

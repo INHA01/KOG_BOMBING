@@ -64,6 +64,7 @@ GameObject:
   m_Component:
   - component: {fileID: 823934760368640580}
   - component: {fileID: 8901998066878442791}
+  - component: {fileID: -2687249791013978501}
   - component: {fileID: 5025844350980101262}
   - component: {fileID: 950755228203417475}
   - component: {fileID: 252021240770431486}
@@ -112,10 +113,27 @@ MonoBehaviour:
   interactLayer: 10
   defualtLayer: 0
   interactTime: 0
+  sound: {fileID: -2687249791013978501}
   pView: {fileID: 5025844350980101262}
   otherDoor: {fileID: 0}
   animator: {fileID: 6289052687641937776}
   doorUI: {fileID: 5436337034111894007}
+--- !u!114 &-2687249791013978501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796596051116256289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d725f080bef80d4f993dc1e2ae41a64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DoorSounds:
+  - {fileID: 8300000, guid: d1fa69a3c697bc2409db6557dd6ab019, type: 3}
+  - {fileID: 8300000, guid: 049ad3a64accdf94a8fad056c8afb287, type: 3}
+  PlayerSounds: []
 --- !u!114 &5025844350980101262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,6 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ff64bb3f079be84f8807931d0619919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alertOpenDoorSound: {fileID: 8300000, guid: a50c835c20f71bd4ea4c250ad6892301, type: 3}
   deactiveTime: 3
 --- !u!1 &7099818569471158079 stripped
 GameObject:

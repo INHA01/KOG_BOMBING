@@ -55,6 +55,7 @@ public class BombNotify : MonoBehaviour
     }
     public void NotifyBombSet()
     {
+        SoundManager.Instance.PlayUISound(EUiSoundType.BOMBLAUNCHED);
         bombUIs[(int)BombUI.Time].SetActive(true);
         bombUIs[(int)BombUI.BombSet].SetActive(true);
         bombUIs[(int)BombUI.BombDefuse].SetActive(false);

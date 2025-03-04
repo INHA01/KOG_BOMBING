@@ -56,6 +56,12 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("No magazine");
         }
     }
+    [PunRPC]
+    void PunPlaySound(int type)
+    {
+        AudioClip effect = playerData.soundList.WeaponList[type];
+        SoundManager.Instance.PlayEffect(effect, transform, 1, 0, 50);
+    }
 
     [PunRPC]
     void BulletSpawn(Vector3 shootDirection)
@@ -77,6 +83,11 @@ public class PlayerShooting : MonoBehaviour
     }
     IEnumerator Shooting()
     {
+        if(playerData.pv.IsMine)
+        {
+            playerData.pv.RPC("PunPlaySound", RpcTarget.AllBuffered, (int)EWeaponSound.SHOOTING);
+        }
+            
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
@@ -108,6 +119,10 @@ public class PlayerShooting : MonoBehaviour
             {
                 time = 0;
                 magazineCount++;
+
+                AudioClip reloadSound = playerData.soundList.WeaponList[(int)EWeaponSound.RELOAD];
+                SoundManager.Instance.PlayEffect(reloadSound);
+
                 if (bulletCount == 0)
                     bulletCount = InitBulletCount;
             }

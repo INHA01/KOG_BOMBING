@@ -6,6 +6,11 @@ using Orpul1;
 using Photon.Pun;
 using UnityEngine;
 
+public enum EDoorSound
+{
+    INTERACT,
+    OPEN,
+}
 public class DoorInteractBehavior : InteractObject, IInteractAble
 {
     enum EDoorAni
@@ -14,6 +19,8 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         TriOpenDoor,
         TriInitDoor
     }
+   
+    [SerializeField] InteractSound sound;
     [SerializeField] PhotonView pView;
     [SerializeField] DoorInteractBehavior otherDoor;
     [SerializeField] Animator animator;
@@ -43,7 +50,6 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     public override bool ProcessInteract(PhotonView pView)
     {
         if (interactState == InteractState.COMPLETE) return false;
-
         StartCoroutine(CoInteractDelay());
         
         return true;
@@ -58,6 +64,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     }
     public void OpenDoor()
     {
+        SoundManager.Instance.PlayEffect(sound.DoorSounds[(int)EDoorSound.OPEN], transform, 1, 0, 30);
         activeAlertUI.Active();
         interactState = InteractState.COMPLETE;
         interactCollider.enabled = false;
@@ -80,6 +87,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     protected override IEnumerator CoInteractDelay()
     {
         if (interactState == InteractState.INTERACTING) yield break;
+        SoundManager.Instance.PlayEffect(sound.DoorSounds[(int)EDoorSound.INTERACT]);
         interactState = InteractState.INTERACTING;
         float deltaTime = 0;
         while (deltaTime < interactTime)

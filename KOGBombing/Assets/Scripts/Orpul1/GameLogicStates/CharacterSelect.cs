@@ -10,6 +10,7 @@ using UnityEngine;
 
 public class CharacterSelect : GameProcessLogic
 {
+    [SerializeField] AudioListener audioListener;
     UIPopup _uiScene;
     bool isSelectCharacter = false;
     IHalfRoundUISetable halfRound;
@@ -33,6 +34,7 @@ public class CharacterSelect : GameProcessLogic
         isSelectCharacter = false;
         gameData.selectCharacterPath.Clear();
         Debug.Log("Character Select State");
+        audioListener.enabled = true;
     }
     public override void UpdateState()
     {
@@ -46,6 +48,7 @@ public class CharacterSelect : GameProcessLogic
     {
         roundState = ERoundState.SECONDHALF;
         EventBusSystem.Unsubscribe(EndSelectCharacter);
+        audioListener.enabled = false;
     }
 
 

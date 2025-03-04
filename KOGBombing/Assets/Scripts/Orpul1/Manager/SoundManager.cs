@@ -53,16 +53,30 @@ public class SoundManager : SingleTon<SoundManager>
     {
         playerUISound(uiSoundType);
     }
-
-    public void PlayEffect(AudioClip effect)
+    /// <summary>
+    /// 소리 재생 매서드
+    /// </summary>
+    /// <param name="effect">재생할 효과음</param>
+    /// <param name="parent">소리 오브젝트 부모 설정</param>
+    /// <param name="spatialBlend">3D 공간 음향 0~1(0 = 2D, 1 = 3D )</param>
+    public void PlayEffect(AudioClip effect,Transform parent = null, float spatialBlend = 0,float minDistance = 0, float maxDistance = 1)
     {
         GameObject audioObj = new GameObject();
+        audioObj.transform.parent = parent;
+        audioObj.transform.localPosition = Vector3.zero;
         AudioSource audioSource = audioObj.AddComponent<AudioSource>();
+        audioSource.spatialBlend = spatialBlend;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = minDistance;
+        audioSource.maxDistance = maxDistance;
         audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(EMixerGroup.EFFECT.ToString())[0];
         audioSource.clip = effect;
+        
         audioSource.Play();
         Destroy(audioObj, effect.length);
     }
+
+    
     public void PlayBGM(AudioClip bgm)
     {
         bgmPlayer.clip = bgm;

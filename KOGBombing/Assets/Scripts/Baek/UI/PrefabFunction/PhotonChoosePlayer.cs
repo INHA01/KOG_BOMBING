@@ -12,12 +12,13 @@ using UnityEngine;
 
 public class PhotonChoosePlayer : ChoosePlayer
 {
+    [SerializeField] SelectCharacterSound sound;
     PhotonChooseAvatar photonAvatar = new PhotonChooseAvatar();
     List<Player> mTeamPlayerList;
     Queue<int> mTeamIndex = new Queue<int>();
     int playerTeamIndex = 0;
     ETeam eTeam;
-
+    
     RaiseEventOptions option = new RaiseEventOptions();
 
     protected override void Awake()
@@ -30,6 +31,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     }
     public override void Notify(int index)
     {
+        SoundManager.Instance.PlayEffect(sound.selectSound[index]);
         base.Notify(index);
         object[] sendMsg = new object[4] { index, playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam };
         PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);

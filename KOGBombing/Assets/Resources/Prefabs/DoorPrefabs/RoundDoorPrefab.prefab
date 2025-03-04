@@ -66,6 +66,7 @@ GameObject:
   - component: {fileID: 252021240770431486}
   - component: {fileID: 3485155184281368387}
   - component: {fileID: 2891621167930073231}
+  - component: {fileID: -5152387212403639772}
   m_Layer: 0
   m_Name: RoundDoorPrefab
   m_TagString: Untagged
@@ -143,7 +144,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c30c5008f1d814478439bc5f7cb5677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound: {fileID: -5152387212403639772}
   animator: {fileID: 6289052687641937776}
+--- !u!114 &-5152387212403639772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796596051116256289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d725f080bef80d4f993dc1e2ae41a64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DoorSounds:
+  - {fileID: 8300000, guid: d1fa69a3c697bc2409db6557dd6ab019, type: 3}
+  - {fileID: 8300000, guid: 049ad3a64accdf94a8fad056c8afb287, type: 3}
+  PlayerSounds: []
 --- !u!1 &2183477838210072470
 GameObject:
   m_ObjectHideFlags: 0

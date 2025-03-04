@@ -117,6 +117,7 @@ namespace Orpul1
             Debug.Log($"Prev Delay {Time.time}");
             SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
             while (Time.time < time) yield return null;
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             Debug.Log($"After delay {Time.time}");
             if(PhotonNetwork.IsMasterClient)
             {

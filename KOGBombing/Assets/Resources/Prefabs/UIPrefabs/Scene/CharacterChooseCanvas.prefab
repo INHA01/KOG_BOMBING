@@ -301,6 +301,7 @@ GameObject:
   - component: {fileID: 3033848319823012077}
   - component: {fileID: 4036492858300786112}
   - component: {fileID: 2597896122239260872}
+  - component: {fileID: 6553397291976070196}
   m_Layer: 5
   m_Name: CharacterChooseCanvas
   m_TagString: Untagged
@@ -413,6 +414,22 @@ MonoBehaviour:
   teamType: {fileID: 878897023318656126}
   countDownText: {fileID: 8201883683700916302}
   type: 0
+  sound: {fileID: 6553397291976070196}
+--- !u!114 &6553397291976070196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4145742951126778194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 489ab6c05822cfb499f3ee3c2ba61ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectSound:
+  - {fileID: 8300000, guid: 698ec8cbebeb70849b5115ef272a9fd9, type: 3}
+  - {fileID: 8300000, guid: 1ac0606ca961d7f4392379efd26d0972, type: 3}
 --- !u!1 &4302439119480960465
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     Coroutine destroyCoroutine;
     BombNotify bombNotify;
 	bool isInteracting = false;
+    public bool isUsable = true;
     PhotonView pv;
     BombData bombData;
     RaiseEventOptions options = new RaiseEventOptions();

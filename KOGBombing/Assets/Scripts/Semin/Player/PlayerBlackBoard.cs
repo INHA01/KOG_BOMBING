@@ -47,10 +47,13 @@ public class PlayerBlackBoard : MonoBehaviour
         isSetScore = false;
         hpBar.SetStopHpUI(false);
         hpBar.InitializeValues();
-		hpBar.HideGroggy();
-        hpBar.ShowHpUI(); 
+        hpBar.HideGroggy();
+        hpBar.ShowHpUI();
         if (bombInteraction.GetBomb() != null)
+        {
 			bombInteraction.SetBombInteraction(false);
+            bombInteraction.SetBomb(null);
+        }
     }
 }
 

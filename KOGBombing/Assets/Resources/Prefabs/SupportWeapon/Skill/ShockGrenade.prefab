@@ -36,6 +36,7 @@ Transform:
   m_Children:
   - {fileID: 4158387521672505079}
   - {fileID: 8270029596045558651}
+  - {fileID: 8888142274649107407}
   - {fileID: 4293124154268612037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -140,12 +141,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 4293124154268612038}
   type: 3
+  isActive: 0
   interval: 1.5
   range: 7
   attackRange: 7
   damage: 50
   effectTime: 3
-  decal: {fileID: 2812561275147447350}
+  myTeamDecal: {fileID: 2812561275147447350}
+  otherTeamDecal: {fileID: 3356364536284841090}
 --- !u!1001 &4485363223159734556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,6 +247,167 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c08b8753c1be48c468b43c730c390806,
     type: 3}
   m_PrefabInstance: {fileID: 4485363223159734556}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5091113548572473242
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3760219330505423870}
+    m_Modifications:
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200844715057106109, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200844715057106109, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200844715057106109, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _fillProgress
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _circleBaseColor.b
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _circleBaseColor.g
+      value: 0.75686276
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _circleBaseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _circleFillColor.b
+      value: 0.047058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _circleFillColor.g
+      value: 0.03529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: _circleFillColor.r
+      value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8374478578738434834, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Name
+      value: OtherTeamWarringAreaDecal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8374478578738434834, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619467415933094763, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619467415933094763, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619467415933094763, guid: ac7e673accb4d544991584666cc135d2,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ac7e673accb4d544991584666cc135d2, type: 3}
+--- !u!114 &3356364536284841090 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5091113548572473242}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67df33d8512a43e44b1cf19841c9344f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &8888142274649107407 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4467081010206514261, guid: ac7e673accb4d544991584666cc135d2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5091113548572473242}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5648305094669999089
 PrefabInstance:
@@ -487,7 +651,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
         type: 3}
       propertyPath: _radius
@@ -531,7 +695,7 @@ PrefabInstance:
     - target: {fileID: 8374478578738434834, guid: ac7e673accb4d544991584666cc135d2,
         type: 3}
       propertyPath: m_Name
-      value: WarringAreaDecal
+      value: MyTeamWarringAreaDecal
       objectReference: {fileID: 0}
     - target: {fileID: 8374478578738434834, guid: ac7e673accb4d544991584666cc135d2,
         type: 3}
@@ -552,7 +716,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

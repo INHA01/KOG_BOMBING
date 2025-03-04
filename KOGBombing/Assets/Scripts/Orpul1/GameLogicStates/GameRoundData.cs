@@ -107,6 +107,7 @@ namespace Orpul1
                     break;
             }
 
+            Debug.Log($"TeamScore redTeam: {teamScores[0]}, blueTeam:{teamScores[1]}");
             // >> TODO : 공수 교대 시 팀 점수 ui 갱신
             teamUIController.UpdateTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
             teamUIController.UpdateTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);

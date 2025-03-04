@@ -52,6 +52,8 @@ namespace Orpul1
             Debug.Log("RoundWait!");
             if (canCountDown)
                 DoCountDown();
+            gameData.teamUIController.UpdateTeamScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.REDTEAM]);
+            gameData.teamUIController.UpdateTeamScore(ETeam.BLUETEAM, Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM]);
         }
         public override void ExitState()
         {

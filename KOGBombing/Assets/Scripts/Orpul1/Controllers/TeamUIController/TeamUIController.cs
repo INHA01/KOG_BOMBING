@@ -48,6 +48,8 @@ public class TeamUIController
             PhotonNetwork.NetworkingClient.EventReceived -= UpdateTeamScore;
             PhotonNetwork.NetworkingClient.EventReceived += UpdateTeamState;
             PhotonNetwork.NetworkingClient.EventReceived += UpdateTeamScore;
+            updateScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.REDTEAM]);
+            updateScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM]);
         }
     }
 

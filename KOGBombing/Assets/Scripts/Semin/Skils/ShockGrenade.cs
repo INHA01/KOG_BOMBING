@@ -1,4 +1,5 @@
 using DTT.AreaOfEffectRegions;
+using Orpul1;
 using Photon.Pun;
 using Semin;
 using System.Collections;
@@ -14,27 +15,34 @@ public class ShockGrenade : AttackConsum
 	[Range(0f, 100f), SerializeField] private float effectTime;
 	public override float Damage { get { return damage; } }
 	public float Range { get { return range; } }
-
-	[SerializeField] SRPCircleRegionProjector decal;
-	PhotonView pView;
+	
+	SRPCircleRegionProjector decal;
+    [SerializeField] SRPCircleRegionProjector myTeamDecal;
+    [SerializeField] SRPCircleRegionProjector otherTeamDecal;
+    PhotonView pView;
 
 
 	private void Awake()
 	{
 		pView = GetComponent<PhotonView>();
-		decal.GenerateProjector();
+		myTeamDecal.gameObject.SetActive(false);
+		otherTeamDecal.gameObject.SetActive(false);
 	}
 
 	public override void SetTeam(int team)
 	{
 		base.SetTeam(team);
+		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != (ETeam)team)
+			decal = otherTeamDecal;
+		else decal = myTeamDecal;
 		if (attackCollider == null)
 			attackCollider = gameObject.GetComponent<SphereCollider>();
 		attackCollider.radius = attackRange / 2f;
 		attackCollider.isTrigger = true;
 		attackCollider.gameObject.SetActive(true);
 		SetDecal();
-	}
+
+    }
 
 	public override void Use()
 	{

@@ -26,7 +26,7 @@ public class DashSkill : MonoBehaviour, ISkill
 	{
 		if(playerData.pv.IsMine)
 		{
-			playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			playScene.SetSkillIcon(CharacterType.Uni);
 		}
 

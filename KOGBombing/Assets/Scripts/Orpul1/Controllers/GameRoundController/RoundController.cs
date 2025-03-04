@@ -25,7 +25,7 @@ namespace Orpul1
             roundInterval = roundTime;
             isStopTime = false;
             time = 0;
-            timeTMP = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>().timer;
+            timeTMP = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
             this.gameData = gameData;
             eventUIController = new EventUIController(gameData.teamUIController);
             int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];

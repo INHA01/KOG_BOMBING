@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Semin;
 using Orpul1;
+using System.Text;
 
 public class PlayerBlackBoard : MonoBehaviour
 {
@@ -16,7 +17,8 @@ public class PlayerBlackBoard : MonoBehaviour
     public HpBar hpBar;
     public PlayerStatusUI bombUI;
     public GameObject fieldOfView;
-    public GameObject gmlookTarget;
+    public GameObject observaTarget;
+    public StringBuilder observaTargetNickname = new StringBuilder();
     public GameObject interactUIObj;
     public Vector2 speedValue;
     public SpeedDebuff speedDebuff = new SpeedDebuff();
@@ -48,9 +50,14 @@ public class PlayerBlackBoard : MonoBehaviour
         hpBar.SetStopHpUI(false);
         hpBar.InitializeValues();
 		hpBar.HideGroggy();
-        hpBar.ShowHpUI(); 
+        hpBar.ShowHpUI();
+        observaTargetNickname.Clear();
+
         if (bombInteraction.GetBomb() != null)
+        {
 			bombInteraction.SetBombInteraction(false);
+            bombInteraction.SetBomb(null);
+        }
     }
 }
 

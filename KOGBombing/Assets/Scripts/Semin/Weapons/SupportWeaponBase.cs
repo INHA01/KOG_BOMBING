@@ -40,7 +40,7 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 			if(playScene == null)
 				playScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
 			else
-				playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+				playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			if(type != WeaponType.BOMB)
 				playScene.SetSubWeaponIcon(type);
 		}

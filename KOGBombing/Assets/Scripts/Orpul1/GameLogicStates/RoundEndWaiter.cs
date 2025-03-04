@@ -16,7 +16,8 @@ namespace Orpul1
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDENDWAIT);
             time = 0;
             Debug.Log("RoundEndWaiter Start");
-            Managers.UI.ClosePopupUI("BombNotifyCanvas");
+            BombNotify bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            bombNotify.ActiveFalseAll();
             Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(0);
         }
         public override void UpdateState()

@@ -21,6 +21,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     Coroutine destroyCoroutine;
     BombNotify bombNotify;
 	bool isInteracting = false;
+    public bool isUsable = true;
     PhotonView pv;
     BombData bombData;
     RaiseEventOptions options = new RaiseEventOptions();
@@ -50,20 +51,33 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     private void OnTriggerStay(Collider other)
     {
         PlayerBlackBoard player = other.GetComponent<PlayerBlackBoard>();
-        if (player != null && player.playerStatus.isBombDefuse)
+        if (player != null)
         {
-            player.playerStatus.isBombDefuse = false;
-            // 폭탄 해제 모든 플레이어들에게 Notify
             if (bombNotify == null)
-                bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
-            if (bombData.bombState != null)
-                bombData.bombState.BombEvent(EBombState.CLEAR);
-            //폭탄 해체한 플레이어 미션 포인트 + 1 이벤트
-            if (PhotonNetwork.IsMasterClient)
-                PhotonNetwork.RaiseEvent((int)EPointType.MISSION, player.nickname, options, SendOptions.SendReliable);
-            bombNotify.NotifyBombDefuse();
-            Release();
-            //RPCDestroy();
+                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            bombNotify.ActiveCanInteractBomb(true);
+            if (player.playerStatus.isBombDefuse)
+            {
+                player.playerStatus.isBombDefuse = false;
+                // 폭탄 해제 모든 플레이어들에게 Notify
+                bombNotify.NotifyBombDefuse();
+                if (bombData.bombState != null)
+                    bombData.bombState.BombEvent(EBombState.CLEAR);
+                //폭탄 해체한 플레이어 미션 포인트 + 1 이벤트
+                if (PhotonNetwork.IsMasterClient)
+                    PhotonNetwork.RaiseEvent((int)EPointType.MISSION, player.nickname, options, SendOptions.SendReliable);
+                Release();
+                //RPCDestroy();
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            if (bombNotify == null)
+                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            bombNotify.ActiveCanInteractBomb(false);
         }
     }
     public void SetIsInteraction(bool isInteraction)

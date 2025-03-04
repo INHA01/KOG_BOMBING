@@ -6,30 +6,46 @@ using UnityEngine.UI;
 
 public class ShowCursor : MonoBehaviour
 {
+    struct ScreenPos
+    {
+        public Vector3 canvasPos;
+        public float minX;
+        public float maxX;
+        public float minY;
+        public float maxY;
+    }
     [SerializeField] Vector3 bombPos;
     [SerializeField] GameObject cursor;
-    public Vector3 BombPos { get { return bombPos; }  set { bombPos = value; } }
     Camera main;
+    ScreenPos screenPos;
+    float cursorLength;
+    public Vector3 BombPos { get { return bombPos; }  set { bombPos = value; } }
     void OnEnable()
     {
+        cursorLength = cursor.GetComponent<RectTransform>().sizeDelta.x / 2;
+        screenPos.canvasPos = GetComponent<Canvas>().transform.position;
+        screenPos.minX = screenPos.canvasPos.x - (Screen.width / 2 - cursorLength);
+        screenPos.maxX = screenPos.canvasPos.x + (Screen.width / 2 - cursorLength);
+        screenPos.minY = screenPos.canvasPos.y - (Screen.height / 2 - cursorLength);
+        screenPos.maxY = screenPos.canvasPos.y + (Screen.height / 2 - cursorLength);
         main = Managers.CamData.GetCamera(ECameraType.MAINCAMERA).GetComponent<Camera>();
     }
     void FixedUpdate()
     {
         if (main == null) return;
         Vector3 bombDir = bombPos - main.transform.position;
-        // 카메라가 bombPos를 바라보고 있는지 확인
-        Debug.Log("main" + main.transform.forward);
-        Debug.Log("Cursor" + Vector3.Dot(main.transform.forward, bombDir.normalized));
-        if (Vector3.Dot(main.transform.forward, bombDir.normalized) < 0)
-        {
-            // 카메라가 bombPos의 반대편을 바라보고 있다면 bombDir 반전
-            bombDir = -bombDir;
-        }
         // 폭탄의 방향으로 커서 위치 , 화면 밖으로 나가지 않게
         Vector3 cursorPos = main.WorldToScreenPoint(main.transform.position + bombDir.normalized * 10);
-        cursorPos.x = Mathf.Clamp(cursorPos.x, 0, Screen.width - 90);
-        cursorPos.y = Mathf.Clamp(cursorPos.y, 0, Screen.height - 90);
+        cursorPos.x = Mathf.Clamp(cursorPos.x, screenPos.minX, screenPos.maxX);
+        cursorPos.y = Mathf.Clamp(cursorPos.y, screenPos.minY, screenPos.maxY);
+        float dot = Vector3.Dot(main.transform.forward, bombDir.normalized);
+        // 내적각도가 90도 이상인 경우 커서 위치를 반대로 (시야가 반대방향인 경우)
+        if(dot <= 0)
+        {
+            cursorPos.x = screenPos.canvasPos.x - (cursorPos.x - screenPos.canvasPos.x);
+            cursorPos.y = screenPos.canvasPos.y - (cursorPos.y - screenPos.canvasPos.y);
+        }
+
         cursor.transform.position = cursorPos;
     }
 }

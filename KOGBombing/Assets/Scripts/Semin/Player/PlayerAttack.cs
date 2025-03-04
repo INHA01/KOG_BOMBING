@@ -15,7 +15,7 @@ public class PlayerAttack : PlayerBehavior
     bool isChangableAnim;
     Coroutine animChange;
     float bombInteractTime;
-
+    BombNotify bombNotify;
     protected override void Awake()
     {
         base.Awake();
@@ -154,6 +154,14 @@ public class PlayerAttack : PlayerBehavior
         }
         if (playerData.bomb is DeployableBomb)
         {
+            if (bombNotify == null)
+            { 
+                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                if(bombNotify == null)
+                {
+                    bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+                }
+            }
             if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
                 float waitTime = 5.0f;
@@ -172,6 +180,7 @@ public class PlayerAttack : PlayerBehavior
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
+                        bombNotify.NotifyGuide(false, blackBoard.eTeam);
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
@@ -192,7 +201,8 @@ public class PlayerAttack : PlayerBehavior
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-						blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
+                        bombNotify.NotifyGuide(false, blackBoard.eTeam);
+                        blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
@@ -236,6 +246,7 @@ public class PlayerAttack : PlayerBehavior
                         return INode.ENodeState.Running;
                     }
 				}
+                bombNotify.NotifyGuide(false, blackBoard.eTeam);
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 			}
 
@@ -425,6 +436,15 @@ public class PlayerAttack : PlayerBehavior
 		isChangableAnim = true;
         WeaponType weaponType = WeaponType.GUN;
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
+        if(bombNotify == null)
+        {
+            bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            if (bombNotify == null)
+            {
+                bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+            }
+        }
+        bombNotify.NotifyGuide(blackBoard.inputs[EKey.NUM_2] , blackBoard.eTeam);
 
         if (blackBoard.inputs[EKey.NUM_2])
         {

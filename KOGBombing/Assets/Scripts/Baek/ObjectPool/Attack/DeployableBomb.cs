@@ -40,7 +40,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         count--;
         if(playerData.pv.IsMine)
         {
-            PlayScene playScene = Managers.UI.GetPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+            PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
             playScene.subWeaponFades[1].SetActive(true);
         }
         playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);
@@ -64,7 +64,10 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         yield return null;
 		if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
         {
-		    bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
+            Bomb myBomb = gameObject.GetComponent<BombInteraction>().GetBomb();
+            if (myBomb != null)
+                yield break;
+            bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
             bomb.GetComponent<IDefendencyAble<BombData>>().Defendency(bombData);
             bomb.transform.position = playerData.ConsumPos.position;
             bomb.Notify();
@@ -73,7 +76,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             for (int i = 0; i < players.Length; i++)
                 players[i].GetComponent<BombInteraction>().SetBomb(bomb);
-		}
+        }
 		else
 		{
             PlayerBlackBoard blackBoard = this.GetComponent<PlayerBlackBoard>();

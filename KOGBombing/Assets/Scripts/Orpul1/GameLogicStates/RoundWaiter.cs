@@ -44,6 +44,8 @@ namespace Orpul1
             canCountDown = false;
             GameEventBus.Publish(GameEventBus.EGameEvent.DOORCLOSE);
             SetPlayerPosi();
+            gameData.teamUIController.UpdateTeamScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.REDTEAM]);
+            gameData.teamUIController.UpdateTeamScore(ETeam.BLUETEAM, Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM]);
             time = 0;
             base.EnterState();
         }

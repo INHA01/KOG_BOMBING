@@ -43,7 +43,15 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
+        //StartCoroutine(DamageTest(400, 43f));
 	}
+
+    IEnumerator DamageTest(float damage, float time)
+    {
+        yield return new WaitForSeconds(time);
+        int playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        OnDamaged(damage, playerIndex);
+    }
     private void OnEnable()
     {
         playerPointController.Initialize();
@@ -225,6 +233,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					Death();
 					return;
 				}
+
+                if (blackBoard.inputs[EKey.NUM_2])  // 폭탄 해체 중이었으면 Interaction 취소
+                {
+                    if (blackBoard.bombInteraction.GetBomb() != null)
+                        blackBoard.bombInteraction.SetBombInteraction(false);
+                }
 
 				blackBoard.playerStatus.isGroggy = true;
 				blackBoard.playerStatus.groggyable = false;

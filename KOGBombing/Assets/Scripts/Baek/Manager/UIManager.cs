@@ -26,7 +26,12 @@ public class UIManager
         {
             return _popupDictionary[name].GetComponent<T>();
         }
-        //return null;
+        else
+        {
+            UIPopup popup = ShowPopupUI<UIPopup>(name);
+            if(popup != null)
+                return popup.GetComponent<T>();
+        }
         return default;
     }
 

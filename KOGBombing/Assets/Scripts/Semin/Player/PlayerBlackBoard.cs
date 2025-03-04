@@ -33,6 +33,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;
+    public bool showSoundEffect = false;
 	[HideInInspector] public BombInteraction bombInteraction;
 	[HideInInspector] public PlayerStatus playerStatus;
     public EGameState currentGameState;

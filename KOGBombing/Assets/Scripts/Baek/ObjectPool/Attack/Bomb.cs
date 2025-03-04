@@ -55,7 +55,6 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
         {
             if (bombNotify == null)
                 bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
-            bombNotify.ActiveCanInteractBomb(true);
             if (player.playerStatus.isBombDefuse)
             {
                 player.playerStatus.isBombDefuse = false;
@@ -71,15 +70,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
             }
         }
     }
-    void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            if (bombNotify == null)
-                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
-            bombNotify.ActiveCanInteractBomb(false);
-        }
-    }
+    
     public void SetIsInteraction(bool isInteraction)
 	{
 		isInteracting = isInteraction;

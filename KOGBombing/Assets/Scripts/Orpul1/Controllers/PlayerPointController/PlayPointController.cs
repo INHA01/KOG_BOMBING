@@ -31,8 +31,8 @@ public class PlayPointController
     public PlayPointController(PhotonView pv)
     {
         this.pv = pv;
-        UIPopup _uiPopup = Managers.UI.GetPopupUI<UIPopup>("BattleBoardCanvas");
-        updateScore = _uiPopup.GetComponent<BattleBoardUpdater>();
+        updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+        Managers.UI.ClosePopupUI("BattleBoardCanvas");
 
         ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
 

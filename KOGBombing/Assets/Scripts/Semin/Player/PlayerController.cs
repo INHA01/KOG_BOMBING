@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
-    
-    
+    BombNotify bombNotify;
+
     bool isInitComplete = false;
     void Awake()
     {
@@ -107,13 +107,63 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     private void Update()
     {
         if (!playerData.pv.IsMine) return;
-
+        
         if (playerData.animator != null)
         {
             if (playerData.isInteract)
 				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
 			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
         }
+        ConfirmBombInteract();
+        ConfirmSoundEffect();
+    }
+    void ConfirmBombInteract()
+    {
+        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
+        bool tagBomb = false;
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (
+                (blackBoard.eTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
+                ||
+                (blackBoard.eTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
+               )
+            {
+                if (bombNotify == null)
+                    bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                if (blackBoard.inputs[EKey.NUM_2])
+                {
+                    bombNotify.ActiveCanInteractBomb(true);
+                    tagBomb = true;
+                }
+            }
+        }
+        if (!tagBomb && bombNotify != null)
+            bombNotify.ActiveCanInteractBomb(false);
+    }
+    void ConfirmSoundEffect()
+    {
+        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 16f);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            PlayerData playerD = colliders[i].GetComponent<PlayerData>();
+            if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
+            {
+                PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
+                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+                if (player.eTeam != blackBoard.eTeam && !player.showSoundEffect)
+                {
+                    player.showSoundEffect = true;
+                    showCursor.ShowSoundCursor(player.transform.position, false, player);
+                }
+
+            }
+        }
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(blackBoard.transform.position, 16f);
     }
 
     public void DoDestory()

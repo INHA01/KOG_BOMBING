@@ -13,6 +13,7 @@ public class PlayerData : MonoBehaviour
     public Vector3 shootDirection;
     public float maxLength;
     public Vector3 mousePos;
+    public PlayerSoundList soundList;
 
     [Header("AttackRange")]
     [SerializeField] GameObject attackRangePrefab;

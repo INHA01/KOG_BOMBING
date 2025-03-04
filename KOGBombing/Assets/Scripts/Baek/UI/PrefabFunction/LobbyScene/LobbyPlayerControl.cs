@@ -23,6 +23,7 @@ public class LobbyPlayerControl : MonoBehaviour, IDragHandler
     }
     public void ChangePlayer(int type)
     {
+        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
         for(int i = 0; i < (int)CharacterType.Max; i++)
         {
             if(i == type)

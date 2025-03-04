@@ -33,6 +33,7 @@ namespace Orpul1
             view.customRoomPanel.SetActive(false);
             view.customRoomListPanel.SetActive(false);
             view.background.SetActive(false);
+            SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
             PhotonNetwork.LeaveRoom();
         }
     }

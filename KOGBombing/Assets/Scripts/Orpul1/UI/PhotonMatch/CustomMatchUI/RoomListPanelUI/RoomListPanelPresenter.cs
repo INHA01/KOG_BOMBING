@@ -30,9 +30,11 @@ public class RoomListPanelPresenter : MonoBehaviour
         view.backgroundPanelObj.SetActive(false);
         view.roomListPanelObj.SetActive(false);
         view.btnSelectMode.interactable = true;
+        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
     }
     public void OnCreatRoomBtn()
     {
         view.createPanelObj.SetActive(true);
+        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
     }
 }

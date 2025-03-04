@@ -18,6 +18,7 @@ namespace Orpul1
         protected float delayTime = 5;
         [SerializeField]
         Button btnMatch;
+        WaitForSeconds waitOneSec = new WaitForSeconds(1);
         private void Start()
         {
             btnMatch.interactable = true;
@@ -114,6 +115,7 @@ namespace Orpul1
         {
             float time = Time.time + delayTime;
             Debug.Log($"Prev Delay {Time.time}");
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
             while (Time.time < time) yield return null;
             Debug.Log($"After delay {Time.time}");
             if(PhotonNetwork.IsMasterClient)
@@ -122,6 +124,7 @@ namespace Orpul1
                 PhotonNetwork.IsMessageQueueRunning = true;
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             LoadingSceneManager.LoadScene("MainGame");
         }
     }

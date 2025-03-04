@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 4440454996282029130}
   - component: {fileID: 6643903595792908521}
   - component: {fileID: 1272812946582949491}
+  - component: {fileID: -6883398266351926395}
   - component: {fileID: 1055956268508796724}
   - component: {fileID: 2279248158444923470}
   - component: {fileID: 6527240402747218028}
@@ -429,6 +430,48 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &-6883398266351926395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588a53c855402c444842926be1278dcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GeneralList:
+  - {fileID: 8300000, guid: 81e65b6b802ee6f40a251cf1000bdcc5, type: 3}
+  - {fileID: 8300000, guid: 1dadd641b6ba9194aa22f5bd7baa723c, type: 3}
+  - {fileID: 8300000, guid: e637387ef9f76b14793e65a8550a8a58, type: 3}
+  HitDeathList:
+  - {fileID: 8300000, guid: f3d5a17ec0258e340b9f06cc99c3cb90, type: 3}
+  - {fileID: 8300000, guid: 1bc64b5bc9e770e4cb26cbbc2d9b4ed4, type: 3}
+  - {fileID: 8300000, guid: b42c75f053857bd4d9282db328d2155f, type: 3}
+  - {fileID: 8300000, guid: cb23b862b50ae844b8d191f785621664, type: 3}
+  - {fileID: 8300000, guid: 78bcdded66761ae47b3d4f79fe858bc2, type: 3}
+  - {fileID: 8300000, guid: 2365bce9ad467fe4b9a5ba7b85cc1884, type: 3}
+  - {fileID: 8300000, guid: 3b3fc308c8fb0c846a0197588eb8b00b, type: 3}
+  - {fileID: 8300000, guid: 4e5befd01e38ca94fbcf3622ce8ce47a, type: 3}
+  PingList:
+  - {fileID: 8300000, guid: 9062c371604ceab45b4caaa3a170ee77, type: 3}
+  - {fileID: 8300000, guid: 1111a401e7d945b49bc93302f267c330, type: 3}
+  - {fileID: 8300000, guid: 2a8b6138d07e07d4a9d26c7ea2947557, type: 3}
+  - {fileID: 8300000, guid: f97809bb82b69b046bbe7bfb355429b5, type: 3}
+  - {fileID: 8300000, guid: 8fc994638e752a9458709e309715abed, type: 3}
+  - {fileID: 8300000, guid: a71de23200b513348bddd7b2035746a9, type: 3}
+  - {fileID: 8300000, guid: 42bd9165a9d693c4faa6dfde8038f990, type: 3}
+  - {fileID: 8300000, guid: d914c9ffebd8dc046b7b46371194f8ca, type: 3}
+  - {fileID: 8300000, guid: 53b56917816a0984bad7e7b4262eca04, type: 3}
+  - {fileID: 8300000, guid: 6263c6a8cdf1b8c4aa4901fe8b849d4c, type: 3}
+  SkillList:
+  - {fileID: 8300000, guid: 597a2a01c0e1b68469f914b68799ce9f, type: 3}
+  - {fileID: 8300000, guid: cd013213373aa104ca4f00b0458e287d, type: 3}
+  - {fileID: 8300000, guid: 8a4582851af33d642b9e48d1f2ba23e5, type: 3}
+  - {fileID: 8300000, guid: 6a1d2e746cf643942b3cbdc68b972e1d, type: 3}
+  - {fileID: 8300000, guid: 633da149c5ccfcb4e8ac177ee5c8c052, type: 3}
 --- !u!114 &1055956268508796724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,6 +548,7 @@ MonoBehaviour:
   shootDirection: {x: 0, y: 0, z: 0}
   maxLength: 8
   mousePos: {x: 0, y: 0, z: 0}
+  soundList: {fileID: -6883398266351926395}
   attackRangePrefab: {fileID: 4025673733828750908, guid: 4dd30b73c0991f64fbd56857a2ac5a4b,
     type: 3}
   noAttackRangePrefab: {fileID: 3848186856526553340, guid: 6c355e73cbe6bc94588d7bc27c5f2a36,

@@ -27,6 +27,7 @@ namespace Orpul1
         public void OnStartRoomBtn()
         {
             if (!PhotonNetwork.IsMasterClient) return;
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHSTART);
             model.SetStartRoomState();
         }
 

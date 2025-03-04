@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,7 +22,10 @@ public class SoundManager : SingleTon<SoundManager>
     [SerializeField] AudioSource bgmPlayer;
     [SerializeField] AudioClip[] bgmClipList;
     [SerializeField] AudioMixer audioMixer;
+    [SerializeField] UISoundPlayer uiSoundPlayer;
+    Action<EUiSoundType> playerUISound;
     Dictionary<string, AudioClip> bgmDict = new Dictionary<string, AudioClip>();
+
     private void Start()
     {
         SceneManager.sceneLoaded += OnLoadScene;
@@ -35,6 +39,8 @@ public class SoundManager : SingleTon<SoundManager>
             bgmDict.Add(eSceneBGM.ToString(), bgmClipList[i]);
         }
         bgmPlayer.outputAudioMixerGroup = audioMixer.FindMatchingGroups(EMixerGroup.BGM.ToString())[0];
+        playerUISound -= uiSoundPlayer.PlayUISound;
+        playerUISound += uiSoundPlayer.PlayUISound;
     }
 
     public void OnLoadScene(Scene arg, LoadSceneMode mode)
@@ -43,6 +49,11 @@ public class SoundManager : SingleTon<SoundManager>
         Debug.Log("Play BGM");
         PlayBGM(bgmDict[arg.name]);
     }
+    public void PlayUISound(EUiSoundType uiSoundType)
+    {
+        playerUISound(uiSoundType);
+    }
+
     public void PlayEffect(AudioClip effect)
     {
         GameObject audioObj = new GameObject();

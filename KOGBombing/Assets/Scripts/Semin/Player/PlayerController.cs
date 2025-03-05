@@ -143,11 +143,11 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     }
     void ConfirmSoundEffect()
     {
-        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 16f);
+        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 32f);
         for (int i = 0; i < colliders.Length; i++)
         {
             float distance = Vector3.Distance(blackBoard.transform.position, colliders[i].transform.position);
-            if (distance < 8f) continue;
+            if (distance < 16f) continue;
             PlayerData playerD = colliders[i].GetComponent<PlayerData>();
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {
@@ -162,11 +162,11 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             }
         }
     }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(blackBoard.transform.position, 16f);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(blackBoard.transform.position, 32f);
+    //}
 
     public void DoDestory()
     {

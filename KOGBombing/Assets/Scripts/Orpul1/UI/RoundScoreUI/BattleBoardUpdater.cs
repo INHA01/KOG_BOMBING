@@ -108,10 +108,14 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
         dicPlayerScore[nickname.ToString()].SetScore(updateType, 1);
         List<string> myTeamList = Managers.PointData.MyTeamPlayers;
         List<string> otherTeamList = Managers.PointData.OtherTeamPlayers;
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        ETeam otherTeam = 1 - myTeam;
         int myK = 0;
         int myM = 0;
+        int myW = Managers.RoundData.TeamScore[(int)myTeam];
         int otherK = 0;
         int otherM = 0;
+        int otherW = Managers.RoundData.TeamScore[(int)otherTeam];
         for (int i=0; i< myTeamList.Count; i++)
         {
             PlayerPointInfo point = Managers.PointData.GetPlayerInfo(myTeamList[i]);
@@ -125,12 +129,13 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
             otherM += point.MissionPoint;
 
         }
+
         teamScorePanels[0].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = myK.ToString();
-        //teamScorePanels[0].transform.GetChild((int)TeamScore.WinRound).GetComponent<TextMeshProUGUI>().text
+        teamScorePanels[0].transform.GetChild((int)TeamScore.WinRound).GetComponent<TextMeshProUGUI>().text = myW.ToString();
         teamScorePanels[0].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = myM.ToString();
 
         teamScorePanels[1].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = otherK.ToString();
-        //teamScorePanels[1].transform.GetChild((int)TeamScore.WinRound).GetComponent<TextMeshProUGUI>().text
+        teamScorePanels[1].transform.GetChild((int)TeamScore.WinRound).GetComponent<TextMeshProUGUI>().text = otherW.ToString();
         teamScorePanels[1].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = otherM.ToString();
     }
 

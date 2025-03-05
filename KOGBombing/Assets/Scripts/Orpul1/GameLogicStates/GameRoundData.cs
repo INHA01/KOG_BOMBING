@@ -28,8 +28,8 @@ namespace Orpul1
         public int[] TeamScores { get { return teamScores; } }
         public int[] TeamCounts { get { return teamCounts; } }
         public int ProcessRoundCnt { get { return processRoundCnt; } }
-        public int maxRound = 10;
-        public int winRound = 4;
+        public int maxRound = 6;
+        public int winGap = 4;
         public int switchRound = 2;
         public bool isAlreadySwitchRoll = false;
         bool isSetBomb = false;
@@ -161,15 +161,16 @@ namespace Orpul1
         {
             float scoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
 
-            if (scoreGap >= winRound) return true;
+            if (scoreGap >= winGap) return true;
             if (teamScores[(int)ETeam.REDTEAM] >= maxRound || teamScores[(int)ETeam.BLUETEAM] >= maxRound) return true;
             return false;
         }
         private bool IsNextRound()
         {
             int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
-            if (switchRoundScores[(int)ETeam.BLUETEAM] == 3 || switchRoundScores[(int)ETeam.REDTEAM] == 3) 
+            if (switchRoundScores[(int)ETeam.BLUETEAM] == 3 || switchRoundScores[(int)ETeam.REDTEAM] == 3&& !isAlreadySwitchRoll) 
             {
+                isAlreadySwitchRoll = true;
                 switchRoundScores[(int)ETeam.REDTEAM] = 0;
                 switchRoundScores[(int)ETeam.BLUETEAM] = 0;
                 return false;

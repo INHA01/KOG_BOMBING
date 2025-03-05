@@ -181,6 +181,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (!blackBoard.isSetScore)
         {
+            playerData.pv.RPC("PunDeathSound", RpcTarget.AllBuffered);
+
             if (playerData.pv.IsMine)
             {
                 playerPointController.OnKillPoint();
@@ -192,6 +194,20 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             }
         }
         return INode.ENodeState.Fail;
+    }
+    [PunRPC]
+    private void PunDeathSound()
+    {
+        AudioClip deathsound = null;
+        if (blackBoard.characterType == CharacterType.Ned)
+        {
+            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.NED_DEATH];
+        }
+        else
+        {
+            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.UNI_DEATH];
+        }
+        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);
     }
     
     [PunRPC]
@@ -279,7 +295,16 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Death()
     {
         ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
-
+       /* AudioClip deathsound = null;
+        if(blackBoard.characterType == CharacterType.Ned)
+        {
+            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.NED_DEATH];
+        }
+        else
+        {
+            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.UNI_DEATH];
+        }
+        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);*/
         if (!blackBoard.showSoundEffect)
         {
             blackBoard.showSoundEffect = true;

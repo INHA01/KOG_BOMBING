@@ -617,7 +617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitBulletCount: 10
   InitMagazineCount: 4
-  reloadTime: 7
+  reloadTime: 3
   shootingTerm: 0.3
 --- !u!114 &484276212673787525
 MonoBehaviour:
@@ -727,6 +727,7 @@ MonoBehaviour:
   SOplayerStatus: {fileID: 11400000, guid: d57402e405a5d7a4da349a45ea0b6a1a, type: 2}
   canRespawn: 0
   isSetScore: 0
+  showSoundEffect: 0
   bombInteraction: {fileID: 0}
   playerStatus: {fileID: 0}
   currentGameState: 0

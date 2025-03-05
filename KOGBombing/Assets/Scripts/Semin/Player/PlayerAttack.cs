@@ -424,7 +424,7 @@ public class PlayerAttack : PlayerBehavior
     public void OnUseBomb(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
-        if (blackBoard.playerStatus.groggyable == false) return;
+        if (blackBoard.playerStatus.isGroggy) return;
 		if (playerData.bomb is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
 
@@ -469,7 +469,7 @@ public class PlayerAttack : PlayerBehavior
     public void OnUseAttackConsum(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
-        if (blackBoard.playerStatus.groggyable == false) return;
+        if (blackBoard.playerStatus.isGroggy) return;
 		if (playerData.supportWeapon is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
 		ResetAttackInput(EKey.NUM_1);
@@ -496,7 +496,7 @@ public class PlayerAttack : PlayerBehavior
     public void OnUseSkill(InputValue value)
     {
         if (!playerData.pv.IsMine) return;
-        if (blackBoard.playerStatus.groggyable == false) return;
+        if (blackBoard.playerStatus.isGroggy) return;
 		if (!playerData.skill.isUsableSkill()) return;
         ResetAttackInput(EKey.Q);
 

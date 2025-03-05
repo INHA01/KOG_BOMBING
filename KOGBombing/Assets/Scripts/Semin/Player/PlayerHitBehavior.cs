@@ -23,7 +23,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     protected override void Awake()
     {
         base.Awake();
-        playerPointController = new PlayPointController(playerData.pv);
+        playerPointController = new PlayPointController(playerData.pv,playerData);
     }
     private void Start()
     {

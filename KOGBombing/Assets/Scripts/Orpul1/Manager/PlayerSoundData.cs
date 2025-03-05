@@ -18,6 +18,7 @@ public enum EHitDeathSound
     UNI_HIT1,
     UNI_HIT2,
     UNI_HIT3,
+    PLAYERKILL,
 }
 public enum EPingSound
 {

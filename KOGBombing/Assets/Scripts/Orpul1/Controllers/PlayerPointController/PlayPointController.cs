@@ -28,9 +28,11 @@ public class PlayPointController
     RaiseEventOptions options = new RaiseEventOptions();
     IUpdateScore updateScore;
     PhotonView pv;
-    public PlayPointController(PhotonView pv)
+    PlayerData playerData;
+    public PlayPointController(PhotonView pv, PlayerData playerData)
     {
         this.pv = pv;
+        this.playerData = playerData;
         updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
         Managers.UI.ClosePopupUI("BattleBoardCanvas");
 
@@ -101,6 +103,11 @@ public class PlayPointController
             object[] customDatas = (object[])punEvent.CustomData;
             int killPlayerIndex = (int)customDatas[0];
             string attackPlayer = (string)customDatas[1];
+            if(attackPlayer == PhotonNetwork.LocalPlayer.NickName)
+            {
+                AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
+                SoundManager.Instance.PlayEffect(killSound);
+            }
             Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
             int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
             updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
@@ -155,7 +162,7 @@ public class PlayPointController
     {
         if (lastAttackPlayerIndex == -1) return;
         object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] };
-        PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어 당한 플레이어 정보
+        PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어, 당한 플레이어 정보
     }
     public void OnAssistPoint()
     {        

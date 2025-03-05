@@ -427,6 +427,14 @@ public class PlayerAttack : PlayerBehavior
         if (blackBoard.playerStatus.groggyable == false) return;
 		if (playerData.bomb is SupportWeaponBase weapon)
             if (weapon.isUsable() == false) return;
+
+        if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
+        {   // Red팀인데 이미 설치된 폭탄이 있다면 2번 못 누름
+            Bomb myBomb = gameObject.GetComponent<BombInteraction>().GetBomb();
+		    if (myBomb != null)
+			    return;            
+        }
+
 		ResetAttackInput(EKey.NUM_2);
 
 		isChangableAnim = true;

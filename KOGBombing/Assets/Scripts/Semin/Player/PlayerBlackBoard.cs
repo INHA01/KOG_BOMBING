@@ -57,6 +57,7 @@ public class PlayerBlackBoard : MonoBehaviour
         if (bombInteraction.GetBomb() != null)
         {
 			bombInteraction.SetBombInteraction(false);
+            bombInteraction.Initialize();
             bombInteraction.SetBomb(null);
         }
     }

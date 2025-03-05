@@ -146,6 +146,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 16f);
         for (int i = 0; i < colliders.Length; i++)
         {
+            float distance = Vector3.Distance(blackBoard.transform.position, colliders[i].transform.position);
+            if (distance < 8f) continue;
             PlayerData playerD = colliders[i].GetComponent<PlayerData>();
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {

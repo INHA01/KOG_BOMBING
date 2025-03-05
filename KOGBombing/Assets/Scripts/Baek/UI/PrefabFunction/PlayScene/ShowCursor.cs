@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class ShowCursor : MonoBehaviour
 {
-    enum SounCursorType
+    enum SoundCursorType
     {
         Effect,
         Shoot,
         Walk,
+        Death,
         Max,
     }
     struct ScreenPos
@@ -60,7 +61,7 @@ public class ShowCursor : MonoBehaviour
         }
         return cursorPos;
     }
-    public void ShowSoundCursor(Vector3 soundPos , bool isShoot , PlayerBlackBoard player)
+    public void ShowSoundCursor(Vector3 soundPos , int cursorType , PlayerBlackBoard player)
     {
         GameObject soundEffect = null;
         for (int i=0; i< soundCursor.Count; i++)
@@ -73,15 +74,23 @@ public class ShowCursor : MonoBehaviour
         else
             soundEffect.SetActive(true);
         soundCursor.Add(soundEffect);
-        if(isShoot)
+        switch(cursorType)
         {
-            soundEffect.transform.GetChild((int)SounCursorType.Shoot).gameObject.SetActive(true);
-            soundEffect.transform.GetChild((int)SounCursorType.Walk).gameObject.SetActive(false);
-        }
-        else
-        {
-            soundEffect.transform.GetChild((int)SounCursorType.Shoot).gameObject.SetActive(false);
-            soundEffect.transform.GetChild((int)SounCursorType.Walk).gameObject.SetActive(true);
+            case (int)SoundCursorType.Shoot:
+                soundEffect.transform.GetChild((int)SoundCursorType.Shoot).gameObject.SetActive(true);
+                soundEffect.transform.GetChild((int)SoundCursorType.Walk).gameObject.SetActive(false);
+                soundEffect.transform.GetChild((int)SoundCursorType.Death).gameObject.SetActive(false);
+                break;
+            case (int)SoundCursorType.Walk:
+                soundEffect.transform.GetChild((int)SoundCursorType.Shoot).gameObject.SetActive(false);
+                soundEffect.transform.GetChild((int)SoundCursorType.Walk).gameObject.SetActive(true);
+                soundEffect.transform.GetChild((int)SoundCursorType.Death).gameObject.SetActive(false);
+                break;
+            case (int)SoundCursorType.Death:
+                soundEffect.transform.GetChild((int)SoundCursorType.Shoot).gameObject.SetActive(false);
+                soundEffect.transform.GetChild((int)SoundCursorType.Walk).gameObject.SetActive(false);
+                soundEffect.transform.GetChild((int)SoundCursorType.Death).gameObject.SetActive(true);
+                break;
         }
         StartCoroutine(SoundCursorEffect(soundPos , soundEffect,player));
     }

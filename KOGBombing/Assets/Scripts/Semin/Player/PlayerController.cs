@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
                 if (player.eTeam != blackBoard.eTeam && !player.showSoundEffect)
                 {
                     player.showSoundEffect = true;
-                    showCursor.ShowSoundCursor(player.transform.position, false, player);
+                    showCursor.ShowSoundCursor(player.transform.position, 2, player);
                 }
 
             }

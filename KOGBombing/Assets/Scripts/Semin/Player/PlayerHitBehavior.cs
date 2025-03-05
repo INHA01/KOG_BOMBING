@@ -283,7 +283,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
             blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
-
+            ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+            if (!blackBoard.showSoundEffect)
+            {
+                blackBoard.showSoundEffect = true;
+                showCursor.ShowSoundCursor(blackBoard.transform.position, 3, blackBoard);
+            }
 
 
             blackBoard.hpBar.SetStopHpUI(true);

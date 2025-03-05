@@ -47,7 +47,8 @@ public enum EWeaponSound
     HIT2,
     HIT3,
     RELOAD,
-    SHOOTING
+    SHOOTING,
+    EXPLOSION
 }
 public class PlayerSoundData : MonoBehaviour
 {

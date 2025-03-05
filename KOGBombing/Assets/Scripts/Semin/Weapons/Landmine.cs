@@ -36,9 +36,9 @@ namespace Semin
 		}
 
 		//[PunRPC]
-		public override void SetTeam(int team)
+		public override void SetTeam(int team, PlayerData playerData)
 		{
-			base.SetTeam(team);
+			base.SetTeam(team, playerData);
 			if (attackCollider == null)
 				attackCollider = gameObject.GetComponent<SphereCollider>();
 			attackCollider.radius = attackRange / 2f;

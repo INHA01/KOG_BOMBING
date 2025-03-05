@@ -29,9 +29,9 @@ public class ShockGrenade : AttackConsum
 		otherTeamDecal.gameObject.SetActive(false);
 	}
 
-	public override void SetTeam(int team)
+	public override void SetTeam(int team, PlayerData playerData)
 	{
-		base.SetTeam(team);
+		base.SetTeam(team, playerData);
 		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != (ETeam)team)
 			decal = otherTeamDecal;
 		else decal = myTeamDecal;

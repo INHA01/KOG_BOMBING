@@ -135,6 +135,10 @@ public class PlayScene : MonoBehaviour
     }
     IEnumerator DuringKill()
     {
+        if(killLog.activeSelf)
+        {
+            killLog.SetActive(false);
+        }
         killLog.SetActive(true);
         yield return new WaitForSeconds(3f);
         killLog.SetActive(false);

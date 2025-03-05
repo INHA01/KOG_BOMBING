@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 959275641987422509}
   - component: {fileID: 6181246843610480638}
   - component: {fileID: 2555171353121287868}
+  - component: {fileID: 4507605299498762312}
   m_Layer: 14
   m_Name: KillImg
   m_TagString: Untagged
@@ -319,8 +320,8 @@ RectTransform:
   m_GameObject: {fileID: 1057844704578704715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4449686408161916133}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -367,6 +368,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &4507605299498762312
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057844704578704715}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: de99aa66648227649b0261de71a68af0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1175903297903442012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1340,6 +1362,7 @@ MonoBehaviour:
   magazineCount: {fileID: 1092537883078067584}
   chargeBar: {fileID: 5681582347498217384}
   teamProfile: {fileID: 686882433190526326}
+  killLog: {fileID: 8017683214773495380}
   timer: {fileID: 8365120264970059116}
   scoreImgs:
   - {fileID: 7859252321738524978}
@@ -2622,7 +2645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2262451314945925139
 RectTransform:
   m_ObjectHideFlags: 0

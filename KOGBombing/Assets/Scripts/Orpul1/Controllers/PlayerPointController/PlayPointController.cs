@@ -96,6 +96,8 @@ public class PlayPointController
         if (!pv.IsMine) return;
         if(punEvent.Code == (int)EPointType.KILL)
         {
+            PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlaySceneCanvas");
+            playScene.ActiveKill();
             object[] customDatas = (object[])punEvent.CustomData;
             int killPlayerIndex = (int)customDatas[0];
             string attackPlayer = (string)customDatas[1];

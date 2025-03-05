@@ -19,6 +19,7 @@ public class PlayScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI magazineCount;
     [SerializeField] Image chargeBar;
     [SerializeField] GameObject teamProfile;
+    [SerializeField] GameObject killLog;
     Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
@@ -127,5 +128,15 @@ public class PlayScene : MonoBehaviour
     {
         skillIcon[(int)SkillIcon.Active].SetActive(isActive);
         skillIcon[(int)SkillIcon.Cool].SetActive(!isActive);
+    }
+    public void ActiveKill()
+    {
+        StartCoroutine(DuringKill());
+    }
+    IEnumerator DuringKill()
+    {
+        killLog.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        killLog.SetActive(false);
     }
 }

@@ -53,7 +53,7 @@ public class DeployableWeapon : DeployableBase
 		yield return new WaitForSeconds(1.3f);
 		landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
 		landmine.transform.position = playerData.ConsumPos.position;
-		landmine.SetTeam((int)team);
+		landmine.SetTeam((int)team, playerData);
 		landmine.SetPlayerIndex(playerIndex);
 		landmine.Use();
 	}

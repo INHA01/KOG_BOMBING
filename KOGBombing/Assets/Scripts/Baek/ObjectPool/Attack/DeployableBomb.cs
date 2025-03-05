@@ -71,7 +71,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
             bomb.GetComponent<IDefendencyAble<BombData>>().Defendency(bombData);
             bomb.transform.position = playerData.ConsumPos.position;
             bomb.Notify();
-            bomb.SetTeam((int)team);
+            bomb.SetTeam((int)team, playerData);
             bomb.Use();
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             for (int i = 0; i < players.Length; i++)
@@ -79,6 +79,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         }
 		else
 		{
+            Debug.Log("PutAfterAnim");
             PlayerBlackBoard blackBoard = this.GetComponent<PlayerBlackBoard>();
 			blackBoard.playerStatus.isBombDefuse = true;
 		}

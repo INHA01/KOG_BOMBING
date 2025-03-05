@@ -129,7 +129,7 @@ public abstract class ThrowableBase : SupportWeaponBase
 		molotov.transform.rotation = Quaternion.identity;
 		AttackConsum grenade = molotov.GetComponent<AttackConsum>();
 
-		grenade.SetTeam((int)team);
+		grenade.SetTeam((int)team, playerData);
 		grenade.SetPlayerIndex(playerIndex);
 
 		while (elapsedTime < throwDuration)

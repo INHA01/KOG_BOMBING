@@ -18,12 +18,14 @@ namespace Semin
         public int PlayerIndex { get { return playerIndex; } }
 		public WeaponType type;
         public bool isActive;
+        [SerializeField] PlayerData playerData;
         public abstract void Use();
 
-		public virtual void SetTeam(int team)
+		public virtual void SetTeam(int team, PlayerData playerData)
 		{
 			this.team = (ETeam)team;
-        }
+            this.playerData = playerData;
+		}
         public virtual void SetPlayerIndex(int playerIndex)
         {
             this.playerIndex = playerIndex; 
@@ -42,7 +44,17 @@ namespace Semin
         protected void ShowParticle()
         {
             particle.Play();
-        }
-    }
+			if (playerData.pv.IsMine)
+				playerData.pv.RPC("PunPlaySound", RpcTarget.AllBuffered, (int)EWeaponSound.EXPLOSION);
+		}
+
+		[PunRPC]
+		void PunPlaySound(int type)
+		{
+			AudioClip effect = playerData.soundList.WeaponList[type];
+			SoundManager.Instance.PlayEffect(effect, transform, 1, 0, 50);
+		}
+
+	}
 
 }

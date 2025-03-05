@@ -52,8 +52,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 7152621526610808379}
   type: 1
+  isActive: 0
+  playerData: {fileID: 0}
   range: 5
-  damage: 100
+  damage: 50
   effectTime: 3
 --- !u!135 &3892974284821032652
 SphereCollider:

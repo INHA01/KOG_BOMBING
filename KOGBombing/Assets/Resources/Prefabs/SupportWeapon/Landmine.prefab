@@ -52,10 +52,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 2738786192720867414}
   type: 2
+  isActive: 0
+  playerData: {fileID: 0}
   interval: 0.5
   attackRange: 7
   rigidityTime: 3
-  damage: 30
+  damage: 80
   activeTime: 60
   hp: 400
   decal: {fileID: 6320281090802026223}

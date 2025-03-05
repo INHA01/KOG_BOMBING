@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Orpul1
@@ -11,17 +12,27 @@ namespace Orpul1
     {
         private Dictionary<string, PlayerPointInfo> dicPlayers = new Dictionary<string, PlayerPointInfo>();
         private List<string> myTeamPlayers = new List<string>();
+        private List<string> otherTeamPlayers = new List<string>();
+
         private StringBuilder bestPlayer = new StringBuilder();
         public StringBuilder BestPlayer { get { return bestPlayer; } }
-        public void SetMyTeamPlayers()
+        public List<string> MyTeamPlayers { get { return myTeamPlayers; } } 
+        public List<string> OtherTeamPlayers { get { return otherTeamPlayers; } } 
+        public void SetTeamPlayers()
         {
             Player[] players = PhotonNetwork.PlayerList;
             ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
             for (int i = 0; i < players.Length; i++)
             {
                 ETeam otherPlayerTeam = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
-                if (myTeam != otherPlayerTeam) continue;
-                myTeamPlayers.Add(players[i].NickName);
+                if (myTeam != otherPlayerTeam)
+                {
+                    otherTeamPlayers.Add(players[i].NickName);
+                }
+                else
+                {
+                    myTeamPlayers.Add(players[i].NickName);
+                }
             }
         }
         public void Initialize()

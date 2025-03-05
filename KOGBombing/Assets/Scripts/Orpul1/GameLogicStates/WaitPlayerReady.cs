@@ -26,7 +26,7 @@ namespace Orpul1
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.READY } });
             Managers.RoundData.Initialize();
             Managers.PointData.Initialize();
-            Managers.PointData.SetMyTeamPlayers();
+            Managers.PointData.SetTeamPlayers();
             base.EnterState();
         }
 

@@ -7,9 +7,17 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetable
 {
+    enum TeamScore
+    {
+        Kill,
+        WinRound,
+        MissionPoint,
+        Max,
+    }
     [SerializeField]
     Image[] teamPanels = new Image[2];
     [SerializeField]
@@ -98,7 +106,34 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
             return;
         }
         dicPlayerScore[nickname.ToString()].SetScore(updateType, 1);
+        List<string> myTeamList = Managers.PointData.MyTeamPlayers;
+        List<string> otherTeamList = Managers.PointData.OtherTeamPlayers;
+        int myK = 0;
+        int myM = 0;
+        int otherK = 0;
+        int otherM = 0;
+        for (int i=0; i< myTeamList.Count; i++)
+        {
+            PlayerPointInfo point = Managers.PointData.GetPlayerInfo(myTeamList[i]);
+            myK += point.KillPoint;
+            myM += point.MissionPoint;
+        }
+        for (int i = 0; i < otherTeamList.Count; i++) 
+        {
+            PlayerPointInfo point = Managers.PointData.GetPlayerInfo(otherTeamList[i]);
+            otherK += point.KillPoint;
+            otherM += point.MissionPoint;
+
+        }
+        teamScorePanels[0].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = myK.ToString();
+        //teamScorePanels[0].transform.GetChild((int)TeamScore.WinRound).GetComponent<TextMeshProUGUI>().text
+        teamScorePanels[0].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = myM.ToString();
+
+        teamScorePanels[1].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = otherK.ToString();
+        //teamScorePanels[1].transform.GetChild((int)TeamScore.WinRound).GetComponent<TextMeshProUGUI>().text
+        teamScorePanels[1].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = otherM.ToString();
     }
+
 
     public void UpdateTeamScore(ETeam team, ETeamScore updateType)
     {

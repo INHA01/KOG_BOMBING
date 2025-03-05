@@ -36,6 +36,7 @@ namespace Orpul1
         bool isEndRound = false;
         TeamUIController teamUIController;
         RoundEndType roundEndType = RoundEndType.NONE;
+        IUpdateScore updateScore;
         public RoundEndType EndRoundType { get { return roundEndType; } }
         public bool IsEndRound { get { return isEndRound; } }
         
@@ -47,6 +48,7 @@ namespace Orpul1
                 teamScores[i] = 0;
                 teamCounts[i] = 0;
             }
+            
         }
         public void Initialize(TeamUIController teamUIController)
         {
@@ -54,6 +56,8 @@ namespace Orpul1
             isSetBomb = false;
             this.teamUIController = teamUIController;
             roundEndType = RoundEndType.NONE;
+            updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+            Managers.UI.ClosePopupUI("BattleBoardCanvas");
         }
         public void SetTeamCount(int teamType, int count)
         {
@@ -94,6 +98,7 @@ namespace Orpul1
                     Managers.RoundData.SetRoundWinTeam(ETeam.BLUETEAM);
                     switchRoundScores[(int)ETeam.BLUETEAM]++;
                     teamScores[(int)ETeam.BLUETEAM]++;
+                    updateScore.UpdateTeamScore(ETeam.BLUETEAM, ETeamScore.WINSCORE);
                     Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
                     break;
 
@@ -103,6 +108,7 @@ namespace Orpul1
                     Managers.RoundData.SetRoundWinTeam(ETeam.REDTEAM);
                     switchRoundScores[(int)ETeam.REDTEAM]++;
                     teamScores[(int)ETeam.REDTEAM]++;
+                    updateScore.UpdateTeamScore(ETeam.REDTEAM, ETeamScore.WINSCORE);
                     Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
                     break;
             }

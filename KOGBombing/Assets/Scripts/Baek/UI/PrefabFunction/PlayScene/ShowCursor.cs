@@ -97,7 +97,8 @@ public class ShowCursor : MonoBehaviour
                 break;
             yield return null;
         }
-        player.showSoundEffect = false;
         go.SetActive(false);
+        yield return new WaitForSeconds(3f);
+        player.showSoundEffect = false;
     }
 }

@@ -26,6 +26,11 @@ public class BombInteraction : MonoBehaviour
 
 	}
 
+    public void Initialize()
+    {
+        bomb.Release();
+    }
+
     [PunRPC]
     public void RPCSetBombInteraction(bool isInteraction)
     {

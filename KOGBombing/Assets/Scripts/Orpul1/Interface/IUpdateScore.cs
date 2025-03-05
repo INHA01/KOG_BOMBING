@@ -8,4 +8,5 @@ public interface IUpdateScore
 {
     public void UpdatePlayerScore(StringBuilder playerIndex, EPlayerScore updateType);
     public void UpdateTeamScore(ETeam teamType,ETeamScore updateType);
+    public void UpdateTeamWinScore();
 }

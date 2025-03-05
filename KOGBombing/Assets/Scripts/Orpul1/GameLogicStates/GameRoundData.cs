@@ -112,7 +112,10 @@ namespace Orpul1
                     Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
                     break;
             }
-
+            Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
+            Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
+            BattleBoardUpdater battleBoardUpdater = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+            battleBoardUpdater.UpdateTeamWinScore();
             Debug.Log($"TeamScore redTeam: {teamScores[0]}, blueTeam:{teamScores[1]}");
             // >> TODO : 공수 교대 시 팀 점수 ui 갱신
             teamUIController.UpdateTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
@@ -143,6 +146,7 @@ namespace Orpul1
                 teamUIController.EndRound();
                 Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
                 Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
+                
                 return EGameState.GAMEEND;
             }
 

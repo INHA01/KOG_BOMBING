@@ -41,7 +41,7 @@ public class Molotov : AttackConsum
 		{
 			PhotonView pv = other.transform.GetComponent<PhotonView>();
 
-			//if (!pView) return;
+			if (!pv) return;
 			if (!IsOtherTeam(pv)) return;
 
 			IDamageAble player = other.transform.GetComponent<IDamageAble>();

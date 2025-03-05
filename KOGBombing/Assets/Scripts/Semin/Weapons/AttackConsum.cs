@@ -18,7 +18,7 @@ namespace Semin
         public int PlayerIndex { get { return playerIndex; } }
 		public WeaponType type;
         public bool isActive;
-        [SerializeField] PlayerData playerData;
+        [SerializeField] protected PlayerData playerData;
         public abstract void Use();
 
 		public virtual void SetTeam(int team, PlayerData playerData)

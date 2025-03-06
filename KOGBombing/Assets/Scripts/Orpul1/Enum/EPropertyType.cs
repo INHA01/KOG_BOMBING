@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum EPropertyType 
 {
-    TEAM,
-    TEAMINDEX,
     REDTEAM,
     BLUETEAM,
+    TEAM,
+    TEAMINDEX,
     STATE,
     ROOMSTATE
 }

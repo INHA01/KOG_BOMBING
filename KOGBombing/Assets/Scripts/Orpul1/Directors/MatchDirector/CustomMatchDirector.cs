@@ -17,9 +17,8 @@ namespace Orpul1
         public override void Match()
         {
             isCustomMatch = true;
-            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL);
-            //matchUIController.CustomListUIActive();
             base.Match();
+            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL);
         }
         public void OnLeftLobbyBtn()
         {
@@ -29,15 +28,6 @@ namespace Orpul1
                 PhotonNetwork.LeaveLobby();
         }
        
-        public override void OnLeftLobby()
-        {
-            Debug.Log("LeftLobby");
-        }
-        public override void OnLeftRoom()
-        {
-            Debug.Log("LeftRoom");
-        }
-
         public override void OnJoinedRoom()
         {
             if (isCustomMatch)
@@ -45,8 +35,6 @@ namespace Orpul1
                 Debug.Log($"CustomMatch JoinRoom");
                 base.OnJoinedRoom();
                 UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
-                //matchUIController.CustomRoomUIActive();
-                //matchUIController.UpdateRoomOwner();
             }
         }
 
@@ -56,7 +44,6 @@ namespace Orpul1
             {
                 base.OnPlayerLeftRoom(otherPlayer);
                 UIEventBus.Publish(UIEventBus.UIEventType.SETMASTER);
-                //matchUIController.UpdateRoomOwner();
             }
         }
 
@@ -78,7 +65,6 @@ namespace Orpul1
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVECUSTOMROOMPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.STARTGAME);
-            //matchUIController.DeactiveCustomRoomBtn();
             float time = Time.time + delayTime;
 
             while (Time.time < time) yield return null;
@@ -86,9 +72,7 @@ namespace Orpul1
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             Managers.UI.DestroyAllPopupUI();
-            //PhotonNetwork.LoadLevel(3);
             LoadingSceneManager.LoadScene("MainGame");
-
         }
     }
 }

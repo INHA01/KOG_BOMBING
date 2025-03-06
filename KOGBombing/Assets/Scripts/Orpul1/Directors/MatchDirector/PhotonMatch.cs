@@ -1,8 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
-using System.IO;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
@@ -11,14 +9,11 @@ namespace Orpul1
 {
     public abstract class PhotonMatch : MonoBehaviourPunCallbacks
     {
-        [SerializeField]
-        protected float updateDelay;
-        protected bool isStopMatch = false;
-        [SerializeField]
-        protected float delayTime = 5;
-        [SerializeField]
-        Button btnMatch;
+        [SerializeField] Button btnMatch;
         WaitForSeconds waitOneSec = new WaitForSeconds(1);
+        [SerializeField] protected float updateDelay;
+        [SerializeField] protected float delayTime = 5;
+        protected bool isStopMatch = false;
         private void Start()
         {
             btnMatch.interactable = true;
@@ -29,8 +24,7 @@ namespace Orpul1
             StartCoroutine(CoWaitMatch());
         }
         protected abstract IEnumerator CoWaitMatch();
-        
-        
+
         public override void OnJoinedRoom()
         {
             Debug.Log("JoinRoom!");
@@ -49,16 +43,9 @@ namespace Orpul1
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log("PlayerLeftRoom");
-            if ((int)otherPlayer.CustomProperties[EPropertyType.TEAM.ToString()] == (int)ETeam.REDTEAM) 
-            {
-                int redTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), redTeam - 1 } });
-            }
-            else
-            {
-                int blueTeam = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
-                PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.BLUETEAM.ToString(), blueTeam - 1 } });
-            }
+            EPropertyType playerTeam = (EPropertyType)otherPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+            int teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[playerTeam.ToString()];
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { playerTeam.ToString(), teamCount - 1 } });
         }
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
         {
@@ -74,30 +61,27 @@ namespace Orpul1
         {
             if (!PhotonNetwork.IsMasterClient) return;
             Player[] players = PhotonNetwork.PlayerList;
-            int redTeamIndex = 0, blueTeamIndex = 0;
-
+            int[] teamIndexs = new int[2] { 0, 0 };
             for(int i=0; i<players.Length; i++)
             {
-                ETeam team = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
-                if(team== ETeam.REDTEAM)
-                {
-                    players[i].SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), redTeamIndex } });
-                    Debug.Log($"{players[i].NickName} index {redTeamIndex}");
-                    redTeamIndex++;
-
-                }
-                else if(team == ETeam.BLUETEAM)
-                {
-                    players[i].SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), blueTeamIndex } });
-                    Debug.Log($"{players[i].NickName} index {blueTeamIndex}");
-                    blueTeamIndex++;
-                }
+                int team = (int)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
+                players[i].SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), teamIndexs[team]++ } });
+                Debug.Log($"teamIndex {(ETeam)team} {teamIndexs[team]}");
             }
         }
         protected ETeam SetTeam()
         {
             int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
             int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
+            /*
+             int[] teamCount = new int[2] { redTeamCnt, blueTeamCnt };
+            
+            int team = redTeamCnt-blueTeamCnt;
+            team = team / (team + 1);
+            int teamType = (int)team;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { ((EPropertyType)teamType).ToString(), teamCount[team] + 1 } });
+             */
+
             ETeam team = ETeam.REDTEAM;// Set RedTeam
             int playerCount = redTeamCnt + 1;
             EPropertyType type = EPropertyType.REDTEAM;
@@ -113,18 +97,14 @@ namespace Orpul1
         }
         protected virtual IEnumerator CoStartDelay()
         {
-            float time = Time.time + delayTime;
-            Debug.Log($"Prev Delay {Time.time}");
-            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
-            while (Time.time < time) yield return null;
-            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
-            Debug.Log($"After delay {Time.time}");
-            if(PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.IsMessageQueueRunning = true;
-                PhotonNetwork.CurrentRoom.IsOpen = false;
             }
+            float time = Time.time + delayTime;
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
+            while (Time.time < time) yield return null;
             SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             LoadingSceneManager.LoadScene("MainGame");
         }

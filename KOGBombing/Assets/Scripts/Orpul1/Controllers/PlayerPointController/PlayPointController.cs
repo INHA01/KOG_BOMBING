@@ -18,7 +18,6 @@ public enum EPointType
 }
 public class PlayPointController
 {
-    List<bool> attackPlayerIndexList;
     string[] playerNicknameList;
     List<string> assistPlayerList = new List<string>();
     int lastAttackPlayerIndex = -1;
@@ -29,6 +28,8 @@ public class PlayPointController
     IUpdateScore updateScore;
     PhotonView pv;
     PlayerData playerData;
+    private StringBuilder killPlayerNickname = new StringBuilder();
+
     public PlayPointController(PhotonView pv, PlayerData playerData)
     {
         this.pv = pv;
@@ -36,19 +37,12 @@ public class PlayPointController
         updateScore = LocalManagers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
         LocalManagers.UI.ClosePopupUI("BattleBoardCanvas");
 
-        ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-
         int playerSize = 0;
-        if(currentTeam == ETeam.REDTEAM)
-        {
-            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
-        }
-        else
-        {
-            playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
-        }
+        int team = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        EPropertyType otherTeam = (int)EPropertyType.BLUETEAM - (EPropertyType)team;
+        playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[otherTeam.ToString()];
 
-        attackPlayerIndexList = new List<bool>(playerSize) { false };
+
         playerNicknameList = new string[playerSize];
         
         Player[] players = PhotonNetwork.PlayerList;
@@ -56,9 +50,8 @@ public class PlayPointController
         {
             Managers.PointData.AddPlayerInfo(players[i].NickName, new PlayerPointInfo());
 
-            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] == currentTeam) continue;
+            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] != (ETeam)otherTeam) continue;
             int playerIndex = (int)players[i].CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-            Debug.Log($"nickname {players[i].NickName}");
             playerNicknameList[playerIndex] = players[i].NickName;
         }
         
@@ -67,10 +60,6 @@ public class PlayPointController
     public void Initialize()
     {
         lastAttackPlayerIndex = -1;
-        for (int i = 0; i < attackPlayerIndexList.Count; i++) 
-        {
-            attackPlayerIndexList[i] = false;
-        }
         assistPlayerList.Clear();
         UnsubscribeEvent();
         SubscribeEvent();
@@ -93,62 +82,61 @@ public class PlayPointController
         PhotonNetwork.NetworkingClient.EventReceived -= AssistPointEvent;
         PhotonNetwork.NetworkingClient.EventReceived -= MissionPointEvent;
     }
+    public StringBuilder GetKillPlayerNickname()
+    {
+        return killPlayerNickname;
+    }
     public void KillPointEvent(EventData punEvent)
     {
         if (!pv.IsMine) return;
-        if(punEvent.Code == (int)EPointType.KILL)
+        if (punEvent.Code != (int)EPointType.KILL) return;
+
+        object[] customDatas = (object[])punEvent.CustomData;
+        int killPlayerIndex = (int)customDatas[0];
+        string attackPlayer = (string)customDatas[1];
+        /*if (attackPlayer == PhotonNetwork.LocalPlayer.NickName)
         {
-            object[] customDatas = (object[])punEvent.CustomData;
-            int killPlayerIndex = (int)customDatas[0];
-            string attackPlayer = (string)customDatas[1];
-            if(attackPlayer == PhotonNetwork.LocalPlayer.NickName)
-            {
-                PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
-                playScene.ActiveKill();
-                AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-                SoundManager.Instance.PlayEffect(killSound);
-            }
-            Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
-            int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-            updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
-            Managers.PointData.AddPoint(attackPlayer, EPointType.KILL);
-        }
+            PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+            playScene.ActiveKill();
+            AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
+            SoundManager.Instance.PlayEffect(killSound);
+        }*/
+        Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
+        int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
+        Managers.PointData.AddPoint(attackPlayer, EPointType.KILL);
     }
     public void AssistPointEvent(EventData punEvent)
     {
         if (!pv.IsMine) return;
-        if (punEvent.Code == (int)EPointType.ASSIST)
+        if (punEvent.Code != (int)EPointType.ASSIST) return;
+
+        string[] assistPlayerList = (string[])punEvent.CustomData;
+        for (int i = 0; i < assistPlayerList.Length; i++)
         {
-            string[] assistPlayerList = (string[])punEvent.CustomData;
-            
-            for (int i=0; i<assistPlayerList.Length; i++)
-            {
-                Debug.Log($"OnAssist Event {assistPlayerList[i]}");
-                StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
-                updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
-                Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.ASSIST);
-            }
+            Debug.Log($"OnAssist Event {assistPlayerList[i]}");
+            StringBuilder targetPlayer = new StringBuilder(assistPlayerList[i]);
+            updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.ASISTSCORE);
+            Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.ASSIST);
         }
     }
     public void DeathPointEvent(EventData punEvent)
     {
         if (!pv.IsMine) return;
-        if (punEvent.Code == (int)EPointType.DEATH) 
-        {
-            StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
-            updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
-            Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.DEATH);
-        }
+        if (punEvent.Code != (int)EPointType.DEATH) return;
+
+        StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
+        updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.DEATHSCORE);
+        Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.DEATH);
     }
     public void MissionPointEvent(EventData punEvent)
     {
         if (!pv.IsMine) return;
-        if (punEvent.Code == (int)EPointType.MISSION)
-        {
-            StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
-            updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);
-            Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.MISSION);
-        }
+        if (punEvent.Code != (int)EPointType.MISSION) return;
+
+        StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
+        updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);
+        Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.MISSION);
     }
     public void OnDeathPoint()
     {
@@ -161,6 +149,8 @@ public class PlayPointController
     public void OnKillPoint()
     {
         if (lastAttackPlayerIndex == -1) return;
+        killPlayerNickname.Clear();
+        killPlayerNickname.Append(playerNicknameList[lastAttackPlayerIndex]);
         object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] };
         PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어, 당한 플레이어 정보
     }

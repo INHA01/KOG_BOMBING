@@ -50,7 +50,7 @@ public class LocalManagers : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log("UIPopUp : " + UI._popupDictionary.Count);
+        //Debug.Log("UIPopUp : " + UI._popupDictionary.Count);
     }
 
     void OnDestroy()

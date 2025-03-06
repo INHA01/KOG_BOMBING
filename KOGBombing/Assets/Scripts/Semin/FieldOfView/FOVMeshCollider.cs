@@ -26,7 +26,7 @@ public class FOVMeshCollider : MonoBehaviour
 		PlayerController player = other.GetComponent<PlayerController>();
 		if (player == null) return;
 
-		ETeam playerTeam = player.blackBoard.eTeam;
+		ETeam playerTeam = player.blackBoard.playerTeam;
 		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
 		{
 			PlayerData playerData = other.GetComponent<PlayerData>();
@@ -66,7 +66,7 @@ public class FOVMeshCollider : MonoBehaviour
 		PlayerController player = other.GetComponent<PlayerController>();
 		if (player == null) return;
 
-		ETeam playerTeam = player.blackBoard.eTeam;
+		ETeam playerTeam = player.blackBoard.playerTeam;
 		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
 		{
 			PlayerData playerData = other.GetComponent<PlayerData>();

@@ -23,16 +23,22 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     protected override void Awake()
     {
         base.Awake();
-        playerPointController = new PlayPointController(playerData.pv,playerData);
+        if(playerData.pv.IsMine)
+            playerPointController = new PlayPointController(playerData.pv,playerData);
     }
     private void Start()
     {
-        ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
+        ETeam localPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         if (playerData.pv.IsMine)
-			playerMaterialController.SetLayerToMyPlayer();
-
-        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
+        {
+            StartCoroutine(RecoverDefence(10));
+            playerMaterialController.SetLayerToMyPlayer();
+        }
+        
+        if (blackBoard.playerTeam != localPlayerTeam)
+        {
             SetOtherTeamInfo();
+        }
         else
         {
             blackBoard.hpBar.SetIsMyTeam(true);
@@ -40,10 +46,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		}
 
 		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
-		playerData.pv.RPC("SetRecoverDefence", RpcTarget.AllBuffered, 10f);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
-        //StartCoroutine(DamageTest(400, 43f));
 	}
 
     IEnumerator DamageTest(float damage, float time)
@@ -54,11 +58,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     private void OnEnable()
     {
-        playerPointController.Initialize();
+        if (playerData.pv.IsMine)
+            playerPointController.Initialize();
     }
     private void OnDisable()
     {
-        playerPointController.Disable();
+        if (playerData.pv.IsMine)
+            playerPointController.Disable();
     }
     [PunRPC]
 	private void ChangeWeaponHit(int type)
@@ -73,20 +79,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 	void SetOtherTeamInfo()
     {
-        if (!playerData.pv.IsMine)
-        {
-            playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials, blackBoard.hpBar);
-            blackBoard.fieldOfView.SetActive(false);
-			blackBoard.hpBar.SetIsMyTeam(false);
-		}
+        playerMaterialController.SetOtherTeamMaterial(playerData.changeMaterials, blackBoard.hpBar);
+        blackBoard.fieldOfView.SetActive(false);
+        blackBoard.hpBar.SetIsMyTeam(false);
     }
-
-	[PunRPC]
-	private void SetRecoverDefence(float time)
-	{
-		StartCoroutine(RecoverDefence(time));
-	}
-
 	IEnumerator RecoverDefence(float duration)
 	{
 		while (true)
@@ -151,7 +147,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void PunRespawn()
     {
-        Debug.Log("ResapwnPlayer");
         blackBoard.Initialize();
         animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
@@ -170,6 +165,20 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerData.pv.RPC("PunDeactiveUI", RpcTarget.AllBuffered);
         return INode.ENodeState.Success;
     }
+    public INode.ENodeState ShowKillUI()
+    {
+        if(blackBoard.nickname ==playerPointController.GetKillPlayerNickname().ToString())
+            playerData.pv.RPC("PunShowKillUI", RpcTarget.AllBuffered);
+        return INode.ENodeState.Success;
+    }
+    [PunRPC]
+    private void PunShowKillUI()
+    {
+        PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+        playScene.ActiveKill();
+        AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
+        SoundManager.Instance.PlayEffect(killSound);
+    }
     [PunRPC]
     private void PunDeactiveUI()
     {
@@ -179,34 +188,28 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     }
     public INode.ENodeState SetPlayerScore()
     {
-        if (!blackBoard.isSetScore)
-        {
-            playerData.pv.RPC("PunDeathSound", RpcTarget.AllBuffered);
+        if (blackBoard.isSetScore) return INode.ENodeState.Fail;
+        playerData.pv.RPC("PunDeathSound", RpcTarget.AllBuffered);
+        if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
 
-            if (playerData.pv.IsMine)
-            {
-                playerPointController.OnKillPoint();
-                playerPointController.OnDeathPoint();
-                playerPointController.OnAssistPoint();
-                playerPointController.Initialize();
-                blackBoard.isSetScore = true;
-                return INode.ENodeState.Success;
-            }
-        }
-        return INode.ENodeState.Fail;
+        playerPointController.OnKillPoint();
+        playerPointController.OnDeathPoint();
+        playerPointController.OnAssistPoint();
+        playerPointController.Initialize();
+        blackBoard.isSetScore = true;
+        return INode.ENodeState.Success;
     }
     [PunRPC]
     private void PunDeathSound()
     {
         AudioClip deathsound = null;
-        if (blackBoard.characterType == CharacterType.Ned)
+        EHitDeathSound soundType = EHitDeathSound.NED_DEATH;
+        if (blackBoard.characterType == CharacterType.Uni)
         {
-            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.NED_DEATH];
+            soundType = EHitDeathSound.UNI_DEATH;
         }
-        else
-        {
-            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.UNI_DEATH];
-        }
+
+        deathsound = playerData.soundList.HitDeathList[(int)soundType];
         SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);
     }
     
@@ -313,7 +316,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (playerData.pv.IsMine)
 		{
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            blackBoard.setTeam.SetTeamCount((int)blackBoard.eTeam);
+            blackBoard.setTeam.SetTeamCount((int)blackBoard.playerTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
 
             blackBoard.hpBar.SetStopHpUI(true);
@@ -384,6 +387,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.playerStatus.groggyable = (bool)reciveHitInfo[3];
             blackBoard.playerStatus.groggyValue = (float)reciveHitInfo[4];
             blackBoard.playerStatus.isGroggy = (bool)reciveHitInfo[5];
+
+            blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         }
     }
 
@@ -413,7 +418,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         for (int i = 0; i < blackBoards.Count; i++)
         {
             if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
-            if (blackBoards[i].eTeam != blackBoard.eTeam) continue;
+            if (blackBoards[i].playerTeam != blackBoard.playerTeam) continue;
             if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
             if (!blackBoards[i].playerStatus.isLive) continue;
 

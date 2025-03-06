@@ -73,16 +73,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         blackBoard.rigidBody = GetComponent<Rigidbody>();
         blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
         blackBoard.canRespawn = false;
-        if (playerData.pv.IsMine)
-        {
-            blackBoard.nickname = PhotonNetwork.LocalPlayer.NickName;
-            blackBoard.eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        }
-        else
-        {
-            blackBoard.nickname = playerData.pv.Owner.NickName;
-            blackBoard.eTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-        }
+        blackBoard.nickname = playerData.pv.Owner.NickName;
+        blackBoard.playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
     }
 	[PunRPC]
 	private void SendBlackBoard()
@@ -124,9 +116,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         for (int i = 0; i < colliders.Length; i++)
         {
             if (
-                (blackBoard.eTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
+                (blackBoard.playerTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
                 ||
-                (blackBoard.eTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
+                (blackBoard.playerTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
                )
             {
                 if (bombNotify == null)
@@ -153,7 +145,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             {
                 PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
                 ShowCursor showCursor = LocalManagers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
-                if (player.eTeam != blackBoard.eTeam && !player.showSoundEffect)
+                if (player.playerTeam != blackBoard.playerTeam && !player.showSoundEffect)
                 {
                     player.showSoundEffect = true;
                     showCursor.ShowSoundCursor(player.transform.position, 2, player);
@@ -208,6 +200,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 
     public ETeam GetTeamType()
     {
-        return blackBoard.eTeam;
+        return blackBoard.playerTeam;
     }
 }

@@ -51,7 +51,6 @@ namespace Orpul1
         }
         public override void UpdateState()
         {
-            Debug.Log("RoundWait!");
             if (canCountDown)
                 DoCountDown();
         }
@@ -72,7 +71,6 @@ namespace Orpul1
             if ((int)targetPlayer.CustomProperties[EPropertyType.STATE.ToString()] != (int)EPlayerState.WAITROUND) return;
             
             readyPlayerCnt++;
-            Debug.Log($"player {targetPlayer.NickName} change WAITROUND state!");
         }
 
         void SetPlayerPosi()

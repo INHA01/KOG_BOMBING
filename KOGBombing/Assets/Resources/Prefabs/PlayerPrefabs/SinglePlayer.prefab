@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 6786506344979437206}
   - component: {fileID: 4970186942349010887}
   - component: {fileID: 3026917014417153677}
-  - component: {fileID: 1805380428922986340}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -131,10 +130,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   visibleTargets: []
-  meshResolution: 3
+  meshResolution: 1
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 8772815655990883119}
+  photonView: {fileID: 0}
 --- !u!114 &3026917014417153677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,26 +162,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   visibleTargets: []
-  meshResolution: 3
+  meshResolution: 1
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 4882022951795573986}
---- !u!114 &1805380428922986340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 772106139481323054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
+  photonView: {fileID: 0}
 --- !u!1 &992032920591149900
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +304,6 @@ GameObject:
   - component: {fileID: 6527240402747218028}
   - component: {fileID: 9216994139945491648}
   - component: {fileID: 3900849375641417542}
-  - component: {fileID: 484276212673787525}
   - component: {fileID: 2047044685979704218}
   - component: {fileID: 8894044268401136495}
   - component: {fileID: 4574309590161329535}
@@ -551,19 +535,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a8836bbe8dd8a40863a30b770b45ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootStartPos: {fileID: 3328951802869612583}
-  shootEndPos: {fileID: 1368636139714485546}
+  shootPos:
+  - {fileID: 3328951802869612583}
+  - {fileID: 1368636139714485546}
   canAttackPoint: {x: 0, y: 0, z: 0}
   shootDirection: {x: 0, y: 0, z: 0}
   maxLength: 8
   mousePos: {x: 0, y: 0, z: 0}
   soundList: {fileID: -6883398266351926395}
-  attackRangePrefab: {fileID: 4025673733828750908, guid: 4dd30b73c0991f64fbd56857a2ac5a4b,
-    type: 3}
-  noAttackRangePrefab: {fileID: 3848186856526553340, guid: 6c355e73cbe6bc94588d7bc27c5f2a36,
-    type: 3}
-  maxAttackRangePrefab: {fileID: 2170241771327594758, guid: de44e4d607306b540ae720aeb30d6901,
-    type: 3}
   pv: {fileID: 2047044685979704218}
   rigidBody: {fileID: 1272812946582949491}
   timeWithoutDamage: 0
@@ -617,27 +596,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc126f862506ce24a888c91532e328e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initPoolSize: 36
+  objectToPool: {fileID: 548552488072264906, guid: ee8b8727af7801c4988792a78e5335a7,
+    type: 3}
+  parentPrefab: {fileID: 0}
   InitBulletCount: 10
   InitMagazineCount: 4
   reloadTime: 3
   shootingTerm: 0.3
---- !u!114 &484276212673787525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084845064576805521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 392bf0dbffbef7b4d8ad62fa7da61584, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initPoolSize: 36
-  objectToPool: {fileID: 548552488072264906, guid: ee8b8727af7801c4988792a78e5335a7,
-    type: 3}
-  parentPrefab: {fileID: 2569459658997218507, guid: c49ab790699a1ea4c9a7afee3434dacb,
-    type: 3}
 --- !u!114 &2047044685979704218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,7 +625,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8894044268401136495}
   - {fileID: -4870366558248218115}
-  - {fileID: 1805380428922986340}
   - {fileID: 7799719852954471310}
   - {fileID: 7300479445460102179}
   sceneViewId: 0
@@ -1802,7 +1767,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1983200984210079588
 Transform:
   m_ObjectHideFlags: 0

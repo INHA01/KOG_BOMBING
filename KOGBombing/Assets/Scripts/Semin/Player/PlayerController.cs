@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
 using Orpul1;
+using BAEK;
 public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable
 {
 	[SerializeField]
@@ -55,7 +56,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
-		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootStartPos, blackBoard.characterType);
+		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
         isInitComplete = true;
     }
 
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         for (int i = 0; i < colliders.Length; i++)
         {
             float distance = Vector3.Distance(blackBoard.transform.position, colliders[i].transform.position);
-            if (distance < 16f) continue;
+            if (distance < 28f) continue;
             PlayerData playerD = colliders[i].GetComponent<PlayerData>();
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {

@@ -47,10 +47,6 @@ public class ThrowableSkill : ThrowableBase, ISkill
 		type = WeaponType.SHOCK_GRENADE;
 		this.playerData = playerData;
 
-		objectPool = gameObject.AddComponent<ObjectPool>();
-		objectPool.SetObjectToPool(LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Skill/ShockGrenade"));
-		objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
-		objectPool.initPoolSize = count;
 		decal.size = new Vector3(consum.GetComponent<ShockGrenade>().Range, consum.GetComponent<ShockGrenade>().Range, decal.size.z);
 
 		team = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
@@ -79,7 +75,6 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	public override void Use()
 	{
         playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
-		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
         StartCoroutine(Cooldown(3f));

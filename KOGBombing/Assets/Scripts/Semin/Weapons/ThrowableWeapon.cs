@@ -21,10 +21,6 @@ public class ThrowableWeapon : ThrowableBase
 		this.type = type;
 		base.SetConsum(type, playerData);
 
-		objectPool = gameObject.AddComponent<ObjectPool>();
-		objectPool.SetObjectToPool(LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Molotov"));
-		objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
-		objectPool.initPoolSize = count;
 		decal.size = new Vector3(consum.GetComponent<Molotov>().Range, consum.GetComponent<Molotov>().Range, decal.size.z);
 	}
 

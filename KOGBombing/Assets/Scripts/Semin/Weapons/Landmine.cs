@@ -36,7 +36,6 @@ namespace Semin
 			isActive = true;
 		}
 
-		//[PunRPC]
 		public override void SetTeam(int team, PlayerData playerData)
 		{
 			base.SetTeam(team, playerData);
@@ -45,7 +44,6 @@ namespace Semin
 			attackCollider.radius = attackRange / 2f;
 			attackCollider.isTrigger = true;
 			attackCollider.gameObject.SetActive(true);
-			//pView.RPC("SetDecal", RpcTarget.AllBuffered);
 			LandmineDamage dam = transform.GetChild(0).GetComponent<LandmineDamage>();
 			dam.Initialize(this.team, hp);
 			SetDecal();
@@ -60,7 +58,6 @@ namespace Semin
 			Molotov molotov = other.GetComponent<Molotov>();
 			if (molotov != null)
 			{
-				//pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
 				RPCDestroy();
 			}
 			if (other.tag == "Player")
@@ -69,20 +66,17 @@ namespace Semin
 				if (otherTeam == null) return;
 				if (!IsOtherTeam(otherTeam)) return;
 
-				//pView.RPC("ActiveWarringArea", RpcTarget.AllBuffered);
 				ActiveWarringArea();
 				StartCoroutine(Bomb());
 			}
 		}
 
-		//[PunRPC]
 		private void ActiveWarringArea()
 		{
 			StartCoroutine(ShowDecal());
 		}
 
 
-		//[PunRPC]
 		private void SetDecal()
 		{
 			decal.transform.parent = transform;
@@ -95,7 +89,6 @@ namespace Semin
 		IEnumerator SetTimerToDestroy()
 		{
 			yield return new WaitForSeconds(activeTime);
-			//PhotonNetwork.Destroy(gameObject);
 			Release();
 			isActive = false;
 		}
@@ -117,7 +110,6 @@ namespace Semin
 		IEnumerator Bomb()
 		{
 			if (!pView) yield break;
-			//pView.RPC("ShowParticle", RpcTarget.AllBuffered);
 			ShowParticle();
 			yield return new WaitForSeconds(interval);
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange / 2);
@@ -146,7 +138,6 @@ namespace Semin
 		}
 		public void DestroyLandmine()
 		{
-			//pView.RPC("RPCDestroy", RpcTarget.AllBuffered);
 			RPCDestroy();
 		}
 		[PunRPC]

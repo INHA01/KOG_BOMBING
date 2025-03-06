@@ -4,6 +4,7 @@ using UnityEngine;
 using Semin;
 using UnityEngine.InputSystem;
 using Orpul1;
+using BAEK;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 public class PlayerAttack : PlayerBehavior
@@ -151,8 +152,8 @@ public class PlayerAttack : PlayerBehavior
 	}
     public INode.ENodeState ResetAttackData()
     {
-        if (playerData.bomb is DeployableBomb bomb)
-            bomb.RoundReset();
+        //if (playerData.bomb is DeployableBomb bomb)
+        //    bomb.RoundReset();
         playerShooting.RoundChange();
         return INode.ENodeState.Success;
     }
@@ -320,7 +321,7 @@ public class PlayerAttack : PlayerBehavior
             if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
             {
                 //playerData.consumTargetPos = hit.point;
-                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootStartPos.position - new Vector3(0, 1.22f, 0), hit.point,
+                playerData.supportWeapon.SetWeapon(new ThrowableWeaponInfo(playerData.shootPos[(int)ShootPos.Start].position - new Vector3(0, 1.22f, 0), hit.point,
                     playerData.playerObj.transform.eulerAngles.y));
             }
 
@@ -371,7 +372,7 @@ public class PlayerAttack : PlayerBehavior
 
         if (Physics.Raycast(cameraRay, out hit, 100f, LayerMask.GetMask("BackGroundObj")))
         {
-            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootStartPos.position - new Vector3(0, 1.22f, 0), hit.point,
+            playerData.skill.SetSkill(new ThrowableSkillInfo(playerData.shootPos[(int)ShootPos.Start].position - new Vector3(0, 1.22f, 0), hit.point,
                 playerData.playerObj.transform.eulerAngles.y));
         }
 

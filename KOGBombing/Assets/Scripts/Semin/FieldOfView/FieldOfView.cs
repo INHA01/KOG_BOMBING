@@ -52,6 +52,15 @@ namespace Semin
 			Attach(true);
 		}
 
+		public void SyncMesh(Vector3[] vertices, int[] triangles)
+		{
+			if (viewMesh != null)
+			{
+				viewMesh.vertices = vertices;
+				viewMesh.triangles = triangles;
+			}
+		}
+
 		protected override void SetPlayerSight(int isZoom)
 		{
 			//if (!pv.IsMine) return;
@@ -96,9 +105,9 @@ namespace Semin
 			}
 		}
 
-		protected virtual void LateUpdate()
+		protected virtual void FixedUpdate()
 		{
-			DrawFieldOfView();
+			//DrawFieldOfView();
 		}
 
 		protected void FindVisibleTargets()
@@ -121,7 +130,7 @@ namespace Semin
 			}
 		}
 
-		protected void DrawFieldOfView()
+		public void DrawFieldOfView()
 		{
 			int stepCount = Mathf.RoundToInt(viewAngle * meshResolution);
 			float stepAngleSize = viewAngle / stepCount;
@@ -177,6 +186,10 @@ namespace Semin
 			viewMesh.RecalculateNormals();
 		}
 
+		public void SetSyncMesh()
+		{
+			SyncMesh(viewMesh.vertices, viewMesh.triangles);
+		}
 
 		protected EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
 		{

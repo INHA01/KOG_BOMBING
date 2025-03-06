@@ -4,20 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
+public abstract class SupportWeaponBase : Magazine, ISupportWeapon
 {
-	[SerializeField] public AttackConsum consum;
+	public AttackConsum consum;
 	protected ETeam team;
 	protected int playerIndex;
 	protected float range;
 	protected float damage;
-	protected int count = 10;
+	protected int count = 1;
 	protected PlayerData playerData;
 	public float Damage { get { return damage; } }
 	public WeaponType type;
 	protected PlayScene playScene;
-    //public int Count { get { return count; } }
-
+    protected override void Init()
+    {
+        base.Init();
+        SetObjectToPool(consum);
+        initPoolSize = count;
+    }
     public virtual void SetConsum(WeaponType type, PlayerData playerData)
 	{
 

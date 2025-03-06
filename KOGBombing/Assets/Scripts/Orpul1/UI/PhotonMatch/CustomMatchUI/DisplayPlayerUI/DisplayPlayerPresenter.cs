@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Text;
 using UnityEngine;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class DisplayPlayerPresenter : MonoBehaviour
 {

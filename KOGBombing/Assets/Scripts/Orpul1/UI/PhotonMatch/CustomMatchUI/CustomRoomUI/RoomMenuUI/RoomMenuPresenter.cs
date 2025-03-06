@@ -48,16 +48,7 @@ namespace Orpul1
         }
         public void SetRoomOwner()
         {
-            Debug.Log("Event SetMaster");
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("SetMaster");
-                view.btnStartGame.interactable = true;
-            }
-            else
-            {
-                view.btnStartGame.interactable = false;
-            }
+            view.btnStartGame.interactable = PhotonNetwork.IsMasterClient;
         }
     }
 

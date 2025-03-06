@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Semin;
+using BAEK;	
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,9 +23,6 @@ public abstract class ThrowableBase : SupportWeaponBase
 	public float angleStart = 55;
 	public float angleEnd = 125;
 	public int segments = 20;
-
-	protected ObjectPool objectPool;
-
 
 	protected virtual void Awake()
 	{
@@ -77,8 +75,8 @@ public abstract class ThrowableBase : SupportWeaponBase
 
 	protected void SetLineToTarget(Vector3 direction)
 	{
-		points[0] = playerData.shootStartPos.position;
-		points[1] = playerData.shootStartPos.position + new Vector3(0, yPos, 0);
+		points[0] = playerData.shootPos[(int)ShootPos.Start].position;
+		points[1] = playerData.shootPos[(int)ShootPos.Start].position + new Vector3(0, yPos, 0);
 		points[2] = targetPos;
 
 
@@ -124,7 +122,7 @@ public abstract class ThrowableBase : SupportWeaponBase
 	{
 		float elapsedTime = 0f;
 
-		GameObject molotov = objectPool.GetPooledObject().gameObject;
+		GameObject molotov = GetPooledObject().gameObject;
 		molotov.transform.position = points[0];
 		molotov.transform.rotation = Quaternion.identity;
 		AttackConsum grenade = molotov.GetComponent<AttackConsum>();

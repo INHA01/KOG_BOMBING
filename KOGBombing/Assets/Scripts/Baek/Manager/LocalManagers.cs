@@ -48,11 +48,6 @@ public class LocalManagers : MonoBehaviour
     {
         // 초기화 작업을 여기에 추가
     }
-    private void Update()
-    {
-        Debug.Log("UIPopUp : " + UI._popupDictionary.Count);
-    }
-
     void OnDestroy()
     {
         // 인스턴스가 파괴될 때 s_instance를 null로 설정

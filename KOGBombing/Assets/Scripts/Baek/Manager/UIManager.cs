@@ -40,7 +40,6 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
         GameObject go = null;
-        T sceneUI = null;
         bool isExist = false;
         // ContainsKey : 키가 존재하면 true 반환
         // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
@@ -55,7 +54,7 @@ public class UIManager
             go = _popupDictionary[name].gameObject;
         }
         go.SetActive(true); 
-        sceneUI = Util.GetOrAddComponent<T>(go);
+        T sceneUI = Util.GetOrAddComponent<T>(go);
         // 검색한 UI가 없을 경우
         if (sceneUI == null)
         {
@@ -75,12 +74,10 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
         {
             go = _popupDictionary.Last().Value.gameObject;
-            //_popupDictionary.Remove(_popupDictionary.Last().Key);
         }
         else if(_popupDictionary.ContainsKey(name))
         {
             go = _popupDictionary[name].gameObject;
-            //_popupDictionary.Remove(name);
         }
         if(go != null)
         {

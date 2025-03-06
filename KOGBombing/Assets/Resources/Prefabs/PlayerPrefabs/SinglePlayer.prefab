@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 6786506344979437206}
   - component: {fileID: 4970186942349010887}
   - component: {fileID: 3026917014417153677}
-  - component: {fileID: 1805380428922986340}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -131,10 +130,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   visibleTargets: []
-  meshResolution: 3
+  meshResolution: 1
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 8772815655990883119}
+  photonView: {fileID: 0}
 --- !u!114 &3026917014417153677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,26 +162,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   visibleTargets: []
-  meshResolution: 3
+  meshResolution: 1
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 4882022951795573986}
---- !u!114 &1805380428922986340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 772106139481323054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
+  photonView: {fileID: 0}
 --- !u!1 &992032920591149900
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +644,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8894044268401136495}
   - {fileID: -4870366558248218115}
-  - {fileID: 1805380428922986340}
   - {fileID: 7799719852954471310}
   - {fileID: 7300479445460102179}
   sceneViewId: 0
@@ -1802,7 +1786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1983200984210079588
 Transform:
   m_ObjectHideFlags: 0

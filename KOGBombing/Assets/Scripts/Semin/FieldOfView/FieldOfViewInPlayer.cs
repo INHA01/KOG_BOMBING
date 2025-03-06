@@ -35,5 +35,21 @@ namespace Semin
 			for (int i = 0; i < fov.Count; i++)
 				fov[i].ExtractView(isZoom);
 		}
+
+		private void FixedUpdate()
+		{
+			if (pv.IsMine)
+				pv.RPC("SetMyMesh", RpcTarget.AllBuffered);
+		}
+
+		[PunRPC]
+		private void SetMyMesh()
+		{
+			for (int i = 0; i < fov.Count; i++)
+			{
+				fov[i].DrawFieldOfView();
+				fov[i].SetSyncMesh();
+			}
+		}
 	}
 }

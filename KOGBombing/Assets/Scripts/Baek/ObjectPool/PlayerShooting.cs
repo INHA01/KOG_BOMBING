@@ -7,7 +7,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
-
+public struct PlayerInfo
+{
+    public ETeam teamType;
+    public int teamIndex;
+}
 public class PlayerShooting : MonoBehaviour
 {
     [Header("Bullet")]
@@ -26,12 +30,13 @@ public class PlayerShooting : MonoBehaviour
     PlayerAnimation animator;
     AttackRange attackRange;
     PlayerData playerData;
+    PlayerInfo playerInfo;
 
     public int MagazineCount { get { return magazineCount; } }
     public float ReloadTime { get { return time / reloadTime; } }
 
     #region Shooting
-    public void Init(PlayerAnimation animator, AttackRange attackRange)
+    public void Init(PlayerAnimation animator, AttackRange attackRange, PlayerInfo playerInfo)
     {
         playerData = GetComponent<PlayerData>();
         magazine = GetComponent<Magazine>();
@@ -39,6 +44,7 @@ public class PlayerShooting : MonoBehaviour
         bulletCount = InitBulletCount;
         this.attackRange = attackRange;
         this.animator = animator;
+        this.playerInfo = playerInfo;
     }
     public void RoundChange()
     {
@@ -75,8 +81,8 @@ public class PlayerShooting : MonoBehaviour
         //Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
         bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
-        bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]; 
-        bullet.GetComponent<BulletController>().playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.teamType; 
+        bullet.GetComponent<BulletController>().playerIndex = playerInfo.teamIndex;
         bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
         bullet.transform.rotation = playerData.playerObj.transform.rotation;
         bullet.SetActive(true);

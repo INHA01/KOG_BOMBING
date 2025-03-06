@@ -30,13 +30,11 @@ namespace Semin
         {
             this.playerIndex = playerIndex; 
         }
-        protected bool IsOtherTeam(PhotonView pView)
+        protected bool IsOtherTeam(IGetTeamTypeable otherTeam)
         {
-            ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-
             //Debug.Log($"otherTeam: {otherTeam}, mine: {team}");
             //customproperties Team 변수를 ETeam타입으로 변경 중
-            if (team == otherTeam) return false;
+            if (team == otherTeam.GetTeamType()) return false;
             return true;
         }
 

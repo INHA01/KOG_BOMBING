@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 using DTT.AreaOfEffectRegions;
 using Unity.IO.LowLevel.Unsafe;
 using Unity.Collections.LowLevel.Unsafe;
+using Orpul1;
 
 namespace Semin
 {
@@ -64,9 +65,9 @@ namespace Semin
 			}
 			if (other.tag == "Player")
 			{
-				PhotonView otherPv = other.transform.GetComponent<PhotonView>();
-				if (!otherPv) return;
-				if (!IsOtherTeam(otherPv)) return;
+                IGetTeamTypeable otherTeam = other.transform.GetComponent<IGetTeamTypeable>();
+				if (otherTeam == null) return;
+				if (!IsOtherTeam(otherTeam)) return;
 
 				//pView.RPC("ActiveWarringArea", RpcTarget.AllBuffered);
 				ActiveWarringArea();
@@ -124,9 +125,9 @@ namespace Semin
 			{
 				if (hitColliders[i].CompareTag("Player"))
 				{
-					PhotonView pView = hitColliders[i].GetComponent<PhotonView>();
-					if (!pView) continue;
-					if (!IsOtherTeam(pView)) continue;
+                    IGetTeamTypeable otherTeam = hitColliders[i].GetComponent<IGetTeamTypeable>();
+					if (otherTeam == null) continue;
+					if (!IsOtherTeam(otherTeam)) continue;
 
 					IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
 					if (player != null)

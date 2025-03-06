@@ -22,9 +22,10 @@ public class PlayerAttack : PlayerBehavior
         bombInteractTime = 0;
         attackRange = new AttackRange();
         attackRange.Init(playerData.playerObj.transform, playerData);
-        playerShooting.Init(playerData.animator, attackRange);
+        playerShooting.Init(playerData.animator, attackRange, GetPlayerInfo());
         blackBoard.bombInteraction = gameObject.AddComponent<BombInteraction>();
     }
+    
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
@@ -33,6 +34,15 @@ public class PlayerAttack : PlayerBehavior
         playerData.supportWeapon.SetTeam(playerTeam, playerIndex);
         playerData.bomb.SetTeam(playerTeam, playerIndex);
         InitSkill();
+    }
+    private PlayerInfo GetPlayerInfo()
+    {
+        PlayerInfo playerInfo = new PlayerInfo()
+        {
+            teamType = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()],
+            teamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()],
+        };
+        return playerInfo;
     }
     private void Update()
     {

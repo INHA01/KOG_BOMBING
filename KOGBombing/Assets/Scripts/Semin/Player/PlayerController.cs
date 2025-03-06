@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
 using Orpul1;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble
+public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -204,5 +204,10 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         
         if (EGameState.ROUNDWAIT == state)
             blackBoard.playerStatus.canSettingBomb = true;
+    }
+
+    public ETeam GetTeamType()
+    {
+        return blackBoard.eTeam;
     }
 }

@@ -9,7 +9,7 @@ public class LobbyModeSelect : MonoBehaviour
     public void TurnBackScreen()
     {
         matchSelect.SetActive(false);
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        LocalManagers.UI.ClosePopupUI(this.gameObject.name);
     }
     public void OnBombModeClick()
     { 

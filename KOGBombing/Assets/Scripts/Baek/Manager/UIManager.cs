@@ -46,7 +46,7 @@ public class UIManager
         // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
         if (!_popupDictionary.ContainsKey(name))
         {
-            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
+            go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
             go.transform.SetParent(Root.transform);
             isExist = true;
         }
@@ -94,16 +94,6 @@ public class UIManager
         {
             ClosePopupUI();
         }
-    }
-    public void DestroyAllPopupUI()
-    {
-        //CloseAllPopupUI();
-        for(int i = 0; i < _popupDictionary.Count; i++)
-        {
-            GameObject go = _popupDictionary.Last().Value.gameObject;
-            GameObject.Destroy(go);
-        }
-        _popupDictionary.Clear();
     }
 
     public void SetCanvas(GameObject go, bool sort = true)

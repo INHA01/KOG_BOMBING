@@ -14,7 +14,7 @@ public class Option : MonoBehaviour
     public void Cancel()
     {
         playerBlackBoard.inputs[EKey.ESC] = false;
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        LocalManagers.UI.ClosePopupUI(this.gameObject.name);
     }
     public void ReturnLobby()
     { 
@@ -25,8 +25,8 @@ public class Option : MonoBehaviour
         if (yes)
         {
             PhotonNetwork.LeaveRoom();
-            Managers.PunData.Init();
-            Managers.CamData.InitCamera();
+            LocalManagers.PunData.Init();
+            LocalManagers.CamData.InitCamera();
             LoadingSceneManager.LoadScene("LobbyScene");
         }
         else

@@ -87,12 +87,12 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 	[PunRPC]
 	private void SendBlackBoard()
 	{
-        Managers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
+        LocalManagers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
     }
     IEnumerator WaitSetTeamUI(TeamUIController controller)
 	{
-        while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
-		Debug.Log($"isDataAllGet {Managers.PunData.blackBoardCnt}");
+        while (LocalManagers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
+		Debug.Log($"isDataAllGet {LocalManagers.PunData.blackBoardCnt}");
         controller.SetTeamUI(playerShooting);
 
     }
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
                )
             {
                 if (bombNotify == null)
-                    bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                    bombNotify = LocalManagers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
                 if (blackBoard.inputs[EKey.NUM_2])
                 {
                     bombNotify.ActiveCanInteractBomb(true);
@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {
                 PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
-                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+                ShowCursor showCursor = LocalManagers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
                 if (player.eTeam != blackBoard.eTeam && !player.showSoundEffect)
                 {
                     player.showSoundEffect = true;

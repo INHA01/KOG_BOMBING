@@ -27,7 +27,7 @@ public class TeamUIController
         ETeam selfPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         ETeam otherPlayerTeam;
 
-        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
+        _uiScene = LocalManagers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
         _uiScene.GetComponent<ShowCursor>().BombPos = bombPos;
         _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
         _uiScene.GetComponent<PlayScene>().Reset();
@@ -37,7 +37,7 @@ public class TeamUIController
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);
-                _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(players[i].NickName));
+                _uiScene.GetComponent<PlayScene>().SetTeam(LocalManagers.PunData.GetPlayerBlackBoard(players[i].NickName));
             }
         }
         if (_uiScene != null)
@@ -68,7 +68,7 @@ public class TeamUIController
             Debug.Log("On UpdateTeamState Event");
             for (int i = 0; i < teamPlayerList.Count; i++)
             {
-                PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(teamPlayerList[i].NickName);
+                PlayerBlackBoard blackBoard = LocalManagers.PunData.GetPlayerBlackBoard(teamPlayerList[i].NickName);
 
                 if (updateProfile != null)
                     updateProfile(teamPlayerList[i].NickName);

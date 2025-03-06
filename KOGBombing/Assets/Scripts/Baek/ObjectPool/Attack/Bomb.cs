@@ -41,7 +41,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     void NotifySet()
     {
         if (bombNotify == null)
-            bombNotify = Managers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+            bombNotify = LocalManagers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
         else
             bombNotify.gameObject.SetActive(true);
         if (bombData.bombState != null)
@@ -54,7 +54,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
         if (player != null)
         {
             if (bombNotify == null)
-                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                bombNotify = LocalManagers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
             if (player.playerStatus.isBombDefuse)
             {
                 player.playerStatus.isBombDefuse = false;

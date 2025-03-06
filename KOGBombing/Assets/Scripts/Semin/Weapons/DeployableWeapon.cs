@@ -15,8 +15,8 @@ public class DeployableWeapon : DeployableBase
 	{
 		count = 1;
 		objectPool = gameObject.AddComponent<ObjectPool>();
-		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Landmine"));
-		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+		objectPool.SetObjectToPool(LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Landmine"));
+		objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
 		objectPool.initPoolSize = count;
     }
 

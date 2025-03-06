@@ -33,8 +33,8 @@ public class PlayPointController
     {
         this.pv = pv;
         this.playerData = playerData;
-        updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
-        Managers.UI.ClosePopupUI("BattleBoardCanvas");
+        updateScore = LocalManagers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+        LocalManagers.UI.ClosePopupUI("BattleBoardCanvas");
 
         ETeam currentTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
 
@@ -103,7 +103,7 @@ public class PlayPointController
             string attackPlayer = (string)customDatas[1];
             if(attackPlayer == PhotonNetwork.LocalPlayer.NickName)
             {
-                PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+                PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
                 playScene.ActiveKill();
                 AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
                 SoundManager.Instance.PlayEffect(killSound);

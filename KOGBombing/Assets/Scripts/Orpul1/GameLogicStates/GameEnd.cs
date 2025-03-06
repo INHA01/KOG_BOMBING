@@ -9,17 +9,17 @@ namespace Orpul1
         public override void EnterState()
         {
             string playerNickname = PhotonNetwork.LocalPlayer.NickName;
-            GameObject mainCam = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
-            GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
-            PhotonNetwork.Destroy(Managers.PunData.GetPlayerBlackBoard(playerNickname).gameObject);
+            GameObject mainCam = LocalManagers.CamData.GetCamera(ECameraType.MAINCAMERA);
+            GameObject miniMapCam = LocalManagers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
+            PhotonNetwork.Destroy(LocalManagers.PunData.GetPlayerBlackBoard(playerNickname).gameObject);
             Destroy(mainCam);
             Destroy(miniMapCam);
-            Managers.CamData.InitCamera();
-            Managers.UI.ClosePopupUI("PlayCanvas");
-            Managers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(1);
+            LocalManagers.CamData.InitCamera();
+            LocalManagers.UI.ClosePopupUI("PlayCanvas");
+            LocalManagers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(1);
             Managers.PointData.SetBestPlayer();
-            Managers.PunData.Init();
-            Managers.CamData.InitCamera();
+            LocalManagers.PunData.Init();
+            LocalManagers.CamData.InitCamera();
         }
         public override void UpdateState()
         {

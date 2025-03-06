@@ -25,7 +25,7 @@ namespace Orpul1
             roundInterval = roundTime;
             isStopTime = false;
             time = 0;
-            timeTMP = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
+            timeTMP = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
             this.gameData = gameData;
             eventUIController = new EventUIController(gameData.teamUIController);
             int attackTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
@@ -44,7 +44,7 @@ namespace Orpul1
             Debug.Log("On PlayerDie Event");
             int teamType = (int)punEvent.CustomData;
             roundData.SetDecreaseTeamCount(teamType);
-            Managers.UI.ClosePopupUI("DieCanvas");
+            LocalManagers.UI.ClosePopupUI("DieCanvas");
         }
         public void OnEndRound(EventData punEvent)
         {
@@ -52,7 +52,7 @@ namespace Orpul1
             Debug.Log("On ENDROUND Event");
             object[] datas = (object[])punEvent.CustomData;
             roundData.SetEndRound((RoundEndType)datas[0], (bool)datas[1]);
-            Managers.UI.ClosePopupUI("DieCanvas");
+            LocalManagers.UI.ClosePopupUI("DieCanvas");
         }
         private void SetRoundTimeOver()
         {

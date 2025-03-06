@@ -3,22 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using BAEK;
 
 public class PlayerData : MonoBehaviour
 {
     [Header("Shooting")]
-    public Transform shootStartPos;
-    public Transform shootEndPos;
+    public Transform[] shootPos = new Transform[(int)ShootPos.Max];
     public Vector3 canAttackPoint;
     public Vector3 shootDirection;
     public float maxLength;
     public Vector3 mousePos;
     public PlayerSoundData soundList;
-
-    [Header("AttackRange")]
-    [SerializeField] GameObject attackRangePrefab;
-    [SerializeField] GameObject noAttackRangePrefab;
-    [SerializeField] GameObject maxAttackRangePrefab;
 
     [Header("Photon")]
     public PhotonView pv;
@@ -29,17 +24,17 @@ public class PlayerData : MonoBehaviour
     public GameObject minimapIcon;
 
     [Header("Model Anim")]
-    [SerializeField] public GameObject playerObj;
-    [SerializeField] public Transform playerLookObj;
-    [SerializeField] public PlayerAnimation animator;
+    public GameObject playerObj;
+    public Transform playerLookObj;
+    public PlayerAnimation animator;
 
 	[Header("Hide Material")]
-    [SerializeField] public List<GameObject> changeMaterialMeshs = new List<GameObject>();
-    [SerializeField] public List<Material> changeMaterials = new List<Material>();
-    [SerializeField] public Material hitMaterial;
+    public List<GameObject> changeMaterialMeshs = new List<GameObject>();
+    public List<Material> changeMaterials = new List<Material>();
+    public Material hitMaterial;
 
     [Header("Weapon")]
-    [SerializeField] public List<WeaponData> weapons = new List<WeaponData>();
+    public List<WeaponData> weapons = new List<WeaponData>();
     public ISupportWeapon supportWeapon;
     public ISupportWeapon bomb;
     public Vector3 consumTargetPos;
@@ -50,11 +45,11 @@ public class PlayerData : MonoBehaviour
     public bool isGroggyInteracting = false;
 
     [Header("Skill")]
-    [SerializeField] public ISkill skill;
+    public ISkill skill;
 
-    public GameObject AttackRange { get { return Instantiate(attackRangePrefab); } }
-    public GameObject NoAttackRange { get { return Instantiate(noAttackRangePrefab); } }
-    public GameObject MaxAttackRange { get { return Instantiate(maxAttackRangePrefab); } }
+    public GameObject AttackRange { get { return LocalManagers.Resource.Instantiate("AttackPrefabs/AttackRange"); } }
+    public GameObject NoAttackRange { get { return LocalManagers.Resource.Instantiate("AttackPrefabs/NoAttackRange"); } }
+    public GameObject MaxAttackRange { get { return LocalManagers.Resource.Instantiate("AttackPrefabs/MaxAttackRange"); } }
     public LineRenderer SetRenderer(GameObject attackRange) 
     { 
         LineRenderer lineRenderer = attackRange.GetComponent<LineRenderer>();

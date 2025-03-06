@@ -9,7 +9,6 @@ using UnityEngine;
 public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
 {
     Vector3 position;
-    ObjectPool objectPool;
     public BombInteraction bombInteraction;
     BombData bombData;
     Bomb bomb;
@@ -21,11 +20,6 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
 		{
             bombInteraction = GetComponent<BombInteraction>();
 			count = 1;
-			objectPool = gameObject.AddComponent<ObjectPool>();
-			PooledObject child = LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
-			objectPool.SetObjectToPool(child);
-			objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
-			objectPool.initPoolSize = count;
 		}
 	}
     public override void Initialize(int count)
@@ -33,6 +27,8 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         if (count > 0 && playerData.pv.IsMine)
             playScene.subWeaponFades[1].SetActive(false);
         this.count = count;
+        if(bomb != null)
+            bomb.Release();
     }
 
     public override void Use()
@@ -67,7 +63,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
             Bomb myBomb = gameObject.GetComponent<BombInteraction>().GetBomb();
             if (myBomb != null)
                 yield break;
-            bomb = objectPool.GetPooledObject().GetComponent<Bomb>();
+            bomb = GetPooledObject().GetComponent<Bomb>();
             bomb.GetComponent<IDefendencyAble<BombData>>().Defendency(bombData);
             bomb.transform.position = playerData.ConsumPos.position;
             bomb.Notify();
@@ -89,9 +85,9 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
     {
         this.bombData = bombData;
     }
-    public void RoundReset()
-    { 
-        if(bomb != null)
-            bomb.Release();
-    }
+    //public void RoundReset()
+    //{ 
+    //    if(bomb != null)
+    //        bomb.Release();
+    //}
 }

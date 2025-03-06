@@ -7,18 +7,8 @@ using UnityEngine;
 
 public class DeployableWeapon : DeployableBase
 {
-	private Vector3 position;
-	ObjectPool objectPool;
+	Vector3 position;
 	Landmine landmine;
-
-	private void Awake()
-	{
-		count = 1;
-		objectPool = gameObject.AddComponent<ObjectPool>();
-		objectPool.SetObjectToPool(LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Landmine"));
-		objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
-		objectPool.initPoolSize = count;
-    }
 
     public override void Initialize(int count)
     {
@@ -51,7 +41,7 @@ public class DeployableWeapon : DeployableBase
     protected override IEnumerator PutAfterAnim()
 	{
 		yield return new WaitForSeconds(1.3f);
-		landmine = objectPool.GetPooledObject().GetComponent<Landmine>();
+		landmine = GetPooledObject().GetComponent<Landmine>();
 		landmine.transform.position = playerData.ConsumPos.position;
 		landmine.SetTeam((int)team, playerData);
 		landmine.SetPlayerIndex(playerIndex);

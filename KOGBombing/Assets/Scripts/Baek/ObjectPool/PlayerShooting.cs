@@ -1,5 +1,6 @@
 using Knife.Effects;
 using Orpul1;
+using BAEK;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : Magazine
 {
     [Header("Bullet")]
     [SerializeField] int InitBulletCount = 9;
@@ -21,7 +22,6 @@ public class PlayerShooting : MonoBehaviour
 
     Coroutine shootingCoroutine;
     Coroutine reloadCoroutine;
-    Magazine magazine;
 
     PlayerAnimation animator;
     AttackRange attackRange;
@@ -34,7 +34,6 @@ public class PlayerShooting : MonoBehaviour
     public void Init(PlayerAnimation animator, AttackRange attackRange)
     {
         playerData = GetComponent<PlayerData>();
-        magazine = GetComponent<Magazine>();
         magazineCount = InitMagazineCount;
         bulletCount = InitBulletCount;
         this.attackRange = attackRange;
@@ -66,18 +65,17 @@ public class PlayerShooting : MonoBehaviour
     [PunRPC]
     void BulletSpawn(Vector3 shootDirection)
     {
-        GameObject bullet = magazine.GetPooledObject().gameObject;
+        GameObject bullet = GetPooledObject().gameObject;
 		if (bullet == null)
         {
             Debug.Log("bullet is null");
             return;
         }
-        //Vector3 direction = (playerData.mousePos - playerData.shootStartPos.position);
         bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]; 
         bullet.GetComponent<BulletController>().playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-        bullet.transform.position = playerData.shootStartPos.position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
+        bullet.transform.position = playerData.shootPos[(int)ShootPos.Start].position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
         bullet.transform.rotation = playerData.playerObj.transform.rotation;
         bullet.SetActive(true);
     }
@@ -115,7 +113,7 @@ public class PlayerShooting : MonoBehaviour
         {
             yield return null;
             time += Time.deltaTime;
-            if((time > reloadTime) && (magazine.Count > InitBulletCount))
+            if((time > reloadTime) && (Count > InitBulletCount))
             {
                 time = 0;
                 magazineCount++;

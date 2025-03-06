@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ObjectPool :  MonoBehaviour
 {
-    [SerializeField] public int initPoolSize;
+    public int initPoolSize = 36;
     [SerializeField] protected PooledObject objectToPool;
     [SerializeField] protected GameObject parentPrefab;
     protected Transform parent;
@@ -42,10 +42,7 @@ public class ObjectPool :  MonoBehaviour
             instance.Pool = this;
             instance.gameObject.SetActive(false);
             queue.Enqueue(instance);
-            if (parentPrefab != null)
-            {
-                instance.transform.SetParent(parent);
-            }
+            instance.transform.SetParent(parent);
         }
     }
 

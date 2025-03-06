@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ObjectPool :  MonoBehaviour
+public abstract class ObjectPool :  MonoBehaviour , IDestroyAble
 {
     public int initPoolSize = 36;
-    [SerializeField] protected PooledObject objectToPool;
+    [SerializeField] PooledObject objectToPool;
     [SerializeField] protected GameObject parentPrefab;
     protected Transform parent;
 
-    protected Queue<PooledObject> queue;
+    Queue<PooledObject> queue;
     public int Count { get => queue.Count; }
 
 
@@ -78,5 +78,9 @@ public class ObjectPool :  MonoBehaviour
     {
         queue.Enqueue(pooledObject);
         pooledObject.gameObject.SetActive(false);
+    }
+    public void DoDestory()
+    {
+        Destroy(parent.gameObject);
     }
 }

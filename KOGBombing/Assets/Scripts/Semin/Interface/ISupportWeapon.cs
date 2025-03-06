@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Orpul1;
 using UnityEngine;
 
-public interface ISupportWeapon 
+public interface ISupportWeapon : IDestroyAble
 {
 	public void Disable();
 	public void SetWeapon(SupportWeaponInfo info);

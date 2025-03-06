@@ -34,7 +34,6 @@ namespace Orpul1
         }
         private void DestroyGameObject()
         {
-            string playerNickname = PhotonNetwork.LocalPlayer.NickName;
             GameObject mainCam = LocalManagers.CamData.GetCamera(ECameraType.MAINCAMERA);
             GameObject miniMapCam = LocalManagers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
             Destroy(mainCam);

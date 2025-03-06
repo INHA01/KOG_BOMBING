@@ -12,6 +12,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	float skillDeltaTime;
     protected override void Start()
 	{
+		base.Start();
         bisUsableSkill = true;
     }
 

@@ -179,6 +179,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     private void DestroyPlayer()
     {
         Debug.Log($"DestroyPlayer {blackBoard.nickname}");
+        playerData.supportWeapon.DoDestory();
+        playerData.bomb.DoDestory();
         Destroy(gameObject);
     }
     public void DoReset()

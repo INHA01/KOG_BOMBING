@@ -132,7 +132,7 @@ public class PlayerAttack : PlayerBehavior
         return INode.ENodeState.Success;
     }
 
-	private void CancleBomb()
+	private void CancelBomb()
 	{
 		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
@@ -252,7 +252,7 @@ public class PlayerAttack : PlayerBehavior
     }
 
 
-    private void CancleSupportWeapon()
+    private void CancelSupportWeapon()
 	{
 		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
 		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
@@ -301,7 +301,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
                     blackBoard.inputs[EKey.NUM_1] = false;
-                    CancleSupportWeapon();
+                    CancelSupportWeapon();
                     playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                     isChangableAnim = true;
                     return INode.ENodeState.Success;
@@ -328,7 +328,7 @@ public class PlayerAttack : PlayerBehavior
         return INode.ENodeState.Running;
     }
 
-    private void CancleSkill()
+    private void CancelSkill()
     {
 		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
 		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
@@ -487,7 +487,7 @@ public class PlayerAttack : PlayerBehavior
         }
         else
         {
-            CancleSupportWeapon();
+            CancelSupportWeapon();
         }
 
 		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
@@ -527,17 +527,17 @@ public class PlayerAttack : PlayerBehavior
 	{
 		if (input != EKey.NUM_2 && blackBoard.inputs[EKey.NUM_2])
 		{
-			CancleBomb();
+			CancelBomb();
 			blackBoard.inputs[EKey.NUM_2] = false;
 		}
 		if (input != EKey.NUM_1 && blackBoard.inputs[EKey.NUM_1])
 		{
-			CancleSupportWeapon();
+			CancelSupportWeapon();
 			blackBoard.inputs[EKey.NUM_1] = false;
 		}
 		if (input != EKey.Q && blackBoard.inputs[EKey.Q])
 		{
-			CancleSkill();
+			CancelSkill();
 			blackBoard.inputs[EKey.Q] = false;
 		}
 	}

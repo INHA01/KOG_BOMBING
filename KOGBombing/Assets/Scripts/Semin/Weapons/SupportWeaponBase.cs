@@ -41,10 +41,7 @@ public abstract class SupportWeaponBase : Magazine, ISupportWeapon
 		this.playerData = playerData;
 		if(playerData.pv.IsMine)
 		{
-			if(playScene == null)
-				playScene = LocalManagers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
-			else
-				playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+			playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			if(type != WeaponType.BOMB)
 				playScene.SetSubWeaponIcon(type);
 		}

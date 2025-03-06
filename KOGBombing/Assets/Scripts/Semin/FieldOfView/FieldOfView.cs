@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using static UnityEngine.Rendering.DebugUI;
 using Orpul1;
 using Photon.Pun;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace Semin
 {

@@ -17,14 +17,11 @@ namespace Orpul1
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.ROOMSTATE.ToString(), "Start" } });
             updateUI();
         }
-        public void SetOtherTeam(int team)
+        public void SetOtherTeam(int changeTeam)
         {
-            ETeam changeTeam = (ETeam)team;
             ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-            if (changeTeam == curTeam) return;
             SetRoomTeamCount((int)curTeam, -1);
-            if (curTeam == ETeam.REDTEAM) changeTeam = ETeam.BLUETEAM;
-            SetRoomTeamCount((int)changeTeam, 1);
+            SetRoomTeamCount(changeTeam, 1);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), changeTeam } });
         }
         private void SetRoomTeamCount(int teamType, int count)

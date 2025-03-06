@@ -24,13 +24,13 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
         switch (type)
 		{
 			case WeaponType.LANDMINE:
-                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
+                consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
                 break;
 			case WeaponType.MOLOTOV:
-				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
+				consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
                 break;
 			case WeaponType.BOMB:
-                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
+                consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
                 break;
         }
 		this.type = type;
@@ -38,9 +38,9 @@ public abstract class SupportWeaponBase : ObjectPool, ISupportWeapon
 		if(playerData.pv.IsMine)
 		{
 			if(playScene == null)
-				playScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
+				playScene = LocalManagers.UI.ShowPopupUI<UIPopup>("PlayCanvas").GetComponent<PlayScene>();
 			else
-				playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+				playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			if(type != WeaponType.BOMB)
 				playScene.SetSubWeaponIcon(type);
 		}

@@ -6,41 +6,38 @@ using Orpul1;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance;
-    static Managers Instance { get { Init(); return s_instance; } }
 
     UserDataManager _userData = new UserDataManager();
-    UIManager _ui = new UIManager();
-    ResourceManager _resource = new ResourceManager();
-    PhotonDataManager _punData = new PhotonDataManager();
-    CameraManager _camData = new CameraManager();
     PlayerPointManager _pointData = new PlayerPointManager();
     RoundInfoManager _roundData = new RoundInfoManager();
     public static UserDataManager UserData { get { return Instance._userData; } }
-    public static UIManager UI { get { return Instance._ui; } }
-    public static ResourceManager Resource { get { return Instance._resource; } }
-    public static PhotonDataManager PunData { get { return Instance._punData; } }
-    public static CameraManager CamData { get { return Instance._camData; } }
+    
     public static PlayerPointManager PointData { get {return Instance._pointData; } }
     public static RoundInfoManager RoundData { get { return Instance._roundData; } }
+    static Managers Instance 
+    { 
+        get 
+        {
+            if (s_instance == null)
+            {
+                GameObject go = GameObject.Find("@MyManagers");
+                if (go == null)
+                {
+                    // Hierarchi 코드로 오브젝트 만들고 스크립트 넣음
+                    go = new GameObject { name = "@MyManagers" };
+                    go.AddComponent<Managers>();
+                }
+
+                DontDestroyOnLoad(go);
+                s_instance = go.GetComponent<Managers>();
+            }
+            return s_instance;
+        } 
+    }
+
     void Start()
     {
-        Init();
+        // 초기화 작업을 여기에 추가
     }
 
-    static void Init()
-    {
-        if (s_instance == null)
-        {
-            GameObject go = GameObject.Find("@MyManagers");
-            if (go == null)
-            {
-                // Hierarchi 코드로 오브젝트 만들고 스크립트 넣음
-                go = new GameObject { name = "@MyManagers" };
-                go.AddComponent<Managers>();
-            }
-
-            DontDestroyOnLoad(go);
-            s_instance = go.GetComponent<Managers>();
-        }
-    }
 }

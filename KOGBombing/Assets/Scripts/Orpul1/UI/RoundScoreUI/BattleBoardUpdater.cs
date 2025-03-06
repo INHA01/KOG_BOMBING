@@ -56,8 +56,8 @@ public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetab
         ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         string teamPanel = mine == ETeam.REDTEAM ? "Red" : "Blue";
         string otherTeamPanel = mine == ETeam.REDTEAM ? "Blue" : "Red";
-        teamPanels[0].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + teamPanel + "_BG");
-        teamPanels[1].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + otherTeamPanel + "_BG");
+        teamPanels[0].sprite = LocalManagers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + teamPanel + "_BG");
+        teamPanels[1].sprite = LocalManagers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + otherTeamPanel + "_BG");
         return mine;
     }
     private void SetPlayerScore()

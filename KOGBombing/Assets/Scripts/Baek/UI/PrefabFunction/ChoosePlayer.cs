@@ -41,7 +41,7 @@ public class ChoosePlayer : Subject
             teamType.text = "АјАн";
         }
         GameObject go = null;
-        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
+        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/ChooseAvatar");
         go.GetComponent<ChooseAvatar>().SetSubject(this, true);
 
         Notify((int)type);
@@ -51,7 +51,7 @@ public class ChoosePlayer : Subject
     public virtual void SetIcon(bool isMine)
     {
         GameObject go = null;
-        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
+        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
         go.transform.SetParent(teamIconBack);
         if(isMine)
         {
@@ -68,7 +68,7 @@ public class ChoosePlayer : Subject
         EventBusSystem.Publish();
         Notify();
         RemoveAllObserver();
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        LocalManagers.UI.ClosePopupUI(this.gameObject.name);
     }
     IEnumerator CountDown()
     {

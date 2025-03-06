@@ -37,7 +37,7 @@ public class Winner : MonoBehaviour
     }
     public void OpenResult()
     {
-        Managers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
-        Managers.UI.ClosePopupUI("WinnerCanvas");
+        LocalManagers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
+        LocalManagers.UI.ClosePopupUI("WinnerCanvas");
     }
 }

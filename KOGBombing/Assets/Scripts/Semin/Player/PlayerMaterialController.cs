@@ -22,7 +22,7 @@ public class PlayerMaterialController : MonoBehaviour
 	{
 		this.changeMaterials = changeMaterials;
 		SetMaterialToHide();
-		hitMaterial = Managers.Resource.Load<Material>("Materials/HitHideMaterial");
+		hitMaterial = LocalManagers.Resource.Load<Material>("Materials/HitHideMaterial");
 		for ( int i = 0; i < changeMaterialMeshs.Count; i++ )
 		{
 			Renderer mesh = changeMaterialMeshs[i].GetComponent<Renderer>();

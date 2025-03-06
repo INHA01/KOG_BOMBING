@@ -39,17 +39,17 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	{
 		if(playerData.pv.IsMine)
 		{
-			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+			playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			playScene.SetSkillIcon(CharacterType.Ned);
 		}
 
-        consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
+        consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
 		type = WeaponType.SHOCK_GRENADE;
 		this.playerData = playerData;
 
 		objectPool = gameObject.AddComponent<ObjectPool>();
-		objectPool.SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Skill/ShockGrenade"));
-		objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+		objectPool.SetObjectToPool(LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Skill/ShockGrenade"));
+		objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
 		objectPool.initPoolSize = count;
 		decal.size = new Vector3(consum.GetComponent<ShockGrenade>().Range, consum.GetComponent<ShockGrenade>().Range, decal.size.z);
 

@@ -56,8 +56,8 @@ namespace Orpul1
             isSetBomb = false;
             this.teamUIController = teamUIController;
             roundEndType = RoundEndType.NONE;
-            updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
-            Managers.UI.ClosePopupUI("BattleBoardCanvas");
+            updateScore = LocalManagers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+            LocalManagers.UI.ClosePopupUI("BattleBoardCanvas");
         }
         public void SetTeamCount(int teamType, int count)
         {
@@ -114,7 +114,7 @@ namespace Orpul1
             }
             Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
             Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
-            BattleBoardUpdater battleBoardUpdater = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+            BattleBoardUpdater battleBoardUpdater = LocalManagers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
             battleBoardUpdater.UpdateTeamWinScore();
             Debug.Log($"TeamScore redTeam: {teamScores[0]}, blueTeam:{teamScores[1]}");
             // >> TODO : 공수 교대 시 팀 점수 ui 갱신

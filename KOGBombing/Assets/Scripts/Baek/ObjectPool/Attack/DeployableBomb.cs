@@ -22,9 +22,9 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
             bombInteraction = GetComponent<BombInteraction>();
 			count = 1;
 			objectPool = gameObject.AddComponent<ObjectPool>();
-			PooledObject child = Managers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
+			PooledObject child = LocalManagers.Resource.Load<PooledObject>("Prefabs/SupportWeapon/Bomb");
 			objectPool.SetObjectToPool(child);
-			objectPool.SetParentPrefab(Managers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
+			objectPool.SetParentPrefab(LocalManagers.Resource.Load<GameObject>("Prefabs/SupportWeapon/WeaponMagazine"));
 			objectPool.initPoolSize = count;
 		}
 	}
@@ -40,7 +40,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         count--;
         if(playerData.pv.IsMine)
         {
-            PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+            PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
             playScene.subWeaponFades[1].SetActive(true);
         }
         playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);

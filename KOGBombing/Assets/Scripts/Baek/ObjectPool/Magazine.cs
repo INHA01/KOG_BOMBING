@@ -12,7 +12,7 @@ public class Magazine : ObjectPool
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
-            SetObjectToPool(Managers.Resource.Load<PooledObject>("Prefabs/AttackPrefabs/Bullet/Effect_02ToHide"));
+            SetObjectToPool(LocalManagers.Resource.Load<PooledObject>("Prefabs/AttackPrefabs/Bullet/Effect_02ToHide"));
         GameObject parentInstance = Instantiate(parentPrefab);
         parent = parentInstance.transform;
     }

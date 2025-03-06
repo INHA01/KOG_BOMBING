@@ -30,7 +30,7 @@ public class Lobby : MonoBehaviour
     }
     public void OnSelectClick()
     {
-        UIPopup _uiScene = Managers.UI.ShowPopupUI<UIPopup>("SelectModeCanvas");
+        UIPopup _uiScene = LocalManagers.UI.ShowPopupUI<UIPopup>("SelectModeCanvas");
         SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
         _lobbyModeSelect = _uiScene.GetComponent<LobbyModeSelect>();
     }

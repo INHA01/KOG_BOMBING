@@ -20,11 +20,11 @@ public class LookCamera : MonoBehaviour,IResetAble
     private IEnumerator CoWaitInit()
     {
         GameObject cameraObj = null;
-        while (!Managers.CamData.IsContainCamera(ECameraType.MAINCAMERA)) 
+        while (!LocalManagers.CamData.IsContainCamera(ECameraType.MAINCAMERA)) 
         {
             yield return null;
         }
-        cameraObj = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
+        cameraObj = LocalManagers.CamData.GetCamera(ECameraType.MAINCAMERA);
         trCamera = cameraObj.transform;
         canStart = true;
     }

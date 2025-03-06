@@ -26,7 +26,7 @@ public class DashSkill : MonoBehaviour, ISkill
 	{
 		if(playerData.pv.IsMine)
 		{
-			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+			playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			playScene.SetSkillIcon(CharacterType.Uni);
 		}
 
@@ -86,8 +86,8 @@ public class DashSkill : MonoBehaviour, ISkill
 
 		SoundManager.Instance.PlayEffect(dashSound, transform, 1, 0, 25);
 
-		// >> Managers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
-		PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
+		// >> LocalManagers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
+		PlayerBlackBoard blackBoard = LocalManagers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
 		playerData.isInteract = true;
 		while (time < 0.5f)
 		{

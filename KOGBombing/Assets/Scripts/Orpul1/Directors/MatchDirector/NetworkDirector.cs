@@ -9,12 +9,17 @@ using UnityEngine.UI;
 
 namespace Orpul1
 {
+    public enum EMatchType
+    {
+        RANDOM,
+        CUSTOM
+    }
     public class NetworkDirector : MonoBehaviour
     {
         [SerializeField] PhotonMatch[] match;
-        public void Match(int mode)
+        public void Match(EMatchType mode)
         {
-            match[mode].Match();
+            match[(int)mode].Match();
         }
     }
 }

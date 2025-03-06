@@ -4,9 +4,14 @@ using UnityEngine;
 
 namespace Orpul1
 {
+    public enum ERoomUI
+    {
+        SEVERNAME,
+        PLAYERCOUNT,
+        END,
+    }
     public class DisplayRoomView : MonoBehaviour
     {
-        public TextMeshProUGUI tmpServerName;
-        public TextMeshProUGUI tmpPlayerCount;
+        public TextMeshProUGUI[] roomUIs;
     }
 }

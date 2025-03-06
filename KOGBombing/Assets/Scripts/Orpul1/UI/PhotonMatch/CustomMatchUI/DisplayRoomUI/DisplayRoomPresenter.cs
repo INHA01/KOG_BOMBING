@@ -29,8 +29,8 @@ namespace Orpul1
         }
         public void UpdateUI()
         {
-            view.tmpServerName.text = model.RoomInfo.Name;
-            view.tmpPlayerCount.text = model.RoomInfo.PlayerCount.ToString();
+            view.roomUIs[(int)ERoomUI.SEVERNAME].text = model.RoomInfo.Name;
+            view.roomUIs[(int)ERoomUI.PLAYERCOUNT].text = model.RoomInfo.PlayerCount.ToString();
         }
     }
 }

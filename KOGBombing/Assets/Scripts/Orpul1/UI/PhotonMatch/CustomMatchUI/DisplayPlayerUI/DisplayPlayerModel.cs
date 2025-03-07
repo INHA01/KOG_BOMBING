@@ -12,8 +12,8 @@ public class DisplayPlayerModel
     }
     public void SetPlayerInfo(StringBuilder nickname, StringBuilder level)
     {
-        stbPlayerInfos[(int)EPlayerUI.NICKNAME] = nickname;
-        stbPlayerInfos[(int)EPlayerUI.LEVEL] = level;
+        stbPlayerInfos[(int)EPlayerTextUI.NICKNAME] = nickname;
+        stbPlayerInfos[(int)EPlayerTextUI.LEVEL] = level;
         updateUI();
     }
 }

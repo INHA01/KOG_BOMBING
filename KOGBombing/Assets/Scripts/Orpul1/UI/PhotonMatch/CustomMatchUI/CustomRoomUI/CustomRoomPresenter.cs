@@ -14,7 +14,7 @@ namespace Orpul1
 
         private void Start()
         {
-            view.customRoomPanel.SetActive(false);
+            view.panels[(int)ECustomRoomPanel.CUSTOMROOM].SetActive(false);
         }
         private void OnEnable()
         {
@@ -26,13 +26,12 @@ namespace Orpul1
         }
         public void ActiveUIPanel()
         {
-            view.customRoomPanel.SetActive(true);
+            view.panels[(int)ECustomRoomPanel.CUSTOMROOM].SetActive(true);
         }
         public void OnLeaveRoomBtn()
         {
-            view.customRoomPanel.SetActive(false);
-            view.customRoomListPanel.SetActive(false);
-            view.background.SetActive(false);
+            for (int i = 0; i < (int)ECustomRoomPanel.END; i++)
+                view.panels[i].SetActive(false);
             SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
             PhotonNetwork.LeaveRoom();
         }

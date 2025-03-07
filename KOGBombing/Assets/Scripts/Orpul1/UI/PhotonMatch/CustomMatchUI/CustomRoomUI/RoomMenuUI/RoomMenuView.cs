@@ -13,7 +13,6 @@ namespace Orpul1
     }
     public class RoomMenuView : MonoBehaviour
     {
-        
         public GameObject background;
         public Button[] menuButtons;
     }

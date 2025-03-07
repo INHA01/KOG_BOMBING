@@ -31,7 +31,6 @@ namespace Orpul1
             EPropertyType propertyType = (EPropertyType)teamType;
             teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[propertyType.ToString()];
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { propertyType.ToString(), teamCnt + count } });
-
         }
     }
 

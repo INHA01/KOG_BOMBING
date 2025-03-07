@@ -20,7 +20,7 @@ public class DisplayPlayerPresenter : MonoBehaviour
     }
     public void UpdateUI()
     {
-        for (int i = 0; i < (int)EPlayerUI.END; i++)
+        for (int i = 0; i < (int)EPlayerTextUI.END; i++)
             view.tmpPlayerInfos[i].text = model.PlayerInfos[i].ToString();
     }
     

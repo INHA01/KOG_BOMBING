@@ -17,24 +17,24 @@ public class RoomListPanelPresenter : MonoBehaviour
     }
     private void Start()
     {
-        view.backgroundPanelObj.SetActive(false);
-        view.roomListPanelObj.SetActive(false);
+        view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(false);
+        view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(false);
     }
     public void ActiveUIPanel()
     {
-        view.backgroundPanelObj.SetActive(true);
-        view.roomListPanelObj.SetActive(true);
+        view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(true);
+        view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(true);
     }
     public void OnLeaveMatchBtn()
     {
-        view.backgroundPanelObj.SetActive(false);
-        view.roomListPanelObj.SetActive(false);
+        view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(false);
+        view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(false);
         view.btnSelectMode.interactable = true;
         SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
     }
     public void OnCreatRoomBtn()
     {
-        view.createPanelObj.SetActive(true);
+        view.panels[(int)ERoomListPanel.CREATEPANEL].SetActive(true);
         SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
     }
 }

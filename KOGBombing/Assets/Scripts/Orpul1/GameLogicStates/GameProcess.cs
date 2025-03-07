@@ -49,7 +49,7 @@ namespace Orpul1
             roundController.SetTeamScore();
             setNextEndRoundGameState.SetData(roundController.GetGameState());
 
-            transitionState((int)EGameState.SWITCHTEAMROLL);
+            transitionState((int)EGameState.ROUNDENDWAIT);
         }
 
         public override void ExitState()

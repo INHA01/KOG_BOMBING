@@ -16,8 +16,7 @@ namespace Orpul1
         {
             UIEventBus.Subscribe(UIEventBus.UIEventType.STARTGAME, SetStartStateUI);
             UIEventBus.Subscribe(UIEventBus.UIEventType.SETMASTER, SetRoomOwner);
-            if (!PhotonNetwork.IsMasterClient)
-                view.btnStartGame.interactable = false;
+            view.menuButtons[(int)ERoomMenuButton.STARTBUTTON].interactable = PhotonNetwork.IsMasterClient;
         }
         private void OnDisable()
         {
@@ -39,25 +38,14 @@ namespace Orpul1
         {
             SetStartStateUI();
         }
-        public void SetStartStateUI() //이벤트 버스 등록할 메소드
+        public void SetStartStateUI()
         {
-            view.btnQuitRoom.interactable = false;
-            view.btnStartGame.interactable = false;
-            view.btnSwapBlueTeam.interactable = false;
-            view.btnSwapRedTeam.interactable = false;
+            for(int i=0; i<(int)ERoomMenuButton.END; i++)
+                view.menuButtons[i].interactable = false;
         }
         public void SetRoomOwner()
         {
-            Debug.Log("Event SetMaster");
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("SetMaster");
-                view.btnStartGame.interactable = true;
-            }
-            else
-            {
-                view.btnStartGame.interactable = false;
-            }
+            view.menuButtons[(int)ERoomMenuButton.STARTBUTTON].interactable = PhotonNetwork.IsMasterClient;
         }
     }
 

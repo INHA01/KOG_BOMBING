@@ -8,6 +8,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
+public struct PlayerInfo
+{
+    public ETeam teamType;
+    public int teamIndex;
+}
 
 public class PlayerShooting : Magazine
 {
@@ -26,18 +31,20 @@ public class PlayerShooting : Magazine
     PlayerAnimation animator;
     AttackRange attackRange;
     PlayerData playerData;
+    PlayerInfo playerInfo;
 
     public int MagazineCount { get { return magazineCount; } }
     public float ReloadTime { get { return time / reloadTime; } }
 
     #region Shooting
-    public void Init(PlayerAnimation animator, AttackRange attackRange)
+    public void Init(PlayerAnimation animator, AttackRange attackRange, PlayerInfo playerInfo)
     {
         playerData = GetComponent<PlayerData>();
         magazineCount = InitMagazineCount;
         bulletCount = InitBulletCount;
         this.attackRange = attackRange;
         this.animator = animator;
+        this.playerInfo = playerInfo;
     }
     public void RoundChange()
     {
@@ -73,8 +80,8 @@ public class PlayerShooting : Magazine
         }
         bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
-        bullet.GetComponent<BulletController>().eTeamBullet = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]; 
-        bullet.GetComponent<BulletController>().playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.teamType; 
+        bullet.GetComponent<BulletController>().playerIndex = playerInfo.teamIndex;
         bullet.transform.position = playerData.shootPos[(int)ShootPos.Start].position + new Vector3(1, 0, 1) * Random.Range(-0.2f, 0.2f);// + new Vector3(0, 0.8f, 0);
         bullet.transform.rotation = playerData.playerObj.transform.rotation;
         bullet.SetActive(true);

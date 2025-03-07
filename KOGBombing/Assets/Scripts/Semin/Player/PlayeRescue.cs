@@ -55,7 +55,7 @@ public class PlayeRescue : InteractObject
         if (pView == null) return false;
         ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
-        if (otherTeam != blackBoard.eTeam) return false;
+        if (otherTeam != blackBoard.playerTeam) return false;
         if (!LocalManagers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
 
         target = pView.gameObject;

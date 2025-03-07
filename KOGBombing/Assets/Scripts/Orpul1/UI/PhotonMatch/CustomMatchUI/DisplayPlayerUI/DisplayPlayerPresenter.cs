@@ -1,7 +1,6 @@
-using System.Collections;
+using Photon.Pun.Demo.PunBasics;
 using System.Text;
 using UnityEngine;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class DisplayPlayerPresenter : MonoBehaviour
 {
@@ -21,8 +20,8 @@ public class DisplayPlayerPresenter : MonoBehaviour
     }
     public void UpdateUI()
     {
-        view.tmpNickname.text = model.PlayerNickname.ToString();
-        view.tmpLevel.text = model.PlayerLevel.ToString();
+        for (int i = 0; i < (int)EPlayerTextUI.END; i++)
+            view.tmpPlayerInfos[i].text = model.PlayerInfos[i].ToString();
     }
     
 }

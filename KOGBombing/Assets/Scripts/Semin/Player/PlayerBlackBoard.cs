@@ -25,7 +25,7 @@ public class PlayerBlackBoard : MonoBehaviour
 	//public float speedDebuffPercent = 1;
 	public Vector2 mousePos;
     public Vector3 spawnPoint;
-    public ETeam eTeam;
+    public ETeam playerTeam;
     public ISetTeamCountAble setTeam;
     public IBombStateAble setBombState;
     public string nickname;

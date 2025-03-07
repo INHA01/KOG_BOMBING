@@ -88,9 +88,9 @@ public class ShockGrenade : AttackConsum
 		{
 			if (hitColliders[i].CompareTag("Player"))
 			{
-				PhotonView pView = hitColliders[i].GetComponent<PhotonView>();
-				if (!pView) continue;
-				if (!IsOtherTeam(pView)) continue;
+                IGetTeamTypeable otherTeam = hitColliders[i].GetComponent<IGetTeamTypeable>();
+				if (otherTeam == null) continue;
+				if (!IsOtherTeam(otherTeam)) continue;
 
 				IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
 				if (player != null)

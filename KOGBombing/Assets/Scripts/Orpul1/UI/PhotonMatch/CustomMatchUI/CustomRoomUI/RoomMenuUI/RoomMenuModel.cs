@@ -17,32 +17,20 @@ namespace Orpul1
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.ROOMSTATE.ToString(), "Start" } });
             updateUI();
         }
-        public void SetOtherTeam(int team)
+        public void SetOtherTeam(int changeTeam)
         {
-            ETeam changeTeam = (ETeam)team;
             ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-            if (changeTeam == curTeam) return;
-            SetRoomTeamCount(curTeam, -1);
-            if (curTeam == ETeam.REDTEAM) changeTeam = ETeam.BLUETEAM;
+            if (changeTeam == (int)curTeam) return;
+            SetRoomTeamCount((int)curTeam, -1);
             SetRoomTeamCount(changeTeam, 1);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), changeTeam } });
         }
-        private void SetRoomTeamCount(ETeam teamType, int count)
+        private void SetRoomTeamCount(int teamType, int count)
         {
             int teamCnt = 0;
-            EPropertyType propertyType = EPropertyType.BLUETEAM;
-            if (teamType == ETeam.BLUETEAM)
-            {
-                teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
-            }
-            else
-            {
-                teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
-                propertyType = EPropertyType.REDTEAM;
-            }
-
+            EPropertyType propertyType = (EPropertyType)teamType;
+            teamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[propertyType.ToString()];
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { propertyType.ToString(), teamCnt + count } });
-
         }
     }
 

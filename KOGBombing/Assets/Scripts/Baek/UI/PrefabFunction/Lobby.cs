@@ -37,6 +37,6 @@ public class Lobby : MonoBehaviour
     {
         SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
         selectMode.GetComponent<Button>().interactable = !selectMode.GetComponent<Button>().interactable;
-        networkDirector.Match(_lobbyModeSelect.mode);
+        networkDirector.Match((EMatchType)_lobbyModeSelect.mode);
     }
 }

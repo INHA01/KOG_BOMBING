@@ -316,8 +316,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46df8bf0492c19b40bb9a596e220c82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tmpNickname: {fileID: 3446419683435031812}
-  tmpLevel: {fileID: 3823730032490288809}
+  tmpPlayerInfos:
+  - {fileID: 3446419683435031812}
+  - {fileID: 3823730032490288809}
 --- !u!114 &7801159727130400239
 MonoBehaviour:
   m_ObjectHideFlags: 0

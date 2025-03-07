@@ -46,7 +46,6 @@ public class SoundManager : SingleTon<SoundManager>
     public void OnLoadScene(Scene arg, LoadSceneMode mode)
     {
         if (!bgmDict.ContainsKey(arg.name)) return;
-        Debug.Log("Play BGM");
         PlayBGM(bgmDict[arg.name]);
     }
     public void PlayUISound(EUiSoundType uiSoundType)

@@ -35,7 +35,7 @@ public class LocalManagers : MonoBehaviour
 
     void Awake()
     {
-        // ¾ÀÀÌ ·ÎµåµÉ ¶§¸¶´Ù »õ·Î¿î ÀÎ½ºÅÏ½º¸¦ ¸¸µéµµ·Ï ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½éµµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (s_instance != null && s_instance != this)
         {
             Destroy(gameObject);
@@ -46,11 +46,11 @@ public class LocalManagers : MonoBehaviour
 
     void Start()
     {
-        // ÃÊ±âÈ­ ÀÛ¾÷À» ¿©±â¿¡ Ãß°¡
+        // ï¿½Ê±ï¿½È­ ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ß°ï¿½
     }
     void OnDestroy()
     {
-        // ÀÎ½ºÅÏ½º°¡ ÆÄ±«µÉ ¶§ s_instance¸¦ null·Î ¼³Á¤
+        // ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½ï¿½ ï¿½ï¿½ s_instanceï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (s_instance == this)
         {
             s_instance = null;

@@ -23,9 +23,10 @@ public class PlayerAttack : PlayerBehavior
         bombInteractTime = 0;
         attackRange = new AttackRange();
         attackRange.Init(playerData.playerObj.transform, playerData);
-        playerShooting.Init(playerData.animator, attackRange);
+        playerShooting.Init(playerData.animator, attackRange, GetPlayerInfo());
         blackBoard.bombInteraction = gameObject.AddComponent<BombInteraction>();
     }
+    
     private void Start()
     {
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
@@ -34,6 +35,15 @@ public class PlayerAttack : PlayerBehavior
         playerData.supportWeapon.SetTeam(playerTeam, playerIndex);
         playerData.bomb.SetTeam(playerTeam, playerIndex);
         InitSkill();
+    }
+    private PlayerInfo GetPlayerInfo()
+    {
+        PlayerInfo playerInfo = new PlayerInfo()
+        {
+            teamType = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()],
+            teamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()],
+        };
+        return playerInfo;
     }
     private void Update()
     {
@@ -177,7 +187,7 @@ public class PlayerAttack : PlayerBehavior
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-                        bombNotify.NotifyGuide(false, blackBoard.eTeam);
+                        bombNotify.NotifyGuide(false, blackBoard.playerTeam);
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
@@ -198,7 +208,7 @@ public class PlayerAttack : PlayerBehavior
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-                        bombNotify.NotifyGuide(false, blackBoard.eTeam);
+                        bombNotify.NotifyGuide(false, blackBoard.playerTeam);
                         blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
@@ -243,7 +253,7 @@ public class PlayerAttack : PlayerBehavior
                         return INode.ENodeState.Running;
                     }
 				}
-                bombNotify.NotifyGuide(false, blackBoard.eTeam);
+                bombNotify.NotifyGuide(false, blackBoard.playerTeam);
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
 			}
 
@@ -445,7 +455,7 @@ public class PlayerAttack : PlayerBehavior
         {
             bombNotify = LocalManagers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
         }
-        bombNotify.NotifyGuide(blackBoard.inputs[EKey.NUM_2] , blackBoard.eTeam);
+        bombNotify.NotifyGuide(blackBoard.inputs[EKey.NUM_2] , blackBoard.playerTeam);
 
         if (blackBoard.inputs[EKey.NUM_2])
         {

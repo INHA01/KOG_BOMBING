@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Realtime;
 using System;
 using System.Text;
@@ -8,7 +9,6 @@ namespace Orpul1
     {
         Action updateUI;
         private RoomInfo roomInfo;
-
         public RoomInfo RoomInfo { get { return roomInfo; } }
         public DisplayRoomModel(Action updateUI)
         {

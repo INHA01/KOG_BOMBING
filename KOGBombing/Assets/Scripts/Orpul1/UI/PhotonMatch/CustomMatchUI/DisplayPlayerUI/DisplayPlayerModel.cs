@@ -1,29 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 public class DisplayPlayerModel
 {
     Action updateUI;
-
-    private StringBuilder stbNickname = new StringBuilder();
-    private StringBuilder stbLevel = new StringBuilder();
-
-    public StringBuilder PlayerNickname { get { return stbNickname; } }
-    public StringBuilder PlayerLevel { get { return stbLevel; } }
+    private StringBuilder[] stbPlayerInfos = new StringBuilder[2];
+    public StringBuilder[] PlayerInfos { get { return stbPlayerInfos; } } 
     public DisplayPlayerModel(Action updateUI)
     {
         this.updateUI = updateUI;
     }
     public void SetPlayerInfo(StringBuilder nickname, StringBuilder level)
     {
-        stbNickname = nickname;
-        stbLevel = level;
+        stbPlayerInfos[(int)EPlayerTextUI.NICKNAME] = nickname;
+        stbPlayerInfos[(int)EPlayerTextUI.LEVEL] = level;
         updateUI();
     }
-
-
-
 }

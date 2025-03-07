@@ -1,35 +1,25 @@
 using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
 {
+    public enum EMatchType
+    {
+        RANDOM,
+        CUSTOM
+    }
     public class NetworkDirector : MonoBehaviour
     {
-        [SerializeField]
-        PhotonMatch randomMatch;
-        [SerializeField]
-        PhotonMatch customMatch;
+        [SerializeField] PhotonMatch[] match;
         private void Start()
         {
-            PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
+            PhotonHashtable playerTeam = new PhotonHashtable { { EPropertyType.TEAM.ToString(), ETeam.REDTEAM } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerTeam);
         }
-        public void Match(int mode)
+        public void Match(EMatchType mode)
         {
-            Debug.Log("match");
-            if(mode == 0)
-            {
-                randomMatch.Match();
-            }
-            else
-            {
-                customMatch.Match();
-            }
+            match[(int)mode].Match();
         }
     }
 }

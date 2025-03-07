@@ -22,8 +22,6 @@ namespace Orpul1
         {
             if (isMatching)
             {
-                isMatching = false;
-                isRandomMatch = false;
                 UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
                 if (PhotonNetwork.InRoom) PhotonNetwork.LeaveRoom();
                 if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
@@ -31,11 +29,10 @@ namespace Orpul1
             else
             {
                 UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEWAITMATCHPANEL);
-                isMatching = true;
-                isRandomMatch = true;
-                Debug.Log("Join RandomLobby");
                 base.Match();
             }
+            isMatching = !isMatching;
+            isRandomMatch = !isRandomMatch;
         }
        
         public override void OnRoomPropertiesUpdate(PhotonHashTable propertiesThatChanged)
@@ -51,7 +48,6 @@ namespace Orpul1
         public override void OnJoinedLobby()
         {
             if (!isRandomMatch) return;
-            Debug.Log($"randomMatch {isRandomMatch}");
             base.OnJoinedLobby();
             PhotonNetwork.JoinRandomRoom();
         }
@@ -60,40 +56,20 @@ namespace Orpul1
         {
             if (!isRandomMatch) return;
 
-            Debug.Log("RandomJoinRoom");
             base.OnJoinedRoom();
             if(PhotonNetwork.IsMasterClient)
                 StartCoroutine(CoWaitPlayers());
 
         }
 
-        public override void OnLeftRoom()
-        {
-            if (!isRandomMatch) return;
-            PhotonNetwork.LeaveRoom();
-        }
-        public override void OnLeftLobby()
-        {
-            if (!isRandomMatch) return;
-            Debug.Log("RandomMatch LeftLobby");
-            isMatching = false;
-        }
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             if (!isRandomMatch) return;
-            Debug.Log("failrandomRoom");
-            StringBuilder roomName = new StringBuilder();
-            roomName.Append("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
+            StringBuilder roomName = new StringBuilder("RandomRoom" + PhotonNetwork.LocalPlayer.NickName);
             PhotonNetwork.CreateRoom(roomName.ToString(), SetRoomOption());
-            Debug.Log("joinFail Create Room");
 
         }
        
-        public override void OnCreateRoomFailed(short returnCode, string message)
-        {
-            if (!isRandomMatch) return;
-            Debug.Log("CreateRoomFailed!");
-        }
 
         private RoomOptions SetRoomOption()
         {
@@ -117,8 +93,6 @@ namespace Orpul1
 
         IEnumerator CoWaitPlayers()
         {
-            Debug.Log($"PlayerCnt: {PhotonNetwork.CurrentRoom.PlayerCount}");
-
             while (true)
             {
                 if (!isMatching) yield break;

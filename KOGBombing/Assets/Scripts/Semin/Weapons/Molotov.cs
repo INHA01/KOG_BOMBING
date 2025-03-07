@@ -1,3 +1,4 @@
+using Orpul1;
 using Photon.Pun;
 using Semin;
 using System.Collections;
@@ -39,10 +40,10 @@ public class Molotov : AttackConsum
 	{
         if (other.tag == "Player")
 		{
-			PhotonView pv = other.transform.GetComponent<PhotonView>();
+            IGetTeamTypeable otherTeam = other.transform.GetComponent<IGetTeamTypeable>();
 
-			if (!pv) return;
-			if (!IsOtherTeam(pv)) return;
+			if (otherTeam == null) return;
+			if (!IsOtherTeam(otherTeam)) return;
 
 			IDamageAble player = other.transform.GetComponent<IDamageAble>();
 			if (player != null)

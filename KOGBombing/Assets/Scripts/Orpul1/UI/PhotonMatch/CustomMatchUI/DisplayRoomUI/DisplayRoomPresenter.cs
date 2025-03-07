@@ -21,16 +21,16 @@ namespace Orpul1
 
         public void OnEnterRoom()
         {
+            if (isJoinRoom) return;
             if (!model.RoomInfo.IsOpen) return;
             if (model.RoomInfo.PlayerCount > model.RoomInfo.MaxPlayers) return;
-            if (isJoinRoom) return;
             isJoinRoom = true;
             PhotonNetwork.JoinRoom(model.RoomInfo.Name);
         }
         public void UpdateUI()
         {
-            view.tmpServerName.text = model.RoomInfo.Name;
-            view.tmpPlayerCount.text = model.RoomInfo.PlayerCount.ToString();
+            view.roomUIs[(int)ERoomUI.SEVERNAME].text = model.RoomInfo.Name;
+            view.roomUIs[(int)ERoomUI.PLAYERCOUNT].text = model.RoomInfo.PlayerCount.ToString();
         }
     }
 }

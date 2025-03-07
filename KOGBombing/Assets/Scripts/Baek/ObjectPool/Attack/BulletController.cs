@@ -29,11 +29,9 @@ public class BulletController : PooledObject
         }
     }
 
-    protected bool IsOtherTeam(PhotonView pView)
+    protected bool IsOtherTeam(IGetTeamTypeable teamType)
     {
-        ETeam mineTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-        
-        if (mineTeam == eTeamBullet) return false;
+        if (teamType.GetTeamType() == eTeamBullet) return false;
         return true;
     }
     protected virtual void OnTriggerEnter(Collider other)
@@ -47,9 +45,9 @@ public class BulletController : PooledObject
         if (other.tag == "Player")
         {
             // >> : �� ����
-            PhotonView pView = other.GetComponent<PhotonView>();
-            if (!pView) return;
-            if (!IsOtherTeam(pView)) return;
+            IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
+            if (teamType == null) return;
+            if (!IsOtherTeam(teamType)) return;
             // << :
             IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)

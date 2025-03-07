@@ -61,7 +61,6 @@ namespace Orpul1
         
         public object[] GetEndEvnetDatas()
         {
-            Debug.Log($"---endType {roundData.EndRoundType.ToString()}");
             return new object[] { roundData.EndRoundType,roundData.IsEndRound};
         }
 

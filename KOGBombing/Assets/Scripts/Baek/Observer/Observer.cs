@@ -2,18 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Observer : MonoBehaviour
+public abstract class Observer : MonoBehaviour
 {
     [SerializeField] Subject subject;
 
-    public virtual void OnNotify()
-    {
-        // Observer logic
-    }
-    public virtual void OnNotifyParam(int index)
-    {
-        // Observer logic
-    }
+    public abstract void OnNotify();
+    public abstract void OnNotifyParam(int index);
     public virtual void SetSubject(Subject subject , bool isParam)
     {
         this.subject = subject;

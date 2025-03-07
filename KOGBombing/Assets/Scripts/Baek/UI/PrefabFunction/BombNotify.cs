@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BombNotify : MonoBehaviour
+public class BombNotify : UIPopup
 {
     enum BombUI
     {

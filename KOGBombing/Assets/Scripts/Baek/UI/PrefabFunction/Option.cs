@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Option : MonoBehaviour
+public class Option : UIPopup
 {
     [SerializeField] GameObject reCheckLobby;
     [HideInInspector] public PlayerBlackBoard playerBlackBoard;

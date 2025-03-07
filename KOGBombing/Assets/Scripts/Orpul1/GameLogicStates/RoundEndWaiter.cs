@@ -19,7 +19,7 @@ namespace Orpul1
             BombNotify bombNotify = LocalManagers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
             if(bombNotify!=null)
                 bombNotify.ActiveFalseAll();
-            LocalManagers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(0);
+            LocalManagers.UI.ShowPopupUI<Winner>("WinnerCanvas").SetWiner(0);
         }
         public override void UpdateState()
         {

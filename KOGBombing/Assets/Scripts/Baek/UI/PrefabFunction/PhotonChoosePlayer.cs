@@ -21,7 +21,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     
     RaiseEventOptions option = new RaiseEventOptions();
 
-    protected override void Awake()
+    protected void Awake()
     {
         option.Receivers = ReceiverGroup.All;
     }

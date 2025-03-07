@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChooseObserver : Observer
+public abstract class ChooseObserver : Observer
 {
     public override void OnNotify()
     {
@@ -17,8 +17,5 @@ public class ChooseObserver : Observer
         base.SetSubject(subject, isParam);
         Attach(!isParam);
     }
-    public virtual void Choosing(int index)
-    {
-
-    }
+    public abstract void Choosing(int index);
 }

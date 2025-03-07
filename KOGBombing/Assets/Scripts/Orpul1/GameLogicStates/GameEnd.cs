@@ -16,7 +16,7 @@ namespace Orpul1
             Destroy(miniMapCam);
             LocalManagers.CamData.InitCamera();
             LocalManagers.UI.ClosePopupUI("PlayCanvas");
-            LocalManagers.UI.ShowPopupUI<UIPopup>("WinnerCanvas").GetComponent<Winner>().SetWiner(1);
+            LocalManagers.UI.ShowPopupUI<Winner>("WinnerCanvas").SetWiner(1);
             Managers.PointData.SetBestPlayer();
             LocalManagers.PunData.Init();
             LocalManagers.CamData.InitCamera();

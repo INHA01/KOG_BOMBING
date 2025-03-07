@@ -41,7 +41,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     void NotifySet()
     {
         if (bombNotify == null)
-            bombNotify = LocalManagers.UI.ShowPopupUI<UIPopup>("BombNotifyCanvas").GetComponent<BombNotify>();
+            bombNotify = LocalManagers.UI.ShowPopupUI<BombNotify>("BombNotifyCanvas");
         else
             bombNotify.gameObject.SetActive(true);
         if (bombData.bombState != null)

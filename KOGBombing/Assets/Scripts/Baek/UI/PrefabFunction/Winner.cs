@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
-public class Winner : MonoBehaviour
+public class Winner : UIPopup
 {
     [SerializeField] GameObject activeResultButton;
     [SerializeField] Animator animator;

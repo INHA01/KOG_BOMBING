@@ -4,7 +4,7 @@ using Orpul1;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowCursor : MonoBehaviour
+public class ShowCursor : UIPopup
 {
     enum SoundCursorType
     {

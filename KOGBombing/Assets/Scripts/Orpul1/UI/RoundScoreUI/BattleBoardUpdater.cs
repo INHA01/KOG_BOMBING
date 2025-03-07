@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BattleBoardUpdater : MonoBehaviour, IUpdateScore, IHalfRoundUISetable
+public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
 {
     enum TeamScore
     {

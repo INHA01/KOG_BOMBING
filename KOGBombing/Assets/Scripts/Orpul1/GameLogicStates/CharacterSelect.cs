@@ -11,26 +11,26 @@ using UnityEngine;
 public class CharacterSelect : GameProcessLogic
 {
     [SerializeField] AudioListener audioListener;
-    UIPopup _uiScene;
+    UIPopup _choosePlayerUI;
     bool isSelectCharacter = false;
     IHalfRoundUISetable halfRound;
     ERoundState roundState;
     private void Start()
     {
-        UIPopup _uiPopup = LocalManagers.UI.ShowPopupUI<UIPopup>("BattleBoardCanvas");
+        BattleBoardUpdater _uiPopup = LocalManagers.UI.ShowPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
         LocalManagers.UI.ClosePopupUI("BattleBoardCanvas");
         if (_uiPopup != null)
         {
-            halfRound = _uiPopup.GetComponent<BattleBoardUpdater>();
+            halfRound = _uiPopup;
         }
         roundState = ERoundState.FIRSTHALF;
     }
     public override void EnterState()
     {
         halfRound.SetHalfRound(roundState);
-        _uiScene = LocalManagers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
+        _choosePlayerUI = LocalManagers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
         EventBusSystem.Subscribe(EndSelectCharacter);
-        _uiScene.GetComponent<ChoosePlayer>().Init();
+        _choosePlayerUI.GetComponent<ChoosePlayer>().Init();
         isSelectCharacter = false;
         gameData.selectCharacterPath.Clear();
         Debug.Log("Character Select State");
@@ -55,7 +55,7 @@ public class CharacterSelect : GameProcessLogic
     private void EndSelectCharacter()
     {
         Debug.Log("DoneSelectCharacter");
-        CharacterType characterType = _uiScene.GetComponent<ChoosePlayer>().type;
+        CharacterType characterType = _choosePlayerUI.GetComponent<ChoosePlayer>().type;
         gameData.selectCharacterPath.Append(characterType.ToString());
         
         isSelectCharacter = true;

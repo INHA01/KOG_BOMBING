@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyModeSelect : MonoBehaviour
+public class LobbyModeSelect : UIPopup
 {
     [SerializeField] GameObject matchSelect;
     public int mode = 0;

@@ -22,7 +22,7 @@ public class PlayerInputListner : Subject
         blackBoard.inputs[EKey.ESC] = !blackBoard.inputs[EKey.ESC];
         if (blackBoard.inputs[EKey.ESC])
         {
-            blackBoard._uiScene = LocalManagers.UI.ShowPopupUI<UIPopup>("OptionCanvas");
+            blackBoard._uiScene = LocalManagers.UI.ShowPopupUI<Option>("OptionCanvas");
             if (blackBoard._uiScene.GetComponent<Option>().playerBlackBoard == null)
             {
                 blackBoard._uiScene.GetComponent<Option>().playerBlackBoard = blackBoard;
@@ -108,7 +108,7 @@ public class PlayerInputListner : Subject
     public void OnOpenBattleboard(InputValue value)
     {
         if(value.isPressed)
-            LocalManagers.UI.ShowPopupUI<UIPopup>("BattleBoardCanvas");
+            LocalManagers.UI.ShowPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
         else
             LocalManagers.UI.ClosePopupUI("BattleBoardCanvas");
     }

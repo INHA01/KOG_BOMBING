@@ -18,7 +18,7 @@ public class UIManager
     }
     int _order = 0;
     public Dictionary<string, UIPopup> _popupDictionary = new Dictionary<string, UIPopup>();
-    public T GetPopupUI<T>(string name = null) //where T : UIPopup
+    public T GetPopupUI<T>(string name = null) where T : UIPopup
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
@@ -28,7 +28,7 @@ public class UIManager
         }
         else
         {
-            UIPopup popup = ShowPopupUI<UIPopup>(name);
+            T popup = ShowPopupUI<T>(name);
             if(popup != null)
                 return popup.GetComponent<T>();
         }
@@ -55,7 +55,6 @@ public class UIManager
         }
         go.SetActive(true); 
         T sceneUI = Util.GetOrAddComponent<T>(go);
-        // 검색한 UI가 없을 경우
         if (sceneUI == null)
         {
             Debug.LogError("UIPopup is Null");

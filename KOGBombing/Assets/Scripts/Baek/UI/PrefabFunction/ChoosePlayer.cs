@@ -19,10 +19,6 @@ public class ChoosePlayer : Subject
         base.Notify(index);
         SetCharacterName(index);
     }
-    protected virtual void Awake()
-    {
-        //Init();
-    }
     public virtual void Init()
     {
         ETeam eTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];

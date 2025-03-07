@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Subject : MonoBehaviour
+public abstract class Subject : MonoBehaviour
 {
     public event Action OnNotify;
     public event Action<int> OnNotifyParam;

@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayScene : MonoBehaviour
+public class PlayScene : UIPopup
 {
     enum SkillIcon
     {

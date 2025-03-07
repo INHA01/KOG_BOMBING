@@ -7,31 +7,15 @@ using UnityEngine.UI;
 public class Winner : MonoBehaviour
 {
     [SerializeField] GameObject activeResultButton;
+    [SerializeField] Animator animator;
     public void SetWiner(int end)
     {
+        WinnerTeam winTeam = Managers.RoundData.RoundWinTeam;
         if(end == 0)
-        {
-            ETeam winTeam = Managers.RoundData.RoundWinTeam;
-            if(winTeam == ETeam.REDTEAM)
-            {
-                // red team win
-            }
-            else
-            {
-                // blue team win
-            }
-        }
+            winTeam = Managers.RoundData.RoundWinTeam;
         else
-        {
-            if(Managers.RoundData.WinTeam > 0)
-            {
-                // red team win
-            }
-            else
-            {
-                // blue team win
-            }
-        }
+            winTeam = Managers.RoundData.WinTeam;
+        animator.SetInteger("winner", (int)winTeam);
         activeResultButton.SetActive(end == 1);
     }
     public void OpenResult()

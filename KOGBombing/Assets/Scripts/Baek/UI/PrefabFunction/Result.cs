@@ -21,7 +21,7 @@ public class Result : MonoBehaviour
     int[] teamDeathScore = new int[2] { 0, 0 };
     void Awake()
     {
-        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        WinnerTeam myTeam = (WinnerTeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         type = GetWinTeam() == myTeam ? ResultType.Win : ResultType.Lose;
         for(int i = 0; i < (int)ResultType.Max; i++)
         {
@@ -34,18 +34,11 @@ public class Result : MonoBehaviour
         resultAvatar.GetComponent<ISetWinTypeable>().SetWinType((ResultTeam)type);
     }
 
-    private ETeam GetWinTeam()
+    private WinnerTeam GetWinTeam()
     {
-        int winResult = Managers.RoundData.WinTeam;
-        switch(winResult)
-        {
-            case 1:
-                return ETeam.REDTEAM;
-                
-            case -1:
-                return ETeam.BLUETEAM;
-        }
-        return GetSameScoreWinTeam();
+        if(Managers.RoundData.WinTeam == WinnerTeam.DRAW)
+            return GetSameScoreWinTeam();
+        return Managers.RoundData.WinTeam;
     }
 
     /// <summary>
@@ -54,16 +47,16 @@ public class Result : MonoBehaviour
     /// µ¿Á¡: -1
     /// </summary>
     /// <returns>int</returns>
-    private ETeam GetSameScoreWinTeam()
+    private WinnerTeam GetSameScoreWinTeam()
     {
         int calcMissionScore = CalcMissionPoint();
         if(calcMissionScore == 1)
         {
-            return ETeam.REDTEAM;
+            return WinnerTeam.REDTEAM;
         }
         else if(calcMissionScore == 0)
         {
-            return ETeam.BLUETEAM;
+            return WinnerTeam.BLUETEAM;
         }
         return CalcKillDeathScore();
     }
@@ -74,20 +67,20 @@ public class Result : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             PlayerPointInfo pointInfo = Managers.PointData.GetPlayerInfo(players[i].NickName);
-            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
+            if ((WinnerTeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] == WinnerTeam.REDTEAM)
             {
-                teamScore[(int)ETeam.REDTEAM] += pointInfo.MissionPoint;
-                teamKillScore[(int)ETeam.REDTEAM] += pointInfo.KillPoint;
-                teamDeathScore[(int)ETeam.REDTEAM] += pointInfo.DeathPoint;
+                teamScore[(int)WinnerTeam.REDTEAM] += pointInfo.MissionPoint;
+                teamKillScore[(int)WinnerTeam.REDTEAM] += pointInfo.KillPoint;
+                teamDeathScore[(int)WinnerTeam.REDTEAM] += pointInfo.DeathPoint;
             }
             else
             {
-                teamScore[(int)ETeam.BLUETEAM] += pointInfo.MissionPoint;
-                teamKillScore[(int)ETeam.BLUETEAM] += pointInfo.KillPoint;
-                teamDeathScore[(int)ETeam.BLUETEAM] += pointInfo.DeathPoint;
+                teamScore[(int)WinnerTeam.BLUETEAM] += pointInfo.MissionPoint;
+                teamKillScore[(int)WinnerTeam.BLUETEAM] += pointInfo.KillPoint;
+                teamDeathScore[(int)WinnerTeam.BLUETEAM] += pointInfo.DeathPoint;
             }
         }
-        int scoreResult = teamScore[(int)ETeam.REDTEAM] - teamScore[(int)ETeam.BLUETEAM];
+        int scoreResult = teamScore[(int)WinnerTeam.REDTEAM] - teamScore[(int)WinnerTeam.BLUETEAM];
 
         if (scoreResult > 0)
         {
@@ -99,13 +92,13 @@ public class Result : MonoBehaviour
         }
         return -1;
     }
-    private ETeam CalcKillDeathScore()
+    private WinnerTeam CalcKillDeathScore()
     {
-        int redTeamScore = teamKillScore[(int)ETeam.REDTEAM] / (teamDeathScore[(int)ETeam.REDTEAM] + 1);
-        int blueTeamScore = teamKillScore[(int)ETeam.BLUETEAM] / (teamDeathScore[(int)ETeam.BLUETEAM] + 1);
+        int redTeamScore = teamKillScore[(int)WinnerTeam.REDTEAM] / (teamDeathScore[(int)WinnerTeam.REDTEAM] + 1);
+        int blueTeamScore = teamKillScore[(int)WinnerTeam.BLUETEAM] / (teamDeathScore[(int)WinnerTeam.BLUETEAM] + 1);
         if (redTeamScore > blueTeamScore)
-            return ETeam.REDTEAM;
-        return ETeam.BLUETEAM;
+            return WinnerTeam.REDTEAM;
+        return WinnerTeam.BLUETEAM;
     }
 
     public void ReturnLobby()

@@ -12,8 +12,8 @@ namespace Orpul1
         int[] teamkillScore = new int[2];
         int[] teamMissionScore = new int[2];
         Dictionary<string, CharacterType> dicCharacterSelects = new Dictionary<string, CharacterType>();
-        private ETeam roundWinTeam;
-        public ETeam RoundWinTeam
+        private WinnerTeam roundWinTeam;
+        public WinnerTeam RoundWinTeam
         {
             get
             {
@@ -25,17 +25,17 @@ namespace Orpul1
         public int[] TeamMissionScore{ get { return teamMissionScore; } }
         public Dictionary<string, CharacterType> CharacterSelects {  get { return dicCharacterSelects; } }
 
-        public int WinTeam
+        public WinnerTeam WinTeam
         { 
             get 
             {
-                int result = teamScore[(int)ETeam.REDTEAM] - teamScore[(int)ETeam.BLUETEAM];
+                int result = teamScore[(int)WinnerTeam.REDTEAM] - teamScore[(int)WinnerTeam.BLUETEAM];
                 if (result > 1)
-                    return 1;
+                    return WinnerTeam.REDTEAM;
                 else if (result < 0)
-                    return -1;
+                    return WinnerTeam.BLUETEAM;
 
-                return 0;
+                return WinnerTeam.DRAW;
             } 
         }
         public void Initialize()
@@ -47,7 +47,7 @@ namespace Orpul1
                 teamMissionScore[i] = 0;
             }
             dicCharacterSelects.Clear();
-            roundWinTeam = ETeam.REDTEAM;
+            roundWinTeam = WinnerTeam.REDTEAM;
         }
         public void SetTeamKillScore(ETeam type, int score)
         {
@@ -57,7 +57,7 @@ namespace Orpul1
         {
             teamMissionScore[(int)type] = score;
         }
-        public void SetRoundWinTeam(ETeam type)
+        public void SetRoundWinTeam(WinnerTeam type)
         {
             roundWinTeam = type;
         }

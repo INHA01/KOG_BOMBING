@@ -33,7 +33,8 @@ namespace Orpul1
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
-            if (!dicPlayerInfo.ContainsKey(otherPlayer.NickName)) return;
+            if (!dicPlayerInfo.ContainsKey(otherPlayer.NickName)) return; 
+            
             Destroy(dicPlayerInfo[otherPlayer.NickName].gameObject);
             dicPlayerInfo.Remove(otherPlayer.NickName);
         }
@@ -59,7 +60,8 @@ namespace Orpul1
         private void AddPlayerUI(Player playerInfo)
         {
             if (dicPlayerInfo.ContainsKey(playerInfo.NickName)) return;
-            GameObject playerUi = Instantiate(playerPanelPref, trTeamPanel[0]);
+            ETeam playerTeam = (ETeam)playerInfo.CustomProperties[EPropertyType.TEAM.ToString()];
+            GameObject playerUi = Instantiate(playerPanelPref, trTeamPanel[(int)playerTeam]);
             DisplayPlayerPresenter panel = playerUi.GetComponent<DisplayPlayerPresenter>();
             panel.Init(new StringBuilder(playerInfo.NickName), new StringBuilder("0"));
             dicPlayerInfo.Add(playerInfo.NickName, panel);

@@ -1,11 +1,6 @@
 using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Orpul1
 {
@@ -17,6 +12,11 @@ namespace Orpul1
     public class NetworkDirector : MonoBehaviour
     {
         [SerializeField] PhotonMatch[] match;
+        private void Start()
+        {
+            PhotonHashtable playerTeam = new PhotonHashtable { { EPropertyType.TEAM.ToString(), ETeam.REDTEAM } };
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerTeam);
+        }
         public void Match(EMatchType mode)
         {
             match[(int)mode].Match();

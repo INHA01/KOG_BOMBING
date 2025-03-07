@@ -26,8 +26,7 @@ namespace Orpul1
 
         public override void OnJoinedRoom()
         {
-            ETeam playerTeam = SetTeam();
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), playerTeam } });
+            SetTeam();
         }
 
        
@@ -37,6 +36,7 @@ namespace Orpul1
         
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
+            if(!PhotonNetwork.IsMasterClient)return;
             EPropertyType playerTeam = (EPropertyType)otherPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
             int teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[playerTeam.ToString()];
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { playerTeam.ToString(), teamCount - 1 } });
@@ -62,24 +62,17 @@ namespace Orpul1
                 players[i].SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), teamIndexs[team]++ } });
             }
         }
-        protected ETeam SetTeam()
+        protected void SetTeam()
         {
-            //변하는 값이 {"BT",teamCount"}, return 밖에 없기 때문에 이 코드를 리팩토링 할 수 있다.
             int redTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.REDTEAM.ToString()];
             int blueTeamCnt = (int)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.BLUETEAM.ToString()];
-            ETeam team = ETeam.REDTEAM;// Set RedTeam
-            int playerCount = redTeamCnt + 1;
-            EPropertyType type = EPropertyType.REDTEAM;
+            int[] teamCounts = new int[2] { redTeamCnt, blueTeamCnt };
+            ETeam team = redTeamCnt <= blueTeamCnt ? ETeam.REDTEAM : ETeam.BLUETEAM; ;
 
-            if (redTeamCnt > blueTeamCnt) // Set BlueTeam 
-            {
-                team = ETeam.BLUETEAM;
-                playerCount = blueTeamCnt + 1;
-                type = EPropertyType.BLUETEAM;
-            }
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { type.ToString(), playerCount} });
-            return team;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), team } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { team.ToString(), teamCounts[(int)team] + 1 } });
         }
+
         protected virtual IEnumerator CoStartDelay()
         {
             if (PhotonNetwork.IsMasterClient)

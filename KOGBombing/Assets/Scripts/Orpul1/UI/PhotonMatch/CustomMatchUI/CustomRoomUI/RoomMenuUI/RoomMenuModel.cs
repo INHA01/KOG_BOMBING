@@ -20,6 +20,7 @@ namespace Orpul1
         public void SetOtherTeam(int changeTeam)
         {
             ETeam curTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+            if (changeTeam == (int)curTeam) return;
             SetRoomTeamCount((int)curTeam, -1);
             SetRoomTeamCount(changeTeam, 1);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), changeTeam } });

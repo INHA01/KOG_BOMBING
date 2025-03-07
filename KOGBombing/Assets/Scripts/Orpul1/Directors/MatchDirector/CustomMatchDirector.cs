@@ -32,7 +32,6 @@ namespace Orpul1
         {
             if (isCustomMatch)
             {
-                Debug.Log($"CustomMatch JoinRoom");
                 base.OnJoinedRoom();
                 UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
             }
@@ -40,23 +39,19 @@ namespace Orpul1
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            if (isCustomMatch)
-            {
-                base.OnPlayerLeftRoom(otherPlayer);
-                UIEventBus.Publish(UIEventBus.UIEventType.SETMASTER);
-            }
+            if (!isCustomMatch) return;
+            base.OnPlayerLeftRoom(otherPlayer);
+            UIEventBus.Publish(UIEventBus.UIEventType.SETMASTER);
         }
 
         protected override IEnumerator CoWaitMatch()
         {
-            Debug.Log($"isStopMatch {isStopMatch}");
             float span = Time.time + updateDelay;
             while (span > Time.time)
             {
                 if (isStopMatch) yield break;
                 yield return null;
             }
-            Debug.Log("lobby Match");
             PhotonNetwork.JoinLobby(customLobby);
         }
 
@@ -71,7 +66,6 @@ namespace Orpul1
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            //PhotonNetwork.LoadLevel(3);
             LoadingSceneManager.LoadScene("MainGame");
         }
     }

@@ -24,10 +24,16 @@ public class PlayerMaterialController : MonoBehaviour
 
 	private void Start()
 	{
+		StartEffect();
+	}
+
+	public void StartEffect()
+	{
 		effectMaterial.materializeDuration = 4f;
 		effectMaterial.Start_in();
 		visualEffect.SendEvent("in");
 	}
+
 
 	public void SetOtherTeamMaterial(List<Material> changeMaterials, HpBar hpBar)
 	{

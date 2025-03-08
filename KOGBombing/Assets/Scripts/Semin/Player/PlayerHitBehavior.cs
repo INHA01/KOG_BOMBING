@@ -148,7 +148,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void PunRespawn()
     {
         blackBoard.Initialize();
-        animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+        playerMaterialController.StartEffect();
+		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
         playerData.InitializeCount();
 

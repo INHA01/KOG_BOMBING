@@ -8,7 +8,15 @@ public class Winner : UIPopup
 {
     [SerializeField] GameObject activeResultButton;
     [SerializeField] Animator animator;
-    public void SetWiner(int end)
+
+	private void Start()
+	{
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = LocalManagers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
+	}
+
+	public void SetWiner(int end)
     {
         WinnerTeam winTeam = Managers.RoundData.RoundWinTeam;
         if(end == 0)

@@ -141,8 +141,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerData.supportWeapon.LoadWeaponIcon();
         playerData.skill.LoadSkillIcon();
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-        
-        return INode.ENodeState.Success;
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+
+		return INode.ENodeState.Success;
     }
     [PunRPC]
     private void PunRespawn()
@@ -155,7 +156,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 		this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-    }
+	}
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;

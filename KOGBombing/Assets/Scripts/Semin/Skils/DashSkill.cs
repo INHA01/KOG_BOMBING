@@ -18,6 +18,7 @@ public class DashSkill : MonoBehaviour, ISkill
 	Vector3 position;
 	Vector3 direction;
 	bool isRunning = false;
+	float cooldown = 5f;
 	[SerializeField] ParticleSystem particle;
 
 
@@ -61,7 +62,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
         playerData.pv.RPC("StartDash", RpcTarget.AllBuffered);
-        StartCoroutine(Cooldown(3f));
+        StartCoroutine(Cooldown(cooldown));
     }
 
 	public bool IsRunning()
@@ -97,7 +98,7 @@ public class DashSkill : MonoBehaviour, ISkill
             blackBoard.rigidBody.velocity = movement;
 			yield return null;
         }
-        particle.gameObject.SetActive(true);
+        //particle.gameObject.SetActive(true);
         particle.Play();
 		while (time < 1.5f)
 		{
@@ -114,7 +115,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		}
 		particle.Stop();
 		playerData.isInteract = false;
-		particle.gameObject.SetActive(false);
+		//particle.gameObject.SetActive(false);
         isRunning = false;
 		time = 0;
         blackBoard.speedDebuff.skillValue = 1.5f;

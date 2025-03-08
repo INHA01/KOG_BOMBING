@@ -403,6 +403,8 @@ public class PlayerAttack : PlayerBehavior
 
                 playerData.skill.SetSkill(new DashSkillInfo(playerData.canAttackPoint, transform.forward, 2f, blackBoard));
 				playerData.skill.Use();
+                PlayerMaterialController mat = GetComponent<PlayerMaterialController>();
+				mat.ChangeMaterialToDashSkill();
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuff.skillValue = 2f;

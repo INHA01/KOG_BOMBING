@@ -3,19 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerMaterialController : MonoBehaviour
 {
-	public List<GameObject> changeMaterialMeshs = new List<GameObject>();
-	public List<Material> changeMaterials = new List<Material>();
-	public List<Material> curMaterial = new List<Material>();
+	List<GameObject> changeMaterialMeshs = new List<GameObject>();
+	List<Material> changeMaterials = new List<Material>();		// Hide Material
+	List<Material> curMaterial = new List<Material>();
 	[SerializeField] private Material hitMaterial;
 	Coroutine hit;
+	public VisualEffect visualEffect;
+	public UNI_Materialize effectMaterial;
+
 
 	public void Init(List<GameObject> meshs, Material hitMaterial)
 	{
 		changeMaterialMeshs = meshs;
 		this.hitMaterial = hitMaterial;
+	}
+
+	private void Start()
+	{
+		effectMaterial.materializeDuration = 4f;
+		effectMaterial.Start_in();
+		visualEffect.SendEvent("in");
 	}
 
 	public void SetOtherTeamMaterial(List<Material> changeMaterials, HpBar hpBar)
@@ -33,7 +44,7 @@ public class PlayerMaterialController : MonoBehaviour
 	public void SetLayerToMyPlayer()
 	{
 		for (int i = 0; i < changeMaterialMeshs.Count; i++)
-			changeMaterialMeshs[i].layer = LayerMask.NameToLayer("MyPlayer");
+			effectMaterial.layerMask = LayerMask.NameToLayer("MyPlayer");
 	}
 
 	public void SetMaterialToHide()
@@ -71,6 +82,13 @@ public class PlayerMaterialController : MonoBehaviour
 		if (hit != null)
 			StopCoroutine(hit);
 		hit = StartCoroutine(ChangeHitMaterial());
+	}
+
+	public void ChangeMaterialToDashSkill()
+	{
+		effectMaterial.materializeDuration = 1.5f;
+		effectMaterial.Start_in();
+		visualEffect.SendEvent("in");
 	}
 
 	IEnumerator ChangeHitMaterial()

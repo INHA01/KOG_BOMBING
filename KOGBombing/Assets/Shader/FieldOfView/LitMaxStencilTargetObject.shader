@@ -40,7 +40,7 @@ Shader "Custom/Lit Max Stencil Target Object"
             "ShaderGraphShader"="true"
             "ShaderGraphTargetId"="UniversalLitSubTarget"
         }
-                      ZWrite On
+        ZWrite On
         Stencil
         {
             Ref 1

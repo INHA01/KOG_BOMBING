@@ -10,6 +10,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 {
 	bool bisUsableSkill;
 	float skillDeltaTime;
+	float cooldown = 5f;
     protected override void Start()
 	{
 		base.Start();
@@ -78,7 +79,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
         playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
-        StartCoroutine(Cooldown(3f));
+        StartCoroutine(Cooldown(cooldown));
     }
 
 	public override void SetWeapon(SupportWeaponInfo info)

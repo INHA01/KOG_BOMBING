@@ -11,7 +11,7 @@ namespace Orpul1
         [SerializeField] GameObject roomPanelPref;
         [SerializeField] Transform trRoomListPanel;
 
-        Dictionary<string, DisplayRoomPresenter> dicRoomInfo = new Dictionary<string, DisplayRoomPresenter>();
+        Dictionary<string, DisplayRoomPresenter> dictRoomInfo = new Dictionary<string, DisplayRoomPresenter>();
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
@@ -27,28 +27,34 @@ namespace Orpul1
         {
             for (int i = 0; i < roomList.Count; i++)
             {
-                if (!dicRoomInfo.ContainsKey(roomList[i].Name))
+                if (!dictRoomInfo.ContainsKey(roomList[i].Name))
                 {
                     DisplayRoomPresenter presenter = Instantiate(roomPanelPref, trRoomListPanel).GetComponent<DisplayRoomPresenter>();
                     presenter.Init(roomList[i]);
-                    dicRoomInfo.Add(roomList[i].Name, presenter);
+                    dictRoomInfo.Add(roomList[i].Name, presenter);
                 }
                 else
                 {
-                    if (roomList[i].RemovedFromList) continue;
-                    Destroy(dicRoomInfo[roomList[i].Name].gameObject);
-                    dicRoomInfo.Remove(roomList[i].Name);
+                    if (roomList[i].RemovedFromList)
+                    {
+                        Destroy(dictRoomInfo[roomList[i].Name].gameObject);
+                        dictRoomInfo.Remove(roomList[i].Name);
+                    }
+                    else
+                    {
+                        dictRoomInfo[roomList[i].Name].SetRoomInfo(roomList[i]);
+                    }
                 }
             }
         }
 
         private void RemoveAllInfo()
         {
-            List<string> keyList = new List<string>(dicRoomInfo.Keys);
+            List<string> keyList = new List<string>(dictRoomInfo.Keys);
             for (int i = 0; i < keyList.Count; i++)
             {
-                Destroy(dicRoomInfo[keyList[i]].gameObject);
-                dicRoomInfo.Remove(keyList[i]);
+                Destroy(dictRoomInfo[keyList[i]].gameObject);
+                dictRoomInfo.Remove(keyList[i]);
             }
         }
 

@@ -18,7 +18,10 @@ namespace Orpul1
             model.SetRoomInfo(roomInfo);
             isJoinRoom = false;
         }
-
+        public void SetRoomInfo(RoomInfo roomInfo)
+        {
+            model.SetRoomInfo(roomInfo);
+        }
         public void OnEnterRoom()
         {
             if (isJoinRoom) return;

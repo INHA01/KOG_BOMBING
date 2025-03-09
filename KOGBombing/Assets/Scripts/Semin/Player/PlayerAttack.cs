@@ -40,8 +40,9 @@ public class PlayerAttack : PlayerBehavior
     {
         PlayerInfo playerInfo = new PlayerInfo()
         {
-            teamType = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()],
-            teamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()],
+            
+            teamType = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()],
+            teamIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()],
         };
         return playerInfo;
     }

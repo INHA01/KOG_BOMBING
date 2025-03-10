@@ -45,6 +45,7 @@ public class PlayerMovement : PlayerBehavior
             float rayLength;
             if (GroupPlane.Raycast(cameraRay, out rayLength))
             {
+                Debug.Log($"{blackBoard.nickname} rotating");
                 Vector3 pointTolook = cameraRay.GetPoint(rayLength);
                 playerData.mousePos = pointTolook;
                 playerData.animator.Rotation(pointTolook, blackBoard.speedValue);

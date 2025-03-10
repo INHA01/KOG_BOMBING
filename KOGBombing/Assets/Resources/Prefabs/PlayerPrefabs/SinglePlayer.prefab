@@ -134,7 +134,6 @@ MonoBehaviour:
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 8772815655990883119}
-  photonView: {fileID: 0}
 --- !u!114 &3026917014417153677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +165,6 @@ MonoBehaviour:
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 4882022951795573986}
-  photonView: {fileID: 0}
 --- !u!1 &992032920591149900
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initPoolSize: 36
-  objectToPool: {fileID: 548552488072264906, guid: ee8b8727af7801c4988792a78e5335a7,
+  objectToPool: {fileID: 2946108220187113811, guid: ee8b8727af7801c4988792a78e5335a7,
     type: 3}
   parentPrefab: {fileID: 0}
   InitBulletCount: 10
@@ -688,7 +686,7 @@ MonoBehaviour:
   speedValue: {x: 0, y: 0}
   mousePos: {x: 0, y: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
-  eTeam: 0
+  playerTeam: 0
   nickname: 
   characterType: 0
   SOplayerStatus: {fileID: 11400000, guid: d57402e405a5d7a4da349a45ea0b6a1a, type: 2}

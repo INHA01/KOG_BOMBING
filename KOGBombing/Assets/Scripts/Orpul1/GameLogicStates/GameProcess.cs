@@ -68,14 +68,16 @@ namespace Orpul1
             {
                 if (switchRoundScores[i] < switchRoundScore) continue;
                 if (isAlreadySwitchRoll[i]) continue;
+                SwapTeam();
                 isSwitchRoll = true;
                 switchRoundScores[(int)ETeam.REDTEAM] = 0;
                 switchRoundScores[(int)ETeam.BLUETEAM] = 0;
                 isAlreadySwitchRoll[i] = true;
-                SwapTeam();
+                Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
+                Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
+                return true;
             }
-
-            return isSwitchRoll;
+            return false;
         }
         public bool IsGameEnd()
         {
@@ -189,9 +191,13 @@ namespace Orpul1
             winnerTeam = (ETeam)datas[1];
             roundData.teamScores = (int[])datas[2];
             Managers.RoundData.SetRoundWinTeam((WinnerTeam)winnerTeam);
-
+            Managers.RoundData.SetTeamScore(winnerTeam, roundData.teamScores[(int)winnerTeam]);
             for (int i = 0; i < (int)ETeam.END; i++)
+            {
+                Debug.Log($"{(ETeam)i} Score: {roundData.teamScores[i]}");
+                
                 gameData.teamUIController.UpdateTeamScore((ETeam)i, roundData.teamScores[i]);
+            }
 
             isEndRound = true;
         }

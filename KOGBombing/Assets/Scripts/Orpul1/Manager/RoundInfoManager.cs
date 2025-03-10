@@ -61,9 +61,9 @@ namespace Orpul1
         {
             roundWinTeam = type;
         }
-        public void IncreaseTeamScore(ETeam type)
+        public void SetTeamScore(ETeam type,int score)
         {
-            teamScore[(int)type] += 1;
+            teamScore[(int)type] = score;
         }
         public void SetSelectCharacter(string nickname, CharacterType type)
         {

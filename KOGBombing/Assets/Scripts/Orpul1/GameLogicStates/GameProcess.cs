@@ -177,6 +177,7 @@ namespace Orpul1
         }
         private void RaiseEventBombEvent(EBombState bombState)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, bombState, gameData.options, SendOptions.SendUnreliable);
         }
 
@@ -212,23 +213,14 @@ namespace Orpul1
         {
             if (punData.Code != (int)PunEventType.BOMBEVENT) return;
             EBombState bombState = (EBombState)punData.CustomData;
+            if (bombState == EBombState.SET)
+            {
+                isStopCount = true;
+                return;
+            }
             Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
             if (!PhotonNetwork.IsMasterClient) return;
-            ETeam teamType = ETeam.REDTEAM;
-            switch (bombState)
-            {
-                case EBombState.SET:
-                    isStopCount = true;
-                    return;
-                case EBombState.EXPLOSION:
-                    teamType = ETeam.REDTEAM;
-
-                    break;
-                case EBombState.CLEAR:
-                    teamType = ETeam.BLUETEAM;
-                    break;
-            }
-            RaiseEventRoundEnd(teamType);
+            RaiseEventRoundEnd((ETeam)bombState);
         }
         public void BombEvent(EBombState bombState)
         {

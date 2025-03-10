@@ -9632,7 +9632,6 @@ GameObject:
   - component: {fileID: 1317832637}
   - component: {fileID: 1317832636}
   - component: {fileID: 1317832638}
-  - component: {fileID: 1317832639}
   m_Layer: 0
   m_Name: GameDirector
   m_TagString: Untagged
@@ -9719,6 +9718,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData: {fileID: 0}
+  roundData:
+    teamScores: 
+    teamCounts: 
+    stiwchRoundScores: 
+    processRoundCnt: 0
+    maxRoundScore: 10
+    winScoreGap: 4
+    switchRoundScore: 3
+    isAlreadySwitchRoll: 
+    isSetBomb: 0
+    isEndRound: 0
   roundInterval: 180
 --- !u!114 &1317832632
 MonoBehaviour:
@@ -9827,23 +9837,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObj: {fileID: 0}
   debugRoundData:
+    teamScores: 0000000000000000
+    teamCounts: 0000000000000000
+    switchRoundScores: 0000000000000000
+    processRoundCnt: 0
     maxRound: 10
     winGap: 4
     switchRound: 2
     isAlreadySwitchRoll: 0
+    isSetBomb: 0
+    isEndRound: 0
   bombPos: {fileID: 1105941818}
---- !u!114 &1317832639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1317832626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30d8c621da5024948bc0c48636de8a7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1317832640
 MonoBehaviour:
   m_ObjectHideFlags: 0

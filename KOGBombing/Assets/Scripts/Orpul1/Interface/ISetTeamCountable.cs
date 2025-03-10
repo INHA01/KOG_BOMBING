@@ -6,6 +6,6 @@ namespace Orpul1
 {
     public interface ISetTeamCountAble
     {
-        public void SetTeamCount(int teamType);
+        public void DecreaseTeamCount(int teamType);
     }
 }

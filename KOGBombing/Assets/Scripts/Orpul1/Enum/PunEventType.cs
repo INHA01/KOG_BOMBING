@@ -6,6 +6,6 @@ public enum PunEventType
     UPDATETEAMSTATE,
     PLAYERREADY,
     ROUNDREADY,
-    RUNEVENT,
+    BOMBEVENT,
     ENDROUND
 }

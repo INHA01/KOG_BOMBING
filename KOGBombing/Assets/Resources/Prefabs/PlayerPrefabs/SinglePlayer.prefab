@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 6786506344979437206}
   - component: {fileID: 4970186942349010887}
   - component: {fileID: 3026917014417153677}
+  - component: {fileID: 1095873391722876111}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -165,6 +166,22 @@ MonoBehaviour:
   edgeResolveIterations: 4
   edgeDstThreshold: 0.5
   viewMeshFilter: {fileID: 4882022951795573986}
+--- !u!114 &1095873391722876111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772106139481323054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &992032920591149900
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +640,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8894044268401136495}
   - {fileID: -4870366558248218115}
+  - {fileID: 1095873391722876111}
   - {fileID: 7799719852954471310}
   - {fileID: 7300479445460102179}
   sceneViewId: 0
@@ -904,7 +922,7 @@ GameObject:
   - component: {fileID: 2252075283307807879}
   - component: {fileID: 5288773028162544378}
   - component: {fileID: 5856805871944118459}
-  m_Layer: 15
+  m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1427,7 +1445,7 @@ GameObject:
   - component: {fileID: 7452015664145550300}
   - component: {fileID: 6046218906578170516}
   - component: {fileID: 3149782123237187}
-  m_Layer: 15
+  m_Layer: 5
   m_Name: CraftUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1505,7 +1523,7 @@ GameObject:
   - component: {fileID: 644572741141062904}
   - component: {fileID: 3504917289235052276}
   - component: {fileID: 4173862611670149937}
-  m_Layer: 15
+  m_Layer: 5
   m_Name: PlayerStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1669,7 +1687,7 @@ GameObject:
   - component: {fileID: 3880845629965909866}
   - component: {fileID: 4367370346955083653}
   - component: {fileID: 6188555908127352708}
-  m_Layer: 15
+  m_Layer: 5
   m_Name: InteractUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1904,55 +1922,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1094112876497018481}
     m_Modifications:
-    - target: {fileID: 82188798894323875, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 646181528255706305, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1110917304355503484, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1340091296343808226, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 2114849793357589204, guid: 02614868d8bc60a41b060d2249120a8c,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2670038757301360775, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3454081110942067047, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3476654035296370505, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3700522015797023007, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4025507046700532437, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4948121801333693605, guid: 02614868d8bc60a41b060d2249120a8c,
         type: 3}
@@ -2054,35 +2027,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5598074793990439515, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5844989263942579977, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5922522111757777319, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6459320448922672947, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 8236389370853898373, guid: 02614868d8bc60a41b060d2249120a8c,
         type: 3}
       propertyPath: m_Name
       value: CanvasInteractUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8236389370853898373, guid: 02614868d8bc60a41b060d2249120a8c,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8236389370853898373, guid: 02614868d8bc60a41b060d2249120a8c,
         type: 3}
@@ -3670,6 +3618,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 380829747676144098, guid: 61ba5e01b4b14a6478f79c467a3160df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 612501281783582940, guid: 61ba5e01b4b14a6478f79c467a3160df,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -3689,6 +3642,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3336186144784546763, guid: 61ba5e01b4b14a6478f79c467a3160df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3560614989120689680, guid: 61ba5e01b4b14a6478f79c467a3160df,
         type: 3}

@@ -8,12 +8,15 @@ namespace Orpul1
 {
     public class CustomMatchDirector : PhotonMatch
     {
-        TypedLobby customLobby = new TypedLobby("CustomLobby", LobbyType.Default);
+        TypedLobby customLobby;
 
         [SerializeField]
         MatchUIController matchUIController;
         bool isCustomMatch = false;
-        
+        private void Start()
+        {
+            customLobby = new TypedLobby(matchData.LobbyName, matchData.LobbyType);
+        }
         public override void Match()
         {
             isCustomMatch = true;
@@ -46,7 +49,7 @@ namespace Orpul1
 
         protected override IEnumerator CoWaitMatch()
         {
-            float span = Time.time + updateDelay;
+            float span = Time.time + matchData.UpdateDelay;
             while (span > Time.time)
             {
                 if (isStopMatch) yield break;
@@ -60,9 +63,12 @@ namespace Orpul1
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVECUSTOMROOMPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.STARTGAME);
-            float time = Time.time + delayTime;
-
+            float time = Time.time + matchData.StartDelay;
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
             while (Time.time < time) yield return null;
+            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
+            for(int i=0; i<2; i++)
+                yield return waitOneSec;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;

@@ -11,14 +11,14 @@ namespace Orpul1
     {
      
         [SerializeField] GameObject playerPanelPref;
-
+        [SerializeField] MatchData matchData;
         [SerializeField] Transform[] trTeamPanel;
 
         Dictionary<string, DisplayPlayerPresenter> dicPlayerInfo = new Dictionary<string, DisplayPlayerPresenter>();
 
         public override void OnJoinedRoom()
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             Player[] players = PhotonNetwork.PlayerList;
             for(int i=0; i<players.Length; i++)
             {
@@ -27,12 +27,12 @@ namespace Orpul1
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             AddPlayerUI(newPlayer);
         }
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             if (!dicPlayerInfo.ContainsKey(otherPlayer.NickName)) return; 
             
             Destroy(dicPlayerInfo[otherPlayer.NickName].gameObject);
@@ -41,7 +41,7 @@ namespace Orpul1
 
         public override void OnLeftRoom()
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             for (int i=0; i<dicPlayerInfo.Count; i++)
             {
                 KeyValuePair<string, DisplayPlayerPresenter> playerInfo = dicPlayerInfo.ElementAt(i);
@@ -52,7 +52,7 @@ namespace Orpul1
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashTable changedProps)
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             if (!targetPlayer.CustomProperties.ContainsKey(EPropertyType.TEAM.ToString())) return;
             SetPlayerUIPosi(targetPlayer);
         }

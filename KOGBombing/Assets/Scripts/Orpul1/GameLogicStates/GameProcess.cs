@@ -171,16 +171,16 @@ namespace Orpul1
             IncreaseTeamScore(winnerTeam);
             EGameState nextRound = GetNextRoundState();
             object[] customDatas = new object[] { nextRound, winnerTeam, roundData.teamScores };
-            PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, customDatas, gameData.options, SendOptions.SendUnreliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, customDatas, gameData.options, SendOptions.SendReliable);
         }
         private void RaiseEventDecreaseTeamCount(ETeam teamType)
         {
-            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERDIE, teamType, gameData.options, SendOptions.SendUnreliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.PLAYERDIE, teamType, gameData.options, SendOptions.SendReliable);
         }
         private void RaiseEventBombEvent(EBombState bombState)
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, bombState, gameData.options, SendOptions.SendUnreliable);
+            PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, bombState, gameData.options, SendOptions.SendReliable);
         }
 
         private void OnRoundEnd(EventData punData)

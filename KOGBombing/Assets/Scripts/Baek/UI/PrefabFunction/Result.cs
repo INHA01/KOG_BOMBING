@@ -105,6 +105,7 @@ public class Result : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
         LocalManagers.PunData.Init();
-        LoadingSceneManager.LoadScene("LobbyScene");
+        //Loading.LoadScene("LobbyScene");
+        Managers.SceneLoad.LoadScene("LobbyScene");
     }
 }

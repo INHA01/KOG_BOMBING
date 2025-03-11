@@ -3,22 +3,19 @@ using UnityEngine;
 
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class LoadingSceneManager : MonoBehaviour
+public class Loading : UIPopup
 {
-    public static string nextScene;
+    public string nextScene;
     [SerializeField] Image loadingCircle;
-    private void Start()
-    {
-        StartCoroutine(LoadScene());
-    }
-    public static void LoadScene(string sceneName)
+    
+    public void LoadScene(string sceneName)
     {
         nextScene = sceneName;
-        SceneManager.LoadScene("LoadingScene");
+        StartCoroutine(LoadScene());
     }
     IEnumerator LoadScene()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene , LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
         float time = Time.time + 1.0f; // 1 seconds term
 
@@ -42,6 +39,7 @@ public class LoadingSceneManager : MonoBehaviour
                         if (Time.time > time)
                         {
                             asyncLoad.allowSceneActivation = true;
+                            LocalManagers.UI.ClosePopupUI("LoadingCanvas");
                             yield break;
                         }
                     }
@@ -50,6 +48,6 @@ public class LoadingSceneManager : MonoBehaviour
                 }
             }
         }
-
+        
     }
 }

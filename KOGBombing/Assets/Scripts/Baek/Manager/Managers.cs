@@ -10,10 +10,12 @@ public class Managers : MonoBehaviour
     UserDataManager _userData = new UserDataManager();
     PlayerPointManager _pointData = new PlayerPointManager();
     RoundInfoManager _roundData = new RoundInfoManager();
+    SceneLoadManager _sceneLoad = new SceneLoadManager();
     public static UserDataManager UserData { get { return Instance._userData; } }
     
     public static PlayerPointManager PointData { get {return Instance._pointData; } }
     public static RoundInfoManager RoundData { get { return Instance._roundData; } }
+    public static SceneLoadManager SceneLoad { get { return Instance._sceneLoad; } }
     static Managers Instance 
     { 
         get 
@@ -34,10 +36,4 @@ public class Managers : MonoBehaviour
             return s_instance;
         } 
     }
-
-    void Start()
-    {
-        // 초기화 작업을 여기에 추가
-    }
-
 }

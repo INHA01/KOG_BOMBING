@@ -47,8 +47,7 @@ public class ChoosePlayer : Subject
     public virtual void SetIcon(bool isMine)
     {
         GameObject go = null;
-        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
-        go.transform.SetParent(teamIconBack);
+        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack", teamIconBack);
         if(isMine)
         {
             go.GetComponent<ChooseAvatarIcon>().SetSubject(this , true);

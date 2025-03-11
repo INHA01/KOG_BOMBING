@@ -27,7 +27,8 @@ public class Option : UIPopup
             PhotonNetwork.LeaveRoom();
             LocalManagers.PunData.Init();
             LocalManagers.CamData.InitCamera();
-            LoadingSceneManager.LoadScene("LobbyScene");
+            //Loading.LoadScene("LobbyScene");
+            Managers.SceneLoad.LoadScene("LobbyScene");
         }
         else
             reCheckLobby.SetActive(false);

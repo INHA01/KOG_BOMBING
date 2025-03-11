@@ -26,12 +26,9 @@ public class UIManager
         {
             return _popupDictionary[name].GetComponent<T>();
         }
-        else
-        {
-            T popup = ShowPopupUI<T>(name);
-            if(popup != null)
-                return popup.GetComponent<T>();
-        }
+        T popup = ShowPopupUI<T>(name);
+        if (popup != null)
+            return popup.GetComponent<T>();
         return default;
     }
 
@@ -53,7 +50,7 @@ public class UIManager
         {
             go = _popupDictionary[name].gameObject;
         }
-        go.SetActive(true); 
+        go.SetActive(true);
         T sceneUI = Util.GetOrAddComponent<T>(go);
         if (sceneUI == null)
         {
@@ -61,7 +58,7 @@ public class UIManager
             return null;
         }
         sceneUI.Init();
-        if(isExist)
+        if (isExist)
             _popupDictionary.Add(name, sceneUI);
 
         return sceneUI;
@@ -74,11 +71,11 @@ public class UIManager
         {
             go = _popupDictionary.Last().Value.gameObject;
         }
-        else if(_popupDictionary.ContainsKey(name))
+        else if (_popupDictionary.ContainsKey(name))
         {
             go = _popupDictionary[name].gameObject;
         }
-        if(go != null)
+        if (go != null)
         {
             _order--;
             go.SetActive(false);
@@ -86,7 +83,7 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        for(int i = 0; i < _popupDictionary.Count; i++)
+        for (int i = 0; i < _popupDictionary.Count; i++)
         {
             ClosePopupUI();
         }

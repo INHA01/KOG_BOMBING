@@ -66,7 +66,8 @@ namespace Orpul1
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            LoadingSceneManager.LoadScene("MainGame");
+            //Loading.LoadScene("MainGame");
+            Managers.SceneLoad.LoadScene("MainGame");
         }
     }
 }

@@ -197,6 +197,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerPointController.OnDeathPoint();
         playerPointController.OnAssistPoint();
         playerPointController.Initialize();
+        blackBoard.setTeam.DecreaseTeamCount((int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]);//blackBoard.playerTeam
         blackBoard.isSetScore = true;
         return INode.ENodeState.Success;
     }
@@ -317,7 +318,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (playerData.pv.IsMine)
 		{
 			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            blackBoard.setTeam.SetTeamCount((int)blackBoard.playerTeam);
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
 
             blackBoard.hpBar.SetStopHpUI(true);
@@ -326,7 +326,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
 		if (groggyCoroutine != null)
 			StopCoroutine(groggyCoroutine);
-		blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
+
+        blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
 		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);

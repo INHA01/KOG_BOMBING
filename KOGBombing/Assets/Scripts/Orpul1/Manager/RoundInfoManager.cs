@@ -49,19 +49,19 @@ namespace Orpul1
             dicCharacterSelects.Clear();
             roundWinTeam = WinnerTeam.REDTEAM;
         }
-        public void SetTeamKillScore(ETeam type, int score)
+        public void IncreaseTeamKillScore(ETeam type)
         {
-            teamkillScore[(int)type] = score;
+            teamkillScore[(int)type] += 1;
         }
-        public void SetTeamMissionScore(ETeam type, int score)
+        public void IncreaseTeamMissionScore(ETeam type)
         {
-            teamMissionScore[(int)type] = score;
+            teamMissionScore[(int)type] += 1;
         }
         public void SetRoundWinTeam(WinnerTeam type)
         {
             roundWinTeam = type;
         }
-        public void SetTeamScore(ETeam type, int score)
+        public void SetTeamScore(ETeam type,int score)
         {
             teamScore[(int)type] = score;
         }

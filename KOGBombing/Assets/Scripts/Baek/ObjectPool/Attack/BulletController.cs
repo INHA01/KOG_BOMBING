@@ -15,6 +15,11 @@ public class BulletController : PooledObject
     protected float destroyDistance;
     protected float distance;
     public Vector3 direction;
+
+
+    [Header("Effect")]
+    public GameObject muzzlePrefab;
+    public GameObject hitPrefab;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     public float Damage { get { return damage; } }
 
@@ -53,7 +58,43 @@ public class BulletController : PooledObject
             if (player != null)
                 player.OnDamaged(damage, playerIndex);
         }
+        // >> : HitEffect
+        Vector3 contactPoint = other.ClosestPoint(transform.position);
+        Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
+        Vector3 pos = contactPoint;
+
+        if (hitPrefab != null)
+        {
+            var hitVFX = Instantiate(hitPrefab, pos, rot);
+            var psHit = hitVFX.GetComponent<ParticleSystem>();
+            if (psHit != null)
+                Destroy(hitVFX, psHit.main.duration);
+
+            else
+            {
+                var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+                Destroy(hitVFX, psChild.main.duration);
+            }
+        }
+        /// << :
         distance = 0;
         Release();
+    }
+
+    public void ShowMuzzle()
+    {
+        if (muzzlePrefab != null)
+        {
+            var muzzleVFX = Instantiate(muzzlePrefab, transform.position, Quaternion.identity);
+            muzzleVFX.transform.forward = gameObject.transform.forward;
+            var psMuzzle = muzzleVFX.GetComponent<ParticleSystem>();
+            if (psMuzzle != null)
+                Destroy(muzzleVFX, psMuzzle.main.duration);
+            else
+            {
+                var psChild = muzzleVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+                Destroy(muzzleVFX, psChild.main.duration);
+            }
+        }
     }
 }

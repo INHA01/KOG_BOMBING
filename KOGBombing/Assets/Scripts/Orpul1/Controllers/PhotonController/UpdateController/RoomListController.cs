@@ -10,17 +10,18 @@ namespace Orpul1
     {
         [SerializeField] GameObject roomPanelPref;
         [SerializeField] Transform trRoomListPanel;
+        [SerializeField] MatchData matchData;
 
         Dictionary<string, DisplayRoomPresenter> dictRoomInfo = new Dictionary<string, DisplayRoomPresenter>();
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             UpdateInfo(roomList);
         }
         public override void OnLeftRoom()
         {
-            if (PhotonNetwork.CurrentLobby.Name != "CustomLobby") return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
             RemoveAllInfo();
         }
         private void UpdateInfo(List<RoomInfo> roomList)

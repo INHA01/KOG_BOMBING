@@ -21,23 +21,19 @@ namespace Orpul1
     [Serializable]
     public class GameRoundData
     {
-        private int[] teamScores = new int[2] { 0, 0 }; 
-        private int[] teamCounts = new int[2] { 0, 0 };
-        private int[] switchRoundScores = new int[2] { 0, 0 };
-        private int processRoundCnt = 0; 
-        public int[] TeamScores { get { return teamScores; } }
-        public int[] TeamCounts { get { return teamCounts; } }
-        public int ProcessRoundCnt { get { return processRoundCnt; } }
+        public int[] teamScores = new int[2] { 0, 0 }; 
+        public int[] teamCounts = new int[2] { 0, 0 };
+        public int[] switchRoundScores = new int[2] { 0, 0 };
+        public int processRoundCnt = 0; 
         public int maxRound = 6;
         public int winGap = 4;
         public int switchRound = 2;
         public bool isAlreadySwitchRoll = false;
-        bool isSetBomb = false;
-        bool isEndRound = false;
-        TeamUIController teamUIController;
+        public bool isSetBomb = false;
+        public bool isEndRound = false;
+        
         RoundEndType roundEndType = RoundEndType.NONE;
         IUpdateScore updateScore;
-        public RoundEndType EndRoundType { get { return roundEndType; } }
         public bool IsEndRound { get { return isEndRound; } }
         
         
@@ -50,43 +46,7 @@ namespace Orpul1
             }
             
         }
-        public void Initialize(TeamUIController teamUIController)
-        {
-            isEndRound = false;
-            isSetBomb = false;
-            this.teamUIController = teamUIController;
-            roundEndType = RoundEndType.NONE;
-            updateScore = LocalManagers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
-            LocalManagers.UI.ClosePopupUI("BattleBoardCanvas");
-        }
-        public void SetTeamCount(int teamType, int count)
-        {
-            teamCounts[teamType] = count;
-        }
-        public void SetDecreaseTeamCount(int teamType)
-        {
-            if (!PhotonNetwork.IsMasterClient) return;
-            teamCounts[teamType]--;
-            Debug.Log("DecreaseTeamCount");
-            if (teamCounts[(int)ETeam.BLUETEAM] == 0)
-            {
-                roundEndType = RoundEndType.ALLDIEDEFENCE;
-                isEndRound = true;
-            }
-            if (teamCounts[teamType] == 0&&!isSetBomb)
-            {
-                Debug.Log("EXTERMINATE Team");
-                roundEndType = RoundEndType.ALLDIEATTACK + teamType;
-                isEndRound = true;
-            }
-        }
-
-        public void SetEndRound(RoundEndType endType, bool isEndRound)
-        {
-            Debug.Log($"endType {endType.ToString()}, isEndRound {isEndRound}");
-            this.roundEndType = endType;
-            this.isEndRound = isEndRound;
-        }
+        
         public void SetTeamScore()
         {
             switch(roundEndType)
@@ -99,7 +59,7 @@ namespace Orpul1
                     switchRoundScores[(int)ETeam.BLUETEAM]++;
                     teamScores[(int)ETeam.BLUETEAM]++;
                     updateScore.UpdateTeamScore(ETeam.BLUETEAM, ETeamScore.WINSCORE);
-                    Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
+                    //Managers.RoundData.IncreaseTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
                     break;
 
                 //Attack team win condition
@@ -109,82 +69,9 @@ namespace Orpul1
                     switchRoundScores[(int)ETeam.REDTEAM]++;
                     teamScores[(int)ETeam.REDTEAM]++;
                     updateScore.UpdateTeamScore(ETeam.REDTEAM, ETeamScore.WINSCORE);
-                    Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
+                    //Managers.RoundData.IncreaseTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
                     break;
             }
-            Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
-            Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
-            BattleBoardUpdater battleBoardUpdater = LocalManagers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
-            battleBoardUpdater.UpdateTeamWinScore();
-            Debug.Log($"TeamScore redTeam: {teamScores[0]}, blueTeam:{teamScores[1]}");
-            // >> TODO : 공수 교대 시 팀 점수 ui 갱신
-            teamUIController.UpdateTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
-            teamUIController.UpdateTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
-            roundEndType = RoundEndType.NONE;
-        }
-        public void SwapTeam()
-        {
-            int score = teamScores[(int)ETeam.REDTEAM];
-            teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
-            teamScores[(int)ETeam.BLUETEAM] = score;
-            
-            Debug.Log("Swap Team Score");
-        }
-        public void RoundTimeOver()
-        {
-            roundEndType = RoundEndType.TIMEOVER;
-            isEndRound = true;
-        }
-        public void SetBomb()
-        {
-            isSetBomb = true;
-        }
-        public EGameState GetNextState()
-        {
-            if (IsEndGame())
-            {
-                teamUIController.EndRound();
-                Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
-                Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
-                
-                return EGameState.GAMEEND;
-            }
-
-            processRoundCnt++;
-            if (IsNextRound())
-                return EGameState.ROUNDWAIT;
-            else
-            {
-                SwapTeam();
-                SetTeamScore();
-                return EGameState.SWITCHTEAMROLL;
-            }
-        }
-
-        private bool IsEndGame()
-        {
-            float scoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
-
-            if (scoreGap >= winGap) return true;
-            if (teamScores[(int)ETeam.REDTEAM] >= maxRound || teamScores[(int)ETeam.BLUETEAM] >= maxRound) return true;
-            return false;
-        }
-        private bool IsNextRound()
-        {
-            int switchRollScore = Mathf.Max(teamScores[(int)ETeam.REDTEAM], teamScores[(int)ETeam.BLUETEAM]);
-            if (switchRoundScores[(int)ETeam.BLUETEAM] == 3 || switchRoundScores[(int)ETeam.REDTEAM] == 3&& !isAlreadySwitchRoll) 
-            {
-                isAlreadySwitchRoll = true;
-                switchRoundScores[(int)ETeam.REDTEAM] = 0;
-                switchRoundScores[(int)ETeam.BLUETEAM] = 0;
-                return false;
-            }
-            return true;
-        }
-        public void RemoveEvents()
-        {
-            if (teamUIController != null) 
-                teamUIController.EndRound();
         }
     }
 }

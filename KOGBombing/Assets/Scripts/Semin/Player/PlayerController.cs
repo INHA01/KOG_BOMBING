@@ -183,11 +183,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         Debug.Log($"Set Respawn");
         blackBoard.canRespawn = true;
     }
-    [PunRPC]
-    private void RespawnPlayer()
-    {
-        Debug.Log($"RespawnPlayer {blackBoard.nickname}");
-    }
 
 	private void OnTriggerEnter(Collider other)
 	{

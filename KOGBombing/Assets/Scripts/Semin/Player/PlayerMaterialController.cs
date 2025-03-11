@@ -142,6 +142,15 @@ public class PlayerMaterialController : MonoBehaviour
 			mesh.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 		}
 		dashMaterial = LocalManagers.Resource.Load<Material>("Materials/DashTrailMaterialToStencil");
+		for (int i = 0; i < dashMeshs.Count; i++ )
+		{
+			Material[] currentMaterials = null;
+			currentMaterials = dashMeshs[i].GetComponent<MeshRenderer>().materials;
+			List<Material> changeMats = new List<Material>();
+			for (int z = 0; z < currentMaterials.Length; z++)
+				changeMats.Add(dashMaterial);
+			dashMeshs[i].GetComponent<MeshRenderer>().SetMaterials(changeMats);
+		}
 	}
 
 	public void SetLayerToMyPlayer()

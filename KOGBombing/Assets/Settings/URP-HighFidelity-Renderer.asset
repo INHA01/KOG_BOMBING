@@ -299,13 +299,13 @@ MonoBehaviour:
   m_AssetVersion: 2
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 7935
+    m_Bits: 7933
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 65533
   m_DefaultStencilState:
     overrideStencilState: 0
-    stencilReference: 0
+    stencilReference: 1
     stencilCompareFunction: 8
     passOperation: 2
     failOperation: 0
@@ -417,7 +417,7 @@ MonoBehaviour:
     passTag: VFX
     Event: 500
     filterSettings:
-      RenderQueueType: 0
+      RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
         m_Bits: 2
@@ -426,14 +426,14 @@ MonoBehaviour:
     overrideMaterialPassIndex: 1
     overrideShader: {fileID: 4800000, guid: 4a497920f89a1fa4da35e0eda3c10573, type: 3}
     overrideShaderPassIndex: 1
-    overrideMode: 2
-    overrideDepthState: 1
+    overrideMode: 0
+    overrideDepthState: 0
     depthCompareFunction: 8
     enableWrite: 0
     stencilSettings:
       overrideStencilState: 1
       stencilReference: 1
-      stencilCompareFunction: 6
+      stencilCompareFunction: 3
       passOperation: 0
       failOperation: 0
       zFailOperation: 0

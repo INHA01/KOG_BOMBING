@@ -544,7 +544,7 @@ Shader "Custom/Lit Max Stencil Object"
             float4 _OneMinus_d4e451220a7714809338b389038e3245_Out_1_Vector4;
             Unity_OneMinus_float4(_Multiply_e6a1bb59861184898aa35820c219092b_Out_2_Vector4, _OneMinus_d4e451220a7714809338b389038e3245_Out_1_Vector4);
             // TODO : BASE COLOR
-            surface.BaseColor = (_Lerp_f9719ca4b513268a9c70de0cecb23d94_Out_3_Vector4.xyz) * (1.0 - 0.6f);
+            surface.BaseColor = (_Lerp_f9719ca4b513268a9c70de0cecb23d94_Out_3_Vector4.xyz) * (1.0 - 0.7f);
             surface.NormalTS = _NormalFromTexture_d803cd8f749bd48389f0f8240bdd58d5_Out_5_Vector3;
             surface.Emission = (_Multiply_58182c51fe3ca8888fe37c35df7f9d5f_Out_2_Vector4.xyz);
             surface.Specular = (_Lerp_46ff80efe7b75188aea459b332b9d54b_Out_3_Vector4.xyz);

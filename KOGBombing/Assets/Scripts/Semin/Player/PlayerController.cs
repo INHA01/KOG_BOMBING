@@ -69,9 +69,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         playerData = GetComponent<PlayerData>();
         playerShooting = GetComponent<PlayerShooting>();
         playerMaterialController = GetComponent<PlayerMaterialController>();
-        playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial);
         playerData.rigidBody = GetComponent<Rigidbody>();
         blackBoard.rigidBody = GetComponent<Rigidbody>();
+        playerMaterialController.Init(playerData.changeMaterialMeshs, playerData.hitMaterial, playerData);
         blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
         blackBoard.canRespawn = false;
         blackBoard.nickname = playerData.pv.Owner.NickName;
@@ -182,11 +182,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         Debug.Log($"Set Respawn");
         blackBoard.canRespawn = true;
-    }
-    [PunRPC]
-    private void RespawnPlayer()
-    {
-        Debug.Log($"RespawnPlayer {blackBoard.nickname}");
     }
 
 	private void OnTriggerEnter(Collider other)

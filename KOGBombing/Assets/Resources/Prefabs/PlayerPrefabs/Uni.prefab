@@ -1920,8 +1920,8 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
+  m_UpdateWhenOffscreen: 1
+  m_SkinnedMotionVectors: 0
   m_Mesh: {fileID: -6530318748722136509, guid: df7604aed38776244b2bd40d36efcc87, type: 3}
   m_Bones:
   - {fileID: 6378781016244868461}
@@ -4586,7 +4586,7 @@ PrefabInstance:
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -4597,17 +4597,17 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 8067659016819171711}
+      objectReference: {fileID: 6297482482345254102}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 2860758531667674239}
+      objectReference: {fileID: 8067659016819171711}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 4301384151314543365}
+      objectReference: {fileID: 2860758531667674239}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[5]
@@ -4620,9 +4620,19 @@ PrefabInstance:
       objectReference: {fileID: 4301384151314543365}
     - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
+      propertyPath: activeTime
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
       propertyPath: hitMaterial
       value: 
       objectReference: {fileID: 2100000, guid: fc3656e33c800b54e9293c205d44069c, type: 2}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: dashMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 6316b21e97f719845b009f387e122954, type: 2}
     - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: visualEffect
@@ -4633,6 +4643,81 @@ PrefabInstance:
       propertyPath: effectMaterial
       value: 
       objectReference: {fileID: 7650635352364096821}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: meshRefreshTime
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.data[0]
+      value: 
+      objectReference: {fileID: 6263263253840414429}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.data[1]
+      value: 
+      objectReference: {fileID: 7298176932085818727}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.data[2]
+      value: 
+      objectReference: {fileID: 2589311516807619911}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.data[3]
+      value: 
+      objectReference: {fileID: 3330666180380076361}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.data[4]
+      value: 
+      objectReference: {fileID: 4153727253241759607}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMesh.Array.data[5]
+      value: 
+      objectReference: {fileID: 5749358311369472070}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 6263263253840414429}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 7298176932085818727}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.data[2]
+      value: 
+      objectReference: {fileID: 2589311516807619911}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.data[3]
+      value: 
+      objectReference: {fileID: 3330666180380076361}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.data[4]
+      value: 
+      objectReference: {fileID: 4153727253241759607}
+    - target: {fileID: 4574309590161329535, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: skinnedMeshRenderers.Array.data[5]
+      value: 
+      objectReference: {fileID: 5749358311369472070}
     - target: {fileID: 6189942069491501681, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: animator
@@ -4840,6 +4925,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 8701700814733961276}
+--- !u!114 &6297482482345254102 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1095873391722876111, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 6363715985431515161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6304868116251266664 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1094112876497018481, guid: 0d02381c6c6de984598d9a59a2b73761,

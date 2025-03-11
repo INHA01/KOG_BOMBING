@@ -17,7 +17,9 @@ public class PlayerAttack : PlayerBehavior
     Coroutine animChange;
     float bombInteractTime;
     BombNotify bombNotify;
-    protected override void Awake()
+    PlayerMaterialController materialController;
+
+	protected override void Awake()
     {
         base.Awake();
         bombInteractTime = 0;
@@ -25,6 +27,7 @@ public class PlayerAttack : PlayerBehavior
         attackRange.Init(playerData.playerObj.transform, playerData);
         playerShooting.Init(playerData.animator, attackRange, GetPlayerInfo());
         blackBoard.bombInteraction = gameObject.AddComponent<BombInteraction>();
+        materialController = GetComponent<PlayerMaterialController>();
     }
     
     private void Start()
@@ -404,8 +407,7 @@ public class PlayerAttack : PlayerBehavior
 
                 playerData.skill.SetSkill(new DashSkillInfo(playerData.canAttackPoint, transform.forward, 2f, blackBoard));
 				playerData.skill.Use();
-                PlayerMaterialController mat = GetComponent<PlayerMaterialController>();
-				mat.ChangeMaterialToDashSkill();
+				materialController.ChangeMaterialToDashSkill();
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuff.skillValue = 2f;

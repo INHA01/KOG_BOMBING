@@ -15,7 +15,7 @@ namespace Orpul1
         bool isCustomMatch = false;
         private void Start()
         {
-            customLobby = new TypedLobby(matchData.LobbyName, matchData.LobbyType);
+            customLobby = new TypedLobby(matchData.LobbyName.ToString(), matchData.LobbyType);
         }
         public override void Match()
         {

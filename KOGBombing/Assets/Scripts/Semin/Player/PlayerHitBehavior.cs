@@ -212,7 +212,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
 
         deathsound = playerData.soundList.HitDeathList[(int)soundType];
-        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);
+        SoundManager.Instance.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
     
     [PunRPC]

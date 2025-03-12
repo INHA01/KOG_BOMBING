@@ -16,12 +16,12 @@ namespace Orpul1
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
-            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName.ToString()) return;
             UpdateInfo(roomList);
         }
         public override void OnLeftRoom()
         {
-            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName) return;
+            if (PhotonNetwork.CurrentLobby.Name != matchData.LobbyName.ToString()) return;
             RemoveAllInfo();
         }
         private void UpdateInfo(List<RoomInfo> roomList)

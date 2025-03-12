@@ -83,7 +83,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		CapsuleCollider collider = playerData.gameObject.GetComponent<CapsuleCollider>();
 		AudioClip dashSound = playerData.soundList.SkillList[(int)ESkillSound.UNI_DASH];
 
-		SoundManager.Instance.PlayEffect(dashSound, transform, 1, 0, 25);
+		SoundManager.Instance.PlayEffect(dashSound,EMixerGroup.CHARACTER, transform, 1, 0, 25);
 
 		// >> LocalManagers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
 		PlayerBlackBoard blackBoard = LocalManagers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);

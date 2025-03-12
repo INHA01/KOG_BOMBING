@@ -16,7 +16,7 @@ namespace Orpul1
         bool isRandomMatch = false;
         private void Start()
         {
-            randomMatchLobby = new TypedLobby(matchData.LobbyName, matchData.LobbyType);
+            randomMatchLobby = new TypedLobby(matchData.LobbyName.ToString(), matchData.LobbyType);
         }
         public override void Match()
         {

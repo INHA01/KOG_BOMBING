@@ -63,7 +63,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     }
     public void OpenDoor()
     {
-        SoundManager.Instance.PlayEffect(sound.DoorSounds[(int)EDoorSound.OPEN], transform, 1, 0, 30);
+        SoundManager.Instance.PlayEffect(sound.DoorSounds[(int)EDoorSound.OPEN], EMixerGroup.EFFECT, transform, 1, 0, 30);
         activeAlertUI.Active();
         interactState = InteractState.COMPLETE;
         interactCollider.enabled = false;

@@ -15,7 +15,7 @@ public class DisplayPlayerPresenter : MonoBehaviour
 
     public void SetTeam(Transform trTeam)
     {
-        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         transform.SetParent(trTeam);
     }
     public void UpdateUI()

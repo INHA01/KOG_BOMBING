@@ -17,9 +17,8 @@ public class Login : MonoBehaviourPunCallbacks
     public void OnLoginClick()
     {
         _login.SetActive(false);
-        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         PhotonNetwork.ConnectUsingSettings();
-        Managers.SceneLoad.Init();
     }
     public override void OnConnectedToMaster()
     {
@@ -33,7 +32,7 @@ public class Login : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = _inputFields[(int)TextType.EMAIL].text;*/
         PhotonNetwork.LocalPlayer.NickName = Time.time.ToString() + Time.deltaTime.ToString();
 
-        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         //Loading.LoadScene("LobbyScene");
         Managers.SceneLoad.LoadScene("LobbyScene");
     }

@@ -25,17 +25,17 @@ public class Lobby : MonoBehaviour
     {
         playButton.SetActive(false);
         selectMode.SetActive(true);
-        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         OnSelectClick();
     }
     public void OnSelectClick()
     {
         _lobbyModeSelect = LocalManagers.UI.ShowPopupUI<LobbyModeSelect>("SelectModeCanvas");
-        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
     }
     public void OnGameStartClick()
     {
-        SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         selectMode.GetComponent<Button>().interactable = !selectMode.GetComponent<Button>().interactable;
         networkDirector.Match((EMatchType)_lobbyModeSelect.mode);
     }

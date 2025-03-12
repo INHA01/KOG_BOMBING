@@ -178,7 +178,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
         playScene.ActiveKill();
         AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-        SoundManager.Instance.PlayEffect(killSound);
+        Managers.Sound.PlayEffect(killSound);
     }
     [PunRPC]
     private void PunDeactiveUI()
@@ -212,7 +212,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
 
         deathsound = playerData.soundList.HitDeathList[(int)soundType];
-        SoundManager.Instance.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+        Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
     
     [PunRPC]
@@ -309,7 +309,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.UNI_DEATH];
         }
-        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);*/
+        Managers.Sound.PlayEffect(deathsound, transform, 1, 0, 30);*/
         if (!blackBoard.showSoundEffect)
         {
             blackBoard.showSoundEffect = true;

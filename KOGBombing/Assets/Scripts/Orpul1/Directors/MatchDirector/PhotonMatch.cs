@@ -82,17 +82,18 @@ namespace Orpul1
             }
             float time = Time.time + matchData.StartDelay;
             int count = 0;
-            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
+            Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
 
             while (count < time)
             {
                 count++;
                 yield return waitOneSec;
             }
-            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
+            Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             for (int i = 0; i < 2; i++)
                 yield return waitOneSec;
-            LoadingSceneManager.LoadScene(ESceneType.MainGame.ToString());
+            //LoadingSceneManager.LoadScene(ESceneType.MainGame.ToString());
+            Managers.SceneLoad.LoadScene(ESceneType.MainGame.ToString());
         }
     }
 }

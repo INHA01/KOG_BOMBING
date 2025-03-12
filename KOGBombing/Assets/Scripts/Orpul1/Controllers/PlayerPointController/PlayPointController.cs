@@ -99,7 +99,7 @@ public class PlayPointController
             PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
             playScene.ActiveKill();
             AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-            SoundManager.Instance.PlayEffect(killSound);
+            Managers.Sound.PlayEffect(killSound);
         }*/
         Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
         int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];

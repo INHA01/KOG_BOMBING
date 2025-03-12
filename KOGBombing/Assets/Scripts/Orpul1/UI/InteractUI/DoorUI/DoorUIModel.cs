@@ -19,7 +19,7 @@ public class DoorUIModel : MonoBehaviour
     public void AlertDoorOpen()
     {
         StartCoroutine(CoDeactiveDelay());
-        SoundManager.Instance.PlayUISound(EUiSoundType.OPENDOOR);
+        Managers.Sound.PlayUISound(EUiSoundType.OPENDOOR);
         updateUI(EDoorState.OPEN,true);
     }
     IEnumerator CoDeactiveDelay()

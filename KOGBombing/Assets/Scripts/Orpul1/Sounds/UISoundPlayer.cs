@@ -31,6 +31,6 @@ public class UISoundPlayer : MonoBehaviour
     
     public void PlayUISound(EUiSoundType type)
     {
-        SoundManager.Instance.PlayEffect(uiAudioClips[(int)type], EMixerGroup.UISOUND);
+        Managers.Sound.PlayEffect(uiAudioClips[(int)type], EMixerGroup.UISOUND);
     }
 }

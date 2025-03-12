@@ -9,8 +9,10 @@ public class SceneLoadManager
     Loading loading;
     public void Init()
     { 
-        currentScene = SceneManager.GetActiveScene().name;
+        currentScene = "LoginScene";
         SceneManager.LoadScene("UIScene", LoadSceneMode.Additive);
+        AsyncOperation async = SceneManager.LoadSceneAsync(currentScene, LoadSceneMode.Additive);
+        async.completed += (AsyncOperation obj) => { SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));};
     }
     public void LoadScene(string sceneName)
     {

@@ -13,7 +13,7 @@ public enum EMixerGroup
     UISOUND,
     CHARACTER,
 }
-public class SoundManager : SingleTon<SoundManager>
+public class SoundManager : MonoBehaviour
 {
     enum ESceneBGM
     {
@@ -28,13 +28,9 @@ public class SoundManager : SingleTon<SoundManager>
     Action<EUiSoundType> playerUISound;
     Dictionary<string, AudioClip> bgmDict = new Dictionary<string, AudioClip>();
 
-    private void Start()
+    public void Init()
     {
         SceneManager.sceneLoaded += OnLoadScene;
-    }
-
-    protected override void Initialize()
-    {
         for (int i = 0; i < (int)ESceneBGM.END; i++)
         {
             ESceneBGM eSceneBGM = (ESceneBGM)i;
@@ -75,6 +71,7 @@ public class SoundManager : SingleTon<SoundManager>
         
         audioSource.Play();
         Destroy(audioObj, effect.length);
+
     }
 
     public void PlayBGM(AudioClip bgm)

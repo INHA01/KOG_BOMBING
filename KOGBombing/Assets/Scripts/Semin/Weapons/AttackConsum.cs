@@ -50,7 +50,7 @@ namespace Semin
 		void PunPlaySound(int type)
 		{
 			AudioClip effect = playerData.soundList.WeaponList[type];
-			SoundManager.Instance.PlayEffect(effect,EMixerGroup.EFFECT, transform, 1, 0, 50);
+			Managers.Sound.PlayEffect(effect,EMixerGroup.EFFECT, transform, 1, 0, 50);
 		}
 
 	}

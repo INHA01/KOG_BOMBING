@@ -64,9 +64,9 @@ namespace Orpul1
             UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.STARTGAME);
             float time = Time.time + matchData.StartDelay;
-            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
+            Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
             while (Time.time < time) yield return null;
-            SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
+            Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             for(int i=0; i<2; i++)
                 yield return waitOneSec;
             PhotonNetwork.CurrentRoom.IsOpen = false;

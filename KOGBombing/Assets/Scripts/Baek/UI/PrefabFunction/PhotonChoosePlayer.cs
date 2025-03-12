@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public class PhotonChoosePlayer : ChoosePlayer
@@ -17,6 +18,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     List<Player> mTeamPlayerList;
     Queue<int> mTeamIndex = new Queue<int>();
     int playerTeamIndex = 0;
+    int selectCharacterIndex = -1;
     ETeam eTeam;
     
     RaiseEventOptions option = new RaiseEventOptions();
@@ -31,6 +33,9 @@ public class PhotonChoosePlayer : ChoosePlayer
     }
     public override void Notify(int index)
     {
+        if (index == selectCharacterIndex) return;
+        selectCharacterIndex = index;
+        Managers.Sound.StopRecentSound();
         Managers.Sound.PlayEffect(sound.selectSound[index],EMixerGroup.CHARACTER);
         base.Notify(index);
         object[] sendMsg = new object[4] { index, playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam };

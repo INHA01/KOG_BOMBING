@@ -9,15 +9,15 @@ namespace Orpul1
 {
     public class RandomMatchDirector : PhotonMatch
     {
-        [SerializeField]
-        int maxPlayer = 2;
-
-        TypedLobby randomMatchLobby = new TypedLobby("randomMatch", LobbyType.Default);
+        TypedLobby randomMatchLobby;
         WaitForSeconds gameStartDelay = new WaitForSeconds(2);
 
         bool isMatching = false;
         bool isRandomMatch = false;
-
+        private void Start()
+        {
+            randomMatchLobby = new TypedLobby(matchData.LobbyName.ToString(), matchData.LobbyType);
+        }
         public override void Match()
         {
             if (isMatching)
@@ -78,7 +78,7 @@ namespace Orpul1
             {
                 IsVisible = true,
                 IsOpen = true,
-                MaxPlayers = maxPlayer,
+                MaxPlayers = matchData.MaxPlayer,
                 PublishUserId = true,
                 CustomRoomProperties = new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), 0 }, { EPropertyType.BLUETEAM.ToString(), 0 }, { EPropertyType.ROOMSTATE.ToString(), "Ready" } },
             };
@@ -86,7 +86,7 @@ namespace Orpul1
         }
         protected override IEnumerator CoWaitMatch()
         {
-            float span = Time.time + updateDelay;
+            float span = Time.time + matchData.UpdateDelay;
             while (span > Time.time) yield return null;
             PhotonNetwork.JoinLobby(randomMatchLobby);
         }
@@ -96,7 +96,7 @@ namespace Orpul1
             while (true)
             {
                 if (!isMatching) yield break;
-                if (PhotonNetwork.CurrentRoom.PlayerCount >= maxPlayer) break;
+                if (PhotonNetwork.CurrentRoom.PlayerCount >= matchData.MaxPlayer) break;
                 yield return null;
             }
             

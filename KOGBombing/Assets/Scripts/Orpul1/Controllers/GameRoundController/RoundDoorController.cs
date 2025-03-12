@@ -10,7 +10,7 @@ public class RoundDoorController : MonoBehaviour
     Animator animator;
     public void OpenDoor()
     {
-        SoundManager.Instance.PlayEffect(sound.DoorSounds[(int)EDoorSound.OPEN], transform, 1, 0, 30);
+        SoundManager.Instance.PlayEffect(sound.DoorSounds[(int)EDoorSound.OPEN], EMixerGroup.EFFECT, transform, 1, 0, 30);
         animator.SetTrigger("TriOpenDoor");
     }
     public void CloseDoor()

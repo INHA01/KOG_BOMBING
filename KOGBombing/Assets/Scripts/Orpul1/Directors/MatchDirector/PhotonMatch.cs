@@ -10,9 +10,9 @@ namespace Orpul1
     public abstract class PhotonMatch : MonoBehaviourPunCallbacks
     {
         [SerializeField] Button btnMatch;
-        [SerializeField] protected float updateDelay;
-        [SerializeField] protected float delayTime = 5;
+        [SerializeField] protected MatchData matchData;
         protected bool isStopMatch = false;
+        protected WaitForSeconds waitOneSec = new WaitForSeconds(1);
         private void Start()
         {
             btnMatch.interactable = true;
@@ -80,12 +80,19 @@ namespace Orpul1
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.IsMessageQueueRunning = true;
             }
-            float time = Time.time + delayTime;
+            float time = Time.time + matchData.StartDelay;
+            int count = 0;
             SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
-            while (Time.time < time) yield return null;
+
+            while (count < time)
+            {
+                count++;
+                yield return waitOneSec;
+            }
             SoundManager.Instance.PlayUISound(EUiSoundType.MATCHFOUNDSET);
-            //Loading.LoadScene(ESceneType.MainGame.ToString());
-            Managers.SceneLoad.LoadScene(ESceneType.MainGame.ToString());
+            for (int i = 0; i < 2; i++)
+                yield return waitOneSec;
+            LoadingSceneManager.LoadScene(ESceneType.MainGame.ToString());
         }
     }
 }

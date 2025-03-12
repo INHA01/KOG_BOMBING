@@ -39,7 +39,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
             playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
             playScene.subWeaponFades[1].SetActive(true);
         }
-        playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PutBomb", RpcTarget.All);
     }
 
     [PunRPC]

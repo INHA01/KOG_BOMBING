@@ -19,7 +19,6 @@ public class DashSkill : MonoBehaviour, ISkill
 	Vector3 direction;
 	bool isRunning = false;
 	float cooldown = 5f;
-	[SerializeField] ParticleSystem particle;
 
 
 	PlayScene playScene;
@@ -33,7 +32,6 @@ public class DashSkill : MonoBehaviour, ISkill
 
         bisUsableSkill = true;
         this.playerData = playerData;
-		particle.gameObject.SetActive(false);
 	}
 
 	public void Initialize(int count)
@@ -61,7 +59,7 @@ public class DashSkill : MonoBehaviour, ISkill
 	{
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
-        playerData.pv.RPC("StartDash", RpcTarget.AllBuffered);
+        playerData.pv.RPC("StartDash", RpcTarget.All);
         StartCoroutine(Cooldown(cooldown));
     }
 
@@ -85,7 +83,7 @@ public class DashSkill : MonoBehaviour, ISkill
 		CapsuleCollider collider = playerData.gameObject.GetComponent<CapsuleCollider>();
 		AudioClip dashSound = playerData.soundList.SkillList[(int)ESkillSound.UNI_DASH];
 
-		SoundManager.Instance.PlayEffect(dashSound, transform, 1, 0, 25);
+		SoundManager.Instance.PlayEffect(dashSound,EMixerGroup.CHARACTER, transform, 1, 0, 25);
 
 		// >> LocalManagers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
 		PlayerBlackBoard blackBoard = LocalManagers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
@@ -99,7 +97,6 @@ public class DashSkill : MonoBehaviour, ISkill
 			yield return null;
         }
         //particle.gameObject.SetActive(true);
-        particle.Play();
 		while (time < 1.5f)
 		{
 			time += Time.deltaTime;
@@ -113,7 +110,6 @@ public class DashSkill : MonoBehaviour, ISkill
 			}	
 			yield return null;
 		}
-		particle.Stop();
 		playerData.isInteract = false;
 		//particle.gameObject.SetActive(false);
         isRunning = false;

@@ -118,7 +118,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
-            playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage, playerIndex);
+            playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
         }
@@ -136,11 +136,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState RespawnNode()
     {
         if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunRespawn", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PunRespawn", RpcTarget.All);
         playerData.supportWeapon.LoadWeaponIcon();
         playerData.skill.LoadSkillIcon();
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 
 		return INode.ENodeState.Success;
     }
@@ -148,7 +148,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void PunRespawn()
     {
         blackBoard.Initialize();
-        playerMaterialController.StartEffect();
+        playerMaterialController.StartCreateEffect();
 		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
         playerData.InitializeCount();
@@ -163,13 +163,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetDeactiveUI()
     {
         if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunDeactiveUI", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PunDeactiveUI", RpcTarget.All);
         return INode.ENodeState.Success;
     }
     public INode.ENodeState ShowKillUI()
     {
         if(blackBoard.nickname ==playerPointController.GetKillPlayerNickname().ToString())
-            playerData.pv.RPC("PunShowKillUI", RpcTarget.AllBuffered);
+            playerData.pv.RPC("PunShowKillUI", RpcTarget.All);
         return INode.ENodeState.Success;
     }
     [PunRPC]
@@ -190,7 +190,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetPlayerScore()
     {
         if (blackBoard.isSetScore) return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunDeathSound", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PunDeathSound", RpcTarget.All);
         if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
 
         playerPointController.OnKillPoint();
@@ -212,7 +212,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
 
         deathsound = playerData.soundList.HitDeathList[(int)soundType];
-        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);
+        SoundManager.Instance.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
     
     [PunRPC]
@@ -265,7 +265,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					skill.Disable();
 				playerData.supportWeapon.Disable();
 
-				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.All, (int)WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				groggyCoroutine = StartCoroutine(Groggy());
@@ -396,7 +396,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     public void OnRigidity(float time)
     {
-        playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
+        playerData.pv.RPC("Rigidity", RpcTarget.All, time);
     }
 	[PunRPC]
     private void Rigidity(float time)

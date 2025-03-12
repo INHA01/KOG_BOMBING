@@ -31,7 +31,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     }
     public override void Notify(int index)
     {
-        SoundManager.Instance.PlayEffect(sound.selectSound[index]);
+        SoundManager.Instance.PlayEffect(sound.selectSound[index],EMixerGroup.CHARACTER);
         base.Notify(index);
         object[] sendMsg = new object[4] { index, playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam };
         PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);

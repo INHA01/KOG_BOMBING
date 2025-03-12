@@ -66,7 +66,7 @@ public class PlayerShooting : Magazine
     void PunPlaySound(int type)
     {
         AudioClip effect = playerData.soundList.WeaponList[type];
-        SoundManager.Instance.PlayEffect(effect, transform, 1, 0, 50);
+        SoundManager.Instance.PlayEffect(effect, EMixerGroup.EFFECT, transform, 1, 0, 50);
     }
 
     [PunRPC]
@@ -91,14 +91,14 @@ public class PlayerShooting : Magazine
     {
         if(playerData.pv.IsMine)
         {
-            playerData.pv.RPC("PunPlaySound", RpcTarget.AllBuffered, (int)EWeaponSound.SHOOTING);
+            playerData.pv.RPC("PunPlaySound", RpcTarget.All, (int)EWeaponSound.SHOOTING);
         }
             
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
             animator.Shoot();
-            playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered, playerData.shootDirection);
+            playerData.pv.RPC("BulletSpawn", RpcTarget.All, playerData.shootDirection);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}

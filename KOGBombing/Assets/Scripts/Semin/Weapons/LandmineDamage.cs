@@ -31,7 +31,7 @@ public class LandmineDamage : MonoBehaviour
 	{
 		if (other.CompareTag("Bullet"))
 		{
-			if (other.GetComponent<movement>() is movement mov)
+			if (other.GetComponent<BulletController>() is BulletController mov)
 			{
 				if (mov.eTeamBullet != team)
 					OnDamage(mov.Damage);

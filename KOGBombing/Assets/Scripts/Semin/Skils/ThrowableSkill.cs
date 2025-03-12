@@ -60,7 +60,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 		lineRendererToTarget.gameObject.SetActive(true);
 
 		if (info is ThrowableSkillInfo throwableInfo)
-			playerData.pv.RPC("SetInfoSkill", RpcTarget.AllBuffered, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
+			playerData.pv.RPC("SetInfoSkill", RpcTarget.All, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
 	}
 
 	[PunRPC]
@@ -76,7 +76,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 
 	public override void Use()
 	{
-        playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.AllBuffered);
+        playerData.pv.RPC("SpawnThrowWeaponSkill", RpcTarget.All);
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
         StartCoroutine(Cooldown(cooldown));

@@ -416,7 +416,7 @@ Shader "Custom/LitStencilObject"
                 color.a = OutputAlpha(color.a, IsSurfaceTypeTransparent(_Surface));
                 
             // TODO : BASE COLOR
-                outColor = color * 0.4f;
+                outColor = color * 0.3f;
 
             #ifdef _WRITE_RENDERING_LAYERS
                 uint renderingLayers = GetMeshRenderingLayer();

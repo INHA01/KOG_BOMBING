@@ -7,11 +7,13 @@ public class Managers : MonoBehaviour
 {
     static Managers s_instance;
 
+    FirebaseAughManager _firebaseAuth = new FirebaseAughManager();
     UserDataManager _userData = new UserDataManager();
     PlayerPointManager _pointData = new PlayerPointManager();
     RoundInfoManager _roundData = new RoundInfoManager();
     SceneLoadManager _sceneLoad = new SceneLoadManager();
     SoundManager _sound;
+    public static FirebaseAughManager FirebaseAuth { get { return Instance._firebaseAuth; } }
     public static UserDataManager UserData { get { return Instance._userData; } }
     
     public static PlayerPointManager PointData { get {return Instance._pointData; } }
@@ -44,6 +46,7 @@ public class Managers : MonoBehaviour
     }
     void Init()
     {
+        _firebaseAuth.Init();
         _sceneLoad.Init();
         _sound = gameObject.GetComponentInChildren<SoundManager>();
         _sound.Init();

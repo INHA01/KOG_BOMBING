@@ -7,20 +7,6 @@ using System;
 
 public class FirebaseAughManager
 {
-    private static FirebaseAughManager instance = null;
-
-    public static FirebaseAughManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new FirebaseAughManager();
-            }
-            return instance;
-        }
-    }
-
     public FirebaseAuth auth; // 로그인, 회원가입, 비밀번호 재설정 등의 기능을 제공하는 클래스
     private FirebaseUser user; // 인증된 사용자 정보를 저장하는 클래스
 
@@ -28,9 +14,6 @@ public class FirebaseAughManager
 
     public Action<bool> LoginState;
 
-    // real-time database
-    public UserDataManager userDataManager = new UserDataManager();
-    // 
     public void Init()
     {
         auth = FirebaseAuth.DefaultInstance; // FirebaseAuth 클래스의 인스턴스를 가져
@@ -47,22 +30,22 @@ public class FirebaseAughManager
             if (!signedIn && user != null)
             {
                 Debug.Log("로그아웃");
-                LoginState?.Invoke(false);
+                //LoginState?.Invoke(false);
             }
             user = auth.CurrentUser;
             if (signedIn)
             {
                 Debug.Log("로그인 : " + user.DisplayName + " (" + user.Email + ")");
-                LoginState?.Invoke(true);
+                //LoginState?.Invoke(true);
             }
         }
     }
 
-    public void Create(string email , string password)
+    public void Create(string email, string password)
     {
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => 
+        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
-            if(task.IsCanceled)
+            if (task.IsCanceled)
             {
                 Debug.LogError("회원가입 취소.");
                 return;
@@ -78,24 +61,7 @@ public class FirebaseAughManager
             AuthResult result = task.Result;
             FirebaseUser newUser = result.User;
             Debug.LogFormat("회원가입 성공 : {0} ({1})", newUser.DisplayName, newUser.Email);
-        });
-    }
-    // 회원탈퇴
-    public void Delete()
-    {
-        auth.CurrentUser.DeleteAsync().ContinueWith(task =>
-        {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("회원탈퇴 취소.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("회원탈퇴 실패.");
-                return;
-            }
-            Debug.Log("회원탈퇴 성공");
+            Managers.UserData.Init(auth);
         });
     }
 
@@ -110,8 +76,11 @@ public class FirebaseAughManager
             }
             if (task.IsFaulted)
             {
-                // 회원가입 실패 , 이유 : 이메일 비정상 , 비밀번호 간단 , 이미 가입됨 등...
                 Debug.LogError("로그인 실패.");
+                foreach (var innerException in task.Exception.InnerExceptions)
+                {
+                    Debug.LogError("Inner exception: " + innerException);
+                }
                 return;
             }
 
@@ -119,7 +88,7 @@ public class FirebaseAughManager
             AuthResult result = task.Result;
             FirebaseUser newUser = result.User;
             Debug.LogFormat("로그인 성공 : {0} ({1})", newUser.DisplayName, newUser.Email);
-            userDataManager.Init(auth);
+            Managers.UserData.Init(auth);
         });
     }
 
@@ -128,20 +97,5 @@ public class FirebaseAughManager
         auth.SignOut(); // 로그아웃
         Debug.Log("로그아웃");
     }
-
-    public void SendPasswordResetEmail(string email, System.Action<bool> callback)
-    {
-        auth.SendPasswordResetEmailAsync(email).ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.LogError("비밀번호 재설정 이메일 발송 실패: " + task.Exception);
-                callback(false);
-            }
-            else
-            {
-                callback(true);
-            }
-        });
-    }
+    
 }

@@ -18,8 +18,7 @@ public class Lobby : MonoBehaviour
     LobbyModeSelect _lobbyModeSelect;
     void Start()
     {
-        //PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
-        userName.text = PhotonNetwork.LocalPlayer.NickName;
+        userName.text = Managers.UserData.userData.nickName;
     }
     public void OnPlayClick()
     {

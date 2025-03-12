@@ -63,11 +63,12 @@ public class ChoosePlayer : Subject
         EventBusSystem.Publish();
         Notify();
         RemoveAllObserver();
+        type = Semin.CharacterType.Ned;
         LocalManagers.UI.ClosePopupUI(this.gameObject.name);
     }
     IEnumerator CountDown()
     {
-        float time = 3;
+        float time = 5;
         while(time > 0)
         {
             countDownText.text = time.ToString();

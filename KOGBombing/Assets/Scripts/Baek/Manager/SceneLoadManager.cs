@@ -16,10 +16,14 @@ public class SceneLoadManager
     }
     public void LoadScene(string sceneName)
     {
-        SceneManager.UnloadSceneAsync(currentScene);
+        AsyncOperation async = SceneManager.UnloadSceneAsync(currentScene);
+        async.completed += (AsyncOperation obj) => 
+        {
+            // close all popup UI 잘 안되서 임시로 다 지워지게 코드 바꿈
+            LocalManagers.UI.CloseAllPopupUI(); 
+            loading = LocalManagers.UI.ShowPopupUI<Loading>("LoadingCanvas");
+            loading.LoadScene(sceneName);
+        };
         currentScene = sceneName;
-        LocalManagers.UI.CloseAllPopupUI();
-        loading = LocalManagers.UI.ShowPopupUI<Loading>("LoadingCanvas");
-        loading.LoadScene(sceneName);
     }
 }

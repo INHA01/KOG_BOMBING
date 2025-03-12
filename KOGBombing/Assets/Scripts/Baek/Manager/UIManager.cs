@@ -83,9 +83,15 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        for (int i = 0; i < _popupDictionary.Count; i++)
+        Dictionary<string, bool> isActive = new Dictionary<string, bool>();
+        foreach (var popup in _popupDictionary)
         {
-            ClosePopupUI();
+            isActive.Add(popup.Key, popup.Value.gameObject.activeSelf);
+        }
+        foreach (var popup in isActive)
+        {
+            if (popup.Value)
+                ClosePopupUI(popup.Key);
         }
     }
 

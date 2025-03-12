@@ -7,7 +7,7 @@ public class Loading : UIPopup
 {
     public string nextScene;
     [SerializeField] Image loadingCircle;
-    
+
     public void LoadScene(string sceneName)
     {
         nextScene = sceneName;
@@ -15,9 +15,13 @@ public class Loading : UIPopup
     }
     IEnumerator LoadScene()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene , LoadSceneMode.Additive);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
-        asyncLoad.completed += SetNextSceneMain;
+        asyncLoad.completed += (AsyncOperation obj) =>
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
+            LocalManagers.UI.ClosePopupUI("LoadingCanvas");
+        };
 
         float time = Time.time + 1.0f; // 1 seconds term
 
@@ -49,10 +53,5 @@ public class Loading : UIPopup
                 }
             }
         }
-    }
-    void SetNextSceneMain(AsyncOperation obj)
-    {
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
-        LocalManagers.UI.ClosePopupUI("LoadingCanvas");
     }
 }

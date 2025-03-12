@@ -25,14 +25,20 @@ public class Login : MonoBehaviourPunCallbacks
         CREATE,
         MAX,
     }
+    enum ButtonType
+    {
+        SWAP,
+        GUEST,
+        MAX,
+    }
     [SerializeField] GameObject[] _panels = new GameObject[(int)PanelType.MAX];
     [SerializeField] TMPro.TMP_InputField[] _inputFields = new TMPro.TMP_InputField[(int)TextType.MAX];
-    [SerializeField] GameObject _loginCreateSwapButton;
+    [SerializeField] GameObject[] _buttons = new GameObject[(int)ButtonType.MAX];
     AccountType _accountType = AccountType.LOGIN;
     public void SwapLoginCreate()
     {
         _accountType = (AccountType)(((int)_accountType + 1) % (int)AccountType.MAX);
-        _loginCreateSwapButton.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = _accountType.ToString();
+        _buttons[(int)ButtonType.SWAP].transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = _accountType.ToString();
     }
     public void OnLoginClick()
     {
@@ -54,6 +60,18 @@ public class Login : MonoBehaviourPunCallbacks
             _panels[(int)PanelType.NICKNAME].SetActive(true);
         else
             PhotonNetwork.ConnectUsingSettings();
+    }
+    public void OnGuestClick()
+    {
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
+        Managers.UserData.userData = new UserData("User");
+        Managers.UserData.userData.nickName = "User" + Random.Range(0, 1000);
+        _panels[(int)PanelType.LOGIN].SetActive(false);
+        for(int i = 0; i < (int)ButtonType.MAX; i++)
+        {
+            _buttons[i].SetActive(false);
+        }
+        PhotonNetwork.ConnectUsingSettings();
     }
     public void OnNickNameSetClick()
     {

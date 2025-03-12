@@ -27,7 +27,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] UISoundPlayer uiSoundPlayer;
     Action<EUiSoundType> playerUISound;
     Dictionary<string, AudioClip> bgmDict = new Dictionary<string, AudioClip>();
-
+    AudioSource recentAudioSource;
     public void Init()
     {
         SceneManager.sceneLoaded += OnLoadScene;
@@ -68,12 +68,17 @@ public class SoundManager : MonoBehaviour
         audioSource.maxDistance = maxDistance;
         audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(mixerGroup.ToString())[0];
         audioSource.clip = effect;
-        
+        recentAudioSource = audioSource;
+
         audioSource.Play();
         Destroy(audioObj, effect.length);
 
     }
-
+    public void StopRecentSound()
+    {
+        if (recentAudioSource == null) return;
+        Destroy(recentAudioSource.gameObject);
+    }
     public void PlayBGM(AudioClip bgm)
     {
         bgmPlayer.clip = bgm;

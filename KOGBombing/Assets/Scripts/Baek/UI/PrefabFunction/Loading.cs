@@ -17,6 +17,8 @@ public class Loading : UIPopup
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene , LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
+        asyncLoad.completed += SetNextSceneMain;
+
         float time = Time.time + 1.0f; // 1 seconds term
 
         float elapsedTime = 0f;
@@ -39,7 +41,6 @@ public class Loading : UIPopup
                         if (Time.time > time)
                         {
                             asyncLoad.allowSceneActivation = true;
-                            LocalManagers.UI.ClosePopupUI("LoadingCanvas");
                             yield break;
                         }
                     }
@@ -48,6 +49,10 @@ public class Loading : UIPopup
                 }
             }
         }
-        
+    }
+    void SetNextSceneMain(AsyncOperation obj)
+    {
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
+        LocalManagers.UI.ClosePopupUI("LoadingCanvas");
     }
 }

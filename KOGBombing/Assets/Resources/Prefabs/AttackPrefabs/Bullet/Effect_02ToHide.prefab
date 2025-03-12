@@ -14740,7 +14740,7 @@ GameObject:
   - component: {fileID: 1164216510883661952}
   - component: {fileID: -6200969138466254837}
   - component: {fileID: 1014140846394175071}
-  - component: {fileID: 548552488072264906}
+  - component: {fileID: -6690756663366574684}
   m_Layer: 0
   m_Name: Effect_02ToHide
   m_TagString: Bullet
@@ -14816,7 +14816,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &548552488072264906
+--- !u!114 &-6690756663366574684
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14825,7 +14825,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7589205261744149376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1868bd8891e78044e99f2ac587f36ae4, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c0b6b26a85c77b47886a7e290598805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 30
@@ -14834,14 +14834,10 @@ MonoBehaviour:
   damage: 8
   rb: {fileID: 1014140846394175071}
   direction: {x: 0, y: 0, z: 0}
-  fireRate: 5
-  muzzlePrefab: {fileID: 2061081232328806123, guid: 06d442fadb716a3419a6774c6ca402d5,
+  muzzlePrefab: {fileID: 1046400243401646, guid: d81b2e9a2cb3f1545bced28d14776b46,
     type: 3}
-  hitPrefab: {fileID: 8422183229368478685, guid: fd4120bb38b544540b9fcc421d706d04,
+  hitPrefab: {fileID: 8724144560775444214, guid: edb46ad28e3aa514faccc0d22a0ac7a4,
     type: 3}
-  leftOver:
-  - {fileID: 4082840413257958988}
-  - {fileID: 5030673713237377636}
 --- !u!1 &8060152984395264263
 GameObject:
   m_ObjectHideFlags: 0

@@ -91,14 +91,14 @@ public class PlayerShooting : Magazine
     {
         if(playerData.pv.IsMine)
         {
-            playerData.pv.RPC("PunPlaySound", RpcTarget.AllBuffered, (int)EWeaponSound.SHOOTING);
+            playerData.pv.RPC("PunPlaySound", RpcTarget.All, (int)EWeaponSound.SHOOTING);
         }
             
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
             animator.Shoot();
-            playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered, playerData.shootDirection);
+            playerData.pv.RPC("BulletSpawn", RpcTarget.All, playerData.shootDirection);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}

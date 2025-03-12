@@ -137,7 +137,7 @@ public class PlayerAttack : PlayerBehavior
         yield return new WaitForSeconds(waitTime);
 
         animChange = null;
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)type);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)type);
     }
 
     public INode.ENodeState ShootBullet()
@@ -193,7 +193,7 @@ public class PlayerAttack : PlayerBehavior
 						blackBoard.inputs[EKey.NUM_2] = false;
                         bombNotify.NotifyGuide(false, blackBoard.playerTeam);
 						blackBoard.playerStatus.isBombInteract = false;
-						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 
                         if (blackBoard.bombInteraction.GetBomb() != null)
@@ -215,7 +215,7 @@ public class PlayerAttack : PlayerBehavior
                         bombNotify.NotifyGuide(false, blackBoard.playerTeam);
                         blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
-						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
 						playerData.isInteract = false;
 						return INode.ENodeState.Success;
@@ -258,7 +258,7 @@ public class PlayerAttack : PlayerBehavior
                     }
 				}
                 bombNotify.NotifyGuide(false, blackBoard.playerTeam);
-				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 			}
 
         }
@@ -280,7 +280,7 @@ public class PlayerAttack : PlayerBehavior
             if (isChangableAnim)
             {
                 playerData.supportWeapon.Use();
-				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, (int)WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
                 playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Landmine);
@@ -408,7 +408,7 @@ public class PlayerAttack : PlayerBehavior
                 playerData.skill.SetSkill(new DashSkillInfo(playerData.canAttackPoint, transform.forward, 2f, blackBoard));
 				playerData.skill.Use();
 				materialController.ChangeMaterialToDashSkill();
-				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuff.skillValue = 2f;
 				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
@@ -419,7 +419,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     StopCoroutine(animChange);
 					animChange = null;
-					playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+					playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 				}
 				return INode.ENodeState.Running;
 			}
@@ -480,7 +480,7 @@ public class PlayerAttack : PlayerBehavior
             playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
             playerData.bomb.Disable();
 		}
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)weaponType);
 	}
     public void OnUseAttackConsum(InputValue value)
     {
@@ -505,7 +505,7 @@ public class PlayerAttack : PlayerBehavior
             CancelSupportWeapon();
         }
 
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)weaponType);
 	}
 
 
@@ -535,7 +535,7 @@ public class PlayerAttack : PlayerBehavior
 				skill.Disable();
 		}
 
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)weaponType);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)weaponType);
 	}
 
     public void ResetAttackInput(EKey input)

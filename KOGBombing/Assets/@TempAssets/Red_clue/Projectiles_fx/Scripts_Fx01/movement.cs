@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class movement : BulletController
+public class movement : MonoBehaviour
 {
     //public float speed;
     public float fireRate;
@@ -43,9 +43,8 @@ public class movement : BulletController
     //        Debug.Log("No Speed");
     //    }
     //}
-    protected override void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        base.OnTriggerEnter(other);
         if (other.CompareTag("IgnoreBullet"))
 		{
             if (other.GetComponent<Landmine>() != null) return;

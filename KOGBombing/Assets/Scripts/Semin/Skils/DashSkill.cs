@@ -59,7 +59,7 @@ public class DashSkill : MonoBehaviour, ISkill
 	{
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
-        playerData.pv.RPC("StartDash", RpcTarget.AllBuffered);
+        playerData.pv.RPC("StartDash", RpcTarget.All);
         StartCoroutine(Cooldown(cooldown));
     }
 

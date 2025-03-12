@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         if (playerData.pv.IsMine)
         {
             playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.green;
-            playerData.pv.RPC("SendBlackBoard", RpcTarget.AllBuffered);
+            playerData.pv.RPC("SendBlackBoard", RpcTarget.All);
         }
         else
         {
@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     public void DoDestory()
     {
         if (!playerData.pv.IsMine) return;
-        playerData.pv.RPC("DestroyPlayer", RpcTarget.AllBuffered);
+        playerData.pv.RPC("DestroyPlayer", RpcTarget.All);
     }
 
     [PunRPC]

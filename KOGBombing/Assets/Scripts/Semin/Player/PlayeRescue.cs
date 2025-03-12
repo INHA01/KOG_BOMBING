@@ -20,13 +20,13 @@ public class PlayeRescue : InteractObject
     }
     public INode.ENodeState ActiveRescueCollider()
     {
-        playerData.pv.RPC("RPCActiveRescueCollider", RpcTarget.AllBuffered);
+        playerData.pv.RPC("RPCActiveRescueCollider", RpcTarget.All);
         return INode.ENodeState.Fail;
     }
     
     public INode.ENodeState DeactiveRescueCollider()
     {
-        playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.AllBuffered);
+        playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.All);
         return INode.ENodeState.Fail;
     }
     [PunRPC]
@@ -59,7 +59,7 @@ public class PlayeRescue : InteractObject
         if (!LocalManagers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
 
         target = pView.gameObject;
-		playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.AllBuffered, true);
+		playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.All, true);
 		StartCoroutine(CoInteractDelay());
 		return true;
     }
@@ -83,7 +83,7 @@ public class PlayeRescue : InteractObject
         }
         if (deltaTime >= interactTime)
         {
-			playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.AllBuffered);
+			playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.All);
 			rescuePlayer.Rescue();
 			interactCollider.enabled = false;
 		}        
@@ -100,7 +100,7 @@ public class PlayeRescue : InteractObject
         {
             if (target == null || target != other.gameObject)
                 return;
-			playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.AllBuffered, false);
+			playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.All, false);
 		}
 
         target = null;

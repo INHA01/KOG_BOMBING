@@ -43,7 +43,7 @@ namespace Semin
         {
             particle.Play();
 			if (playerData.pv.IsMine)
-				playerData.pv.RPC("PunPlaySound", RpcTarget.AllBuffered, (int)EWeaponSound.EXPLOSION);
+				playerData.pv.RPC("PunPlaySound", RpcTarget.All, (int)EWeaponSound.EXPLOSION);
 		}
 
 		[PunRPC]

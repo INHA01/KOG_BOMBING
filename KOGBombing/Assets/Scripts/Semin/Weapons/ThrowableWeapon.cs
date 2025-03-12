@@ -30,7 +30,7 @@ public class ThrowableWeapon : ThrowableBase
 		lineRendererToTarget.gameObject.SetActive(true);
 
 		if (info is ThrowableWeaponInfo throwableInfo)
-			playerData.pv.RPC("SetInfo", RpcTarget.AllBuffered, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
+			playerData.pv.RPC("SetInfo", RpcTarget.All, throwableInfo.CurPosition, throwableInfo.Position, throwableInfo.Angle);
 	}
 
 	[PunRPC]
@@ -43,7 +43,7 @@ public class ThrowableWeapon : ThrowableBase
 	{
 		base.Use();
 		count--;
-		playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
+		playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.All);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
     }
 

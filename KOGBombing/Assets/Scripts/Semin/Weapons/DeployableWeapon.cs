@@ -21,7 +21,7 @@ public class DeployableWeapon : DeployableBase
     {
         base.Use();
         count--;
-        playerData.pv.RPC("PutConsum", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PutConsum", RpcTarget.All);
     }
 
     [PunRPC]

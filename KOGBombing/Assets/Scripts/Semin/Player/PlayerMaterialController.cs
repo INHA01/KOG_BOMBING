@@ -198,7 +198,7 @@ public class PlayerMaterialController : MonoBehaviour
 
 	public void ChangeMaterialToDashSkill()
 	{
-		playerData.pv.RPC("StartDashSkillEffect", RpcTarget.AllBuffered);
+		playerData.pv.RPC("StartDashSkillEffect", RpcTarget.All);
 	}
 
 	[PunRPC]

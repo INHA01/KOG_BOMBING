@@ -26,10 +26,12 @@ public class Login : MonoBehaviourPunCallbacks
     }
     public void OnStartClick()
     {
-        if (_inputFields[(int)TextType.EMAIL].text == "")
+        /*if (_inputFields[(int)TextType.EMAIL].text == "")
             _inputFields[(int)TextType.EMAIL].text = Managers.UserData.userData.nickName + (Random.Range(0, 100) * Time.deltaTime).ToString();
         Managers.UserData.userData.nickName = _inputFields[(int)TextType.EMAIL].text;
-        PhotonNetwork.LocalPlayer.NickName = _inputFields[(int)TextType.EMAIL].text;
+        PhotonNetwork.LocalPlayer.NickName = _inputFields[(int)TextType.EMAIL].text;*/
+        PhotonNetwork.LocalPlayer.NickName = Time.time.ToString() + Time.deltaTime.ToString();
+
         SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
         LoadingSceneManager.LoadScene("LobbyScene");
     }

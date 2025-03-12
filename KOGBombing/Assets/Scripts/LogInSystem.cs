@@ -23,6 +23,10 @@ public class LogInSystem : MonoBehaviour
     {
         FirebaseAughManager.Instance.Create(email.text, password.text);
     }
+    public void Delete()
+    {
+        FirebaseAughManager.Instance.Delete();
+    }
     public void LogIn()
     {
         FirebaseAughManager.Instance.Login(email.text, password.text);
@@ -34,7 +38,7 @@ public class LogInSystem : MonoBehaviour
     }
     public void DataInputTest()
     {
-        FirebaseAughManager.Instance.userDataManager.SaveUserData(email.text);
+        FirebaseAughManager.Instance.userDataManager.SaveUserData();
     }
     public void DataOutputTest()
     {

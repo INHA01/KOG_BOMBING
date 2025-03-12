@@ -39,12 +39,11 @@ public class UserDataManager
         userData = GetUserData();
     }
 
-    public void SaveUserData(string username)
+    public void SaveUserData()
     {
         if (auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
-            //UserData userData = new UserData(username);
 
             string json = JsonUtility.ToJson(userData);
             databaseReference.Child("users").Child(userId).SetRawJsonValueAsync(json).ContinueWith(task =>
@@ -112,7 +111,8 @@ public class UserDataManager
                     }
                     else
                     {
-                        Debug.Log("No user data found.");
+                        userData = new UserData(auth.CurrentUser.Email);
+                        SaveUserData();
                     }
                 }
                 else

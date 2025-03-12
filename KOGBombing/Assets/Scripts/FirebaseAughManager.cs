@@ -80,6 +80,24 @@ public class FirebaseAughManager
             Debug.LogFormat("È¸¿ø°¡ÀÔ ¼º°ø : {0} ({1})", newUser.DisplayName, newUser.Email);
         });
     }
+    // È¸¿øÅ»Åð
+    public void Delete()
+    {
+        auth.CurrentUser.DeleteAsync().ContinueWith(task =>
+        {
+            if (task.IsCanceled)
+            {
+                Debug.LogError("È¸¿øÅ»Åð Ãë¼Ò.");
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                Debug.LogError("È¸¿øÅ»Åð ½ÇÆÐ.");
+                return;
+            }
+            Debug.Log("È¸¿øÅ»Åð ¼º°ø");
+        });
+    }
 
     public void Login(string email, string password)
     {

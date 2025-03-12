@@ -18,6 +18,7 @@ public class SceneLoadManager
     {
         SceneManager.UnloadSceneAsync(currentScene);
         currentScene = sceneName;
+        LocalManagers.UI.CloseAllPopupUI();
         loading = LocalManagers.UI.ShowPopupUI<Loading>("LoadingCanvas");
         loading.LoadScene(sceneName);
     }

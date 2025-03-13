@@ -9,7 +9,7 @@ public class LobbyModeSelect : UIPopup
     public void TurnBackScreen()
     {
         matchSelect.SetActive(false);
-        LocalManagers.UI.ClosePopupUI(this.gameObject.name);
+        Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     public void OnBombModeClick()
     { 

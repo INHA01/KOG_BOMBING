@@ -42,7 +42,7 @@ public class UIManager
         // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
         if (!_popupDictionary.ContainsKey(name))
         {
-            go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
+            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
             go.transform.SetParent(Root.transform);
             isExist = true;
         }

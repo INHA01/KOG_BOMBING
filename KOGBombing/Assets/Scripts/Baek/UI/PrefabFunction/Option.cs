@@ -14,7 +14,7 @@ public class Option : UIPopup
     public void Cancel()
     {
         playerBlackBoard.inputs[EKey.ESC] = false;
-        LocalManagers.UI.ClosePopupUI(this.gameObject.name);
+        Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     public void ReturnLobby()
     { 
@@ -25,8 +25,8 @@ public class Option : UIPopup
         if (yes)
         {
             PhotonNetwork.LeaveRoom();
-            LocalManagers.PunData.Init();
-            LocalManagers.CamData.InitCamera();
+            Managers.PunData.Init();
+            Managers.CamData.InitCamera();
             reCheckLobby.SetActive(false);
             Managers.SceneLoad.LoadScene("LobbyScene");
         }

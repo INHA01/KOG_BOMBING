@@ -26,9 +26,9 @@ public abstract class ThrowableBase : SupportWeaponBase
 
 	protected virtual void Awake()
 	{
-		decal = LocalManagers.Resource.Instantiate("SupportWeapon/AttackRagneDecal").GetComponent<DecalProjector>();
-		lineRendererToTarget = LocalManagers.Resource.Instantiate("SupportWeapon/AttackLineRenderer").GetComponent<LineRenderer>();
-		lineRendererToRange = LocalManagers.Resource.Instantiate("SupportWeapon/AttackRangeLineRenderer").GetComponent<LineRenderer>();
+		decal = Managers.Resource.Instantiate("SupportWeapon/AttackRagneDecal").GetComponent<DecalProjector>();
+		lineRendererToTarget = Managers.Resource.Instantiate("SupportWeapon/AttackLineRenderer").GetComponent<LineRenderer>();
+		lineRendererToRange = Managers.Resource.Instantiate("SupportWeapon/AttackRangeLineRenderer").GetComponent<LineRenderer>();
 		decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);

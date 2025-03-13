@@ -41,11 +41,11 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	{
 		if(playerData.pv.IsMine)
 		{
-			playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			playScene.SetSkillIcon(CharacterType.Ned);
 		}
 
-        consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
+        consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
 		type = WeaponType.SHOCK_GRENADE;
 		this.playerData = playerData;
 

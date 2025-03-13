@@ -175,7 +175,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void PunShowKillUI()
     {
-        PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
         playScene.ActiveKill();
         AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
         Managers.Sound.PlayEffect(killSound);
@@ -299,7 +299,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     private void Death()
     {
-        ShowCursor showCursor = LocalManagers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+        ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
        /* AudioClip deathsound = null;
         if(blackBoard.characterType == CharacterType.Ned)
         {
@@ -408,14 +408,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (blackBoard.observaTargetNickname == null) return true;
         if (blackBoard.observaTargetNickname.Equals("")) return true;
-        bool isLiveTarget = LocalManagers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
+        bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
         if (!isLiveTarget) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
     public INode.ENodeState FindAlivePlayer()
     {
-        List<PlayerBlackBoard> blackBoards = LocalManagers.PunData.GetAllBlackBoard();
+        List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         Debug.Log("Search Alive Player");
         for (int i = 0; i < blackBoards.Count; i++)
         {
@@ -437,7 +437,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetCameraTarget()
     {
         
-        if (LocalManagers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive)
+        if (Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.observaTarget);
             blackBoard.viewCamera.transform.LookAt(blackBoard.observaTarget.transform);

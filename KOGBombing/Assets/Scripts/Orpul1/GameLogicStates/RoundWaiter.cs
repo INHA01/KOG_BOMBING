@@ -78,10 +78,10 @@ namespace Orpul1
 
         void SetPlayerPosi()
         {
-            if (!LocalManagers.PunData.IsContainKey(PhotonNetwork.LocalPlayer.NickName)) return;
+            if (!Managers.PunData.IsContainKey(PhotonNetwork.LocalPlayer.NickName)) return;
             
-            Vector3 spawnPoint = LocalManagers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).spawnPoint;
-            LocalManagers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).transform.position = spawnPoint;
+            Vector3 spawnPoint = Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).spawnPoint;
+            Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).transform.position = spawnPoint;
         }
         void OoCountDown(EventData punEvent)
         {
@@ -91,7 +91,7 @@ namespace Orpul1
         void DoCountDown()
         {
             time += Time.deltaTime;
-            TextMeshProUGUI timeTMP = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
+            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
             timeTMP.text = string.Format("{0:00}:{1:00}", (int)(gamestartInterval - time) / 60, (int)(gamestartInterval - time) % 60);
             if (time > gamestartInterval)
             {

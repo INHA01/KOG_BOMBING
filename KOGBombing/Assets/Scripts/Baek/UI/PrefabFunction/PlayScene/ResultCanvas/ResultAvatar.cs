@@ -26,7 +26,7 @@ public class ResultAvatar : MonoBehaviour,ISetWinTypeable
         {
             if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString().ToString()] == team)
             {
-                GameObject avatar = LocalManagers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultPlayer");
+                GameObject avatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultPlayer");
                 avatar.transform.SetParent(avatarParents[index++].transform);
                 avatar.transform.localPosition = Vector3.zero;
                 

@@ -34,14 +34,14 @@ namespace Orpul1
         }
         private void DestroyGameObject()
         {
-            GameObject mainCam = LocalManagers.CamData.GetCamera(ECameraType.MAINCAMERA);
-            GameObject miniMapCam = LocalManagers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
+            GameObject mainCam = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
+            GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
             Destroy(mainCam);
             Destroy(miniMapCam);
             gameData.playerObj.GetComponent<IDestroyAble>().DoDestory();
-            LocalManagers.PunData.Init();
-            LocalManagers.CamData.InitCamera();
-            LocalManagers.UI.ClosePopupUI("PlayCanvas");
+            Managers.PunData.Init();
+            Managers.CamData.InitCamera();
+            Managers.UI.ClosePopupUI("PlayCanvas");
         }
         private void SwapTeamCount()
         {

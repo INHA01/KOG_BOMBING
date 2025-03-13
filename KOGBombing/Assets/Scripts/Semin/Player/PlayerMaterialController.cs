@@ -135,13 +135,13 @@ public class PlayerMaterialController : MonoBehaviour
 	{
 		this.changeMaterials = changeMaterials;
 		SetMaterialToHide();
-		hitMaterial = LocalManagers.Resource.Load<Material>("Materials/HitHideMaterial");
+		hitMaterial = Managers.Resource.Load<Material>("Materials/HitHideMaterial");
 		for ( int i = 0; i < changeMaterialMeshs.Count; i++ )
 		{
 			Renderer mesh = changeMaterialMeshs[i].GetComponent<Renderer>();
 			mesh.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 		}
-		dashMaterial = LocalManagers.Resource.Load<Material>("Materials/DashTrailMaterialToStencil");
+		dashMaterial = Managers.Resource.Load<Material>("Materials/DashTrailMaterialToStencil");
 		for (int i = 0; i < dashMeshs.Count; i++ )
 		{
 			Material[] currentMaterials = null;

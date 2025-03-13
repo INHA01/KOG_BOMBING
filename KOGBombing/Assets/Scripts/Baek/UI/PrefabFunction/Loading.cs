@@ -20,7 +20,7 @@ public class Loading : UIPopup
         asyncLoad.completed += (AsyncOperation obj) =>
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
-            LocalManagers.UI.ClosePopupUI("LoadingCanvas");
+            Managers.UI.ClosePopupUI("LoadingCanvas");
         };
 
         float time = Time.time + 1.0f; // 1 seconds term

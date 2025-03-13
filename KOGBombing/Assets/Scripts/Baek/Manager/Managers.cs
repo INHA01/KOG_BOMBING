@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
@@ -13,6 +13,12 @@ public class Managers : MonoBehaviour
     RoundInfoManager _roundData = new RoundInfoManager();
     SceneLoadManager _sceneLoad = new SceneLoadManager();
     SoundManager _sound;
+
+    UIManager _ui = new UIManager();
+    ResourceManager _resource = new ResourceManager();
+    PhotonDataManager _punData = new PhotonDataManager();
+    CameraManager _camData = new CameraManager();
+    
     public static FirebaseAughManager FirebaseAuth { get { return Instance._firebaseAuth; } }
     public static UserDataManager UserData { get { return Instance._userData; } }
     
@@ -20,6 +26,11 @@ public class Managers : MonoBehaviour
     public static RoundInfoManager RoundData { get { return Instance._roundData; } }
     public static SceneLoadManager SceneLoad { get { return Instance._sceneLoad; } }
     public static SoundManager Sound { get { return Instance._sound; } }
+
+    public static UIManager UI { get { return Instance._ui; } }
+    public static ResourceManager Resource { get { return Instance._resource; } }
+    public static PhotonDataManager PunData { get { return Instance._punData; } }
+    public static CameraManager CamData { get { return Instance._camData; } }
     static Managers Instance 
     { 
         get 
@@ -29,20 +40,15 @@ public class Managers : MonoBehaviour
                 GameObject go = GameObject.Find("@MyManagers");
                 if (go == null)
                 {
-                    // Hierarchi ÄÚµå·Î ¿ÀºêÁ§Æ® ¸¸µé°í ½ºÅ©¸³Æ® ³ÖÀ½
+                    // Hierarchi ì½”ë“œë¡œ ì˜¤ë¸Œì íŠ¸ ë§Œë“¤ê³  ìŠ¤í¬ë¦½íŠ¸ ë„£ìŒ
                     go = new GameObject { name = "@MyManagers" };
                     go.AddComponent<Managers>();
                 }
 
-                //DontDestroyOnLoad(go);
                 s_instance = go.GetComponent<Managers>();
             }
             return s_instance;
         } 
-    }
-    private void Start()
-    {
-        Init();
     }
     void Init()
     {
@@ -51,5 +57,16 @@ public class Managers : MonoBehaviour
         _sound = gameObject.GetComponentInChildren<SoundManager>();
         _sound.Init();
         s_instance = GetComponent<Managers>();
+    }
+    private void Start()
+    {
+        Init();
+    }
+    void OnDestroy()
+    {
+        if (s_instance == this)
+        {
+            s_instance = null;
+        }
     }
 }

@@ -30,7 +30,7 @@ public class Result : MonoBehaviour
             else
                 resultText[i].gameObject.SetActive(false);
         }
-        GameObject resultAvatar = LocalManagers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
+        GameObject resultAvatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
         resultAvatar.GetComponent<ISetWinTypeable>().SetWinType((ResultTeam)type);
     }
 
@@ -104,7 +104,7 @@ public class Result : MonoBehaviour
     public void ReturnLobby()
     {
         PhotonNetwork.LeaveRoom();
-        LocalManagers.PunData.Init();
+        Managers.PunData.Init();
         //Loading.LoadScene("LobbyScene");
         Managers.SceneLoad.LoadScene("LobbyScene");
     }

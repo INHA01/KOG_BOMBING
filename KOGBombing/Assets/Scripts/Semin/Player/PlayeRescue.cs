@@ -56,7 +56,7 @@ public class PlayeRescue : InteractObject
         ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
         if (otherTeam != blackBoard.playerTeam) return false;
-        if (!LocalManagers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
+        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
 
         target = pView.gameObject;
 		playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.All, true);

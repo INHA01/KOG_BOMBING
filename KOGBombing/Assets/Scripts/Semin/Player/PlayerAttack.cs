@@ -171,7 +171,7 @@ public class PlayerAttack : PlayerBehavior
         {
             if (bombNotify == null)
             { 
-                bombNotify = LocalManagers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
             }
             if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
@@ -458,7 +458,7 @@ public class PlayerAttack : PlayerBehavior
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
         if(bombNotify == null)
         {
-            bombNotify = LocalManagers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
         }
         bombNotify.NotifyGuide(blackBoard.inputs[EKey.NUM_2] , blackBoard.playerTeam);
 

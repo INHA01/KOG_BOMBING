@@ -94,7 +94,7 @@ public class PlayScene : UIPopup
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
-        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();
@@ -115,13 +115,13 @@ public class PlayScene : UIPopup
     public void SetSubWeaponIcon(WeaponType type)
     {
         string name = type == WeaponType.LANDMINE ? "Landmine" : "Grenade_Flash";
-        subWeaponIcon.sprite = LocalManagers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");
+        subWeaponIcon.sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");
     }
     public void SetSkillIcon(CharacterType type)
     {
         string name = type == CharacterType.Ned ? "Ned" : "Uni";
-        skillIcon[0].GetComponent<Image>().sprite = LocalManagers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
-        skillIcon[1].GetComponent<Image>().sprite = LocalManagers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
+        skillIcon[0].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
+        skillIcon[1].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
         SetSkillActive(true);
     }
     public void SetSkillActive(bool isActive)

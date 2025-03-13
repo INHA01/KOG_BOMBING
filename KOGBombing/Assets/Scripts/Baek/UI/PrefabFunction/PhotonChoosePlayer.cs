@@ -105,7 +105,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     public override void SetIcon(bool isMine)
     {
         GameObject go = null;
-        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
         go.transform.SetParent(teamIconBack);
         int teamIndex = mTeamIndex.Dequeue();
         if (isMine)

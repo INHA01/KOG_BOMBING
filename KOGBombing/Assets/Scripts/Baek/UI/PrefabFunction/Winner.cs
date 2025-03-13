@@ -13,7 +13,7 @@ public class Winner : UIPopup
 	{
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = LocalManagers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
+        canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
 	}
 
 	public void SetWiner(int end)
@@ -28,7 +28,7 @@ public class Winner : UIPopup
     }
     public void OpenResult()
     {
-        LocalManagers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
-        LocalManagers.UI.ClosePopupUI("WinnerCanvas");
+        Managers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
+        Managers.UI.ClosePopupUI("WinnerCanvas");
     }
 }

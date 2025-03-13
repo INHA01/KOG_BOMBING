@@ -612,7 +612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initPoolSize: 36
-  objectToPool: {fileID: 2946108220187113811, guid: ee8b8727af7801c4988792a78e5335a7,
+  objectToPool: {fileID: 8450535897397774027, guid: 34b3ba4a075f3394b86614f999fb83cb,
     type: 3}
   parentPrefab: {fileID: 0}
   InitBulletCount: 10
@@ -637,7 +637,12 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8894044268401136495}
+  - {fileID: -4870366558248218115}
+  - {fileID: 3710897373183232210}
+  - {fileID: 7799719852954471310}
+  - {fileID: 7300479445460102179}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

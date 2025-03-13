@@ -14,6 +14,8 @@ public class UserData
     public int win;
     public int lose;
     public float winningRate;
+    public int level;
+    public float exp;
 
     public UserData(string userId)
     {
@@ -24,6 +26,8 @@ public class UserData
         win = 0;
         lose = 0;
         winningRate = 0;
+        level = 1;
+        exp = 0;
     }
 }
 public class UserDataManager

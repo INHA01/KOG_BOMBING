@@ -98,21 +98,23 @@ public class FirebaseAughManager
         });
     }
 
-    public void Logout()
+    public void Logout(bool isCheck = false)
     {
         if (auth.CurrentUser != null)
         {
-            // 로그아웃 시 기기 상태 삭제
-            databaseReference.Child("users").Child(auth.CurrentUser.UserId).Child("deviceID").SetValueAsync("").ContinueWith(task =>
+            if (!isCheck)
             {
-                if (task.IsCompleted)
-                    Debug.Log("기기 ID 삭제 완료");
-                else
-                    Debug.LogError("기기 ID 삭제 실패");
-            });
+                // 로그아웃 시 기기 상태 삭제
+                databaseReference.Child("users").Child(auth.CurrentUser.UserId).Child("deviceID").SetValueAsync("").ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                        Debug.Log("기기 ID 삭제 완료");
+                    else
+                        Debug.LogError("기기 ID 삭제 실패");
+                });
+            }
         }
         auth.SignOut(); // 로그아웃
-        Debug.Log("로그아웃");
     }
 
     private bool ApplicationQuit()
@@ -123,7 +125,7 @@ public class FirebaseAughManager
 
     private void CheckDeviceStatus()
     {
-        if(auth.CurrentUser == null)
+        if (auth.CurrentUser == null)
         {
             Debug.LogError("사용자 정보 없음");
             return;
@@ -136,12 +138,8 @@ public class FirebaseAughManager
                 DataSnapshot snapshot = task.Result;
                 if (snapshot.Exists && snapshot.Value.ToString() != "")
                 {
-                    Debug.Log("기기 ID : " + snapshot.Value);
-                    if (snapshot.Value.ToString() != currentDeviceId)
-                    {
-                        Debug.Log("중복 로그인 감지! 로그아웃 처리 중...");
-                        Logout(); // 중복 로그인 시 로그아웃
-                    }
+                    Debug.Log("중복 로그인 감지! 로그아웃 처리 중...");
+                    Logout(true); // 중복 로그인 시 로그아웃
                 }
                 else
                 {
@@ -159,7 +157,7 @@ public class FirebaseAughManager
         {
             if (task.IsCompleted)
                 Debug.Log("기기 ID 저장 완료");
-            else 
+            else
                 Debug.LogError("기기 ID 저장 실패");
         });
     }

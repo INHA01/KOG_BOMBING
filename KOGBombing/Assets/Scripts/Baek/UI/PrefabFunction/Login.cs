@@ -43,12 +43,32 @@ public class Login : MonoBehaviourPunCallbacks
     public void OnLoginClick()
     {
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
+        // >> :Button Disable
         _panels[(int)PanelType.LOGIN].SetActive(false);
-        if(_accountType == AccountType.CREATE)
+        for (int i = 0; i < (int)ButtonType.MAX; i++)
+        {
+            _buttons[i].SetActive(false);
+        }
+        // << :Button Disable
+        if (_accountType == AccountType.CREATE)
             Managers.FirebaseAuth.Create(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
         else
             Managers.FirebaseAuth.Login(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
-        StartCoroutine(CheckUserName());
+        StartCoroutine(CheckLoginSuccess());
+    }
+    IEnumerator CheckLoginSuccess()
+    {
+        yield return new WaitForSeconds(5.0f);
+        if(Managers.FirebaseAuth.isLogin)
+            StartCoroutine(CheckUserName());
+        else
+        {
+            _panels[(int)PanelType.LOGIN].SetActive(true);
+            for(int i = 0; i < (int)ButtonType.MAX; i++)
+            {
+                _buttons[i].SetActive(true);
+            }
+        }
     }
     IEnumerator CheckUserName()
     {

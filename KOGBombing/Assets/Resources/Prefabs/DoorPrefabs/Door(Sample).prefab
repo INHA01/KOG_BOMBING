@@ -457,10 +457,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf1f000966882548bb0b34647131774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 7455157336143943249}
+  interactUI: {fileID: 0}
+  lookUiCamera: {fileID: 0}
+  showOutlineObj: {fileID: 0}
+  interactCollider: {fileID: 0}
+  interactLayer: 0
+  defualtLayer: 0
+  interactTime: 0
+  sound: {fileID: 0}
   pView: {fileID: 6651038156164803476}
-  doorOpenInterval: 3
   otherDoor: {fileID: 0}
+  animator: {fileID: 7455157336143943249}
+  doorUI: {fileID: 0}
 --- !u!114 &6651038156164803476
 MonoBehaviour:
   m_ObjectHideFlags: 0

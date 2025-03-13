@@ -16,6 +16,7 @@ namespace Orpul1
         {
             PhotonHashtable playerTeam = new PhotonHashtable { { EPropertyType.TEAM.ToString(), ETeam.REDTEAM } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerTeam);
+            PhotonNetwork.SendRate = 10;
         }
         public void Match(EMatchType mode)
         {

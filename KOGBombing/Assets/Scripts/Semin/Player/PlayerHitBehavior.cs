@@ -376,7 +376,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             stream.SendNext((int)blackBoard.playerStatus.hp);
             stream.SendNext((int)blackBoard.playerStatus.defence);
             stream.SendNext(blackBoard.playerStatus.groggyable);
-            stream.SendNext((byte)blackBoard.playerStatus.groggyValue);
+            stream.SendNext((int)blackBoard.playerStatus.groggyValue);
             stream.SendNext(blackBoard.playerStatus.isGroggy);
         }
         else if (stream.IsReading)

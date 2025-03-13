@@ -43,6 +43,8 @@ public abstract class ObjectPool :  MonoBehaviour , IDestroyAble
             instance.gameObject.SetActive(false);
             queue.Enqueue(instance);
             instance.transform.SetParent(parent);
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localScale = Vector3.one;
         }
     }
 

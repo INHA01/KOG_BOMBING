@@ -94,13 +94,19 @@ public class PlayPointController
         object[] customDatas = (object[])punEvent.CustomData;
         int killPlayerIndex = (int)customDatas[0];
         string attackPlayer = (string)customDatas[1];
-        /*if (attackPlayer == PhotonNetwork.LocalPlayer.NickName)
+        string deathPlayername = (string)customDatas[2];
+        ETeam deathPlayerTeam = (ETeam)customDatas[3];
+        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+        if (attackPlayer == PhotonNetwork.LocalPlayer.NickName)
         {
-            PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
             playScene.ActiveKill();
             AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
             Managers.Sound.PlayEffect(killSound);
-        }*/
+        }
+
+        KillLogPlayer killPlayer = new KillLogPlayer(new StringBuilder(attackPlayer), ETeam.BLUETEAM - (int)deathPlayerTeam);
+        KillLogPlayer deathPlayer = new KillLogPlayer(new StringBuilder(deathPlayername), deathPlayerTeam);
+        playScene.UpdateKillLog(new KillLogPlayer[2] { killPlayer, deathPlayer });
         Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
         int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
@@ -151,7 +157,10 @@ public class PlayPointController
         if (lastAttackPlayerIndex == -1) return;
         killPlayerNickname.Clear();
         killPlayerNickname.Append(playerNicknameList[lastAttackPlayerIndex]);
-        object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] };
+        //161번째 줄 null  이슈
+        ETeam deathPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        string deathPlayerName = PhotonNetwork.LocalPlayer.NickName;
+        object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] , deathPlayerName, deathPlayerTeam };
         PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어, 당한 플레이어 정보
     }
     public void OnAssistPoint()

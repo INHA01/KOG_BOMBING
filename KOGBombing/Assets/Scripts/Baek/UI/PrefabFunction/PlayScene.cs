@@ -1,4 +1,5 @@
 using Orpul1;
+using Photon.Realtime;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ public class PlayScene : UIPopup
     [SerializeField] TextMeshProUGUI magazineCount;
     [SerializeField] Image chargeBar;
     [SerializeField] GameObject teamProfile;
-    [SerializeField] GameObject killLog;
+    [SerializeField] GameObject killLogo;
+    [SerializeField] KillLogUpdater killLogUpdater;
     Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
@@ -101,6 +103,10 @@ public class PlayScene : UIPopup
         profile.Init(blackBoard);
         dicTeamProfile.Add(blackBoard.nickname, profile);
     }
+    public void UpdateKillLog(KillLogPlayer[] logInfos)
+    {
+        killLogUpdater.UpdateKillLog(logInfos);
+    }
     public void UpdateProfile(string nickname)
     {
         if (!dicTeamProfile.ContainsKey(nickname)) return;
@@ -135,12 +141,12 @@ public class PlayScene : UIPopup
     }
     IEnumerator DuringKill()
     {
-        if(killLog.activeSelf)
+        if(killLogo.activeSelf)
         {
-            killLog.SetActive(false);
+            killLogo.SetActive(false);
         }
-        killLog.SetActive(true);
+        killLogo.SetActive(true);
         yield return new WaitForSeconds(3f);
-        killLog.SetActive(false);
+        killLogo.SetActive(false);
     }
 }

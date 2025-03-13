@@ -14,6 +14,8 @@ public class UserData
     public int win;
     public int lose;
     public float winningRate;
+    public int level;
+    public float exp;
 
     public UserData(string userId)
     {
@@ -24,6 +26,8 @@ public class UserData
         win = 0;
         lose = 0;
         winningRate = 0;
+        level = 1;
+        exp = 0;
     }
 }
 public class UserDataManager
@@ -46,7 +50,7 @@ public class UserDataManager
         {
             string userId = auth.CurrentUser.UserId;
             string json = JsonUtility.ToJson(userData);
-            databaseReference.Child("users").Child(userId).SetRawJsonValueAsync(json).ContinueWith(task =>
+            databaseReference.Child("users").Child(userId).Child("Data").SetRawJsonValueAsync(json).ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -68,7 +72,7 @@ public class UserDataManager
         if (auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
-            databaseReference.Child("users").Child(userId).GetValueAsync().ContinueWith(task =>
+            databaseReference.Child("users").Child(userId).Child("Data").GetValueAsync().ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -99,7 +103,7 @@ public class UserDataManager
         if (auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
-            databaseReference.Child("users").Child(userId).GetValueAsync().ContinueWith(task =>
+            databaseReference.Child("users").Child(userId).Child("Data").GetValueAsync().ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -127,19 +131,20 @@ public class UserDataManager
     public void SettingNickName(string nickName)
     {
         // 다른 유저가 사용중인 닉네임이 아니라면
-        databaseReference.Child("users").OrderByChild("nickName").EqualTo(nickName).GetValueAsync().ContinueWith(task =>
+        databaseReference.Child("users").OrderByChild("Data/nickName").EqualTo(nickName).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
+                // 닉네임이 사용 중이지 않은 경우
                 if (!snapshot.Exists)
                 {
-                    userData.nickName = nickName;
-                    SaveUserData();
+                    userData.nickName = nickName; // 닉네임 설정
+                    SaveUserData(); // 사용자 데이터 저장
                 }
                 else
                 {
-                    Debug.Log("The nickname is already in use.");
+                    Debug.Log("The nickname is already in use."); // 닉네임 사용 중 경고
                 }
             }
         });

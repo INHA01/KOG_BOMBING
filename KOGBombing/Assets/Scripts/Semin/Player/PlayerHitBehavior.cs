@@ -372,23 +372,22 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (stream.IsWriting)
         {
-            object[] sendHitInfo = new object[]
-            { blackBoard.playerStatus.isLive, blackBoard.playerStatus.hp,
-            blackBoard.playerStatus.defence,blackBoard.playerStatus.groggyable,
-            blackBoard.playerStatus.groggyValue,blackBoard.playerStatus.isGroggy};
-            stream.SendNext(sendHitInfo);
+            stream.SendNext(blackBoard.playerStatus.isLive);
+            stream.SendNext((int)blackBoard.playerStatus.hp);
+            stream.SendNext((int)blackBoard.playerStatus.defence);
+            stream.SendNext(blackBoard.playerStatus.groggyable);
+            stream.SendNext((int)blackBoard.playerStatus.groggyValue);
+            stream.SendNext(blackBoard.playerStatus.isGroggy);
         }
         else if (stream.IsReading)
         {
-            object[] reciveHitInfo = (object[])stream.ReceiveNext();
-            bool isLive = (bool)reciveHitInfo[0];
-            SetActiveState(isLive);
-            blackBoard.playerStatus.isLive = isLive;
-            blackBoard.playerStatus.hp = (float)reciveHitInfo[1];
-            blackBoard.playerStatus.defence = (float)reciveHitInfo[2];
-            blackBoard.playerStatus.groggyable = (bool)reciveHitInfo[3];
-            blackBoard.playerStatus.groggyValue = (float)reciveHitInfo[4];
-            blackBoard.playerStatus.isGroggy = (bool)reciveHitInfo[5];
+            blackBoard.playerStatus.isLive = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.hp = (int)stream.ReceiveNext();
+            blackBoard.playerStatus.defence = (int)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyable = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyValue = (int)stream.ReceiveNext();
+            blackBoard.playerStatus.isGroggy = (bool)stream.ReceiveNext();
+            SetActiveState(blackBoard.playerStatus.isLive);
 
             blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         }

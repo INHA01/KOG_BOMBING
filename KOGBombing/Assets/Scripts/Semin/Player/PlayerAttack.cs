@@ -7,6 +7,7 @@ using Orpul1;
 using BAEK;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
+using System.Text;
 public class PlayerAttack : PlayerBehavior
 {
     ISupportWeapon supportWeapon;
@@ -41,12 +42,10 @@ public class PlayerAttack : PlayerBehavior
     }
     private PlayerInfo GetPlayerInfo()
     {
-        PlayerInfo playerInfo = new PlayerInfo()
-        {
-            
-            teamType = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()],
-            teamIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()],
-        };
+        StringBuilder name = new StringBuilder(playerData.pv.Owner.NickName);
+        ETeam teamType = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
+        int teamIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        PlayerInfo playerInfo = new PlayerInfo(name,teamType,teamIndex);
         return playerInfo;
     }
     private void Update()

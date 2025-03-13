@@ -104,9 +104,9 @@ public class PlayPointController
             Managers.Sound.PlayEffect(killSound);
         }
 
-        KillLogPlayer killPlayer = new KillLogPlayer(new StringBuilder(attackPlayer), ETeam.BLUETEAM - (int)deathPlayerTeam);
-        KillLogPlayer deathPlayer = new KillLogPlayer(new StringBuilder(deathPlayername), deathPlayerTeam);
-        playScene.UpdateKillLog(new KillLogPlayer[2] { killPlayer, deathPlayer });
+        PlayerInfo killPlayer = new PlayerInfo(new StringBuilder(attackPlayer), ETeam.BLUETEAM - (int)deathPlayerTeam);
+        PlayerInfo deathPlayer = new PlayerInfo(new StringBuilder(deathPlayername), deathPlayerTeam);
+        playScene.UpdateKillLog(new PlayerInfo[2] { killPlayer, deathPlayer });
         Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
         int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);

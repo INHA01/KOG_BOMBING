@@ -1,39 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public struct PlayerKDA
-{
-    int kill;
-    int death;
-    int asist;
-}
 public class PhotonDataManager 
 {
-    Dictionary<string, PlayerBlackBoard> dicPlayerBlackBoard = new Dictionary<string, PlayerBlackBoard>();
+    Dictionary<string, PlayerBlackBoard> dictPlayerBlackBoard = new Dictionary<string, PlayerBlackBoard>();
+    Dictionary<int, PlayerInfo> dictPlayerInfo = new Dictionary<int, PlayerInfo>();
     List<PlayerBlackBoard> blackBoardList = new List<PlayerBlackBoard>();
-    public int blackBoardCnt { get { return dicPlayerBlackBoard.Count; } }
+    public int blackBoardCnt { get { return dictPlayerBlackBoard.Count; } }
 
     public void AddPlayerBlackBoard(string nickname, PlayerBlackBoard blackBoard)
     {
         Debug.Log($"add ID {blackBoard.nickname}");
-        dicPlayerBlackBoard.Add(nickname, blackBoard);
+        dictPlayerBlackBoard.Add(nickname, blackBoard);
         blackBoardList.Add(blackBoard);
     }
     public bool IsContainKey(string key)
     {
-        return dicPlayerBlackBoard.ContainsKey(key);
+        return dictPlayerBlackBoard.ContainsKey(key);
     }
     public PlayerBlackBoard GetPlayerBlackBoard(string nickname)
     {
-        if(!dicPlayerBlackBoard.ContainsKey(nickname))
+        if(!dictPlayerBlackBoard.ContainsKey(nickname))
         {
             Debug.Log("NULL blackBoard!");
             return null;
         }
-        return dicPlayerBlackBoard[nickname];
+        return dictPlayerBlackBoard[nickname];
     }
     public List<PlayerBlackBoard> GetAllBlackBoard()
     {
@@ -41,7 +37,7 @@ public class PhotonDataManager
     }
     public void Init()
     {
-        dicPlayerBlackBoard.Clear();
+        dictPlayerBlackBoard.Clear();
         blackBoardList.Clear();
     }
 

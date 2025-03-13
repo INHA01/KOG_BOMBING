@@ -103,7 +103,7 @@ public class PlayScene : UIPopup
         profile.Init(blackBoard);
         dicTeamProfile.Add(blackBoard.nickname, profile);
     }
-    public void UpdateKillLog(KillLogPlayer[] logInfos)
+    public void UpdateKillLog(PlayerInfo[] logInfos)
     {
         killLogUpdater.UpdateKillLog(logInfos);
     }

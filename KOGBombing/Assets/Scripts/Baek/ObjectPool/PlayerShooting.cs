@@ -8,11 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
-public struct PlayerInfo
-{
-    public ETeam teamType;
-    public int teamIndex;
-}
+
 
 public class PlayerShooting : Magazine
 {
@@ -80,7 +76,7 @@ public class PlayerShooting : Magazine
         }
         bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
-        bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.teamType; 
+        bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.team; 
         bullet.GetComponent<BulletController>().playerIndex = playerInfo.teamIndex;
         bullet.transform.position = playerData.shootPos[(int)ShootPos.Start].position + new Vector3(1, 0, 1) * Random.Range(-0.05f, 0.05f);// + new Vector3(0, 0.8f, 0);
         bullet.transform.rotation = playerData.playerObj.transform.rotation;

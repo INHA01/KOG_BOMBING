@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Realtime;
 using UnityEngine;
-
+using Orpul1;
 public class KillLogUIPresenter : PooledObject
 {
     [SerializeField] KillLogUIView view;
@@ -13,7 +13,7 @@ public class KillLogUIPresenter : PooledObject
     {
         model.Initialize(UpdateUI);
     }
-    public void SetKillLog(KillLogPlayer[] logInfos)
+    public void SetKillLog(PlayerInfo[] logInfos)
     {
         view.killLogPanel.SetActive(true);
         model.SetPlayerInfo(logInfos);

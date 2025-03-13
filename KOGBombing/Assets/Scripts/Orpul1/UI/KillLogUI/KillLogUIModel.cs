@@ -22,7 +22,7 @@ public class KillLogUIModel : MonoBehaviour
             playerNicknames[i] = new StringBuilder();
         }
     }
-    public void SetPlayerInfo(KillLogPlayer[] logInfos)
+    public void SetPlayerInfo(PlayerInfo[] logInfos)
     {
         for (int i = 0; i < (int)EPlayerLogType.END; i++)
         {

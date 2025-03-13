@@ -18,7 +18,9 @@ public enum EPointType
 }
 public class PlayPointController
 {
-    string[] playerNicknameList;
+    string[] otherTeamPlayerList;
+    string[] myTeamPlayerList;
+    Dictionary<ETeam, string[]> dictPlayerInfos = new Dictionary<ETeam, string[]>();
     List<string> assistPlayerList = new List<string>();
     int lastAttackPlayerIndex = -1;
     PlayerPointInfo playerPoint = new PlayerPointInfo();
@@ -36,26 +38,38 @@ public class PlayPointController
         this.playerData = playerData;
         updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
         Managers.UI.ClosePopupUI("BattleBoardCanvas");
+        SetPlayerList();
+        options.Receivers = ReceiverGroup.All;
+    }
+    private void SetPlayerList()
+    {
+        int otherTeamCount = 0;
+        int myTeamCount = 0;
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        EPropertyType otherTeam = (int)EPropertyType.BLUETEAM - (EPropertyType)myTeam;
+        otherTeamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[otherTeam.ToString()];
+        myTeamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[myTeam.ToString()];
 
-        int playerSize = 0;
-        int team = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        EPropertyType otherTeam = (int)EPropertyType.BLUETEAM - (EPropertyType)team;
-        playerSize = (int)PhotonNetwork.CurrentRoom.CustomProperties[otherTeam.ToString()];
+        myTeamPlayerList = new string[myTeamCount];
+        otherTeamPlayerList = new string[otherTeamCount];
 
-
-        playerNicknameList = new string[playerSize];
-        
         Player[] players = PhotonNetwork.PlayerList;
-        for(int i=0; i<players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
             Managers.PointData.AddPlayerInfo(players[i].NickName, new PlayerPointInfo());
 
-            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] != (ETeam)otherTeam) continue;
             int playerIndex = (int)players[i].CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-            playerNicknameList[playerIndex] = players[i].NickName;
+            if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()] != (ETeam)otherTeam)
+            {
+                myTeamPlayerList[playerIndex] = players[i].NickName;
+            }
+            else
+            {
+                otherTeamPlayerList[playerIndex] = players[i].NickName;
+            }
         }
-        
-        options.Receivers = ReceiverGroup.All;
+        dictPlayerInfos.Add(myTeam, myTeamPlayerList);
+        dictPlayerInfos.Add((ETeam)otherTeam, otherTeamPlayerList);
     }
     public void Initialize()
     {
@@ -93,24 +107,29 @@ public class PlayPointController
 
         object[] customDatas = (object[])punEvent.CustomData;
         int killPlayerIndex = (int)customDatas[0];
-        string attackPlayer = (string)customDatas[1];
-        string deathPlayername = (string)customDatas[2];
-        ETeam deathPlayerTeam = (ETeam)customDatas[3];
+        int deathPlayerTeamIndex = (int)customDatas[1];
+        ETeam killPlayerTeam = (ETeam)customDatas[2];
         PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
-        if (attackPlayer == PhotonNetwork.LocalPlayer.NickName)
-        {
-            playScene.ActiveKill();
-            AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-            Managers.Sound.PlayEffect(killSound);
-        }
-
-        PlayerInfo killPlayer = new PlayerInfo(new StringBuilder(attackPlayer), ETeam.BLUETEAM - (int)deathPlayerTeam);
-        PlayerInfo deathPlayer = new PlayerInfo(new StringBuilder(deathPlayername), deathPlayerTeam);
+        ShowKillLogoUI(playScene, killPlayerIndex,killPlayerTeam);
+        ShowKillLogUI(playScene, killPlayerIndex, deathPlayerTeamIndex, killPlayerTeam);
+        
+        updateScore.UpdatePlayerScore(new StringBuilder(dictPlayerInfos[killPlayerTeam][killPlayerIndex]), EPlayerScore.KILLSCORE);
+        Managers.PointData.AddPoint(dictPlayerInfos[killPlayerTeam][killPlayerIndex], EPointType.KILL);
+    }
+    private void ShowKillLogoUI(PlayScene playScene, int killPlayerIndex, ETeam killPlayerTeam)
+    {
+        if (killPlayerTeam != (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()]) return;
+        if (killPlayerIndex != (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()]) return;
+        playScene.ActiveKill();
+        AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
+        Managers.Sound.PlayEffect(killSound);
+    }
+    private void ShowKillLogUI(PlayScene playScene, int killPlayerIndex, int deathPlayerTeamIndex, ETeam killPlayerTeam)
+    {
+        ETeam deathPlayerTeam = ETeam.BLUETEAM - (int)killPlayerTeam;
+        PlayerInfo killPlayer = new PlayerInfo(new StringBuilder(dictPlayerInfos[killPlayerTeam][killPlayerIndex]), killPlayerTeam);
+        PlayerInfo deathPlayer = new PlayerInfo(new StringBuilder(dictPlayerInfos[deathPlayerTeam][deathPlayerTeamIndex]), deathPlayerTeam);
         playScene.UpdateKillLog(new PlayerInfo[2] { killPlayer, deathPlayer });
-        Debug.Log($"On Event killEvent {killPlayerIndex} ,  {attackPlayer}");
-        int currentPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-        updateScore.UpdatePlayerScore(new StringBuilder(attackPlayer), EPlayerScore.KILLSCORE);
-        Managers.PointData.AddPoint(attackPlayer, EPointType.KILL);
     }
     public void AssistPointEvent(EventData punEvent)
     {
@@ -156,17 +175,17 @@ public class PlayPointController
     {
         if (lastAttackPlayerIndex == -1) return;
         killPlayerNickname.Clear();
-        killPlayerNickname.Append(playerNicknameList[lastAttackPlayerIndex]);
+        killPlayerNickname.Append(otherTeamPlayerList[lastAttackPlayerIndex]);
         //161번째 줄 null  이슈
-        ETeam deathPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        string deathPlayerName = PhotonNetwork.LocalPlayer.NickName;
-        object[] killCustomDatas = new object[] { lastAttackPlayerIndex, playerNicknameList[lastAttackPlayerIndex] , deathPlayerName, deathPlayerTeam };
+        ETeam killPlayerTeam = ETeam.BLUETEAM - (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        int deathPlayerTeamIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        object[] killCustomDatas = new object[] { lastAttackPlayerIndex , deathPlayerTeamIndex, killPlayerTeam };
         PhotonNetwork.RaiseEvent((int)EPointType.KILL, killCustomDatas, options, SendOptions.SendReliable); // 킬한 플레이어, 당한 플레이어 정보
     }
     public void OnAssistPoint()
     {        
-        if (assistPlayerList.Contains(playerNicknameList[lastAttackPlayerIndex]))
-            assistPlayerList.Remove(playerNicknameList[lastAttackPlayerIndex]);
+        if (assistPlayerList.Contains(otherTeamPlayerList[lastAttackPlayerIndex]))
+            assistPlayerList.Remove(otherTeamPlayerList[lastAttackPlayerIndex]);
         if (assistPlayerList.Count != 0) 
             PhotonNetwork.RaiseEvent((int)EPointType.ASSIST, assistPlayerList.ToArray(), options, SendOptions.SendReliable); // 공격 기여한 플레이어들 정보
     }
@@ -175,11 +194,11 @@ public class PlayPointController
         if (index == -1) return;
 
         Debug.Log($"attackPlayerindex{index}");
-        Debug.Log($"AttackPlayer {playerNicknameList[index]}");
-        if (!assistPlayerList.Contains(playerNicknameList[index]))
+        Debug.Log($"AttackPlayer {otherTeamPlayerList[index]}");
+        if (!assistPlayerList.Contains(otherTeamPlayerList[index]))
         {
             Debug.Log($"Add AttackPlayer {index}");
-            assistPlayerList.Add(playerNicknameList[index].ToString());
+            assistPlayerList.Add(otherTeamPlayerList[index].ToString());
         }
         lastAttackPlayerIndex = index;
     }

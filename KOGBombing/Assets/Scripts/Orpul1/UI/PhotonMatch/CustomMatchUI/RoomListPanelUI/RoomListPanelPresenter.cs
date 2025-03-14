@@ -10,10 +10,12 @@ public class RoomListPanelPresenter : MonoBehaviour
     private void OnEnable()
     {
         UIEventBus.Subscribe(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL,ActiveUIPanel);
+        UIEventBus.Subscribe(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL,DeactiveUIPanel);
     }
     private void OnDisable()
     {
         UIEventBus.UnSubscribe(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL, ActiveUIPanel);
+        UIEventBus.UnSubscribe(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL, DeactiveUIPanel);
     }
     private void Start()
     {
@@ -24,6 +26,11 @@ public class RoomListPanelPresenter : MonoBehaviour
     {
         view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(true);
         view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(true);
+    }
+    public void DeactiveUIPanel()
+    {
+        view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(false);
+        view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(false);
     }
     public void OnLeaveMatchBtn()
     {

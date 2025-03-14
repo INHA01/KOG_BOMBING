@@ -10,8 +10,6 @@ namespace Orpul1
     {
         TypedLobby customLobby;
 
-        [SerializeField]
-        MatchUIController matchUIController;
         bool isCustomMatch = false;
         private void Start()
         {
@@ -36,6 +34,7 @@ namespace Orpul1
             if (isCustomMatch)
             {
                 base.OnJoinedRoom();
+                UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL);
                 UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
             }
         }
@@ -72,7 +71,6 @@ namespace Orpul1
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            //Loading.LoadScene("MainGame");
             Managers.SceneLoad.LoadScene("MainGame");
         }
     }

@@ -146,7 +146,7 @@ namespace Orpul1
         private IEnumerator CoStartCountDown()
         {
             float timeCount = 0;
-            TextMeshProUGUI timeTMP = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
+            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
             
             while (timeCount < roundInterval) 
             {
@@ -186,6 +186,7 @@ namespace Orpul1
         private void OnRoundEnd(EventData punData)
         {
             if (punData.Code != (int)PunEventType.ENDROUND) return;
+            Managers.RoundData.roundCount++;
             object[] datas = (object[])punData.CustomData;
             nextRoundState = (EGameState)datas[0];
             winnerTeam = (ETeam)datas[1];

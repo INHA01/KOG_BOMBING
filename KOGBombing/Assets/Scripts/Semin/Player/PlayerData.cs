@@ -26,6 +26,7 @@ public class PlayerData : MonoBehaviour
     [Header("Model Anim")]
     public GameObject playerObj;
     public Transform playerLookObj;
+    public PunAnimation punAnimator;
     public PlayerAnimation animator;
 
 	[Header("Hide Material")]
@@ -47,9 +48,9 @@ public class PlayerData : MonoBehaviour
     [Header("Skill")]
     public ISkill skill;
 
-    public GameObject AttackRange { get { return LocalManagers.Resource.Instantiate("AttackPrefabs/AttackRange"); } }
-    public GameObject NoAttackRange { get { return LocalManagers.Resource.Instantiate("AttackPrefabs/NoAttackRange"); } }
-    public GameObject MaxAttackRange { get { return LocalManagers.Resource.Instantiate("AttackPrefabs/MaxAttackRange"); } }
+    public GameObject AttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/AttackRange"); } }
+    public GameObject NoAttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/NoAttackRange"); } }
+    public GameObject MaxAttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/MaxAttackRange"); } }
     public LineRenderer SetRenderer(GameObject attackRange) 
     { 
         LineRenderer lineRenderer = attackRange.GetComponent<LineRenderer>();

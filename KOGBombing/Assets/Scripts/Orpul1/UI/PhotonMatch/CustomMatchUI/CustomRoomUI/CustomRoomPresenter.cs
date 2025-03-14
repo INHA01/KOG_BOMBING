@@ -32,7 +32,7 @@ namespace Orpul1
         {
             for (int i = 0; i < (int)ECustomRoomPanel.END; i++)
                 view.panels[i].SetActive(false);
-            SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+            Managers.Sound.PlayUISound(EUiSoundType.CLICK);
             PhotonNetwork.LeaveRoom();
         }
     }

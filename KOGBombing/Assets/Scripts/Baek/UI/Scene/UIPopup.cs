@@ -6,6 +6,6 @@ public class UIPopup : UIBase
 {
     public override void Init()
     {
-        LocalManagers.UI.SetCanvas(gameObject, true);
+        Managers.UI.SetCanvas(gameObject, true);
     }
 }

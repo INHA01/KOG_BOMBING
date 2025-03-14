@@ -7,7 +7,7 @@ namespace Orpul1
 {
     public class RoundInfoManager
     {
-
+        public int roundCount = 1;
         int[] teamScore = new int[2];
         int[] teamkillScore = new int[2];
         int[] teamMissionScore = new int[2];

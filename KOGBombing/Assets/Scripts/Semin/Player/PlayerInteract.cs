@@ -80,8 +80,8 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         blackBoard.playerStatus.isGroggy = false;
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         blackBoard.hpBar.HideGroggy();
-        animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
-        playerData.pv.RPC("ChangeWeaponInteract", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+        //animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+        playerData.pv.RPC("ChangeWeaponInteract", RpcTarget.All, (int)WeaponType.GUN);
         blackBoard.speedDebuff.groggyValue = 1;
         playerData.isGroggyInteracting = false;
 
@@ -89,6 +89,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 
     public void Rescue()
     {
-        playerData.pv.RPC("OnResurrect", RpcTarget.AllBuffered);
+        playerData.pv.RPC("OnResurrect", RpcTarget.All);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
     }
 }

@@ -36,10 +36,10 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         count--;
         if(playerData.pv.IsMine)
         {
-            playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+            playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
             playScene.subWeaponFades[1].SetActive(true);
         }
-        playerData.pv.RPC("PutBomb", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PutBomb", RpcTarget.All);
     }
 
     [PunRPC]

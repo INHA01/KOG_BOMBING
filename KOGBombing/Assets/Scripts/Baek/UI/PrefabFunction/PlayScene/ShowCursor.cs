@@ -38,7 +38,7 @@ public class ShowCursor : UIPopup
         screenPos.maxX = screenPos.canvasPos.x + (Screen.width / 2 - cursorLength);
         screenPos.minY = screenPos.canvasPos.y - (Screen.height / 2 - cursorLength);
         screenPos.maxY = screenPos.canvasPos.y + (Screen.height / 2 - cursorLength);
-        main = LocalManagers.CamData.GetCamera(ECameraType.MAINCAMERA).GetComponent<Camera>();
+        main = Managers.CamData.GetCamera(ECameraType.MAINCAMERA).GetComponent<Camera>();
     }
     void FixedUpdate()
     {
@@ -70,7 +70,7 @@ public class ShowCursor : UIPopup
                 soundEffect = soundCursor[i];
         }
         if(soundEffect == null)
-            soundEffect = LocalManagers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/SoundCursor", cursorParent.transform);
+            soundEffect = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/SoundCursor", cursorParent.transform);
         else
             soundEffect.SetActive(true);
         soundCursor.Add(soundEffect);

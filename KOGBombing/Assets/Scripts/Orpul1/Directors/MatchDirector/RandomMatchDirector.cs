@@ -9,6 +9,7 @@ namespace Orpul1
 {
     public class RandomMatchDirector : PhotonMatch
     {
+        [SerializeField] GameObject countDownImg;
         TypedLobby randomMatchLobby;
         WaitForSeconds gameStartDelay = new WaitForSeconds(2);
 
@@ -16,7 +17,7 @@ namespace Orpul1
         bool isRandomMatch = false;
         private void Start()
         {
-            randomMatchLobby = new TypedLobby(matchData.LobbyName, matchData.LobbyType);
+            randomMatchLobby = new TypedLobby(matchData.LobbyName.ToString(), matchData.LobbyType);
         }
         public override void Match()
         {
@@ -105,6 +106,12 @@ namespace Orpul1
                 yield return gameStartDelay;
                 PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.ROOMSTATE.ToString(), "Start" } });
             }
+        }
+        protected override IEnumerator CoStartDelay()
+        {
+            yield return null;
+            countDownImg.SetActive(true);
+            base.CoStartDelay();
         }
     }
 }

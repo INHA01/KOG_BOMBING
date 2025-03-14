@@ -26,12 +26,9 @@ public class UIManager
         {
             return _popupDictionary[name].GetComponent<T>();
         }
-        else
-        {
-            T popup = ShowPopupUI<T>(name);
-            if(popup != null)
-                return popup.GetComponent<T>();
-        }
+        T popup = ShowPopupUI<T>(name);
+        if (popup != null)
+            return popup.GetComponent<T>();
         return default;
     }
 
@@ -45,7 +42,7 @@ public class UIManager
         // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
         if (!_popupDictionary.ContainsKey(name))
         {
-            go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
+            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
             go.transform.SetParent(Root.transform);
             isExist = true;
         }
@@ -53,7 +50,7 @@ public class UIManager
         {
             go = _popupDictionary[name].gameObject;
         }
-        go.SetActive(true); 
+        go.SetActive(true);
         T sceneUI = Util.GetOrAddComponent<T>(go);
         if (sceneUI == null)
         {
@@ -61,7 +58,7 @@ public class UIManager
             return null;
         }
         sceneUI.Init();
-        if(isExist)
+        if (isExist)
             _popupDictionary.Add(name, sceneUI);
 
         return sceneUI;
@@ -74,11 +71,11 @@ public class UIManager
         {
             go = _popupDictionary.Last().Value.gameObject;
         }
-        else if(_popupDictionary.ContainsKey(name))
+        else if (_popupDictionary.ContainsKey(name))
         {
             go = _popupDictionary[name].gameObject;
         }
-        if(go != null)
+        if (go != null)
         {
             _order--;
             go.SetActive(false);
@@ -86,9 +83,15 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        for(int i = 0; i < _popupDictionary.Count; i++)
+        Dictionary<string, bool> isActive = new Dictionary<string, bool>();
+        foreach (var popup in _popupDictionary)
         {
-            ClosePopupUI();
+            isActive.Add(popup.Key, popup.Value.gameObject.activeSelf);
+        }
+        foreach (var popup in isActive)
+        {
+            if (popup.Value)
+                ClosePopupUI(popup.Key);
         }
     }
 

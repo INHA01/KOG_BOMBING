@@ -8,11 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
-public struct PlayerInfo
-{
-    public ETeam teamType;
-    public int teamIndex;
-}
+
 
 public class PlayerShooting : Magazine
 {
@@ -66,7 +62,7 @@ public class PlayerShooting : Magazine
     void PunPlaySound(int type)
     {
         AudioClip effect = playerData.soundList.WeaponList[type];
-        SoundManager.Instance.PlayEffect(effect, transform, 1, 0, 50);
+        Managers.Sound.PlayEffect(effect, EMixerGroup.EFFECT, transform, 1, 0, 50);
     }
 
     [PunRPC]
@@ -80,7 +76,7 @@ public class PlayerShooting : Magazine
         }
         bullet.GetComponent<BulletController>().direction = shootDirection.normalized;
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
-        bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.teamType; 
+        bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.team; 
         bullet.GetComponent<BulletController>().playerIndex = playerInfo.teamIndex;
         bullet.transform.position = playerData.shootPos[(int)ShootPos.Start].position + new Vector3(1, 0, 1) * Random.Range(-0.05f, 0.05f);// + new Vector3(0, 0.8f, 0);
         bullet.transform.rotation = playerData.playerObj.transform.rotation;
@@ -91,14 +87,14 @@ public class PlayerShooting : Magazine
     {
         if(playerData.pv.IsMine)
         {
-            playerData.pv.RPC("PunPlaySound", RpcTarget.AllBuffered, (int)EWeaponSound.SHOOTING);
+            playerData.pv.RPC("PunPlaySound", RpcTarget.All, (int)EWeaponSound.SHOOTING);
         }
             
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
-            animator.Shoot();
-            playerData.pv.RPC("BulletSpawn", RpcTarget.AllBuffered, playerData.shootDirection);
+            playerData.punAnimator.Shoot();
+            playerData.pv.RPC("BulletSpawn", RpcTarget.All, playerData.shootDirection);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}
@@ -127,7 +123,7 @@ public class PlayerShooting : Magazine
                 magazineCount++;
 
                 AudioClip reloadSound = playerData.soundList.WeaponList[(int)EWeaponSound.RELOAD];
-                SoundManager.Instance.PlayEffect(reloadSound);
+                Managers.Sound.PlayEffect(reloadSound);
 
                 if (bulletCount == 0)
                     bulletCount = InitBulletCount;

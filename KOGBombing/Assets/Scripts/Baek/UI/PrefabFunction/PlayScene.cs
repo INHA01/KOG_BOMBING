@@ -1,4 +1,5 @@
 using Orpul1;
+using Photon.Realtime;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ public class PlayScene : UIPopup
     [SerializeField] TextMeshProUGUI magazineCount;
     [SerializeField] Image chargeBar;
     [SerializeField] GameObject teamProfile;
-    [SerializeField] GameObject killLog;
+    [SerializeField] GameObject killLogo;
+    [SerializeField] KillLogUpdater killLogUpdater;
     Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
+    [SerializeField] GameObject roundGuide;
     Sprite[] blueScoreImages = new Sprite[10];
     Sprite[] redScoreImages = new Sprite[10];
     List<Sprite[]> scoreImageList = new List<Sprite[]>();
@@ -91,15 +94,26 @@ public class PlayScene : UIPopup
         }
         dicTeamProfile.Clear();
     }
+    public void PublishRound(int round)
+    {
+        roundGuide.GetComponent<TextMeshProUGUI>().text = "Round " + round;
+        Animator animator = roundGuide.GetComponent<Animator>();
+        animator.Rebind();
+        animator.Play("RoundGuide", 0, 0);
+    }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
-        go = LocalManagers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();
         profile.Init(blackBoard);
         dicTeamProfile.Add(blackBoard.nickname, profile);
+    }
+    public void UpdateKillLog(PlayerInfo[] logInfos)
+    {
+        killLogUpdater.UpdateKillLog(logInfos);
     }
     public void UpdateProfile(string nickname)
     {
@@ -115,13 +129,13 @@ public class PlayScene : UIPopup
     public void SetSubWeaponIcon(WeaponType type)
     {
         string name = type == WeaponType.LANDMINE ? "Landmine" : "Grenade_Flash";
-        subWeaponIcon.sprite = LocalManagers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");
+        subWeaponIcon.sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");
     }
     public void SetSkillIcon(CharacterType type)
     {
         string name = type == CharacterType.Ned ? "Ned" : "Uni";
-        skillIcon[0].GetComponent<Image>().sprite = LocalManagers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
-        skillIcon[1].GetComponent<Image>().sprite = LocalManagers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
+        skillIcon[0].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
+        skillIcon[1].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
         SetSkillActive(true);
     }
     public void SetSkillActive(bool isActive)
@@ -135,12 +149,12 @@ public class PlayScene : UIPopup
     }
     IEnumerator DuringKill()
     {
-        if(killLog.activeSelf)
+        if(killLogo.activeSelf)
         {
-            killLog.SetActive(false);
+            killLogo.SetActive(false);
         }
-        killLog.SetActive(true);
+        killLogo.SetActive(true);
         yield return new WaitForSeconds(3f);
-        killLog.SetActive(false);
+        killLogo.SetActive(false);
     }
 }

@@ -30,7 +30,7 @@ namespace Orpul1
         }
         public void OnQuitBtn()
         {
-            SoundManager.Instance.PlayUISound(EUiSoundType.CLICK);
+            Managers.Sound.PlayUISound(EUiSoundType.CLICK);
             view.createRoomPopupPanel.SetActive(false);
         }
     }

@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 8238119801503073566}
   - component: {fileID: 8081092482430328668}
   - component: {fileID: 8293426332323056391}
+  - component: {fileID: 6610940346418021903}
   m_Layer: 5
   m_Name: LoadingCanvas
   m_TagString: Untagged
@@ -190,7 +191,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7879c4e320cee42a0e3cf0bf96c717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextScene: 
   loadingCircle: {fileID: 7445330662339766754}
+--- !u!81 &6610940346418021903
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5249517359913032908}
+  m_Enabled: 1
 --- !u!1 &5940661301125054167
 GameObject:
   m_ObjectHideFlags: 0

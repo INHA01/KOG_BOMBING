@@ -115,10 +115,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 	public void OnDamaged(float damage, int playerIndex)
     {
+         playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
         if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
-            playerData.pv.RPC("Damage", RpcTarget.AllBuffered, damage, playerIndex);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
         }
@@ -136,11 +136,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState RespawnNode()
     {
         if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunRespawn", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PunRespawn", RpcTarget.All);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.supportWeapon.LoadWeaponIcon();
         playerData.skill.LoadSkillIcon();
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.AllBuffered, (int)WeaponType.GUN);
+		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 
 		return INode.ENodeState.Success;
     }
@@ -149,7 +150,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         blackBoard.Initialize();
         playerMaterialController.StartCreateEffect();
-		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		//animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
         playerData.InitializeCount();
 
@@ -163,22 +164,22 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetDeactiveUI()
     {
         if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunDeactiveUI", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PunDeactiveUI", RpcTarget.All);
         return INode.ENodeState.Success;
     }
     public INode.ENodeState ShowKillUI()
     {
         if(blackBoard.nickname ==playerPointController.GetKillPlayerNickname().ToString())
-            playerData.pv.RPC("PunShowKillUI", RpcTarget.AllBuffered);
+            playerData.pv.RPC("PunShowKillUI", RpcTarget.All);
         return INode.ENodeState.Success;
     }
     [PunRPC]
     private void PunShowKillUI()
     {
-        PlayScene playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
         playScene.ActiveKill();
         AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-        SoundManager.Instance.PlayEffect(killSound);
+        Managers.Sound.PlayEffect(killSound);
     }
     [PunRPC]
     private void PunDeactiveUI()
@@ -190,7 +191,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetPlayerScore()
     {
         if (blackBoard.isSetScore) return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunDeathSound", RpcTarget.AllBuffered);
+        playerData.pv.RPC("PunDeathSound", RpcTarget.All);
         if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
 
         playerPointController.OnKillPoint();
@@ -212,7 +213,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
 
         deathsound = playerData.soundList.HitDeathList[(int)soundType];
-        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);
+        Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
     
     [PunRPC]
@@ -265,7 +266,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					skill.Disable();
 				playerData.supportWeapon.Disable();
 
-				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.AllBuffered, (int)WeaponType.NONE);
+				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.All, (int)WeaponType.NONE);
                 blackBoard.hpBar.ShowGroggy();
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				groggyCoroutine = StartCoroutine(Groggy());
@@ -299,7 +300,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     private void Death()
     {
-        ShowCursor showCursor = LocalManagers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+        ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
        /* AudioClip deathsound = null;
         if(blackBoard.characterType == CharacterType.Ned)
         {
@@ -309,7 +310,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.UNI_DEATH];
         }
-        SoundManager.Instance.PlayEffect(deathsound, transform, 1, 0, 30);*/
+        Managers.Sound.PlayEffect(deathsound, transform, 1, 0, 30);*/
         if (!blackBoard.showSoundEffect)
         {
             blackBoard.showSoundEffect = true;
@@ -330,7 +331,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
 		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
-		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
+		//animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
         blackBoard.speedDebuff.Initialize();
@@ -372,23 +374,22 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (stream.IsWriting)
         {
-            object[] sendHitInfo = new object[]
-            { blackBoard.playerStatus.isLive, blackBoard.playerStatus.hp,
-            blackBoard.playerStatus.defence,blackBoard.playerStatus.groggyable,
-            blackBoard.playerStatus.groggyValue,blackBoard.playerStatus.isGroggy};
-            stream.SendNext(sendHitInfo);
+            stream.SendNext(blackBoard.playerStatus.isLive);
+            stream.SendNext((int)blackBoard.playerStatus.hp);
+            stream.SendNext((int)blackBoard.playerStatus.defence);
+            stream.SendNext(blackBoard.playerStatus.groggyable);
+            stream.SendNext((int)blackBoard.playerStatus.groggyValue);
+            stream.SendNext(blackBoard.playerStatus.isGroggy);
         }
         else if (stream.IsReading)
         {
-            object[] reciveHitInfo = (object[])stream.ReceiveNext();
-            bool isLive = (bool)reciveHitInfo[0];
-            SetActiveState(isLive);
-            blackBoard.playerStatus.isLive = isLive;
-            blackBoard.playerStatus.hp = (float)reciveHitInfo[1];
-            blackBoard.playerStatus.defence = (float)reciveHitInfo[2];
-            blackBoard.playerStatus.groggyable = (bool)reciveHitInfo[3];
-            blackBoard.playerStatus.groggyValue = (float)reciveHitInfo[4];
-            blackBoard.playerStatus.isGroggy = (bool)reciveHitInfo[5];
+            blackBoard.playerStatus.isLive = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.hp = (int)stream.ReceiveNext();
+            blackBoard.playerStatus.defence = (int)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyable = (bool)stream.ReceiveNext();
+            blackBoard.playerStatus.groggyValue = (int)stream.ReceiveNext();
+            blackBoard.playerStatus.isGroggy = (bool)stream.ReceiveNext();
+            SetActiveState(blackBoard.playerStatus.isLive);
 
             blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         }
@@ -396,7 +397,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     public void OnRigidity(float time)
     {
-        playerData.pv.RPC("Rigidity", RpcTarget.AllBuffered, time);
+        playerData.pv.RPC("Rigidity", RpcTarget.All, time);
     }
 	[PunRPC]
     private void Rigidity(float time)
@@ -408,14 +409,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (blackBoard.observaTargetNickname == null) return true;
         if (blackBoard.observaTargetNickname.Equals("")) return true;
-        bool isLiveTarget = LocalManagers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
+        bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
         if (!isLiveTarget) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
     public INode.ENodeState FindAlivePlayer()
     {
-        List<PlayerBlackBoard> blackBoards = LocalManagers.PunData.GetAllBlackBoard();
+        List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         Debug.Log("Search Alive Player");
         for (int i = 0; i < blackBoards.Count; i++)
         {
@@ -437,7 +438,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetCameraTarget()
     {
         
-        if (LocalManagers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive)
+        if (Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.observaTarget);
             blackBoard.viewCamera.transform.LookAt(blackBoard.observaTarget.transform);

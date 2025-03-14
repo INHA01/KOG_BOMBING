@@ -28,20 +28,20 @@ public abstract class SupportWeaponBase : Magazine, ISupportWeapon
         switch (type)
 		{
 			case WeaponType.LANDMINE:
-                consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
+                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
                 break;
 			case WeaponType.MOLOTOV:
-				consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
+				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
                 break;
 			case WeaponType.BOMB:
-                consum = LocalManagers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
+                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
                 break;
         }
 		this.type = type;
 		this.playerData = playerData;
 		if(playerData.pv.IsMine)
 		{
-			playScene = LocalManagers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
 			if(type != WeaponType.BOMB)
 				playScene.SetSubWeaponIcon(type);
 		}

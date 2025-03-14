@@ -48,7 +48,8 @@ public class PlayerMovement : PlayerBehavior
                 Vector3 pointTolook = cameraRay.GetPoint(rayLength);
                 playerData.mousePos = pointTolook;
                 playerData.punAnimator.Rotation(pointTolook, blackBoard.speedValue);
-                playerData.playerObj.transform.LookAt(pointTolook);
+                //playerData.playerObj.transform.LookAt(pointTolook);
+                //playerData.
             }
         }
 

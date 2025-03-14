@@ -62,6 +62,7 @@ public class PunAnimation : MonoBehaviour
             if (animator.GetBool(AnimType.Rotation.ToString()) == true)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
+                targetRotation *= Quaternion.Euler(0, 1, 0);
                 rotatePlayer.rotation = Quaternion.Slerp(rotatePlayer.rotation, targetRotation, playerAnime.RotateSpeed * Time.deltaTime);
                 if (angle > 0)
                 {
@@ -81,6 +82,7 @@ public class PunAnimation : MonoBehaviour
             animator.SetBool(ERotateAniType.IsMoving.ToString(), false);
             animator.SetBool(ERotateAniType.Rotation.ToString(), false);
             Quaternion targetRotation = Quaternion.LookRotation(direction);
+            targetRotation *= Quaternion.Euler(0, 1, 0);
             rotatePlayer.rotation = Quaternion.Slerp(rotatePlayer.rotation, targetRotation, playerAnime.RotateSpeed * Time.deltaTime);
         }
     }

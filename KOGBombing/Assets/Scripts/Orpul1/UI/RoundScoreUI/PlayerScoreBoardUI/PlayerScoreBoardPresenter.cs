@@ -27,4 +27,8 @@ public class PlayerScoreBoardPresenter : MonoBehaviour, ISetScoreable<EPlayerSco
         model.SetScore(type, model.PlayerScore[type] + score);
     }
 
+    public void ResetScore()
+    {
+        Destroy(gameObject);
+    }
 }

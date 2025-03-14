@@ -28,7 +28,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     [SerializeField]
     GameObject[] teamScorePanels = new GameObject[2];
 
-    Dictionary<string, ISetScoreable<EPlayerScore>> dicPlayerScore = new Dictionary<string, ISetScoreable<EPlayerScore>>();
+    Dictionary<string, ISetScoreable<EPlayerScore>> dictPlayerScore = new Dictionary<string, ISetScoreable<EPlayerScore>>();
     Dictionary<ETeam, ISetScoreable<ETeamScore>> dicTeamScore = new Dictionary<ETeam, ISetScoreable<ETeamScore>>();
     List<StringBuilder> playerNicknameList;
 
@@ -66,10 +66,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[0])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
         myPlayerScoreUI.SetTitle(new StringBuilder(PhotonNetwork.LocalPlayer.NickName));
-        dicPlayerScore.Add(PhotonNetwork.LocalPlayer.NickName, myPlayerScoreUI);
-
-        
-
+        dictPlayerScore.Add(PhotonNetwork.LocalPlayer.NickName, myPlayerScoreUI);
 
         Dictionary<string , Player> players = new Dictionary<string, Player>();
         foreach (Player player in PhotonNetwork.PlayerListOthers)
@@ -85,8 +82,17 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
             ISetScoreable<EPlayerScore> playerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[parentIndex])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
             playerScoreUI.SetTitle(new StringBuilder(players.ElementAt(i).Value.NickName));
-            dicPlayerScore.Add(players.ElementAt(i).Value.NickName, playerScoreUI);
+            dictPlayerScore.Add(players.ElementAt(i).Value.NickName, playerScoreUI);
         }
+    }
+    public void ResetPlayerScore()
+    {
+        for (int i = 0; i < dictPlayerScore.Count; i++)
+        {
+            ISetScoreable<EPlayerScore> score = dictPlayerScore.ElementAt(i).Value;
+            score.ResetScore();
+        }
+        dictPlayerScore.Clear();
     }
 
     private void SetTeamScore()
@@ -101,11 +107,11 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     public void UpdatePlayerScore(StringBuilder nickname, EPlayerScore updateType)
     {
         Debug.Log($"{updateType.ToString()} event! key is {nickname.ToString()}");
-        if (!dicPlayerScore.ContainsKey(nickname.ToString()))
+        if (!dictPlayerScore.ContainsKey(nickname.ToString()))
         {
             return;
         }
-        dicPlayerScore[nickname.ToString()].SetScore(updateType, 1);
+        dictPlayerScore[nickname.ToString()].SetScore(updateType, 1);
         List<string> myTeamList = Managers.PointData.MyTeamPlayers;
         List<string> otherTeamList = Managers.PointData.OtherTeamPlayers;
         

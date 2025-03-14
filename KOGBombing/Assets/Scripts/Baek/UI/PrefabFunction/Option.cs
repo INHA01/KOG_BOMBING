@@ -28,6 +28,7 @@ public class Option : UIPopup
             Managers.PunData.Init();
             Managers.CamData.InitCamera();
             reCheckLobby.SetActive(false);
+            Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas").ResetPlayerScore();
             Managers.SceneLoad.LoadScene("LobbyScene");
         }
         else

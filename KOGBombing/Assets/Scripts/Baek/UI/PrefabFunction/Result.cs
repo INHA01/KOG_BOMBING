@@ -105,7 +105,7 @@ public class Result : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
         Managers.PunData.Init();
-        //Loading.LoadScene("LobbyScene");
+        Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas").ResetPlayerScore();
         Managers.SceneLoad.LoadScene("LobbyScene");
     }
 }

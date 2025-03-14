@@ -48,9 +48,9 @@ namespace Orpul1
             teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
             teamScores[(int)ETeam.BLUETEAM] = tempScore;
 
-            int teamCount = teamCounts[(int)ETeam.REDTEAM];
-            teamCounts[(int)ETeam.REDTEAM] = teamCounts[(int)ETeam.BLUETEAM];
-            teamCounts[(int)ETeam.BLUETEAM] = teamCount;
+            int teamCount = roomTeamCounts[(int)ETeam.REDTEAM];
+            roomTeamCounts[(int)ETeam.REDTEAM] = roomTeamCounts[(int)ETeam.BLUETEAM];
+            roomTeamCounts[(int)ETeam.BLUETEAM] = teamCount;
 
             bool isSwitchRoll = isAlreadySwitchRoll[(int)ETeam.REDTEAM];
             isAlreadySwitchRoll[(int)ETeam.REDTEAM] = isAlreadySwitchRoll[(int)ETeam.BLUETEAM];
@@ -63,13 +63,11 @@ namespace Orpul1
         }
         public bool IsSwitchRoll()
         {
-            bool isSwitchRoll = false;
             for (int i = 0; i < (int)ETeam.END; i++)
             {
                 if (switchRoundScores[i] < switchRoundScore) continue;
                 if (isAlreadySwitchRoll[i]) continue;
                 SwapTeam();
-                isSwitchRoll = true;
                 switchRoundScores[(int)ETeam.REDTEAM] = 0;
                 switchRoundScores[(int)ETeam.BLUETEAM] = 0;
                 isAlreadySwitchRoll[i] = true;

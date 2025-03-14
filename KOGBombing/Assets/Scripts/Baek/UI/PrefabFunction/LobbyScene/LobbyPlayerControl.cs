@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Semin;
+using UnityEngine.UIElements;
 
 public class LobbyPlayerControl : MonoBehaviour, IDragHandler
 {
     [SerializeField] GameObject lobbyPlayer;
-    [SerializeField] GameObject[] lobbPlayerTypes = new GameObject[(int)CharacterType.Max];
+    [SerializeField] GameObject[] lobbyPlayerTypes = new GameObject[(int)CharacterType.Max];
     [SerializeField] float rotateSpeed = 10f;
     Vector3 rot;
     void Start()
     {
-        //lobbyPlayer = Managers.Resource.Instantiate("PlayerPrefabs/LobbyNed");
         rot = lobbyPlayer.transform.localEulerAngles;
     }
-
     public void OnDrag(PointerEventData eventData)
     {
         rot.y += eventData.delta.x * rotateSpeed * Time.deltaTime;
@@ -28,11 +27,11 @@ public class LobbyPlayerControl : MonoBehaviour, IDragHandler
         {
             if(i == type)
             {
-                lobbPlayerTypes[i].SetActive(true);
+                lobbyPlayerTypes[i].SetActive(true);
             }
             else
             {
-                lobbPlayerTypes[i].SetActive(false);
+                lobbyPlayerTypes[i].SetActive(false);
             }
         }
     }

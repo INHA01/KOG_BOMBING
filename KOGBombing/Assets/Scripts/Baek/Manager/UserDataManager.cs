@@ -13,7 +13,7 @@ public class UserData
     public int death;
     public int win;
     public int lose;
-    public float winningRate;
+    public int assist;
     public int level;
     public float exp;
 
@@ -25,7 +25,7 @@ public class UserData
         death = 0;
         win = 0;
         lose = 0;
-        winningRate = 0;
+        assist = 0;
         level = 1;
         exp = 0;
     }

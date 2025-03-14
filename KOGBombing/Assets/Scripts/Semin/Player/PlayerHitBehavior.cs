@@ -259,9 +259,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				blackBoard.playerStatus.groggyable = false;
 				blackBoard.speedDebuff.groggyValue = 0.1f;
 
-				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
-				playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
-                animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, true);
+                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
+                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Granade, false);
+                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, true);
 				if (playerData.skill is ThrowableSkill skill)
 					skill.Disable();
 				playerData.supportWeapon.Disable();

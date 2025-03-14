@@ -13,14 +13,6 @@ public class FOVMeshCollider : MonoBehaviour
 	{
 		boxCollider = GetComponent<BoxCollider>();
 	}
-
-	private void Update()
-	{
-		if (boxCollider != null)
-		{
-			//Debug.Log(collider.size);
-		}
-	}
 	private void OnTriggerEnter(Collider other)
 	{
 		PlayerController player = other.GetComponent<PlayerController>();
@@ -36,13 +28,10 @@ public class FOVMeshCollider : MonoBehaviour
 				color.a = 1;
 				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
 			}
-			//player.blackBoard.hpBar.ShowOtherTeamUI();
-			//if (player.blackBoard.playerStatus.isGroggy)
-			//	player.blackBoard.hpBar.ShowGroggy();
 		}
 	}
 
-	private void OnTriggerStay(Collider other)
+	/*private void OnTriggerStay(Collider other)
 	{
 		PlayerController player = other.GetComponent<PlayerController>();
 		if (player == null) return;
@@ -59,7 +48,7 @@ public class FOVMeshCollider : MonoBehaviour
 			//if (player.blackBoard.playerStatus.isGroggy)
 			//	player.blackBoard.hpBar.ShowGroggy();
 		}
-	}
+	}*/
 
 	private void OnTriggerExit(Collider other)
 	{
@@ -76,7 +65,6 @@ public class FOVMeshCollider : MonoBehaviour
 				color.a = 0;
 				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
 			}
-			//player.blackBoard.hpBar.HideOtherTeamUI();
 		}
 	}
 }

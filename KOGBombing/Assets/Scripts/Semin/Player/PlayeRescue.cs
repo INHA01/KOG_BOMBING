@@ -32,7 +32,7 @@ public class PlayeRescue : InteractObject
     [PunRPC]
     private void RPCActiveRescueCollider()
     {
-        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]) return;
+        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != blackBoard.playerTeam) return;
 
         interactCollider.enabled = true;
         interactUI.ActivePanel();

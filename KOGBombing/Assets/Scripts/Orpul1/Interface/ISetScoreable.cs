@@ -7,4 +7,5 @@ public interface ISetScoreable<T>
 {
     public void SetTitle(StringBuilder title);
     public void SetScore(T type, int score);
+    public void ResetScore();
 }

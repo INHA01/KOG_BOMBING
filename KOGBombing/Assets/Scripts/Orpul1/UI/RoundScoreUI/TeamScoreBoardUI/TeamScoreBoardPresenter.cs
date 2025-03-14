@@ -29,4 +29,8 @@ public class TeamScoreBoardPresenter : MonoBehaviour, ISetScoreable<ETeamScore>
         view.TeamTextUI[type].text = model.ScoreText[type].ToString();
     }
 
+    public void ResetScore()
+    {
+        Destroy(gameObject);
+    }
 }

@@ -9664,6 +9664,7 @@ GameObject:
   - component: {fileID: 1317832637}
   - component: {fileID: 1317832636}
   - component: {fileID: 1317832638}
+  - component: {fileID: 1317832641}
   m_Layer: 0
   m_Name: GameDirector
   m_TagString: Untagged
@@ -9740,7 +9741,7 @@ MonoBehaviour:
   roundDoorController:
   - {fileID: 1969380414}
   - {fileID: 557816057}
-  gamestartInterval: 5
+  gamestartInterval: 10
   time: 0
 --- !u!114 &1317832633
 MonoBehaviour:
@@ -9855,6 +9856,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData: {fileID: 0}
   roundEndTime: 5
+--- !u!114 &1317832641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317832626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!64 &1322413006
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11556,7 +11579,7 @@ PrefabInstance:
     - target: {fileID: 1917406678289332040, guid: 010348e31eb63904298dda4f6de31c56,
         type: 3}
       propertyPath: sceneViewId
-      value: 60
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2029181598187082746, guid: 010348e31eb63904298dda4f6de31c56,
         type: 3}
@@ -13377,7 +13400,7 @@ PrefabInstance:
     - target: {fileID: 5025844350980101262, guid: 9c5912f462d623343a295ae29b64e881,
         type: 3}
       propertyPath: sceneViewId
-      value: 61
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5167987260642423818, guid: 9c5912f462d623343a295ae29b64e881,
         type: 3}

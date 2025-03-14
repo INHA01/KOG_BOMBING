@@ -25,6 +25,7 @@ public class PlayScene : UIPopup
     Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
+    [SerializeField] GameObject roundGuide;
     Sprite[] blueScoreImages = new Sprite[10];
     Sprite[] redScoreImages = new Sprite[10];
     List<Sprite[]> scoreImageList = new List<Sprite[]>();
@@ -92,6 +93,13 @@ public class PlayScene : UIPopup
             Destroy(profile.gameObject);
         }
         dicTeamProfile.Clear();
+    }
+    public void PublishRound(int round)
+    {
+        roundGuide.GetComponent<TextMeshProUGUI>().text = "Round " + round;
+        Animator animator = roundGuide.GetComponent<Animator>();
+        animator.Rebind();
+        animator.Play("RoundGuide", 0, 0);
     }
     public void SetTeam(PlayerBlackBoard blackBoard)
     {

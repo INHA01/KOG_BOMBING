@@ -32,6 +32,7 @@ namespace Orpul1
 
         public override void EnterState()
         {
+            Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").PublishRound(Managers.RoundData.roundCount);
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDWAIT);
             for (int i = 0; i < roundDoorController.Length; i++)
             {

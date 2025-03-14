@@ -26,6 +26,7 @@ public class PlayerData : MonoBehaviour
     [Header("Model Anim")]
     public GameObject playerObj;
     public Transform playerLookObj;
+    public PunAnimation punAnimator;
     public PlayerAnimation animator;
 
 	[Header("Hide Material")]

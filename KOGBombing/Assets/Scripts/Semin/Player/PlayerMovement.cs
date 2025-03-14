@@ -46,12 +46,17 @@ public class PlayerMovement : PlayerBehavior
             if (GroupPlane.Raycast(cameraRay, out rayLength))
             {
                 Vector3 pointTolook = cameraRay.GetPoint(rayLength);
-                playerData.mousePos = pointTolook;
-                playerData.animator.Rotation(pointTolook, blackBoard.speedValue);
-                playerData.playerObj.transform.LookAt(pointTolook);
+                playerData.pv.RPC("PunRoate", RpcTarget.All, pointTolook, blackBoard.speedValue);
             }
         }
 
         return INode.ENodeState.Success;
+    }
+    [PunRPC]
+    private void PunRoate(Vector3 lookPoint, Vector2 speedValue)
+    {
+        playerData.mousePos = lookPoint;
+        playerData.animator.Rotation(lookPoint, speedValue);
+        playerData.playerObj.transform.LookAt(lookPoint);
     }
 }

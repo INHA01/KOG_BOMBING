@@ -137,6 +137,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
         playerData.pv.RPC("PunRespawn", RpcTarget.All);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.supportWeapon.LoadWeaponIcon();
         playerData.skill.LoadSkillIcon();
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
@@ -149,7 +150,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         blackBoard.Initialize();
         playerMaterialController.StartCreateEffect();
-		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+		//animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
         playerData.InitializeCount();
 
@@ -330,7 +331,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
 		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
-		animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
+		//animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
         blackBoard.speedDebuff.Initialize();

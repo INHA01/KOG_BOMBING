@@ -147,10 +147,11 @@ public class PlayerAttack : PlayerBehavior
 
 	private void CancelBomb()
 	{
-		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
-		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+        playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+        playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+
 		playerData.bomb.Disable();
 	}
     public INode.ENodeState ResetAttackData()
@@ -193,7 +194,7 @@ public class PlayerAttack : PlayerBehavior
                         bombNotify.NotifyGuide(false, blackBoard.playerTeam);
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
-						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+                        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
 
                         if (blackBoard.bombInteraction.GetBomb() != null)
 							blackBoard.bombInteraction.SetBombInteraction(false);
@@ -201,7 +202,7 @@ public class PlayerAttack : PlayerBehavior
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
 					{
-						playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.BombPlant);
+                        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.BombPlant);
 						animChange = StartCoroutine(WaitForChangeAnim(0.7f, WeaponType.GUN));
 					}
 					if (animChange == null)
@@ -215,7 +216,8 @@ public class PlayerAttack : PlayerBehavior
                         blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
-						playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
+                        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
+
 						playerData.isInteract = false;
 						return INode.ENodeState.Success;
 					}
@@ -267,8 +269,8 @@ public class PlayerAttack : PlayerBehavior
 
     private void CancelSupportWeapon()
 	{
-		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, false);
-		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Granade, false);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
 		playerData.supportWeapon.Disable();
 	}
 
@@ -282,7 +284,7 @@ public class PlayerAttack : PlayerBehavior
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, (int)WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
-                playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Landmine);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Landmine);
             }
             if (animChange != null)
             {
@@ -292,7 +294,7 @@ public class PlayerAttack : PlayerBehavior
             {
                 isChangableAnim = true;
                 blackBoard.inputs[EKey.NUM_1] = false;
-                playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Landmine);
+                playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Landmine);
                 return INode.ENodeState.Success;
             }
         }
@@ -315,7 +317,7 @@ public class PlayerAttack : PlayerBehavior
                     blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
                     blackBoard.inputs[EKey.NUM_1] = false;
                     CancelSupportWeapon();
-                    playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+                    playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                     isChangableAnim = true;
                     return INode.ENodeState.Success;
                 }
@@ -332,7 +334,7 @@ public class PlayerAttack : PlayerBehavior
             {
                 animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
                 playerData.supportWeapon.Use();
-                playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Throw);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Throw);
                 return INode.ENodeState.Success;
             }
             return INode.ENodeState.Running;
@@ -343,9 +345,9 @@ public class PlayerAttack : PlayerBehavior
 
     private void CancelSkill()
     {
-		playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
-		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-		if (playerData.skill is ThrowableSkill skill)
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+        if (playerData.skill is ThrowableSkill skill)
 			skill.Disable();
 	}
 
@@ -365,9 +367,9 @@ public class PlayerAttack : PlayerBehavior
             {
                 blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
                 blackBoard.inputs[EKey.Q] = false;
-                playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
-                playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
-                playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+                playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                 isChangableAnim = true;
                 return INode.ENodeState.Success;
             }
@@ -382,7 +384,7 @@ public class PlayerAttack : PlayerBehavior
         if (blackBoard.inputs[EKey.LMOUSEBUTTON])
         {
             animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
-            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
+            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Skill);
             playerData.skill.Use();
             return INode.ENodeState.Success;
         }
@@ -410,7 +412,7 @@ public class PlayerAttack : PlayerBehavior
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuff.skillValue = 2f;
-				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Skill);
 			}
 			if (animChange != null)
 			{
@@ -427,8 +429,8 @@ public class PlayerAttack : PlayerBehavior
 				isChangableAnim = true;
 				blackBoard.inputs[EKey.Q] = false;
 
-				playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
-				playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd);
+                playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 				return INode.ENodeState.Success;
 			}
 		}
@@ -463,7 +465,6 @@ public class PlayerAttack : PlayerBehavior
 
         if (blackBoard.inputs[EKey.NUM_2])
         {
-            //playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Bomb, true);
             if (playerData.bomb is SupportWeaponBase baseWeapon)
             {
                 // �������� ��� ��ź����, �������� ��� �����̹Ƿ� �Ǽ�
@@ -475,8 +476,8 @@ public class PlayerAttack : PlayerBehavior
         }
         else
         {
-            playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, false);
-            playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+            playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
+            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
             playerData.bomb.Disable();
 		}
 		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)weaponType);
@@ -495,7 +496,7 @@ public class PlayerAttack : PlayerBehavior
 
         if (blackBoard.inputs[EKey.NUM_1])
         {
-            playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Granade, true);
+            playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Granade, true);
             if (playerData.supportWeapon is SupportWeaponBase baseWeapon)
                 weaponType = baseWeapon.type;
         }
@@ -521,15 +522,15 @@ public class PlayerAttack : PlayerBehavior
 
 		if (blackBoard.inputs[EKey.Q])
 		{
-			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, true);
+            playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, true);
             //playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Skill); // Uni Test
 			if (playerData.skill is ThrowableSkill baseWeapon)
 				weaponType = baseWeapon.type;
 		}
 		else
 		{
-			playerData.animator.SetAnimBool(PlayerAnimation.AnimType.Skill, false);
-			playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.Cancel);
+            playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
+            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
 			if (playerData.skill is ThrowableSkill skill)
 				skill.Disable();
 		}

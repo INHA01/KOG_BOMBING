@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
+  m_SynchronizePosition: 0
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
@@ -317,6 +317,7 @@ GameObject:
   - component: {fileID: 1055956268508796724}
   - component: {fileID: 2279248158444923470}
   - component: {fileID: 6527240402747218028}
+  - component: {fileID: 3327122899350027625}
   - component: {fileID: 9216994139945491648}
   - component: {fileID: 3900849375641417542}
   - component: {fileID: 2047044685979704218}
@@ -538,6 +539,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackBoard: {fileID: 6782088153960012666}
+--- !u!114 &3327122899350027625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3d5dfaccb39ca4a923c4fa530d1576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pView: {fileID: 2047044685979704218}
+  playerAnime: {fileID: 7300479445460102179}
 --- !u!114 &9216994139945491648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +579,7 @@ MonoBehaviour:
   minimapIcon: {fileID: 1190640062829256390}
   playerObj: {fileID: 772106139481323054}
   playerLookObj: {fileID: 1368636139714485546}
+  punAnimator: {fileID: 3327122899350027625}
   animator: {fileID: 7300479445460102179}
   changeMaterialMeshs:
   - {fileID: 8352607293157097788}
@@ -3648,7 +3664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
+  m_SynchronizePosition: 0
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1

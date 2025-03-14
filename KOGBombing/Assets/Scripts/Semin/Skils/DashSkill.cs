@@ -115,16 +115,16 @@ public class DashSkill : MonoBehaviour, ISkill
         isRunning = false;
 		time = 0;
         blackBoard.speedDebuff.skillValue = 1.5f;
-		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
-		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+		playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd);
+		playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		while (time < buffTime)
 		{ 
 			time += Time.deltaTime;
 			yield return null;
 		}
 		blackBoard.speedDebuff.skillValue = 1f;
-		playerData.animator.SetAnimTrigger(PlayerAnimation.AnimType.DashEnd);
-		playerData.animator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd);
+        playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		dash = null;
 		// << :
 	}

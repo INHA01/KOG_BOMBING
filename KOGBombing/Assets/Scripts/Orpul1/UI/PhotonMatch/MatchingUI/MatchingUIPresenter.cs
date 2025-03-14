@@ -25,6 +25,6 @@ public class MatchingUIPresenter : MonoBehaviour
 
     public void UpdateUI()
     {
-        view.matchingImage.fillAmount = model.CountValue;
+        
     }
 }

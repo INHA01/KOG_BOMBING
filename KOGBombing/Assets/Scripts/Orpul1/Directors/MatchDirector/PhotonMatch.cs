@@ -92,7 +92,6 @@ namespace Orpul1
             Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             for (int i = 0; i < 2; i++)
                 yield return waitOneSec;
-            //LoadingSceneManager.LoadScene(ESceneType.MainGame.ToString());
             Managers.SceneLoad.LoadScene(ESceneType.MainGame.ToString());
         }
     }

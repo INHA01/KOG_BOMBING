@@ -6,5 +6,4 @@ using UnityEngine.UI;
 public class MatchingUIView : MonoBehaviour
 {
     public GameObject matchingPanel;
-    public Image matchingImage;
 }

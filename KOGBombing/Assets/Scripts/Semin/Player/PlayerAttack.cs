@@ -180,6 +180,8 @@ public class PlayerAttack : PlayerBehavior
                 {
                     bombInteractTime += Time.deltaTime;
                     blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
+
+                    playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, true);
                     return INode.ENodeState.Running;
                 }
                 else // 폭탄 설치 취소 or 완료

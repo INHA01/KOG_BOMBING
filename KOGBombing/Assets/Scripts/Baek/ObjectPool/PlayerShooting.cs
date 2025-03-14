@@ -93,7 +93,7 @@ public class PlayerShooting : Magazine
         attackRange.ShowDistance(true);
         while (bulletCount > 0)
         {
-            playerData.punAnimator.Shoot();
+            playerData.punAnimator.Shoot(playerData.mousePos);
             playerData.pv.RPC("BulletSpawn", RpcTarget.All, playerData.shootDirection);
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);

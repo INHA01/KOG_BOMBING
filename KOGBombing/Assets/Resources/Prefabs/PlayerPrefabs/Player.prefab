@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.size
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
@@ -82,27 +82,22 @@ PrefabInstance:
         type: 3}
       propertyPath: ObservedComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 8933432980400788638}
+      objectReference: {fileID: 5574329754294214913}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 5574329754294214913}
-    - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
-        type: 3}
-      propertyPath: ObservedComponents.Array.data[3]
-      value: 
-      objectReference: {fileID: 1071337817672403904}
+      objectReference: {fileID: 4777410407389263918}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 2093382085591792498}
+      objectReference: {fileID: 1469166799441632479}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 1469166799441632479}
+      objectReference: {fileID: 6653052910028107773}
     - target: {fileID: 2047044685979704218, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: ObservedComponents.Array.data[6]
@@ -240,10 +235,10 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Vertical
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Rotation
   - Type: 9
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Shoot
   - Type: 4
     SynchronizeType: 1
@@ -272,6 +267,21 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: IsLeft
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsSkill
+  - Type: 9
+    SynchronizeType: 0
+    Name: Skill
+  - Type: 3
+    SynchronizeType: 0
+    Name: CharacterType
+  - Type: 9
+    SynchronizeType: 0
+    Name: BombPlant
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsBombDefuse
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -280,18 +290,6 @@ MonoBehaviour:
 --- !u!114 &747309639952147347 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8894044268401136495, guid: 0d02381c6c6de984598d9a59a2b73761,
-    type: 3}
-  m_PrefabInstance: {fileID: 8156867798748147964}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1071337817672403904 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9218072504105106236, guid: 0d02381c6c6de984598d9a59a2b73761,
     type: 3}
   m_PrefabInstance: {fileID: 8156867798748147964}
   m_PrefabAsset: {fileID: 0}
@@ -313,13 +311,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fa0c4a07ab60594bae44d75f0f8d6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2093382085591792498 stripped
+--- !u!114 &4777410407389263918 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7799719852954471310, guid: 0d02381c6c6de984598d9a59a2b73761,
+  m_CorrespondingSourceObject: {fileID: 3710897373183232210, guid: 0d02381c6c6de984598d9a59a2b73761,
     type: 3}
   m_PrefabInstance: {fileID: 8156867798748147964}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450807048061368078}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
@@ -359,17 +357,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8933432980400788638 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 777691158875268194, guid: 0d02381c6c6de984598d9a59a2b73761,
-    type: 3}
-  m_PrefabInstance: {fileID: 8156867798748147964}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40d204d80d0dc2d4e88fce1029cfffa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

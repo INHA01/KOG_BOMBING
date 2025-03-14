@@ -148,7 +148,7 @@ public class PlayerAttack : PlayerBehavior
 	private void CancelBomb()
 	{
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
-        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel,playerData.mousePos);
         playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
         playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 
@@ -202,7 +202,7 @@ public class PlayerAttack : PlayerBehavior
                     }
                     if (isChangableAnim && bombInteractTime >= waitTime)
 					{
-                        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.BombPlant);
+                        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.BombPlant, playerData.mousePos);
 						animChange = StartCoroutine(WaitForChangeAnim(0.7f, WeaponType.GUN));
 					}
 					if (animChange == null)
@@ -270,7 +270,7 @@ public class PlayerAttack : PlayerBehavior
     private void CancelSupportWeapon()
 	{
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Granade, false);
-        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
 		playerData.supportWeapon.Disable();
 	}
 
@@ -284,7 +284,7 @@ public class PlayerAttack : PlayerBehavior
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, (int)WeaponType.GUN));
                 playerData.supportWeapon.SetWeapon(new SupportWeaponInfo(transform.position));
-                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Landmine);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Landmine, playerData.mousePos);
             }
             if (animChange != null)
             {
@@ -334,7 +334,7 @@ public class PlayerAttack : PlayerBehavior
             {
                 animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
                 playerData.supportWeapon.Use();
-                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Throw);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Throw, playerData.mousePos);
                 return INode.ENodeState.Success;
             }
             return INode.ENodeState.Running;
@@ -346,7 +346,7 @@ public class PlayerAttack : PlayerBehavior
     private void CancelSkill()
     {
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
-        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+        playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
         if (playerData.skill is ThrowableSkill skill)
 			skill.Disable();
 	}
@@ -368,7 +368,7 @@ public class PlayerAttack : PlayerBehavior
                 blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
                 blackBoard.inputs[EKey.Q] = false;
                 playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
-                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
                 playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Cancel);
                 isChangableAnim = true;
                 return INode.ENodeState.Success;
@@ -384,7 +384,7 @@ public class PlayerAttack : PlayerBehavior
         if (blackBoard.inputs[EKey.LMOUSEBUTTON])
         {
             animChange = StartCoroutine(WaitForChangeAnim(0.5f, WeaponType.GUN));
-            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Skill);
+            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Skill, playerData.mousePos);
             playerData.skill.Use();
             return INode.ENodeState.Success;
         }
@@ -412,7 +412,7 @@ public class PlayerAttack : PlayerBehavior
 				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.NONE);
 				animChange = StartCoroutine(WaitForChangeAnim(1.5f, WeaponType.GUN));
                 blackBoard.speedDebuff.skillValue = 2f;
-                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Skill);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Skill, playerData.mousePos);
 			}
 			if (animChange != null)
 			{
@@ -429,7 +429,7 @@ public class PlayerAttack : PlayerBehavior
 				isChangableAnim = true;
 				blackBoard.inputs[EKey.Q] = false;
 
-                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd);
+                playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd, playerData.mousePos);
                 playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 				return INode.ENodeState.Success;
 			}
@@ -477,7 +477,7 @@ public class PlayerAttack : PlayerBehavior
         else
         {
             playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
-            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
             playerData.bomb.Disable();
 		}
 		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)weaponType);
@@ -530,7 +530,7 @@ public class PlayerAttack : PlayerBehavior
 		else
 		{
             playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
-            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel);
+            playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
 			if (playerData.skill is ThrowableSkill skill)
 				skill.Disable();
 		}

@@ -8,6 +8,7 @@ public class MinimapCamera : MonoBehaviour
     public GameObject target;
     private void FixedUpdate()
     {
+        if (target == null) return;
         this.transform.position = new Vector3(
             target.transform.position.x,
             target.transform.position.y + 50f,

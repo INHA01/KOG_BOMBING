@@ -288,13 +288,13 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Vertical
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Rotation
   - Type: 9
     SynchronizeType: 0
     Name: Shoot
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsMoving
   - Type: 9
     SynchronizeType: 0
@@ -4509,9 +4509,19 @@ PrefabInstance:
       objectReference: {fileID: 4301384151314543365}
     - target: {fileID: 3327122899350027625, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 6521926901609926367}
+    - target: {fileID: 3327122899350027625, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
       propertyPath: playerAnime
       value: 
       objectReference: {fileID: 2860758531667674239}
+    - target: {fileID: 3327122899350027625, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: rotatePlayer
+      value: 
+      objectReference: {fileID: 892457245260633253}
     - target: {fileID: 3710897373183232210, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_SynchronizePosition
@@ -4621,7 +4631,7 @@ PrefabInstance:
     - target: {fileID: 8894044268401136495, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_SynchronizeRotation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9216994139945491648, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}

@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 0
+  m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
@@ -553,6 +553,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pView: {fileID: 2047044685979704218}
   playerAnime: {fileID: 7300479445460102179}
+  animator: {fileID: 277391757025662010}
+  rotatePlayer: {fileID: 8951258544732396872}
 --- !u!114 &9216994139945491648
 MonoBehaviour:
   m_ObjectHideFlags: 0

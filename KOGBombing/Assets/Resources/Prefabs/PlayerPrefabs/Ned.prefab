@@ -188,6 +188,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 3327122899350027625, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 7633743612605711296}
     - target: {fileID: 3580623768619987727, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_Layer
@@ -366,6 +371,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7799719852954471310, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799719852954471310, guid: 0d02381c6c6de984598d9a59a2b73761,
+        type: 3}
       propertyPath: m_SynchronizePosition
       value: 0
       objectReference: {fileID: 0}
@@ -427,7 +437,7 @@ PrefabInstance:
     - target: {fileID: 8894044268401136495, guid: 0d02381c6c6de984598d9a59a2b73761,
         type: 3}
       propertyPath: m_SynchronizeRotation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -506,13 +516,13 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Vertical
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Rotation
   - Type: 9
     SynchronizeType: 0
     Name: Shoot
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsMoving
   - Type: 9
     SynchronizeType: 0
@@ -615,6 +625,12 @@ MonoBehaviour:
 --- !u!4 &7279768454225103243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1094112876497018481, guid: 0d02381c6c6de984598d9a59a2b73761,
+    type: 3}
+  m_PrefabInstance: {fileID: 7649925867374090234}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7633743612605711296 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 277391757025662010, guid: 0d02381c6c6de984598d9a59a2b73761,
     type: 3}
   m_PrefabInstance: {fileID: 7649925867374090234}
   m_PrefabAsset: {fileID: 0}

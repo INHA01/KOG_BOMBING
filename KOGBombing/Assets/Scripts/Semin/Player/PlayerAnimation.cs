@@ -23,7 +23,9 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		DashEnd,
 		BombDefuse,
 		BombPlant,
-		MAX
+        IsMoving,
+        Rotation,
+        MAX
 	}
 
     [SerializeField] public Animator animator;
@@ -52,11 +54,11 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		animator.SetInteger("CharacterType", (int)type);
 	}
 
-	public void SetAnimTrigger(AnimType type)
+	public void SetAnimTrigger(AnimType type,Vector3 pointLookAt)
 	{
 		animator.SetTrigger(type.ToString());
 		if (type == AnimType.Throw)
-			TurnAtForward();
+			TurnAtForward(pointLookAt);
 	}
 
 	public void ResetAnimTrigger(AnimType type)
@@ -106,6 +108,10 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		return stateInfo.IsName(type.ToString());
     }
 
+	public void SetPointToLookAt(Vector3 pointToLookAt)
+	{
+		this.pointToLookAt = pointToLookAt;
+	}
 	public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
@@ -154,15 +160,15 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		}
 	}
 
-	public void Shoot()
+	public void Shoot(Vector3 pointLookAt)
 	{
-		TurnAtForward();
+		TurnAtForward(pointLookAt);
 		animator.SetTrigger("Shoot");
 	}
 
-	private void TurnAtForward()
+	private void TurnAtForward(Vector3 pointLookAt)
 	{
-        Vector3 direction = pointToLookAt - transform.position;
+        Vector3 direction = pointLookAt - transform.position;
         direction.y = 0;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50f * Time.deltaTime);

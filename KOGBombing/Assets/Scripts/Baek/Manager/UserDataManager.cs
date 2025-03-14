@@ -16,6 +16,7 @@ public class UserData
     public int assist;
     public int level;
     public float exp;
+    public int profileType;
 
     public UserData(string userId)
     {
@@ -28,6 +29,7 @@ public class UserData
         assist = 0;
         level = 1;
         exp = 0;
+        profileType = 0;
     }
 }
 public class UserDataManager
@@ -46,6 +48,7 @@ public class UserDataManager
 
     public void SaveUserData()
     {
+        if (auth == null) return;   
         if (auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;

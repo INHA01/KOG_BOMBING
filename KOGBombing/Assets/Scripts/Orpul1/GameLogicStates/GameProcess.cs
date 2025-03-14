@@ -179,7 +179,6 @@ namespace Orpul1
         }
         private void RaiseEventBombEvent(EBombState bombState)
         {
-            if (!PhotonNetwork.IsMasterClient) return;
             PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, bombState, gameData.options, SendOptions.SendReliable);
         }
 

@@ -304,7 +304,6 @@ GameObject:
   - component: {fileID: 9216994139945491648}
   - component: {fileID: 3900849375641417542}
   - component: {fileID: 2047044685979704218}
-  - component: {fileID: 8894044268401136495}
   - component: {fileID: 4574309590161329535}
   - component: {fileID: 6782088153960012666}
   - component: {fileID: 777691158875268194}
@@ -314,6 +313,7 @@ GameObject:
   - component: {fileID: 6189942069491501681}
   - component: {fileID: 1785431844168192495}
   - component: {fileID: 1028599783360021738}
+  - component: {fileID: 3644696387401010782}
   m_Layer: 8
   m_Name: SinglePlayer
   m_TagString: Player
@@ -638,29 +638,13 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8894044268401136495}
   - {fileID: -4870366558248218115}
+  - {fileID: 3644696387401010782}
   - {fileID: 9031991153749644969}
   - {fileID: 7300479445460102179}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8894044268401136495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084845064576805521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!114 &4574309590161329535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -830,6 +814,22 @@ MonoBehaviour:
   finshLerpTime: 0.3
   fovTargetObject: {fileID: 772106139481323054}
   pv: {fileID: 2047044685979704218}
+--- !u!114 &3644696387401010782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &1190640062829256390
 GameObject:
   m_ObjectHideFlags: 0

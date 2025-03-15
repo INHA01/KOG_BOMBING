@@ -57,6 +57,7 @@ public class DashSkill : MonoBehaviour, ISkill
 
 	public void Use()
 	{
+		if (!playerData.pv.IsMine) return;
 		skillDeltaTime = 0;
 		bisUsableSkill = false;
         playerData.pv.RPC("StartDash", RpcTarget.All);
@@ -87,6 +88,7 @@ public class DashSkill : MonoBehaviour, ISkill
 
 		// >> Managers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
 		PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
+		while (blackboard == null) yield return null;
 		playerData.isInteract = true;
 		while (time < 0.5f)
 		{

@@ -4,7 +4,6 @@ using Photon.Pun;
 using System.Collections;
 using Orpul1;
 using BAEK;
-using static Photon.Pun.UtilityScripts.PunTeams;
 public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable
 {
 	[SerializeField]
@@ -31,6 +30,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         isInitComplete = false;
         InitPlayerData();
+        playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.green;
         StartCoroutine("CoMinimapInit");
     }
     IEnumerator CoMinimapInit()

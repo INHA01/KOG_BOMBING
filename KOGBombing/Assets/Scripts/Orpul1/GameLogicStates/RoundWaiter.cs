@@ -16,19 +16,13 @@ namespace Orpul1
     {
         bool canCountDown = false;
         [SerializeField]
-        GameObject bombIconUI;
-        [SerializeField]
         RoundDoorController[] roundDoorController;
 
         [SerializeField]
         float gamestartInterval = 5;
         [SerializeField]
         float time = 0;
-        IResetAble resetBombIconUI;
-        private void Start()
-        {
-            resetBombIconUI = bombIconUI.GetComponent<IResetAble>();
-        }
+        
 
         public override void EnterState()
         {
@@ -38,7 +32,6 @@ namespace Orpul1
             {
                 roundDoorController[i].CloseDoor();
             }
-            resetBombIconUI.DoReset();
             readyPlayerCnt = 0;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), (int)EPlayerState.WAITROUND } });
             PhotonNetwork.NetworkingClient.EventReceived += OoCountDown;

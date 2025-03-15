@@ -1991,12 +1991,12 @@ RectTransform:
   m_Children:
   - {fileID: 8358342939745196892}
   - {fileID: 6759182658015630083}
-  m_Father: {fileID: 151421404170199180}
+  m_Father: {fileID: 161937992962075354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 830}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchoredPosition: {x: -1.4999962, y: 750}
+  m_SizeDelta: {x: -1.5, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &3101025443084343125
 CanvasRenderer:
@@ -11458,6 +11458,7 @@ GameObject:
   - component: {fileID: 2829958266103788963}
   - component: {fileID: 932951294634120933}
   - component: {fileID: 3880252994583979467}
+  - component: {fileID: 2024500574107905981}
   m_Layer: 5
   m_Name: RoomMenuPanel
   m_TagString: Untagged
@@ -11555,6 +11556,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 932951294634120933}
+  model: {fileID: 2024500574107905981}
+--- !u!114 &2024500574107905981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3088006519716295894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f68ff04bba41249af67236c17e4391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5993328692853528481}
 --- !u!1 &3143117678205704149
 GameObject:
   m_ObjectHideFlags: 0
@@ -13453,6 +13468,7 @@ GameObject:
   - component: {fileID: 7602859194409173768}
   - component: {fileID: 7446563131070058403}
   - component: {fileID: 2480094515827066345}
+  - component: {fileID: 1707886229979672472}
   m_Layer: 5
   m_Name: CustomRoomPanel
   m_TagString: Untagged
@@ -13547,6 +13563,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 7446563131070058403}
+  model: {fileID: 1707886229979672472}
+--- !u!114 &1707886229979672472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799189891905455257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6b0d7c0e28462a4882d82fd53ba3336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 924676462280332130}
 --- !u!1 &3806413024473366626
 GameObject:
   m_ObjectHideFlags: 0
@@ -19659,6 +19689,7 @@ RectTransform:
   - {fileID: 6193617096344490750}
   - {fileID: 662149404006003488}
   - {fileID: 6467463983788371732}
+  - {fileID: 7922606353444661999}
   m_Father: {fileID: 151421404170199180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -20489,6 +20520,7 @@ RectTransform:
   - {fileID: 5864276763916222663}
   - {fileID: 5864593117437347675}
   - {fileID: 5864650682743472281}
+  - {fileID: 5863778501141001387}
   m_Father: {fileID: 5864666109599297245}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -21749,7 +21781,6 @@ RectTransform:
   m_Children:
   - {fileID: 8560577612854217782}
   - {fileID: 5864695822211584613}
-  - {fileID: 5863778501141001387}
   m_Father: {fileID: 2360816446538125064}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -22103,12 +22134,12 @@ RectTransform:
   m_Children:
   - {fileID: 5864217010269825009}
   - {fileID: 5864216386753652837}
-  m_Father: {fileID: 5864666109599297245}
+  m_Father: {fileID: 5864695822211584613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 911}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchoredPosition: {x: -1.5, y: 831}
+  m_SizeDelta: {x: -1.5, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5866868500414878507
 CanvasRenderer:
@@ -32157,7 +32188,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 161937992962075354}
-  - {fileID: 7922606353444661999}
   m_Father: {fileID: 5485955728481892241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

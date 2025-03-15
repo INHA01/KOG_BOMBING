@@ -11,9 +11,11 @@ namespace Orpul1
     {
         [SerializeField]
         CustomRoomView view;
-
+        [SerializeField]
+        CustomRoomModel model;
         private void Start()
         {
+            model.Init(UpdateUI);
             view.panels[(int)ECustomRoomPanel.CUSTOMROOM].SetActive(false);
         }
         private void OnEnable()
@@ -28,10 +30,14 @@ namespace Orpul1
         {
             view.panels[(int)ECustomRoomPanel.CUSTOMROOM].SetActive(true);
         }
-        public void OnLeaveRoomBtn()
+        void UpdateUI()
         {
             for (int i = 0; i < (int)ECustomRoomPanel.END; i++)
-                view.panels[i].SetActive(false);
+                 view.panels[i].SetActive(false);
+        }
+        public void OnLeaveRoomBtn()
+        {
+            model.TurnBackScreen();
             Managers.Sound.PlayUISound(EUiSoundType.CLICK);
             PhotonNetwork.LeaveRoom();
         }

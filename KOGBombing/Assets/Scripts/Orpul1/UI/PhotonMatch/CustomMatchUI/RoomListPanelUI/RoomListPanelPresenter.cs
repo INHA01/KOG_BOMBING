@@ -1,12 +1,16 @@
 using Orpul1;
 using Photon.Pun;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoomListPanelPresenter : MonoBehaviour
 {
     [SerializeField]
     RoomListPanelView view;
-
+    [SerializeField]
+    RoomListPanelModel model;
+    
     private void OnEnable()
     {
         UIEventBus.Subscribe(UIEventBus.UIEventType.ACTIVEROOMLISTPANEL,ActiveUIPanel);
@@ -19,6 +23,7 @@ public class RoomListPanelPresenter : MonoBehaviour
     }
     private void Start()
     {
+        model.Init(UpdateUI);
         view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(false);
         view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(false);
     }
@@ -29,13 +34,16 @@ public class RoomListPanelPresenter : MonoBehaviour
     }
     public void DeactiveUIPanel()
     {
+        model.TurnBackScreen();
+    }
+    void UpdateUI()
+    {
         view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(false);
         view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(false);
     }
     public void OnLeaveMatchBtn()
     {
-        view.panels[(int)ERoomListPanel.BACKGROUND].SetActive(false);
-        view.panels[(int)ERoomListPanel.ROOMLIST].SetActive(false);
+        DeactiveUIPanel();
         view.btnSelectMode.interactable = true;
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
     }

@@ -137,7 +137,6 @@ public class PlayPointController
     }
     public void AssistPointEvent(EventData punEvent)
     {
-        if (!pv.IsMine) return;
         if (punEvent.Code != (int)EPointType.ASSIST) return;
 
         string[] assistPlayerList = (string[])punEvent.CustomData;
@@ -151,7 +150,6 @@ public class PlayPointController
     }
     public void DeathPointEvent(EventData punEvent)
     {
-        if (!pv.IsMine) return;
         if (punEvent.Code != (int)EPointType.DEATH) return;
 
         StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
@@ -160,7 +158,6 @@ public class PlayPointController
     }
     public void MissionPointEvent(EventData punEvent)
     {
-        if (!pv.IsMine) return;
         if (punEvent.Code != (int)EPointType.MISSION) return;
 
         StringBuilder targetPlayer = new StringBuilder((string)punEvent.CustomData);
@@ -169,10 +166,13 @@ public class PlayPointController
     }
     public void DamagePointEvent(EventData punEvent)
     {
-        if (!pv.IsMine) return;
         if (punEvent.Code != (int)EPointType.DAMAGE) return;
         object[] datas = (object[])punEvent.CustomData;
-        StringBuilder targetPlayer = new StringBuilder(otherTeamPlayerList[(int)datas[1]]);
+        
+        ETeam damagePlayerTeam = (ETeam)datas[1];
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        string player = damagePlayerTeam == myTeam? myTeamPlayerList[(int)datas[0]] : otherTeamPlayerList[(int)datas[0]];
+        StringBuilder targetPlayer = new StringBuilder(player);
         updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.DAMAGESCORE, (int)datas[2]);
 
     }
@@ -204,8 +204,8 @@ public class PlayPointController
     }
     public void OnDamagePoint(int index, int damage)
     {
-        ETeam damagePlayer = ETeam.BLUETEAM - (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        PhotonNetwork.RaiseEvent((int)EPointType.DAMAGE, new object[] { index, damagePlayer, damage }, options, SendOptions.SendReliable);
+        ETeam damagePlayerTeam = ETeam.BLUETEAM - (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        PhotonNetwork.RaiseEvent((int)EPointType.DAMAGE, new object[] { index, damagePlayerTeam, damage }, options, SendOptions.SendReliable);
     }
     public void SetAttackPlayer(int index)
     {

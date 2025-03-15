@@ -13,14 +13,14 @@ public class CustomRoomModel : MonoBehaviour
     }
     public void TurnBackScreen()
     {
-        animator.SetBool("IsOut", true);
-        updateUI();
-        //StartCoroutine(FadeOut());
+        StartCoroutine(FadeOut());
 
     }
     IEnumerator FadeOut()
     {
-        yield return new WaitForSeconds(0.8f);
+        animator.SetBool("IsOut", true);
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Window Out")) yield return null;
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         updateUI();
     }
 }

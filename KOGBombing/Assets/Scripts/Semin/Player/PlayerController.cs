@@ -30,8 +30,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         isInitComplete = false;
         InitPlayerData();
-        playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.green;
         StartCoroutine("CoMinimapInit");
+        if (!playerData.pv.IsMine) return;
+        playerData.pv.RPC("SendBlackBoard", RpcTarget.All);
     }
     IEnumerator CoMinimapInit()
     {
@@ -41,7 +42,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         if (playerData.pv.IsMine)
         {
             playerData.minimapIcon.GetComponent<SpriteRenderer>().color = Color.green;
-            playerData.pv.RPC("SendBlackBoard", RpcTarget.All);
         }
         else
         {

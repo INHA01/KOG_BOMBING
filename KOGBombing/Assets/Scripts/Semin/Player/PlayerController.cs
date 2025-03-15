@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     }
     IEnumerator CoMinimapInit()
     {
-        yield return null;
+        yield return new WaitForSeconds(5f);
         ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
 
         if (playerData.pv.IsMine)

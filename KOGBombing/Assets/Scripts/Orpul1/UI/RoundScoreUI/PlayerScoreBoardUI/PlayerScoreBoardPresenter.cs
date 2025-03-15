@@ -19,12 +19,12 @@ public class PlayerScoreBoardPresenter : MonoBehaviour, ISetScoreable<EPlayerSco
     }
     public void UpdateUI(EPlayerScore type)
     {
-        view.Texts[type].text = model.TextValues[type].ToString();
+        view.tmpScores[(int)type].text = model.scoreText[(int)type].ToString();
     }
 
     public void SetScore(EPlayerScore type, int score)
     {
-        model.SetScore(type, model.PlayerScore[type] + score);
+        model.SetScore(type, model.playerScore[(int)type] + score);
     }
 
     public void ResetScore()

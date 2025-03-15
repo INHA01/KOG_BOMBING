@@ -6,20 +6,5 @@ using UnityEngine.UI;
 
 public class PlayerScoreBoardView : MonoBehaviour
 {
-    public TextMeshProUGUI tmpNickname;
-    public TextMeshProUGUI tmpKillScore;
-    public TextMeshProUGUI tmpAsistScore;
-    public TextMeshProUGUI tmpDeathScore;
-    public TextMeshProUGUI tmpMissionScore;
-    private TextMeshProUGUI[] textUIarray { get { return new TextMeshProUGUI[] { tmpNickname, tmpKillScore, tmpDeathScore, tmpAsistScore, tmpMissionScore }; } }
-    private Dictionary<EPlayerScore, TextMeshProUGUI> dicTextUI = new Dictionary<EPlayerScore, TextMeshProUGUI> ();
-    public Dictionary<EPlayerScore, TextMeshProUGUI> Texts { get { return dicTextUI; } }
-    private void Awake()
-    {
-        TextMeshProUGUI[] textUIs = textUIarray;
-        for (int i = 0; i < (int)EPlayerScore.END; i++) 
-        {
-            dicTextUI.Add((EPlayerScore)i, textUIs[i]);
-        }
-    }
+    public TextMeshProUGUI[] tmpScores;
 }

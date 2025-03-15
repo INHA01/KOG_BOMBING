@@ -5,5 +5,6 @@ public enum EPlayerScore
     DEATHSCORE,
     ASISTSCORE,
     MISSIONSCORE,
+    DAMAGESCORE,
     END
 }

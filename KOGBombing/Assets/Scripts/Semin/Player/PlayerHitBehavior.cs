@@ -115,10 +115,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 	public void OnDamaged(float damage, int playerIndex)
     {
-         playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
+        playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
+
         if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
+            playerPointController.OnDamagePoint(playerIndex, (int)damage);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
         }
@@ -221,7 +223,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 	{
 		if (blackBoard.playerStatus.invincibility) return;
         if(playerData.pv.IsMine)
+        {
             playerPointController.SetAttackPlayer(playerIndex);
+        }
 
         float decreaseHp = blackBoard.playerStatus.defence - damage;
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);

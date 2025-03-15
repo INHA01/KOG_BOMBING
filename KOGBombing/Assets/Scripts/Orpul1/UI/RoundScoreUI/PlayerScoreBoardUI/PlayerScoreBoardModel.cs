@@ -7,10 +7,8 @@ using Unity.Collections.LowLevel.Unsafe;
 public class PlayerScoreBoardModel 
 {
     Action<EPlayerScore> updateUI;
-    Dictionary<EPlayerScore, StringBuilder> dicScoreText = new Dictionary<EPlayerScore, StringBuilder>();
-    Dictionary<EPlayerScore,int> dicPlayerScore = new Dictionary<EPlayerScore,int>();
-    public Dictionary<EPlayerScore,int> PlayerScore { get { return dicPlayerScore; } }
-    public Dictionary<EPlayerScore, StringBuilder> TextValues { get { return dicScoreText; } }
+    public List<StringBuilder> scoreText = new List<StringBuilder>();
+    public List<int> playerScore = new List<int>();
     int score = 0;
     public int Score { get { return score; } }
     public PlayerScoreBoardModel(Action<EPlayerScore> updateUI)
@@ -18,21 +16,21 @@ public class PlayerScoreBoardModel
         this.updateUI = updateUI;
         for (int i = 0; i < (int)EPlayerScore.END; i++)
         {
-            dicScoreText.Add((EPlayerScore)i, new StringBuilder());
-            dicPlayerScore.Add((EPlayerScore)i, 0);
+            scoreText.Add(new StringBuilder());
+            playerScore.Add(0);
         }
     }
     public void SetNickname(string nickname)
     {
-        TextValues[EPlayerScore.NICKNAME].Clear();
-        TextValues[EPlayerScore.NICKNAME].Append(nickname);
+        scoreText[(int)EPlayerScore.NICKNAME].Clear();
+        scoreText[(int)EPlayerScore.NICKNAME].Append(nickname);
         updateUI(EPlayerScore.NICKNAME);
     }
     public void SetScore(EPlayerScore type, int score)
     {
-        dicPlayerScore[type] = score;
-        dicScoreText[type].Clear();
-        dicScoreText[type].Append(dicPlayerScore[type]);
+        playerScore[(int)type] = score;
+        scoreText[(int)type].Clear();
+        scoreText[(int)type].Append(playerScore[(int)type]);
         updateUI(type);
     }
     

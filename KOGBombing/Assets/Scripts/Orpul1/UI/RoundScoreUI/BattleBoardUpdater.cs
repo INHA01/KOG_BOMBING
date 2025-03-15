@@ -104,14 +104,11 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         }
     }
 
-    public void UpdatePlayerScore(StringBuilder nickname, EPlayerScore updateType)
+    public void UpdatePlayerScore(StringBuilder nickname, EPlayerScore updateType , int score)
     {
-        Debug.Log($"{updateType.ToString()} event! key is {nickname.ToString()}");
-        if (!dictPlayerScore.ContainsKey(nickname.ToString()))
-        {
-            return;
-        }
-        dictPlayerScore[nickname.ToString()].SetScore(updateType, 1);
+        if (!dictPlayerScore.ContainsKey(nickname.ToString())) return;
+        
+        dictPlayerScore[nickname.ToString()].SetScore(updateType, score);
         List<string> myTeamList = Managers.PointData.MyTeamPlayers;
         List<string> otherTeamList = Managers.PointData.OtherTeamPlayers;
         

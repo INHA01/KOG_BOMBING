@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using BAEK;
 
 namespace Orpul1
 {
@@ -13,11 +14,11 @@ namespace Orpul1
         public StringBuilder selectCharacterPath = new StringBuilder();
         public TeamUIController teamUIController = new TeamUIController();
         public GameRoundData debugRoundData;
-        public Transform bombPos;
+        public Transform[] bombPos = new Transform[(int)BombCursorType.Max];
         public ISetGameStateAble playerSetGameState;
         private void Start()
         {
-            teamUIController.Init(bombPos.position);
+            teamUIController.Init(bombPos);
             options.Receivers = ReceiverGroup.All;
         }
     }

@@ -17,4 +17,10 @@ namespace BAEK
         End,
         Max,
     }
+    public enum BombCursorType
+    {
+        SectorA,
+        SectorB,
+        Max,
+    }
 }

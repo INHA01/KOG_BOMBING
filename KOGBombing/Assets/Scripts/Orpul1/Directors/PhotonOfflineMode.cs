@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using BAEK;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
@@ -95,7 +96,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         Managers.CamData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
         Managers.CamData.AddCamera(cameraObj.transform.GetChild(0).gameObject, ECameraType.EFFECTCAMERA);
         UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
-        _uiPopup.GetComponent<ShowCursor>().BombPos = bombPos.position;
+        //_uiPopup.GetComponent<ShowCursor>().bombPos = bombPos.position;
         _uiPopup.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         EventBusSystem.Unsubscribe(SpawnPlayer);
     }

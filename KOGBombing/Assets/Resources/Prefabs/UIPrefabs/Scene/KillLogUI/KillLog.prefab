@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 6654025721747665697}
   - component: {fileID: 3648053238884054142}
   - component: {fileID: 496619877627351782}
+  - component: {fileID: 9012898520365566181}
   m_Layer: 0
   m_Name: KillLog
   m_TagString: Untagged
@@ -743,6 +744,27 @@ MonoBehaviour:
   - {r: 0.78823537, g: 0.08235294, b: 0.058823533, a: 1}
   - {r: 0.078431375, g: 0.26666668, b: 1, a: 1}
   deactiveTime: 3
+--- !u!95 &9012898520365566181
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5718084410023382802}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 26bc66bc018b5b640b65e3118615c99f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5913056789655743003
 GameObject:
   m_ObjectHideFlags: 0

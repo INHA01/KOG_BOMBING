@@ -1,3 +1,4 @@
+using BAEK;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
@@ -13,10 +14,13 @@ public class TeamUIController
     private Action<ETeam, int> updateScore;
     List<Player> teamPlayerList  = new List<Player>();
     RaiseEventOptions options = new RaiseEventOptions();
-    Vector3 bombPos;
-    public void Init(Vector3 bombPos)
+    Vector3[] bombPos = new Vector3[(int)BombCursorType.Max];
+    public void Init(Transform[] bombPos)
     {
-        this.bombPos = bombPos;
+        for(int i = 0; i < bombPos.Length; i++)
+        {
+            this.bombPos[i] = bombPos[i].position;
+        }
     }
     public void SetTeamUI(PlayerShooting playerShooting)
     {
@@ -28,7 +32,7 @@ public class TeamUIController
         ETeam otherPlayerTeam;
 
         _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
-        _uiScene.GetComponent<ShowCursor>().BombPos = bombPos;
+        _uiScene.GetComponent<ShowCursor>().bombPos = bombPos;
         _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
         _uiScene.GetComponent<PlayScene>().Reset();
         for (int i = 0; i < players.Length; i++)

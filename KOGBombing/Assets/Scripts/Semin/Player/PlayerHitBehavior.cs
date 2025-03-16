@@ -15,16 +15,15 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     GameDirector gameDirector;
     [SerializeField]
     PlayerMaterialController playerMaterialController;
-    RaiseEventOptions options = new RaiseEventOptions();
+    [SerializeField]
     PlayPointController playerPointController;
+    RaiseEventOptions options = new RaiseEventOptions();
 
     float groggyTime;
     Coroutine groggyCoroutine;
     protected override void Awake()
     {
         base.Awake();
-        if(playerData.pv.IsMine)
-            playerPointController = new PlayPointController(playerData.pv,playerData);
     }
     private void Start()
     {
@@ -60,11 +59,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         if (playerData.pv.IsMine)
             playerPointController.Initialize();
-    }
-    private void OnDisable()
-    {
-        if (playerData.pv.IsMine)
-            playerPointController.Disable();
     }
     [PunRPC]
 	private void ChangeWeaponHit(int type)
@@ -208,12 +202,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void PunDeathSound()
     {
         AudioClip deathsound = null;
-        EHitDeathSound soundType = EHitDeathSound.NED_DEATH;
-        if (blackBoard.characterType == CharacterType.Uni)
-        {
-            soundType = EHitDeathSound.UNI_DEATH;
-        }
-
+        EHitDeathSound soundType = (EHitDeathSound)((int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH);
         deathsound = playerData.soundList.HitDeathList[(int)soundType];
         Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
@@ -305,16 +294,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Death()
     {
         ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
-       /* AudioClip deathsound = null;
-        if(blackBoard.characterType == CharacterType.Ned)
-        {
-            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.NED_DEATH];
-        }
-        else
-        {
-            deathsound = playerData.soundList.HitDeathList[(int)EHitDeathSound.UNI_DEATH];
-        }
-        Managers.Sound.PlayEffect(deathsound, transform, 1, 0, 30);*/
+        AudioClip deathsound = null;
+        int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
+        EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
+        deathsound = playerData.soundList.HitDeathList[(int)deathSound];
+        Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
         if (!blackBoard.showSoundEffect)
         {
             blackBoard.showSoundEffect = true;

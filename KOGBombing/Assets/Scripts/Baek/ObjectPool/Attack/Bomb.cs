@@ -45,7 +45,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
         else
             bombNotify.gameObject.SetActive(true);
         if (bombData.bombState != null)
-            bombData.bombState.BombEvent(EBombState.SET);
+            bombData.bombState.BombEvent(EBombState.SET, -1);
         bombNotify.NotifyBombSet();
     }
     private void OnTriggerStay(Collider other)
@@ -61,10 +61,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
                 // 폭탄 해제 모든 플레이어들에게 Notify
                 bombNotify.NotifyBombDefuse();
                 if (bombData.bombState != null)
-                    bombData.bombState.BombEvent(EBombState.CLEAR);
-                //폭탄 해체한 플레이어 미션 포인트 + 1 이벤트
-                if (PhotonNetwork.IsMasterClient)
-                    PhotonNetwork.RaiseEvent((int)EPointType.MISSION, player.nickname, options, SendOptions.SendReliable);
+                    bombData.bombState.BombEvent(EBombState.CLEAR, player.playerIndex);
                 Release();
                 //RPCDestroy();
             }
@@ -97,8 +94,8 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
             yield return null;
         }
         ShowParticle();
-        if(bombData.bombState!= null)
-            bombData.bombState.BombEvent(EBombState.EXPLOSION);
+        if (bombData.bombState != null)
+            bombData.bombState.BombEvent(EBombState.EXPLOSION, playerIndex);
         //폭탄 설치한 플레이어 미션 포인트 + 1 이벤트
         if(PhotonNetwork.IsMasterClient)
             PhotonNetwork.RaiseEvent((int)EPointType.MISSION, bombData.nickname, options, SendOptions.SendReliable);

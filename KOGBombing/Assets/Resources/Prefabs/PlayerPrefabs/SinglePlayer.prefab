@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 6189942069491501681}
   - component: {fileID: 1785431844168192495}
   - component: {fileID: 1028599783360021738}
+  - component: {fileID: 137854597267470949}
   m_Layer: 8
   m_Name: SinglePlayer
   m_TagString: Player
@@ -780,6 +781,7 @@ MonoBehaviour:
   playerData: {fileID: 9216994139945491648}
   gameDirector: {fileID: 0}
   playerMaterialController: {fileID: 4574309590161329535}
+  playerPointController: {fileID: 137854597267470949}
 --- !u!114 &8207651971063068235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,6 +851,20 @@ MonoBehaviour:
   finshLerpTime: 0.3
   fovTargetObject: {fileID: 772106139481323054}
   pv: {fileID: 2047044685979704218}
+--- !u!114 &137854597267470949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a49179315d57544fb4e0c3588388e73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pView: {fileID: 2047044685979704218}
+  playerData: {fileID: 9216994139945491648}
 --- !u!1 &1190640062829256390
 GameObject:
   m_ObjectHideFlags: 0

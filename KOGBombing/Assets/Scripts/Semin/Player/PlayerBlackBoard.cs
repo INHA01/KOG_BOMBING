@@ -37,6 +37,7 @@ public class PlayerBlackBoard : MonoBehaviour
 	[HideInInspector] public BombInteraction bombInteraction;
 	[HideInInspector] public PlayerStatus playerStatus;
     public EGameState currentGameState;
+    public int playerIndex;
     public void Initialize()
     {
         speedDebuff.Initialize();

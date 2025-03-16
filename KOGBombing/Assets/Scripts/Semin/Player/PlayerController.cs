@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         blackBoard.playerStatus = Instantiate(blackBoard.SOplayerStatus);
         blackBoard.canRespawn = false;
         blackBoard.nickname = playerData.pv.Owner.NickName;
+        blackBoard.playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         blackBoard.playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
     }
 	[PunRPC]

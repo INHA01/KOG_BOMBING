@@ -22,6 +22,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     float groggyTime;
     Coroutine groggyCoroutine;
+    bool isActiveHitSound = false;
     protected override void Awake()
     {
         base.Awake();
@@ -118,8 +119,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
+            if (isActiveHitSound) return;
+            isActiveHitSound = true;
+            StartCoroutine(CoHitSound());
         }
     }
+    
     public INode.ENodeState SuccessNode()
     {
         return INode.ENodeState.Success;
@@ -207,11 +212,28 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         deathsound = playerData.soundList.HitDeathList[(int)soundType];
         Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
-    
+    private IEnumerator CoHitSound()
+    {
+        int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
+        AudioClip hitSoundClip = playerData.soundList.HitDeathList[soundIndex];
+        float time = Time.time + hitSoundClip.length;
+        playerData.pv.RPC("PunHitSound", RpcTarget.All);
+        while (time > Time.time) yield return null;
+        isActiveHitSound = false;
+    }
+    [PunRPC]
+    private void PunHitSound()
+    {
+        int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
+        AudioClip hitSoundClip = playerData.soundList.HitDeathList[soundIndex];
+        float time = Time.time + hitSoundClip.length;
+        Managers.Sound.PlayEffect(hitSoundClip, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
     [PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
-		if (blackBoard.playerStatus.invincibility) return;
+
+        if (blackBoard.playerStatus.invincibility) return;
         if(playerData.pv.IsMine)
         {
             playerPointController.SetAttackPlayer(playerIndex);

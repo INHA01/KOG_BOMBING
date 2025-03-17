@@ -14,14 +14,17 @@ public class Option : UIPopup
     public void Cancel()
     {
         playerBlackBoard.inputs[EKey.ESC] = false;
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         Managers.UI.ClosePopupUI(this.gameObject.name);
     }
     public void ReturnLobby()
-    { 
+    {
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         reCheckLobby.SetActive(true);
     }
     public void ExitGame(bool yes)
     {
+        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         if (yes)
         {
             PhotonNetwork.LeaveRoom();

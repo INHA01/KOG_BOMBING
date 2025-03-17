@@ -22,6 +22,7 @@ namespace Orpul1
             isAllPlayerReady = false;
             curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
             gameData.options.Receivers = ReceiverGroup.All;
+            Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas").Initialize();
             PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.READY } });
             Managers.RoundData.Initialize();

@@ -34,16 +34,21 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
 
     [SerializeField] Sprite[] halfRoundImages;
     [SerializeField] Image[] displayHalfRoundImages;
+    bool isAlreadyReset = false;
     void Awake()
     {
-        SetTeamScore();
-        SetPlayerScore();
-        /*UpdatePlayerScore();
-        UpdateTeamScore();*/
+        Initialize();
     }
     void OnEnable()
     { 
         LoadTeamPanelIcon();
+    }
+    public void Initialize()
+    {
+        if (isAlreadyReset) return;
+        SetTeamScore();
+        SetPlayerScore();
+        isAlreadyReset = true;
     }
     private void SetPlayersMapping()
     {
@@ -65,6 +70,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         ETeam mine = LoadTeamPanelIcon();
         ISetScoreable<EPlayerScore> myPlayerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[0])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
+        myPlayerScoreUI.Initialize();
         myPlayerScoreUI.SetTitle(new StringBuilder(PhotonNetwork.LocalPlayer.NickName));
         dictPlayerScore.Add(PhotonNetwork.LocalPlayer.NickName, myPlayerScoreUI);
 
@@ -81,6 +87,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
             int parentIndex = team == mine ? 0 : 1;
             ISetScoreable<EPlayerScore> playerScoreUI = Instantiate(playerScorePrefab, playerScoreParent[parentIndex])
                                                         .GetComponent<ISetScoreable<EPlayerScore>>();
+            playerScoreUI.Initialize();
             playerScoreUI.SetTitle(new StringBuilder(players.ElementAt(i).Value.NickName));
             dictPlayerScore.Add(players.ElementAt(i).Value.NickName, playerScoreUI);
         }
@@ -93,6 +100,8 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
             score.ResetScore();
         }
         dictPlayerScore.Clear();
+        dicTeamScore.Clear();
+        isAlreadyReset = false;
     }
 
     private void SetTeamScore()

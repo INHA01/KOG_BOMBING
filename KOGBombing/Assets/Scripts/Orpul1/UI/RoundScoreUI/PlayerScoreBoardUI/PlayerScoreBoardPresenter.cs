@@ -8,11 +8,10 @@ public class PlayerScoreBoardPresenter : MonoBehaviour, ISetScoreable<EPlayerSco
     [SerializeField]
     PlayerScoreBoardView view;
     PlayerScoreBoardModel model;
-    private void Awake()
+    public void Initialize()
     {
         model = new PlayerScoreBoardModel(UpdateUI);
     }
-
     public void SetTitle(StringBuilder nickname)
     {
         model.SetNickname(nickname.ToString());

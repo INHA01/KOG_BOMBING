@@ -59,7 +59,6 @@ namespace Orpul1
                     switchRoundScores[(int)ETeam.BLUETEAM]++;
                     teamScores[(int)ETeam.BLUETEAM]++;
                     updateScore.UpdateTeamScore(ETeam.BLUETEAM, ETeamScore.WINSCORE);
-                    //Managers.RoundData.IncreaseTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
                     break;
 
                 //Attack team win condition
@@ -69,7 +68,6 @@ namespace Orpul1
                     switchRoundScores[(int)ETeam.REDTEAM]++;
                     teamScores[(int)ETeam.REDTEAM]++;
                     updateScore.UpdateTeamScore(ETeam.REDTEAM, ETeamScore.WINSCORE);
-                    //Managers.RoundData.IncreaseTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
                     break;
             }
         }

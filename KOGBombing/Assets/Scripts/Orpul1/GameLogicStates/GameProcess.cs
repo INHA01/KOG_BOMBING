@@ -95,7 +95,6 @@ namespace Orpul1
     {
         [SerializeField] RoundData roundData = new RoundData();
         [SerializeField] float roundInterval;
-
         ISetDataAble<EGameState> setNextEndRoundGameState;
         ETeam winnerTeam;
         EGameState nextRoundState;
@@ -108,6 +107,7 @@ namespace Orpul1
         }
         public override void EnterState()
         {
+            Managers.Sound.PlayUISound(EUiSoundType.ROUNDSTART);
             isEndRound = false;
             isSetBomb = false;
             gameData.playerSetGameState.SetGameState(EGameState.GAMESTART);
@@ -193,8 +193,6 @@ namespace Orpul1
             Managers.RoundData.SetTeamScore(winnerTeam, roundData.teamScores[(int)winnerTeam]);
             for (int i = 0; i < (int)ETeam.END; i++)
             {
-                Debug.Log($"{(ETeam)i} Score: {roundData.teamScores[i]}");
-                
                 gameData.teamUIController.UpdateTeamScore((ETeam)i, roundData.teamScores[i]);
             }
 

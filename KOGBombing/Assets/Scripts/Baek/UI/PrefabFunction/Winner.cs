@@ -23,6 +23,7 @@ public class Winner : UIPopup
             winTeam = Managers.RoundData.RoundWinTeam;
         else
             winTeam = Managers.RoundData.WinTeam;
+        ActiveRoundResultSound(winTeam);
         animator.SetInteger("winner", (int)winTeam);
         activeResultButton.SetActive(end == 1);
     }
@@ -30,5 +31,11 @@ public class Winner : UIPopup
     {
         Managers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
         Managers.UI.ClosePopupUI("WinnerCanvas");
+    }
+    private void ActiveRoundResultSound(WinnerTeam winTeam)
+    {
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        EUiSoundType roundResultSound = (int)myTeam == (int)winTeam ? EUiSoundType.WIN : EUiSoundType.LOSS;
+        Managers.Sound.PlayUISound(roundResultSound);
     }
 }

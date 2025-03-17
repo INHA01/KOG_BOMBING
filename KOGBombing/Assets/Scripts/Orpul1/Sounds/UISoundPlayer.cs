@@ -11,18 +11,11 @@ public enum EUiSoundType
     MATCHSTART,
     BOMBLAUNCHED,
     OPENDOOR,
-    LOSE,
-    START,
     WIN,
+    LOSS,
+    ROUNDSTART,
     SKILLCOLLDOWN,
-    SKILLGEN,
     SKILLREADY,
-    WEAPONEMPTYCLICK,
-    WEAPONHIT1,
-    WEAPONHIT2,
-    WEAPONHIT3,
-    WEAPONRELOAD,
-    WEAPONSHOOTING
 }
 public class UISoundPlayer : MonoBehaviour
 {

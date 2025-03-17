@@ -30,6 +30,7 @@ namespace Orpul1
             else
             {
                 UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEWAITMATCHPANEL);
+                Managers.Sound.PlayUISound(EUiSoundType.MATCHSTART);
                 base.Match();
             }
             isMatching = !isMatching;
@@ -56,9 +57,8 @@ namespace Orpul1
         public override void OnJoinedRoom()
         {
             if (!isRandomMatch) return;
-
             base.OnJoinedRoom();
-            if(PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient)
                 StartCoroutine(CoWaitPlayers());
 
         }

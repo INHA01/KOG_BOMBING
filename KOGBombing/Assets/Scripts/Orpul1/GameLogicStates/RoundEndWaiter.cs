@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -15,16 +16,15 @@ namespace Orpul1
         {
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDENDWAIT);
             time = 0;
-            Debug.Log("RoundEndWaiter Start");
             BombNotify bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
             if(bombNotify!=null)
                 bombNotify.ActiveFalseAll();
             Managers.UI.ShowPopupUI<Winner>("WinnerCanvas").SetWiner(0);
         }
+        
         public override void UpdateState()
         {
             if(!IsEndWaitRoundEnd()) return;
-            Debug.Log("RoundEndWaiter End");
             transitionState((int)nextGameState);
         }
 

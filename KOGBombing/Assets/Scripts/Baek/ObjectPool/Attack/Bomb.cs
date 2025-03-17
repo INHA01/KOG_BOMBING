@@ -3,19 +3,36 @@ using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using Semin;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+public enum EBombSound
+{
+    BEEP,
+    EXPLOSION,
+}
 public struct BombData
 {
     public string nickname;
     public IBombStateAble bombState;
 }
+[Serializable]
+public struct BombSound
+{
+    public List<AudioClip> bombSoundList;
+    public float beepSoundInterval;
+    public void ActiveSound(Transform transform, int soundType)
+    {
+        AudioClip bombSound = bombSoundList[soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.EFFECT, transform, 1, 0, 30);
+    }
+}
 public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
 {
     [SerializeField] float bombTime = 20f;
+    [SerializeField] BombSound bombSound;
     float time = 0;
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
@@ -78,6 +95,11 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     {
         Release();
     }
+    [PunRPC]
+    private void PunBombSound(int soundType)
+    {
+        bombSound.ActiveSound(transform, soundType);
+    }
     public override void Use()
     {
         destroyCoroutine = StartCoroutine(SetTimerToDestroy());
@@ -85,9 +107,15 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     IEnumerator SetTimerToDestroy()
     {
         time = bombTime;
+        float beepTime = BombTime - bombSound.beepSoundInterval;
         while (time > 0)
         {
             while (isInteracting) yield return null;
+            if (beepTime >= time) 
+            {
+                bombSound.ActiveSound(transform, (int)EBombSound.BEEP);
+                beepTime -= bombSound.beepSoundInterval;
+            }
             time -= Time.deltaTime;
             bombNotify.SetTimeCount(time);
 
@@ -96,8 +124,9 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
         ShowParticle();
         if (bombData.bombState != null)
             bombData.bombState.BombEvent(EBombState.EXPLOSION, playerIndex);
+        bombSound.ActiveSound(transform, (int)EBombSound.EXPLOSION);
         //폭탄 설치한 플레이어 미션 포인트 + 1 이벤트
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.RaiseEvent((int)EPointType.MISSION, bombData.nickname, options, SendOptions.SendReliable);
 
         yield return new WaitForSeconds(0.5f);

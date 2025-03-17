@@ -150,7 +150,8 @@ public abstract class ThrowableBase : SupportWeaponBase
 
 	protected void SetSpawnThrowWeapon()
 	{
-		decal.gameObject.SetActive(false);
+        playerData.playerSound.skillSound.ActiveSound(transform, ESkillSound.GREN);
+        decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
 		StartCoroutine(ThrowConsum());

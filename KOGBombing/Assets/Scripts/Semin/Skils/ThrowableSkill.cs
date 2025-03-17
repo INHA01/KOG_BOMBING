@@ -90,7 +90,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	[PunRPC]
 	private void SpawnThrowWeaponSkill()
 	{
-		SetSpawnThrowWeapon();
+        SetSpawnThrowWeapon();
 	}
 
     public void LoadSkillIcon()

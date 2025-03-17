@@ -46,7 +46,7 @@ public class ShockGrenade : AttackConsum
 
 	public override void Use()
 	{
-		ActiveWarringArea();
+        ActiveWarringArea();
 	}
 
 	private void ActiveWarringArea()

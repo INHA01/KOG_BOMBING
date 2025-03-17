@@ -61,7 +61,7 @@ public class PlayerShooting : Magazine
     [PunRPC]
     void PunPlaySound(int type)
     {
-        AudioClip effect = playerData.soundList.WeaponList[type];
+        AudioClip effect = playerData.playerSound.WeaponList[type];
         Managers.Sound.PlayEffect(effect, EMixerGroup.EFFECT, transform, 1, 0, 50);
     }
 
@@ -122,7 +122,7 @@ public class PlayerShooting : Magazine
                 time = 0;
                 magazineCount++;
 
-                AudioClip reloadSound = playerData.soundList.WeaponList[(int)EWeaponSound.RELOAD];
+                AudioClip reloadSound = playerData.playerSound.WeaponList[(int)EWeaponSound.RELOAD];
                 Managers.Sound.PlayEffect(reloadSound);
 
                 if (bulletCount == 0)

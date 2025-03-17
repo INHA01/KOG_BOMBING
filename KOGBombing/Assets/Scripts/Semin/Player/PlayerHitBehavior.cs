@@ -180,7 +180,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
         playScene.ActiveKill();
-        AudioClip killSound = playerData.soundList.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
+        AudioClip killSound = playerData.playerSound.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
         Managers.Sound.PlayEffect(killSound);
     }
     [PunRPC]
@@ -209,13 +209,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         AudioClip deathsound = null;
         EHitDeathSound soundType = (EHitDeathSound)((int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH);
-        deathsound = playerData.soundList.HitDeathList[(int)soundType];
+        deathsound = playerData.playerSound.HitDeathList[(int)soundType];
         Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
     private IEnumerator CoHitSound()
     {
         int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
-        AudioClip hitSoundClip = playerData.soundList.HitDeathList[soundIndex];
+        AudioClip hitSoundClip = playerData.playerSound.HitDeathList[soundIndex];
         float time = Time.time + hitSoundClip.length;
         playerData.pv.RPC("PunHitSound", RpcTarget.All);
         while (time > Time.time) yield return null;
@@ -225,7 +225,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void PunHitSound()
     {
         int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
-        AudioClip hitSoundClip = playerData.soundList.HitDeathList[soundIndex];
+        AudioClip hitSoundClip = playerData.playerSound.HitDeathList[soundIndex];
         float time = Time.time + hitSoundClip.length;
         Managers.Sound.PlayEffect(hitSoundClip, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
@@ -320,7 +320,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         AudioClip deathsound = null;
         int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
         EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
-        deathsound = playerData.soundList.HitDeathList[(int)deathSound];
+        deathsound = playerData.playerSound.HitDeathList[(int)deathSound];
         Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
         if (!blackBoard.showSoundEffect)
         {

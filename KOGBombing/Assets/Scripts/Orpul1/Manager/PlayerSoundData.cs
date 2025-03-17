@@ -37,10 +37,9 @@ public enum EPingSound
 public enum ESkillSound
 {
     NED_FLASH,
-    NED_GREN,
     UNI_DASH,
-    UNI_GREN,
-    UNI_MINE
+    UNI_MINE,
+    GREN,
 }
 public enum EWeaponSound
 {
@@ -52,7 +51,11 @@ public enum EWeaponSound
     SHOOTING,
     EXPLOSION
 }
-
+public enum EMissionSound
+{
+    BOMBINTERACT,
+    BOMBNARRATION,
+}
 [Serializable]
 public struct FootSound
 {
@@ -75,12 +78,34 @@ public struct FootSound
         time = 0;
     }
 }
+
+[Serializable]
+public struct SkillSound
+{
+    public List<AudioClip> SkillList;
+    public void ActiveSound(Transform transform, ESkillSound soundType)
+    {
+        AudioClip skillSound = SkillList[(int)soundType];
+        Managers.Sound.PlayEffect(skillSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
+}
+[Serializable]
+public struct MissionSound
+{
+    public List<AudioClip> BombSound;
+    public void ActiveSound(Transform transform, EMissionSound soundType)
+    {
+        AudioClip bombSound = BombSound[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
+}
 public class PlayerSoundData : MonoBehaviour
 {
     public List<AudioClip> GeneralList = new List<AudioClip>();
     public List<AudioClip> HitDeathList = new List<AudioClip>();
     public List<AudioClip> PingList = new List<AudioClip>();
-    public List<AudioClip> SkillList = new List<AudioClip>();
     public List<AudioClip> WeaponList = new List<AudioClip>();
-    public FootSound footSound;
+    public FootSound footSound = new FootSound();
+    public SkillSound skillSound = new SkillSound();
+    public MissionSound missionSound = new MissionSound();
 }

@@ -49,7 +49,7 @@ namespace Semin
 		[PunRPC]
 		void PunPlaySound(int type)
 		{
-			AudioClip effect = playerData.soundList.WeaponList[type];
+			AudioClip effect = playerData.playerSound.WeaponList[type];
 			Managers.Sound.PlayEffect(effect,EMixerGroup.EFFECT, transform, 1, 0, 50);
 		}
 

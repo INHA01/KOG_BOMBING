@@ -15,6 +15,7 @@ public class PlayerAttack : PlayerBehavior
     [SerializeField]
     PlayerShooting playerShooting;
     bool isChangableAnim;
+    bool isSetBomb = false;
     Coroutine animChange;
     float bombInteractTime;
     BombNotify bombNotify;
@@ -182,10 +183,17 @@ public class PlayerAttack : PlayerBehavior
                     blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
 
                     playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, true);
+                    if(!isSetBomb)
+                    {
+                        isSetBomb = true;
+                        playerData.pv.RPC("PunBombSound", RpcTarget.All, (int)EMissionSound.BOMBINTERACT);
+                    }
                     return INode.ENodeState.Running;
                 }
                 else // 폭탄 설치 취소 or 완료
                 {
+                    isSetBomb = false;
+
                     if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Cancel
 					{
 						blackBoard.bombUI.ActiveInteract(false);
@@ -205,7 +213,8 @@ public class PlayerAttack : PlayerBehavior
                     if (isChangableAnim && bombInteractTime >= waitTime)
 					{
                         playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.BombPlant, playerData.mousePos);
-						animChange = StartCoroutine(WaitForChangeAnim(0.7f, WeaponType.GUN));
+                        playerData.pv.RPC("PunBombSound", RpcTarget.All, (int)EMissionSound.BOMBNARRATION);
+                        animChange = StartCoroutine(WaitForChangeAnim(0.7f, WeaponType.GUN));
 					}
 					if (animChange == null)
 					{
@@ -223,7 +232,8 @@ public class PlayerAttack : PlayerBehavior
 						playerData.isInteract = false;
 						return INode.ENodeState.Success;
 					}
-					return INode.ENodeState.Running;
+
+                    return INode.ENodeState.Running;
                 }
             }
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
@@ -268,7 +278,11 @@ public class PlayerAttack : PlayerBehavior
         return INode.ENodeState.Fail;
     }
 
-
+    [PunRPC]
+    private void PunBombSound(int soundType)
+    {
+        playerData.playerSound.missionSound.ActiveSound(transform, (EMissionSound)soundType);
+    }
     private void CancelSupportWeapon()
 	{
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Granade, false);

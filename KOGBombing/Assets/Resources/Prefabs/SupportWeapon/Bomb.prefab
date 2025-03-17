@@ -5451,7 +5451,14 @@ MonoBehaviour:
   particle: {fileID: 4434074960492833691}
   type: 3
   isActive: 0
+  playerData: {fileID: 0}
   bombTime: 20
+  bombSound:
+    bombSoundList:
+    - {fileID: 8300000, guid: b93432a03f749504ea5b5cb604c4a6f7, type: 3}
+    - {fileID: 8300000, guid: 5500e7a3484c9ed4dbc62f366653de3e, type: 3}
+    beepSoundInterval: 1
+  isUsable: 1
 --- !u!65 &-5606174201140544190
 BoxCollider:
   m_ObjectHideFlags: 0

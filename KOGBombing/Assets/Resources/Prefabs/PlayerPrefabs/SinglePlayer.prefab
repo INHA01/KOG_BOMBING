@@ -468,12 +468,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d914c9ffebd8dc046b7b46371194f8ca, type: 3}
   - {fileID: 8300000, guid: 53b56917816a0984bad7e7b4262eca04, type: 3}
   - {fileID: 8300000, guid: 6263c6a8cdf1b8c4aa4901fe8b849d4c, type: 3}
-  SkillList:
-  - {fileID: 8300000, guid: 597a2a01c0e1b68469f914b68799ce9f, type: 3}
-  - {fileID: 8300000, guid: cd013213373aa104ca4f00b0458e287d, type: 3}
-  - {fileID: 8300000, guid: 8a4582851af33d642b9e48d1f2ba23e5, type: 3}
-  - {fileID: 8300000, guid: 6a1d2e746cf643942b3cbdc68b972e1d, type: 3}
-  - {fileID: 8300000, guid: 633da149c5ccfcb4e8ac177ee5c8c052, type: 3}
   WeaponList:
   - {fileID: 8300000, guid: 3e265c8176bfcd84894c5557ab8093b1, type: 3}
   - {fileID: 8300000, guid: df11985dd59a704428897b1f1cd9d4e5, type: 3}
@@ -496,6 +490,16 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3ff98d7808bb9aa41b695103b663be28, type: 3}
     - {fileID: 8300000, guid: eabacdff1ab35b0438dfff5bfb09cad3, type: 3}
     activeSoundTime: 0.35
+  skillSound:
+    SkillList:
+    - {fileID: 8300000, guid: 597a2a01c0e1b68469f914b68799ce9f, type: 3}
+    - {fileID: 8300000, guid: 8a4582851af33d642b9e48d1f2ba23e5, type: 3}
+    - {fileID: 8300000, guid: 633da149c5ccfcb4e8ac177ee5c8c052, type: 3}
+    - {fileID: 8300000, guid: 8f355613d12d6ee429e1dae01b8921ac, type: 3}
+  missionSound:
+    BombSound:
+    - {fileID: 8300000, guid: 2371ff8879ebb394f95973cd80fdbfd3, type: 3}
+    - {fileID: 8300000, guid: 5979bdbf0d4942d429646dc833fd6ea4, type: 3}
 --- !u!114 &1055956268508796724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,7 +593,7 @@ MonoBehaviour:
   shootDirection: {x: 0, y: 0, z: 0}
   maxLength: 8
   mousePos: {x: 0, y: 0, z: 0}
-  soundList: {fileID: -6883398266351926395}
+  playerSound: {fileID: -6883398266351926395}
   pv: {fileID: 2047044685979704218}
   rigidBody: {fileID: 1272812946582949491}
   timeWithoutDamage: 0

@@ -49,7 +49,7 @@ public class PlayerMovement : PlayerBehavior
     [PunRPC]
     private void PunFootSound()
     {
-        playerData.soundList.footSound.ActiveSound(transform);
+        playerData.playerSound.footSound.ActiveSound(transform);
     }
     //TODO : Set Camera Target
     public INode.ENodeState RotatePlayer()

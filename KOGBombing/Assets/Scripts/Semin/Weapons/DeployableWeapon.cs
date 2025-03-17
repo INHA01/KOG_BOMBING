@@ -27,6 +27,7 @@ public class DeployableWeapon : DeployableBase
     [PunRPC]
     public virtual void PutConsum()
     {
+        playerData.playerSound.skillSound.ActiveSound(transform, ESkillSound.UNI_MINE);
         StartCoroutine(PutAfterAnim());
     }
 

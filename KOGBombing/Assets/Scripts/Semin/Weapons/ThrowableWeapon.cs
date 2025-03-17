@@ -42,14 +42,14 @@ public class ThrowableWeapon : ThrowableBase
 	public override void Use()
 	{
 		base.Use();
-		count--;
-		playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.All);
+        count--;
+        playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.All);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
     }
 
 	[PunRPC]
 	private void SpawnThrowWeapon()
 	{
-		SetSpawnThrowWeapon();
+        SetSpawnThrowWeapon();
 	}
 }

@@ -13,7 +13,7 @@ public class PlayerData : MonoBehaviour
     public Vector3 shootDirection;
     public float maxLength;
     public Vector3 mousePos;
-    public PlayerSoundData soundList;
+    public PlayerSoundData playerSound;
 
     [Header("Photon")]
     public PhotonView pv;

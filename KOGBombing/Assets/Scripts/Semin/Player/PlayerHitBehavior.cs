@@ -180,8 +180,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
         playScene.ActiveKill();
-        AudioClip killSound = playerData.playerSound.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-        Managers.Sound.PlayEffect(killSound);
+        playerData.playerSound.hitDeathSound.ActiveSound(transform, EHitDeathSound.PLAYERKILL);
     }
     [PunRPC]
     private void PunDeactiveUI()
@@ -207,27 +206,23 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void PunDeathSound()
     {
-        AudioClip deathsound = null;
         EHitDeathSound soundType = (EHitDeathSound)((int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH);
-        deathsound = playerData.playerSound.HitDeathList[(int)soundType];
-        Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+        playerData.playerSound.hitDeathSound.ActiveSound(transform, soundType);
     }
     private IEnumerator CoHitSound()
     {
         int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
-        AudioClip hitSoundClip = playerData.playerSound.HitDeathList[soundIndex];
+        
+        AudioClip hitSoundClip = playerData.playerSound.hitDeathSound.HitDeathList[soundIndex];
         float time = Time.time + hitSoundClip.length;
-        playerData.pv.RPC("PunHitSound", RpcTarget.All);
+        playerData.pv.RPC("PunHitSound", RpcTarget.All, soundIndex);
         while (time > Time.time) yield return null;
         isActiveHitSound = false;
     }
     [PunRPC]
-    private void PunHitSound()
+    private void PunHitSound(int soundIndex)
     {
-        int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
-        AudioClip hitSoundClip = playerData.playerSound.HitDeathList[soundIndex];
-        float time = Time.time + hitSoundClip.length;
-        Managers.Sound.PlayEffect(hitSoundClip, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+        playerData.playerSound.hitDeathSound.ActiveSound(transform, (EHitDeathSound)soundIndex);
     }
     [PunRPC]
     private void Damage(float damage,int playerIndex)
@@ -320,8 +315,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         AudioClip deathsound = null;
         int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
         EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
-        deathsound = playerData.playerSound.HitDeathList[(int)deathSound];
-        Managers.Sound.PlayEffect(deathsound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+        playerData.playerSound.hitDeathSound.ActiveSound(transform, deathSound);
         if (!blackBoard.showSoundEffect)
         {
             blackBoard.showSoundEffect = true;

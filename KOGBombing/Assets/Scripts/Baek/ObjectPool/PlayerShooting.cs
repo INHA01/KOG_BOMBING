@@ -55,14 +55,14 @@ public class PlayerShooting : Magazine
         }
         else if (magazineCount == 0)
         {
+            playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.EMPTYCLICK);
             Debug.Log("No magazine");
         }
     }
     [PunRPC]
     void PunPlaySound(int type)
     {
-        AudioClip effect = playerData.playerSound.WeaponList[type];
-        Managers.Sound.PlayEffect(effect, EMixerGroup.EFFECT, transform, 1, 0, 50);
+        playerData.playerSound.weaponSound.ActiveSound(transform, (EWeaponSound)type);
     }
 
     [PunRPC]
@@ -98,6 +98,7 @@ public class PlayerShooting : Magazine
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}
+        
         magazineCount--;
 		if (magazineCount > 0)
         {
@@ -121,10 +122,7 @@ public class PlayerShooting : Magazine
             {
                 time = 0;
                 magazineCount++;
-
-                AudioClip reloadSound = playerData.playerSound.WeaponList[(int)EWeaponSound.RELOAD];
-                Managers.Sound.PlayEffect(reloadSound);
-
+                playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.RELOAD);
                 if (bulletCount == 0)
                     bulletCount = InitBulletCount;
             }

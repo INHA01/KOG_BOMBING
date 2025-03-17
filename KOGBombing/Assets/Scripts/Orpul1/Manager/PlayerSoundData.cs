@@ -53,7 +53,7 @@ public enum EWeaponSound
 }
 public enum EMissionSound
 {
-    BOMBINTERACT,
+    BOMBLAUNCHING,
     BOMBNARRATION,
 }
 [Serializable]
@@ -99,12 +99,53 @@ public struct MissionSound
         Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
     }
 }
+[Serializable]
+public struct WeaponSound
+{
+    public List<AudioClip> WeaponSoundList;
+    public void ActiveSound(Transform transform, EWeaponSound soundType)
+    {
+        AudioClip bombSound = WeaponSoundList[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
+}
+[Serializable]
+public struct PingSound
+{
+    public List<AudioClip> PingSoundList;
+    public void ActiveSound(Transform transform, EPingSound soundType)
+    {
+        AudioClip bombSound = PingSoundList[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
+}
+[Serializable]
+public struct HitDeathSound
+{
+    public List<AudioClip> HitDeathList;
+    public void ActiveSound(Transform transform, EHitDeathSound soundType)
+    {
+        AudioClip bombSound = HitDeathList[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
+}
+[Serializable]
+public struct GeneralSound
+{
+    public List<AudioClip> GeneralList;
+    public void ActiveSound(Transform transform, EGenralSound soundType)
+    {
+        AudioClip bombSound = GeneralList[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+    }
+}
+
 public class PlayerSoundData : MonoBehaviour
 {
-    public List<AudioClip> GeneralList = new List<AudioClip>();
-    public List<AudioClip> HitDeathList = new List<AudioClip>();
-    public List<AudioClip> PingList = new List<AudioClip>();
-    public List<AudioClip> WeaponList = new List<AudioClip>();
+    public GeneralSound generalSound = new GeneralSound();
+    public HitDeathSound hitDeathSound = new HitDeathSound();
+    public PingSound pingSound = new PingSound();
+    public WeaponSound weaponSound = new WeaponSound();
     public FootSound footSound = new FootSound();
     public SkillSound skillSound = new SkillSound();
     public MissionSound missionSound = new MissionSound();

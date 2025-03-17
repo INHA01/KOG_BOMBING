@@ -186,7 +186,7 @@ public class PlayerAttack : PlayerBehavior
                     if(!isSetBomb)
                     {
                         isSetBomb = true;
-                        playerData.pv.RPC("PunBombSound", RpcTarget.All, (int)EMissionSound.BOMBINTERACT);
+                        playerData.pv.RPC("PunBombSound", RpcTarget.All, (int)EMissionSound.BOMBLAUNCHING);
                     }
                     return INode.ENodeState.Running;
                 }

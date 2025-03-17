@@ -90,8 +90,8 @@ public class PlayPointController : MonoBehaviour, ISetPointable
         if (killPlayerTeam != (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()]) return;
         if (killPlayerIndex != (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()]) return;
         playScene.ActiveKill();
-        AudioClip killSound = playerData.playerSound.HitDeathList[(int)EHitDeathSound.PLAYERKILL];
-        Managers.Sound.PlayEffect(killSound);
+
+        playerData.playerSound.hitDeathSound.ActiveSound(transform, EHitDeathSound.PLAYERKILL);
     }
     private string[] GetPlayerList(ETeam team)
     {

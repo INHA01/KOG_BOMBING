@@ -142,6 +142,7 @@ public class DashSkill : MonoBehaviour, ISkill
             playScene.skillCount.text = ((int)(time - skillDeltaTime)).ToString();
             if (skillDeltaTime > time)
             {
+				Managers.Sound.PlayUISound(EUiSoundType.SKILLREADY);
                 playScene.skillFade.fillAmount = 0;
                 playScene.skillCount.text = "";
                 bisUsableSkill = true;

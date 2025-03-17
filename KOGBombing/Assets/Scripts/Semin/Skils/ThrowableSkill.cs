@@ -29,6 +29,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 
             if (skillDeltaTime > time)
             {
+                Managers.Sound.PlayUISound(EUiSoundType.SKILLREADY);
                 playScene.skillFade.fillAmount = 0;
                 playScene.skillCount.text = "";
                 bisUsableSkill = true;

@@ -100,7 +100,6 @@ namespace Orpul1
                 if (PhotonNetwork.CurrentRoom.PlayerCount >= matchData.MaxPlayer) break;
                 yield return null;
             }
-            
             if (PhotonNetwork.IsMasterClient)
             {
                 yield return gameStartDelay;

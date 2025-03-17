@@ -45,6 +45,7 @@ namespace Orpul1
         {
             if (!properties.ContainsKey(EPropertyType.ROOMSTATE.ToString())) return;
             if ((string)properties[EPropertyType.ROOMSTATE.ToString()] != "Start") return;
+            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });
             SetPlayerTeamIndex();

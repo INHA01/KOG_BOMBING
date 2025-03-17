@@ -72,7 +72,6 @@ public class SoundManager : MonoBehaviour
 
         audioSource.Play();
         Destroy(audioObj, effect.length);
-
     }
     public void StopRecentSound()
     {

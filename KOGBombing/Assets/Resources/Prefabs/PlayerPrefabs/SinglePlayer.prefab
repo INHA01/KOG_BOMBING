@@ -482,6 +482,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9c643568007f3924f82eded353af87a6, type: 3}
   - {fileID: 8300000, guid: 65994517d0cf504409097c79685a5cb7, type: 3}
   - {fileID: 8300000, guid: 5500e7a3484c9ed4dbc62f366653de3e, type: 3}
+  footSound:
+    FootStepList:
+    - {fileID: 8300000, guid: 87d8d3febd23bf041b3005f2a442f4a8, type: 3}
+    - {fileID: 8300000, guid: 5d0c5cab0af76da4b9992d07130d6faf, type: 3}
+    - {fileID: 8300000, guid: ebc91c6cfeaee8842acde026479b37f1, type: 3}
+    - {fileID: 8300000, guid: 64535a3ebab1f0c4ea92cccf27f53cca, type: 3}
+    - {fileID: 8300000, guid: df629699fae5cfa4893c3a8488ccee38, type: 3}
+    - {fileID: 8300000, guid: 671d5e205aec59d4bad013951b0bb5e8, type: 3}
+    - {fileID: 8300000, guid: e8456c50a5cbf364fb07b848fba8f908, type: 3}
+    - {fileID: 8300000, guid: 7410c9bedb8d1dd4a9f1993ac510a9a3, type: 3}
+    - {fileID: 8300000, guid: 6e3eeb7d8877aa943bec6b0d7dfae29d, type: 3}
+    - {fileID: 8300000, guid: 3ff98d7808bb9aa41b695103b663be28, type: 3}
+    - {fileID: 8300000, guid: eabacdff1ab35b0438dfff5bfb09cad3, type: 3}
+    activeSoundTime: 0.35
 --- !u!114 &1055956268508796724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,6 +750,7 @@ MonoBehaviour:
   bombInteraction: {fileID: 0}
   playerStatus: {fileID: 0}
   currentGameState: 0
+  playerIndex: 0
 --- !u!114 &777691158875268194
 MonoBehaviour:
   m_ObjectHideFlags: 0

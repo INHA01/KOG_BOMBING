@@ -2,12 +2,12 @@ using Photon.Pun;
 using Semin;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static PlayerController;
 
 public class PlayerMovement : PlayerBehavior
 {
-
     public bool IsNotGroggy()
     {
         return !animator.GetAnimBool(PlayerAnimation.AnimType.Groggy);
@@ -20,6 +20,7 @@ public class PlayerMovement : PlayerBehavior
     {
         return !blackBoard.playerStatus.isBombInteract;
     }
+    
     public INode.ENodeState Move()
     {
         Vector3 movement;
@@ -29,7 +30,27 @@ public class PlayerMovement : PlayerBehavior
         blackBoard.rigidBody.velocity = movement;
         return INode.ENodeState.Success;
     }
-
+    public bool IsWalk()
+    {
+        bool isInput = false;
+        for(int i=0; i< (int)EKey.D+1; i++)
+        {
+            isInput = blackBoard.inputs.ElementAt(i).Value;
+            if (isInput) break;
+        }
+        return isInput;
+    }
+    
+    public INode.ENodeState PlayWalkSound()
+    {
+        playerData.pv.RPC("PunFootSound", RpcTarget.All);
+        return INode.ENodeState.Success;
+    }
+    [PunRPC]
+    private void PunFootSound()
+    {
+        playerData.soundList.footSound.ActiveSound(transform);
+    }
     //TODO : Set Camera Target
     public INode.ENodeState RotatePlayer()
     {

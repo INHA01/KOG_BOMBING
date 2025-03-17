@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,29 @@ public enum EWeaponSound
     SHOOTING,
     EXPLOSION
 }
+
+[Serializable]
+public struct FootSound
+{
+    enum EFootStepSound
+    {
+        FOOTSTEP1 = 0,
+        FOOTSTEP11 = 10,
+    }
+    public List<AudioClip> FootStepList;
+    public float activeSoundTime;
+    float time;
+    int footIndex;
+    public void ActiveSound(Transform transform)
+    {
+        time += Time.deltaTime;
+        if (time <= activeSoundTime) return;
+        footIndex++;
+        AudioClip footStep = FootStepList[footIndex % (int)EFootStepSound.FOOTSTEP11];
+        Managers.Sound.PlayEffect(footStep, EMixerGroup.EFFECT, transform, 1, 0, 30);
+        time = 0;
+    }
+}
 public class PlayerSoundData : MonoBehaviour
 {
     public List<AudioClip> GeneralList = new List<AudioClip>();
@@ -58,4 +82,5 @@ public class PlayerSoundData : MonoBehaviour
     public List<AudioClip> PingList = new List<AudioClip>();
     public List<AudioClip> SkillList = new List<AudioClip>();
     public List<AudioClip> WeaponList = new List<AudioClip>();
+    public FootSound footSound;
 }

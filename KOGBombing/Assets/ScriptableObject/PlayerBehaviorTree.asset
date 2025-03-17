@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: b657134a57c64114e9acef68e0836e18
-  position: {x: 788, y: 737}
+  position: {x: 788.80023, y: 736.8001}
   child: {fileID: 6882639984666204211}
   method: CheckInput
   paramName: LMOUSEBUTTON
@@ -195,6 +195,7 @@ MonoBehaviour:
   children:
   - {fileID: 3069321850940118252}
   - {fileID: 8200657294350586246}
+  - {fileID: -2048248934707703818}
 --- !u!114 &-6932081876933467733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +454,24 @@ MonoBehaviour:
   guid: 2372331e3ee48ff489ddf6c1ea5edccd
   position: {x: -96, y: -158}
   child: {fileID: 1624584447135552367}
+--- !u!114 &-2048248934707703818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6319d28ccc4ad984e8be8958c0d93d7d, type: 3}
+  m_Name: IfDecoratorNode
+  m_EditorClassIdentifier: 
+  guid: b258f705f64de114baea4bc6d0ce44cc
+  position: {x: 493.6, y: 217.6}
+  child: {fileID: 3009803146195699248}
+  method: IsWalk
+  paramName: 
+  className: PlayerMovement
 --- !u!114 &-1819408944471962811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,6 +669,8 @@ MonoBehaviour:
   - {fileID: -8389100774706129543}
   - {fileID: -6137478795078086819}
   - {fileID: 584862216382814153}
+  - {fileID: -2048248934707703818}
+  - {fileID: 3009803146195699248}
 --- !u!114 &225296470337349713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,6 +923,23 @@ MonoBehaviour:
   method: IsUni
   paramName: 
   className: PlayerAttack
+--- !u!114 &3009803146195699248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fc3adfe5e80e949a6be9c9ebcd9664, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  guid: 4f85657e1e93fb445bbc4c33fb0d5ef6
+  position: {x: 637.6, y: 217.6}
+  paramName: 
+  method: PlayWalkSound
+  className: PlayerMovement
 --- !u!114 &3069321850940118252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,7 +989,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 876e5aa7fbda8014caab232d39034a0a
-  position: {x: 502, y: 542}
+  position: {x: 496.80005, y: 541.6}
   paramName: 
   method: AbortInteract
   className: PlayerInteract

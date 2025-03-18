@@ -886,6 +886,11 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1783906631379095402, guid: 659faca4a6665f948a01e5400ffc63db,
+        type: 3}
+      propertyPath: m_Range
+      value: 110
+      objectReference: {fileID: 0}
     - target: {fileID: 2404287261008882110, guid: 659faca4a6665f948a01e5400ffc63db,
         type: 3}
       propertyPath: sceneViewId
@@ -895,6 +900,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_001_V3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473175001672483021, guid: 659faca4a6665f948a01e5400ffc63db,
+        type: 3}
+      propertyPath: m_Range
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 7083233508454541631, guid: 659faca4a6665f948a01e5400ffc63db,
         type: 3}
@@ -963,18 +973,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c30c5008f1d814478439bc5f7cb5677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &153203036 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6943385243625238612, guid: 659faca4a6665f948a01e5400ffc63db,
-    type: 3}
-  m_PrefabInstance: {fileID: 153203032}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &153203037 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3924548611085360076, guid: 659faca4a6665f948a01e5400ffc63db,
-    type: 3}
-  m_PrefabInstance: {fileID: 153203032}
-  m_PrefabAsset: {fileID: 0}
 --- !u!64 &169987291
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9773,8 +9771,8 @@ MonoBehaviour:
     isSetBomb: 0
     isEndRound: 0
   bombPos:
-  - {fileID: 153203037}
-  - {fileID: 153203036}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1317832640
 MonoBehaviour:
   m_ObjectHideFlags: 0

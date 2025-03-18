@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Orpul1;
@@ -9,6 +9,10 @@ using ExitGames.Client.Photon;
 using Photon.Realtime;
 using UnityEngine.Rendering;
 using BAEK;
+using Unity.VisualScripting;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.Rendering.DebugUI.Table;
+using Photon.Pun.Demo.Asteroids;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -19,10 +23,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [SerializeField]
     PlayPointController playerPointController;
     RaiseEventOptions options = new RaiseEventOptions();
+	[SerializeField] public GameObject hitPrefab;
 
-    float groggyTime;
+	float groggyTime;
     Coroutine groggyCoroutine;
     bool isActiveHitSound = false;
+    BulletController bullet;
+
     protected override void Awake()
     {
         base.Awake();
@@ -88,14 +95,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			if (playerData.timeWithoutDamage >= duration)
 			{
                 float value = 0;
-                if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp°¡ Ã¤¿öÁö´Â °æ¿ì
+                if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hpê°€ ì±„ì›Œì§€ëŠ” ê²½ìš°
                 {
                     float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 10;
                     value = blackBoard.playerStatus.maxHp / 100 * 10 - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
                     blackBoard.playerStatus.hp = Mathf.Min(temp, blackBoard.playerStatus.maxHp);
                     if (value <= 0) value = 0;
                 }
-                else  // defence¸¸ Ã¤¿öÁö´Â °æ¿ì
+                else  // defenceë§Œ ì±„ì›Œì§€ëŠ” ê²½ìš°
                 {
 					value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
 					blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
@@ -255,7 +262,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (blackBoard.playerStatus.groggyable)  // Groggy
             {
-                if (!CanGroggy())   // ÆÀ¿ø ÇÑ¸íµµ ¾øÀ¸¸é ¹Ù·Î Á×À½
+                if (!CanGroggy())   // íŒ€ì› í•œëª…ë„ ì—†ìœ¼ë©´ ë°”ë¡œ ì£½ìŒ
 				{
 					blackBoard.playerStatus.groggyable = false;
 					blackBoard.hpBar.SetGroggyValue(0);
@@ -263,7 +270,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					return;
 				}
 
-				if (blackBoard.inputs[EKey.NUM_2])  // ÆøÅº ÇØÃ¼ ÁßÀÌ¾úÀ¸¸é Interaction Ãë¼Ò
+				if (blackBoard.inputs[EKey.NUM_2])  // í­íƒ„ í•´ì²´ ì¤‘ì´ì—ˆìœ¼ë©´ Interaction ì·¨ì†Œ
                 {
                     if (blackBoard.bombInteraction.GetBomb() != null)
                         blackBoard.bombInteraction.SetBombInteraction(false);
@@ -312,7 +319,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (players[i] == gameObject) continue;
             ETeam otherPlayerTeam = (ETeam)players[i].GetComponent<PlayerData>().pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            if (myTeam == otherPlayerTeam)  // ÆÀÀÌ °°´Ù¸é °Â°¡ »ì¾ÆÀÖ´ÂÁö È®ÀÎ
+            if (myTeam == otherPlayerTeam)  // íŒ€ì´ ê°™ë‹¤ë©´ ê±”ê°€ ì‚´ì•„ìˆëŠ”ì§€ í™•ì¸
             {
                 Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
                 if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
@@ -471,4 +478,42 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         yield return new WaitForSeconds(time);
 		blackBoard.speedDebuff.rigidityValue = 1.0f;
     }
+
+	protected virtual void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Bullet")
+		{
+            if (!playerData.pv.IsMine) return;
+            bullet = other.GetComponent<BulletController>();
+            if (bullet == null) return;
+
+            //Debug.Log($"mine: {GetComponent<IGetTeamTypeable>().GetTeamType()}, other: {bullet.eTeamBullet}");
+			if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
+            bullet.HitAndMakeParticle(GetComponent<Collider>());
+
+			Vector3 contactPoint = other.ClosestPoint(transform.position);
+			Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
+			Vector3 pos = contactPoint;
+		}
+	}
+	[PunRPC]
+	void SetParticleToHit(Vector3 pos, Quaternion rot, GameObject gameObject)
+	{
+		if (hitPrefab != null)
+		{
+			var hitVFX = Instantiate(hitPrefab, pos, rot);
+			var psHit = hitVFX.GetComponent<ParticleSystem>();
+			if (psHit != null)
+				Destroy(hitVFX, psHit.main.duration);
+
+			else
+			{
+				var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+				Destroy(hitVFX, psChild.main.duration);
+			}
+		}
+        BulletController bullet = gameObject.GetComponent<BulletController>();
+        if (bullet != null)
+		    bullet.Release();
+	}
 }

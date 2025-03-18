@@ -86,23 +86,6 @@ public class PlayerShooting : Magazine
         bullet.SetActive(true);
     }
 
-    public void CreateParticleAtPlayerPos(BulletController bullet)
-	{
-        targetBullet = bullet;
-        playerData.pv.RPC("RPCCreateParticleAtPlayerPos", RpcTarget.All);
-	}
-
-
-	[PunRPC]
-    void RPCCreateParticleAtPlayerPos()
-    {
-        if (targetBullet != null)
-        {
-            targetBullet.HitAndMakeParticle();
-            Debug.Log("CreateParticle");
-        }
-	}
-
     IEnumerator Shooting()
     {
         if(playerData.pv.IsMine)

@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
 			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
         }
+        ConfirmBombInteract();
         ConfirmSoundEffect();
     }
     
@@ -166,29 +167,34 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 	{
 		if (other.CompareTag("Player"))
 			Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
-        //ConfirmBombInteract(other, true);
     }
-    private void OnTriggerExit(Collider other)
-    {
-        //ConfirmBombInteract(other, false);
-    }
-    void ConfirmBombInteract(Collider other, bool isEnter)
+
+    void ConfirmBombInteract()
     {
         bool tagBomb = false;
-        if (
-                (blackBoard.playerTeam == ETeam.REDTEAM && other.tag == "BombInteract")
-                ||
-                (blackBoard.playerTeam == ETeam.BLUETEAM && other.tag == "Bomb")
-               )
+        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
+        for(int i = 0; i < colliders.Length; i++)
         {
-            if (isEnter && blackBoard.inputs[EKey.NUM_2])
+            if (
+                (blackBoard.playerTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
+                ||
+                (blackBoard.playerTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
+               )
             {
-                bombNotify.ActiveCanInteract(true, InteractUI.InteractBomb);
-                tagBomb = true;
+                if (blackBoard.inputs[EKey.NUM_2])
+                {
+                    bombNotify.ActiveCanInteract(true, InteractUI.InteractBomb);
+                    tagBomb = true;
+                    playerData.isInteract = true;
+                }
             }
         }
+        
         if (!tagBomb && bombNotify != null)
+        {
             bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
+            playerData.isInteract = false;
+        }
     }
     public void SetGameState(EGameState state)
     {

@@ -30,9 +30,10 @@ namespace BAEK
         }
         public void ActiveCanInteract(bool canInteract , InteractUI interactUI)
         {
+            if(!canInteract)
+                Interact(0);
             interactUIs[(int)interactUI].SetActive(canInteract);
             interactUIs[(int)InteractUI.InteractBar].SetActive(canInteract);
-            Interact(0);
         }
         public void Interact(float amount)
         {

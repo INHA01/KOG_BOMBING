@@ -1,4 +1,6 @@
 using Orpul1;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using Semin;
 using System.Collections;
@@ -92,7 +94,21 @@ public class PlayScene : UIPopup
     }
     public void PublishRound(int round)
     {
-        roundGuide.GetComponent<TextMeshProUGUI>().text = "Round " + round;
+        GameObject roundText = roundGuide.transform.GetChild(0).gameObject;
+        GameObject mission = roundGuide.transform.GetChild(1).gameObject;
+        roundText.GetComponent<TextMeshProUGUI>().text = "Round " + round;
+        ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        TextMeshProUGUI missionText = mission.GetComponent<TextMeshProUGUI>();
+        if (team == ETeam.BLUETEAM)
+        {
+            missionText.text = "폭발을 저지하세요.";
+            missionText.colorGradient = new VertexGradient(new Color32(0, 248, 248, 255), new Color32(0, 248, 248, 255), new Color32(0, 248, 248, 60), new Color32(0, 248, 248, 60));
+        }
+        else
+        {
+            missionText.text = "폭발을 실행하세요";
+            missionText.colorGradient = new VertexGradient(Color.red, Color.red, new Color32(255, 0, 0, 60), new Color32(255, 0, 0, 60));
+        }
         Animator animator = roundGuide.GetComponent<Animator>();
         animator.Rebind();
         animator.Play("RoundGuide", 0, 0);

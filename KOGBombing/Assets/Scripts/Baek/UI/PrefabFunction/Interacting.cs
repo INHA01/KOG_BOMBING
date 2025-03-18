@@ -88,6 +88,8 @@ namespace BAEK
         {
             for (int i = 0; i < interactUIs.Length; i++)
                 interactUIs[i].SetActive(false);
+            for(int i = 0; i < guides.Length; i++)
+                guides[i].SetActive(false);
         }
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Orpul1;
@@ -9,6 +9,10 @@ using ExitGames.Client.Photon;
 using Photon.Realtime;
 using UnityEngine.Rendering;
 using BAEK;
+using Unity.VisualScripting;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.Rendering.DebugUI.Table;
+using Photon.Pun.Demo.Asteroids;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {
@@ -19,10 +23,13 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [SerializeField]
     PlayPointController playerPointController;
     RaiseEventOptions options = new RaiseEventOptions();
+	[SerializeField] public GameObject hitPrefab;
 
-    float groggyTime;
+	float groggyTime;
     Coroutine groggyCoroutine;
     bool isActiveHitSound = false;
+    BulletController bullet;
+
     protected override void Awake()
     {
         base.Awake();
@@ -470,4 +477,42 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         yield return new WaitForSeconds(time);
 		blackBoard.speedDebuff.rigidityValue = 1.0f;
     }
+
+	protected virtual void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Bullet")
+		{
+            if (!playerData.pv.IsMine) return;
+            bullet = other.GetComponent<BulletController>();
+            if (bullet == null) return;
+
+            //Debug.Log($"mine: {GetComponent<IGetTeamTypeable>().GetTeamType()}, other: {bullet.eTeamBullet}");
+			if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
+            bullet.HitAndMakeParticle(GetComponent<Collider>());
+
+			Vector3 contactPoint = other.ClosestPoint(transform.position);
+			Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
+			Vector3 pos = contactPoint;
+		}
+	}
+	[PunRPC]
+	void SetParticleToHit(Vector3 pos, Quaternion rot, GameObject gameObject)
+	{
+		if (hitPrefab != null)
+		{
+			var hitVFX = Instantiate(hitPrefab, pos, rot);
+			var psHit = hitVFX.GetComponent<ParticleSystem>();
+			if (psHit != null)
+				Destroy(hitVFX, psHit.main.duration);
+
+			else
+			{
+				var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+				Destroy(hitVFX, psChild.main.duration);
+			}
+		}
+        BulletController bullet = gameObject.GetComponent<BulletController>();
+        if (bullet != null)
+		    bullet.Release();
+	}
 }

@@ -3,6 +3,7 @@ using Photon.Pun;
 using Semin;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BulletController : PooledObject
 {
@@ -23,7 +24,7 @@ public class BulletController : PooledObject
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     public float Damage { get { return damage; } }
 
-    protected virtual void FixedUpdate()
+	protected virtual void FixedUpdate()
     {
         rb.velocity = direction * moveSpeed;
         distance += moveSpeed * Time.deltaTime;
@@ -51,6 +52,7 @@ public class BulletController : PooledObject
         {
             // >> : �� ����
             IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
+
             if (!other.GetComponent<PlayerData>().pv.IsMine) return;
             if (teamType == null) return;
             if (!IsOtherTeam(teamType)) return;
@@ -58,30 +60,28 @@ public class BulletController : PooledObject
             IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
             {
-                other.GetComponent<PlayerShooting>().CreateParticleAtPlayerPos(this);
-
 				player.OnDamaged(damage, playerIndex);
+                distance = 0;
+				return;
             }
         }
 
-		target = other;
-		HitAndMakeParticle();
+		HitAndMakeParticle(other);
 	}
 
-    public void HitAndMakeParticle()
+	public void HitAndMakeParticle(Collider other)
     {
-		// >> : HitEffect
-		Vector3 contactPoint = target.ClosestPoint(transform.position);
-		Quaternion rot = Quaternion.FromToRotation(Vector3.up, target.transform.position - contactPoint);
+        // >> : HitEffect
+        Debug.Log("Hit Effect");
+		Vector3 contactPoint = other.ClosestPoint(transform.position);
+		Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
 		Vector3 pos = contactPoint;
-
 		if (hitPrefab != null)
 		{
 			var hitVFX = Instantiate(hitPrefab, pos, rot);
 			var psHit = hitVFX.GetComponent<ParticleSystem>();
 			if (psHit != null)
 				Destroy(hitVFX, psHit.main.duration);
-
 			else
 			{
 				var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
@@ -89,9 +89,9 @@ public class BulletController : PooledObject
 			}
 		}
 		/// << :
-		distance = 0;
-		Release();
-	}
+		//distance = 0;
+		//Release();
+    }
 
     public void ShowMuzzle()
     {
@@ -108,5 +108,5 @@ public class BulletController : PooledObject
                 Destroy(muzzleVFX, psChild.main.duration);
             }
         }
-    }
+	}
 }

@@ -26,8 +26,8 @@ public class DashSkill : MonoBehaviour, ISkill
 	{
 		if(playerData.pv.IsMine)
 		{
-			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
-			playScene.SetSkillIcon(CharacterType.Uni);
+			playScene = Managers.UI.GetPopupUI<PlayScene>(BAEK.UIKEY.Play);
+            playScene.SetSkillIcon(CharacterType.Uni);
 		}
 
         bisUsableSkill = true;

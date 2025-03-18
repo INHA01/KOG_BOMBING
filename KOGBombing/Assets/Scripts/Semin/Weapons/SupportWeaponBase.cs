@@ -42,7 +42,7 @@ public abstract class SupportWeaponBase : Magazine, ISupportWeapon
 		this.playerData = playerData;
 		if(playerData.pv.IsMine)
 		{
-			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+			playScene = Managers.UI.GetPopupUI<PlayScene>(BAEK.UIKEY.Play);
 			if(type != WeaponType.BOMB)
 				playScene.SetSubWeaponIcon(type);
 		}

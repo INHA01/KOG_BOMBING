@@ -31,7 +31,7 @@ public class TeamUIController
         ETeam selfPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         ETeam otherPlayerTeam;
 
-        _uiScene = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
+        _uiScene = Managers.UI.ShowPopupUI<UIPopup>(UIKEY.Play);
         _uiScene.GetComponent<ShowCursor>().bombPos = bombPos;
         _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
         _uiScene.GetComponent<PlayScene>().Reset();

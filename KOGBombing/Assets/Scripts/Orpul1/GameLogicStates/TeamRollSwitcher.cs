@@ -41,7 +41,7 @@ namespace Orpul1
             gameData.playerObj.GetComponent<IDestroyAble>().DoDestory();
             Managers.PunData.Init();
             Managers.CamData.InitCamera();
-            Managers.UI.ClosePopupUI("PlayCanvas");
+            Managers.UI.ClosePopupUI(BAEK.UIKEY.Play);
         }
         private void SwapTeamCount()
         {

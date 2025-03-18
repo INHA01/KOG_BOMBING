@@ -17,10 +17,10 @@ namespace Orpul1
         {
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDENDWAIT);
             time = 0;
-            Interacting bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
-            if(bombNotify!=null)
+            Interacting bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+            if (bombNotify!=null)
                 bombNotify.ActiveFalseAll();
-            Managers.UI.ShowPopupUI<Winner>("WinnerCanvas").SetWiner(0);
+            Managers.UI.ShowPopupUI<Winner>(BAEK.UIKEY.Winner).SetWiner(0);
         }
         
         public override void UpdateState()
@@ -32,7 +32,7 @@ namespace Orpul1
         public override void ExitState()
         {
             Managers.UI.ChangeAllCanvsRender(RenderMode.ScreenSpaceOverlay);
-            Managers.UI.ClosePopupUI("WinnerCanvas");
+            Managers.UI.ClosePopupUI(UIKEY.Winner);
             gameData.playerObj.GetComponent<IResetAble>().DoReset();
         }
 

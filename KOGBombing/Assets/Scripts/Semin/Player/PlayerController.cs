@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
         if (bombNotify == null)
-            bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
+            bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
         isInitComplete = true;
     }
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {
                 PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
-                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
                 if (player.playerTeam != blackBoard.playerTeam && !player.showSoundEffect)
                 {
                     player.showSoundEffect = true;

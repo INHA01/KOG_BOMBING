@@ -151,7 +151,7 @@ namespace Orpul1
         private IEnumerator CoStartCountDown()
         {
             float timeCount = 0;
-            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
+            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<PlayScene>(BAEK.UIKEY.Play).timer;
             
             while (timeCount < roundInterval) 
             {

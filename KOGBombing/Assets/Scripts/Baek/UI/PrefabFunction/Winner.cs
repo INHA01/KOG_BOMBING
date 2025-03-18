@@ -32,8 +32,8 @@ public class Winner : UIPopup
     }
     public void OpenResult()
     {
-        Managers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
-        Managers.UI.ClosePopupUI("WinnerCanvas");
+        Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.Result);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.Winner);
     }
     private void ActiveRoundResultSound(WinnerTeam winTeam)
     {

@@ -1,6 +1,8 @@
+using BAEK;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 
@@ -17,14 +19,29 @@ public class UIManager
         }
     }
     int _order = 0;
-    public Dictionary<string, UIPopup> _popupDictionary = new Dictionary<string, UIPopup>();
-    public T GetPopupUI<T>(string name = null) where T : UIPopup
+    //value
+    public List<UIPopup> _popupList = new List<UIPopup>();
+    //key
+    public List<UIKEY> _popupKey = new List<UIKEY>();
+    public void Init()
     {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
-        if (_popupDictionary.ContainsKey(name))
+        _popupKey.Clear();
+        for (int i = 0; i < (int)UIKEY.Max; i++)
         {
-            return _popupDictionary[name].GetComponent<T>();
+            _popupKey.Add(UIKEY.NONE);
+        }
+    }
+    int GetHash(UIKEY key)
+    {
+        return key.GetHashCode() % (int)UIKEY.Max;
+    }
+
+    public T GetPopupUI<T>(UIKEY name) where T : UIPopup
+    {
+        int index = GetHash(name);
+        if (_popupKey[index] != UIKEY.NONE || _popupKey[index].Equals(name))
+        {
+            return _popupList[index].GetComponent<T>();
         }
         T popup = ShowPopupUI<T>(name);
         if (popup != null)
@@ -32,23 +49,20 @@ public class UIManager
         return default;
     }
 
-    public T ShowPopupUI<T>(string name = null) where T : UIPopup
+    public T ShowPopupUI<T>(UIKEY name) where T : UIPopup
     {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
+        int index = GetHash(name);
         GameObject go = null;
         bool isExist = false;
-        // ContainsKey : 키가 존재하면 true 반환
-        // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
-        if (!_popupDictionary.ContainsKey(name))
+        if (_popupKey[index] == UIKEY.NONE || !_popupKey[index].Equals(name))
         {
-            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
+            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name.ToString()}Canvas");
             go.transform.SetParent(Root.transform);
             isExist = true;
         }
         else
         {
-            go = _popupDictionary[name].gameObject;
+            go = _popupList[index].gameObject;
         }
         go.SetActive(true);
         T sceneUI = Util.GetOrAddComponent<T>(go);
@@ -59,21 +73,28 @@ public class UIManager
         }
         sceneUI.Init();
         if (isExist)
-            _popupDictionary.Add(name, sceneUI);
+        {
+            _popupList.Add(sceneUI);
+            _popupKey[index] = name;
+        }
 
         return sceneUI;
     }
-    public void ClosePopupUI(string name = null)
+    public void ClosePopupUI(UIKEY name = UIKEY.NONE)
     {
-        if (_popupDictionary.Count == 0) return;
+        if (_popupList.Count == 0) return;
         GameObject go = null;
-        if (string.IsNullOrEmpty(name))
+        if (name == UIKEY.NONE)
         {
-            go = _popupDictionary.Last().Value.gameObject;
+            go = _popupList.Last().gameObject;
         }
-        else if (_popupDictionary.ContainsKey(name))
+        else
         {
-            go = _popupDictionary[name].gameObject;
+            int index = GetHash(name);
+            if (_popupKey[index].Equals(name))
+            {
+                go = _popupList[index].gameObject;
+            }
         }
         if (go != null)
         {
@@ -83,15 +104,9 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        Dictionary<string, bool> isActive = new Dictionary<string, bool>();
-        foreach (var popup in _popupDictionary)
+        for(int i = 0; i < _popupList.Count; i++)
         {
-            isActive.Add(popup.Key, popup.Value.gameObject.activeSelf);
-        }
-        foreach (var popup in isActive)
-        {
-            if (popup.Value)
-                ClosePopupUI(popup.Key);
+            ClosePopupUI();
         }
     }
 
@@ -113,12 +128,12 @@ public class UIManager
     }
     public void ChangeAllCanvsRender(RenderMode mode)
     {
-        foreach (var popup in _popupDictionary)
-        {
-            Canvas canvas = popup.Value.GetComponent<Canvas>();
-            canvas.renderMode = mode;
-            if(mode == RenderMode.ScreenSpaceCamera)
-                canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
-        }
+        //foreach (var popup in _popupDictionary)
+        //{
+        //    Canvas canvas = popup.Value.GetComponent<Canvas>();
+        //    canvas.renderMode = mode;
+        //    if(mode == RenderMode.ScreenSpaceCamera)
+        //        canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
+        //}
     }
 }

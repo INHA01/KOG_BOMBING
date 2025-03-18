@@ -99,6 +99,11 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
             ISetScoreable<EPlayerScore> score = dictPlayerScore.ElementAt(i).Value;
             score.ResetScore();
         }
+        for (int i = 0; i < dicTeamScore.Count; i++) 
+        {
+            ISetScoreable<ETeamScore> teamScore = dicTeamScore.ElementAt(i).Value;
+            teamScore.Initialize();
+        }
         dictPlayerScore.Clear();
         dicTeamScore.Clear();
         isAlreadyReset = false;

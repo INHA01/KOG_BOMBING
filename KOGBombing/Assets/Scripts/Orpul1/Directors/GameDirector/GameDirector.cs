@@ -41,6 +41,7 @@ namespace Orpul1
         private void Awake()
         {
             InitializeState();
+            SetVSync();
         }
         private void InitializeState()
         {
@@ -54,6 +55,11 @@ namespace Orpul1
             }
             TransitionState((int)EGameState.WAITPLAYERS);
         }
+        private void SetVSync()
+        {
+            QualitySettings.vSyncCount = 1;
+            Application.runInBackground = true;
+        }
         private void Update()
         {
             curState.UpdateState();
@@ -66,6 +72,10 @@ namespace Orpul1
             }
             curState = dicGameState[stateType];
             curState.EnterState();
+        }
+        private void OnGUI()
+        {
+            GUI.Label(new Rect(Screen.width * 0.25f, 100, 200, 100), "GameState " + curState.ToString());
         }
     }
 }

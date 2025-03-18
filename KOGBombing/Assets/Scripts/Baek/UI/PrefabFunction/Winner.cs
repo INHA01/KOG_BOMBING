@@ -24,6 +24,7 @@ public class Winner : UIPopup
         else
             winTeam = Managers.RoundData.WinTeam;
         ActiveRoundResultSound(winTeam);
+        animator.Rebind();
         animator.SetInteger("winner", (int)winTeam);
         activeResultButton.SetActive(end == 1);
     }

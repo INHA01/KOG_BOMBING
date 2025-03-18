@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using BAEK;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
@@ -27,6 +28,7 @@ namespace Orpul1
         public override void EnterState()
         {
             Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").PublishRound(Managers.RoundData.roundCount);
+            Managers.UI.GetPopupUI<Interacting>("InteractingCanvas").SwitchGuide(false);
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDWAIT);
             for (int i = 0; i < roundDoorController.Length; i++)
             {

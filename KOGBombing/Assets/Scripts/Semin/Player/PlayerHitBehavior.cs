@@ -95,14 +95,14 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			if (playerData.timeWithoutDamage >= duration)
 			{
                 float value = 0;
-                if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp가 채워지는 경우
+                if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp�� ä������ ���
                 {
                     float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 10;
                     value = blackBoard.playerStatus.maxHp / 100 * 10 - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
                     blackBoard.playerStatus.hp = Mathf.Min(temp, blackBoard.playerStatus.maxHp);
                     if (value <= 0) value = 0;
                 }
-                else  // defence만 채워지는 경우
+                else  // defence�� ä������ ���
                 {
 					value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
 					blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
@@ -200,8 +200,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public INode.ENodeState SetPlayerScore()
     {
         if (blackBoard.isSetScore) return INode.ENodeState.Fail;
-        playerData.pv.RPC("PunDeathSound", RpcTarget.All);
         if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
+        playerData.pv.RPC("PunDeathSound", RpcTarget.All);
 
         playerPointController.OnKillPoint();
         playerPointController.OnDeathPoint();
@@ -262,7 +262,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (blackBoard.playerStatus.groggyable)  // Groggy
             {
-                if (!CanGroggy())   // 팀원 한명도 없으면 바로 죽음
+                if (!CanGroggy())   // ���� �Ѹ��� ������ �ٷ� ����
 				{
 					blackBoard.playerStatus.groggyable = false;
 					blackBoard.hpBar.SetGroggyValue(0);
@@ -270,7 +270,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					return;
 				}
 
-				if (blackBoard.inputs[EKey.NUM_2])  // 폭탄 해체 중이었으면 Interaction 취소
+				if (blackBoard.inputs[EKey.NUM_2])  // ��ź ��ü ���̾����� Interaction ���
                 {
                     if (blackBoard.bombInteraction.GetBomb() != null)
                         blackBoard.bombInteraction.SetBombInteraction(false);
@@ -319,7 +319,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             if (players[i] == gameObject) continue;
             ETeam otherPlayerTeam = (ETeam)players[i].GetComponent<PlayerData>().pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            if (myTeam == otherPlayerTeam)  // 팀이 같다면 걔가 살아있는지 확인
+            if (myTeam == otherPlayerTeam)  // ���� ���ٸ� �°� ����ִ��� Ȯ��
             {
                 Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
                 if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
@@ -332,7 +332,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Death()
     {
         ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
-        //AudioClip deathsound = null;
         int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
         EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
         playerData.playerSound.hitDeathSound.ActiveSound(transform, deathSound);

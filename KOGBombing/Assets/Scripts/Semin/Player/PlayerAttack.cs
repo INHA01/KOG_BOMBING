@@ -18,7 +18,7 @@ public class PlayerAttack : PlayerBehavior
     bool isSetBomb = false;
     Coroutine animChange;
     float bombInteractTime;
-    BombNotify bombNotify;
+    Interacting bombNotify;
     PlayerMaterialController materialController;
 
 	protected override void Awake()
@@ -172,7 +172,7 @@ public class PlayerAttack : PlayerBehavior
         {
             if (bombNotify == null)
             { 
-                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
             }
             if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
@@ -180,7 +180,7 @@ public class PlayerAttack : PlayerBehavior
                 if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime)) // 폭탄 설치
                 {
                     bombInteractTime += Time.deltaTime;
-                    blackBoard.bombUI.BombInteracting(bombInteractTime / waitTime);
+                    bombNotify.Interact(bombInteractTime / waitTime);
 
                     playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, true);
                     if(!isSetBomb)
@@ -196,12 +196,12 @@ public class PlayerAttack : PlayerBehavior
 
                     if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Cancel
 					{
-						blackBoard.bombUI.ActiveInteract(false);
-						playerData.isInteract = false;
+                        bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
+                        bombNotify.SwitchGuide(false);
+                        playerData.isInteract = false;
 						isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-                        bombNotify.NotifyGuide(false, blackBoard.playerTeam);
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
                         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
@@ -219,11 +219,11 @@ public class PlayerAttack : PlayerBehavior
 					if (animChange == null)
 					{
 						playerData.bomb.Use();
-						blackBoard.bombUI.ActiveInteract(false);
-						isChangableAnim = true;
+                        bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
+                        bombNotify.SwitchGuide(false);
+                        isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-                        bombNotify.NotifyGuide(false, blackBoard.playerTeam);
                         blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
@@ -238,40 +238,22 @@ public class PlayerAttack : PlayerBehavior
             }
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
             {
-                Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-				for (int i = 0; i < colliders.Length; i++)
+                if(playerData.isInteract == true)
                 {
-                    if (
-                        (
-                            ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
-                            && colliders[i].CompareTag("BombInteract")
-                        )
-                        ||
-                        (
-                            ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.BLUETEAM)
-                            && colliders[i].CompareTag("Bomb")
-                        )
-                       ) 
+                    if (blackBoard.playerTeam == ETeam.REDTEAM)
                     {
-                        if(colliders[i].CompareTag("Bomb"))
-                        {
-                            Vector3 lookDir = colliders[i].transform.position - gameObject.transform.position;
-                            playerData.playerObj.transform.rotation = Quaternion.LookRotation(lookDir);
-
-							if (blackBoard.bombInteraction.GetBomb() != null)
-								blackBoard.bombInteraction.SetBombInteraction(true);
-						}
-                        playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
-                        playerData.isInteract = true;
-                        blackBoard.bombUI.ActiveInteract(true);
-                        bombInteractTime = 0;
-                        blackBoard.playerStatus.isBombInteract = true;
-                        blackBoard.playerStatus.isBombDefuse = false;
-                        return INode.ENodeState.Running;
+                        if (blackBoard.bombInteraction.GetBomb() != null)
+                            blackBoard.bombInteraction.SetBombInteraction(true);
                     }
-				}
-                bombNotify.NotifyGuide(false, blackBoard.playerTeam);
-				playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
+                    playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
+                    //playerData.isInteract = true;
+                    bombInteractTime = 0;
+                    blackBoard.playerStatus.isBombInteract = true;
+                    blackBoard.playerStatus.isBombDefuse = false;
+                    return INode.ENodeState.Running;
+                }
+                bombNotify.SwitchGuide(false);
+                playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 			}
 
         }
@@ -475,12 +457,12 @@ public class PlayerAttack : PlayerBehavior
         blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
         if(bombNotify == null)
         {
-            bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
         }
-        bombNotify.NotifyGuide(blackBoard.inputs[EKey.NUM_2] , blackBoard.playerTeam);
 
         if (blackBoard.inputs[EKey.NUM_2])
         {
+            bombNotify.SwitchGuide(true);
             if (playerData.bomb is SupportWeaponBase baseWeapon)
             {
                 // �������� ��� ��ź����, �������� ��� �����̹Ƿ� �Ǽ�
@@ -492,6 +474,7 @@ public class PlayerAttack : PlayerBehavior
         }
         else
         {
+            bombNotify.SwitchGuide(false);
             playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
             playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
             playerData.bomb.Disable();

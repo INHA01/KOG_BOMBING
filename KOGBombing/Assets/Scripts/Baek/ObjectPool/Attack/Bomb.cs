@@ -1,8 +1,9 @@
 using ExitGames.Client.Photon;
+using BAEK;
+using Semin;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
-using Semin;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,13 +37,12 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     float time = 0;
     public override float Damage { get { return 0; } }
     Coroutine destroyCoroutine;
-    BombNotify bombNotify;
+    Interacting bombNotify;
 	bool isInteracting = false;
     public bool isUsable = true;
     PhotonView pv;
     BombData bombData;
     RaiseEventOptions options = new RaiseEventOptions();
-    int bombEventCode = 50;
     public float BombTime { get { return bombTime; } } 
 	private void Awake()
 	{
@@ -58,7 +58,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     void NotifySet()
     {
         if (bombNotify == null)
-            bombNotify = Managers.UI.ShowPopupUI<BombNotify>("BombNotifyCanvas");
+            bombNotify = Managers.UI.ShowPopupUI<Interacting>("InteractingCanvas");
         else
             bombNotify.gameObject.SetActive(true);
         if (bombData.bombState != null)
@@ -71,7 +71,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
         if (player != null)
         {
             if (bombNotify == null)
-                bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+                bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
             if (player.playerStatus.isBombDefuse)
             {
                 player.playerStatus.isBombDefuse = false;

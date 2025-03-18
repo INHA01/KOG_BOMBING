@@ -325,7 +325,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     private void Death()
     {
         ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
-        AudioClip deathsound = null;
+        //AudioClip deathsound = null;
         int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
         EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
         playerData.playerSound.hitDeathSound.ActiveSound(transform, deathSound);

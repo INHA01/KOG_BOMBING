@@ -9,7 +9,6 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 {
     IInteractAble iInteractObj;
     public bool isInteracting = false;
-    bool isReviving = false;
 
 	[PunRPC]
 	private void ChangeWeaponInteract(int type)

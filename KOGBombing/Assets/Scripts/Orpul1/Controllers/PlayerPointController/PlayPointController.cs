@@ -171,8 +171,9 @@ public class PlayPointController : MonoBehaviour, ISetPointable
     {        
         if (assistPlayerList.Contains(lastAttackPlayerIndex))
             assistPlayerList.Remove(lastAttackPlayerIndex);
-        if (assistPlayerList.Count != 0)
-            pView.RPC("PunKill", RpcTarget.All, assistPlayerList);
+        if (assistPlayerList.Count == 0) return;
+        ETeam team = ETeam.BLUETEAM - (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        pView.RPC("PunAssist", RpcTarget.All, assistPlayerList.ToArray(), team);
     }
     public void OnDamagePoint(int index, int damage)
     {

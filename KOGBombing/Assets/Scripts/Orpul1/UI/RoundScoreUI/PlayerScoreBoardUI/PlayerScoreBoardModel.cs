@@ -14,6 +14,8 @@ public class PlayerScoreBoardModel
     public PlayerScoreBoardModel(Action<EPlayerScore> updateUI)
     {
         this.updateUI = updateUI;
+        playerScore.Clear();
+        scoreText.Clear();
         for (int i = 0; i < (int)EPlayerScore.END; i++)
         {
             scoreText.Add(new StringBuilder());

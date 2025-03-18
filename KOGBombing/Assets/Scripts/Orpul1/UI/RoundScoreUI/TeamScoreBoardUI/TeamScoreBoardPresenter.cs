@@ -14,6 +14,7 @@ public class TeamScoreBoardPresenter : MonoBehaviour, ISetScoreable<ETeamScore>
     }
     public void Initialize()
     {
+        model.Initialize();
     }
     public void SetTitle(StringBuilder title) { }
 

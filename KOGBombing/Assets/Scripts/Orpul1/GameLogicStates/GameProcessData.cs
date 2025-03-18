@@ -13,7 +13,6 @@ namespace Orpul1
         public RaiseEventOptions options = new RaiseEventOptions();
         public StringBuilder selectCharacterPath = new StringBuilder();
         public TeamUIController teamUIController = new TeamUIController();
-        public GameRoundData debugRoundData;
         public Transform[] bombPos = new Transform[(int)BombCursorType.Max];
         public ISetGameStateAble playerSetGameState;
         private void Start()

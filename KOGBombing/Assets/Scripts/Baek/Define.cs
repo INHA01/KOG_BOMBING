@@ -23,4 +23,14 @@ namespace BAEK
         SectorB,
         Max,
     }
+    public enum InteractUI
+    {
+        InteractBar,
+        Interact,
+        InteractBomb,
+        Time,
+        BombSet,
+        BombDefuse,
+        Max
+    }
 }

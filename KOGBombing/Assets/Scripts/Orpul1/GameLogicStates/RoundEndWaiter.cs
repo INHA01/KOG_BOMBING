@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using BAEK;
 using UnityEngine;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -16,7 +17,7 @@ namespace Orpul1
         {
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDENDWAIT);
             time = 0;
-            BombNotify bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
+            Interacting bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
             if(bombNotify!=null)
                 bombNotify.ActiveFalseAll();
             Managers.UI.ShowPopupUI<Winner>("WinnerCanvas").SetWiner(0);

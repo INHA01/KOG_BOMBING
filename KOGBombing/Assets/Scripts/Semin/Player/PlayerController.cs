@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     PlayerShooting playerShooting;
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
-    BombNotify bombNotify;
+    Interacting bombNotify;
 
     bool isInitComplete = false;
     void Awake()
@@ -61,8 +61,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 	private void Start()
 	{
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-
-		playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
+        if (bombNotify == null)
+            bombNotify = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
+        playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
         isInitComplete = true;
     }
 
@@ -114,33 +115,9 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
 			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
         }
-        ConfirmBombInteract();
         ConfirmSoundEffect();
     }
-    void ConfirmBombInteract()
-    {
-        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-        bool tagBomb = false;
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (
-                (blackBoard.playerTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
-                ||
-                (blackBoard.playerTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
-               )
-            {
-                if (bombNotify == null)
-                    bombNotify = Managers.UI.GetPopupUI<BombNotify>("BombNotifyCanvas");
-                if (blackBoard.inputs[EKey.NUM_2])
-                {
-                    bombNotify.ActiveCanInteractBomb(true);
-                    tagBomb = true;
-                }
-            }
-        }
-        if (!tagBomb && bombNotify != null)
-            bombNotify.ActiveCanInteractBomb(false);
-    }
+    
     void ConfirmSoundEffect()
     {
         Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 32f);
@@ -162,12 +139,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             }
         }
     }
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(blackBoard.transform.position, 32f);
-    //}
-
     public void DoDestory()
     {
         if (!playerData.pv.IsMine) return;
@@ -195,8 +166,30 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 	{
 		if (other.CompareTag("Player"))
 			Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
-	}
-
+        //ConfirmBombInteract(other, true);
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        //ConfirmBombInteract(other, false);
+    }
+    void ConfirmBombInteract(Collider other, bool isEnter)
+    {
+        bool tagBomb = false;
+        if (
+                (blackBoard.playerTeam == ETeam.REDTEAM && other.tag == "BombInteract")
+                ||
+                (blackBoard.playerTeam == ETeam.BLUETEAM && other.tag == "Bomb")
+               )
+        {
+            if (isEnter && blackBoard.inputs[EKey.NUM_2])
+            {
+                bombNotify.ActiveCanInteract(true, InteractUI.InteractBomb);
+                tagBomb = true;
+            }
+        }
+        if (!tagBomb && bombNotify != null)
+            bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
+    }
     public void SetGameState(EGameState state)
     {
         if (EGameState.ROUNDENDWAIT == state)

@@ -15,7 +15,6 @@ public class PlayerBlackBoard : MonoBehaviour
     public Camera viewCamera;
     public UIPopup _uiScene;
     public HpBar hpBar;
-    public PlayerStatusUI bombUI;
     public GameObject fieldOfView;
     public GameObject observaTarget;
     public StringBuilder observaTargetNickname = new StringBuilder();

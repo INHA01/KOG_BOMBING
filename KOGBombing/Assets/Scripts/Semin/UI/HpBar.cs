@@ -7,6 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class HpBar : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI playerName;
     [SerializeField] Image hp;
     [SerializeField] Image defence;
     [SerializeField] Image groggy;
@@ -25,6 +26,10 @@ public class HpBar : MonoBehaviour
     bool stopHpUI = false;
     bool isOtherTeam = false;
 
+    private void Start()
+    {
+        playerName.text = Managers.UserData.userData.nickName;
+    }
     public void SetHpValue(float hpValue, float defenceValue)
     {
         if (stopHpUI) return;

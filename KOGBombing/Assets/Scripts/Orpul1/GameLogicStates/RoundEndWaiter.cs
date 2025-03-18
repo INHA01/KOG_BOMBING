@@ -31,6 +31,7 @@ namespace Orpul1
 
         public override void ExitState()
         {
+            Managers.UI.ChangeAllCanvsRender(RenderMode.ScreenSpaceOverlay);
             Managers.UI.ClosePopupUI("WinnerCanvas");
             gameData.playerObj.GetComponent<IResetAble>().DoReset();
         }

@@ -9,12 +9,14 @@ public class Winner : UIPopup
     [SerializeField] GameObject activeResultButton;
     [SerializeField] Animator animator;
 
-	private void Start()
-	{
+    public override void Init()
+    {
+        base.Init();
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
-	}
+        Managers.UI.ChangeAllCanvsRender(RenderMode.ScreenSpaceCamera);
+    }
 
 	public void SetWiner(int end)
     {

@@ -111,4 +111,14 @@ public class UIManager
             canvas.sortingOrder = 0;
         }
     }
+    public void ChangeAllCanvsRender(RenderMode mode)
+    {
+        foreach (var popup in _popupDictionary)
+        {
+            Canvas canvas = popup.Value.GetComponent<Canvas>();
+            canvas.renderMode = mode;
+            if(mode == RenderMode.ScreenSpaceCamera)
+                canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
+        }
+    }
 }

@@ -91,6 +91,7 @@ public class PlayScene : UIPopup
             Destroy(profile.gameObject);
         }
         dicTeamProfile.Clear();
+        roundGuide.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Round 1";
     }
     public void PublishRound(int round)
     {

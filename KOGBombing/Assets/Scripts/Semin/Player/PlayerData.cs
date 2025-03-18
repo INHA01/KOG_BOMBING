@@ -66,7 +66,9 @@ public class PlayerData : MonoBehaviour
 
     public void InitializeCount()
     {
-        supportWeapon.Initialize(1);
+        if (supportWeapon is DeployableWeapon)
+			supportWeapon.Initialize(2);
+		else supportWeapon.Initialize(1);
         bomb.Initialize(1);
     }
 }

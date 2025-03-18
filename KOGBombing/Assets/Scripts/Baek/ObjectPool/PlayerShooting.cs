@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 
 public class PlayerShooting : Magazine
@@ -31,6 +32,7 @@ public class PlayerShooting : Magazine
 
     public int MagazineCount { get { return magazineCount; } }
     public float ReloadTime { get { return time / reloadTime; } }
+    BulletController targetBullet;
 
     #region Shooting
     public void Init(PlayerAnimation animator, AttackRange attackRange, PlayerInfo playerInfo)
@@ -83,6 +85,24 @@ public class PlayerShooting : Magazine
         bullet.GetComponent<BulletController>().ShowMuzzle();
         bullet.SetActive(true);
     }
+
+    public void CreateParticleAtPlayerPos(BulletController bullet)
+	{
+        targetBullet = bullet;
+        playerData.pv.RPC("RPCCreateParticleAtPlayerPos", RpcTarget.All);
+	}
+
+
+	[PunRPC]
+    void RPCCreateParticleAtPlayerPos()
+    {
+        if (targetBullet != null)
+        {
+            targetBullet.HitAndMakeParticle();
+            Debug.Log("CreateParticle");
+        }
+	}
+
     IEnumerator Shooting()
     {
         if(playerData.pv.IsMine)

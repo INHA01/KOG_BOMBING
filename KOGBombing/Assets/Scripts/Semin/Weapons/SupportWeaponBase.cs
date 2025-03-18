@@ -22,6 +22,7 @@ public abstract class SupportWeaponBase : Magazine, ISupportWeapon
         SetObjectToPool(consum);
         initPoolSize = count;
     }
+
     public virtual void SetConsum(WeaponType type, PlayerData playerData)
 	{
 
@@ -56,7 +57,10 @@ public abstract class SupportWeaponBase : Magazine, ISupportWeapon
 	public virtual void Use()
 	{
 		if(playerData.pv.IsMine)
-			playScene.subWeaponFades[0].SetActive(true);
+		{
+			if (count == 0)
+				playScene.subWeaponFades[0].SetActive(true);
+		}
     }
 	public virtual void Disable() { }
 

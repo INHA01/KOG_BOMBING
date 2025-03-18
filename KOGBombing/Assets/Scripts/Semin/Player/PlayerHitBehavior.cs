@@ -111,9 +111,10 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 	public void OnDamaged(float damage, int playerIndex)
     {
-        playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
+        //playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
+        Damage(damage, playerIndex);
 
-        if (playerData.pv.IsMine)
+		if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
@@ -224,30 +225,32 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.playerSound.hitDeathSound.ActiveSound(transform, (EHitDeathSound)soundIndex);
     }
-    [PunRPC]
+    //[PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
-
-        if (blackBoard.playerStatus.invincibility) return;
+		if (blackBoard.playerStatus.invincibility) return;
         if(playerData.pv.IsMine)
         {
             playerPointController.SetAttackPlayer(playerIndex);
         }
+		//Debug.Log($"Damage, Player: {transform.name}, Damage: {damage}");
 
         float decreaseHp = blackBoard.playerStatus.defence - damage;
+        //Debug.Log($"Decrease Hp: {decreaseHp}, hp: {blackBoard.playerStatus.hp}");
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
 		playerMaterialController.Hit();
 		if (decreaseHp < 0)
         {
             float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
-            blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);
+			//Debug.Log($"decreaseGroggy Hp: {decreaseGroggy}, hp: {blackBoard.playerStatus.hp}");
+			blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);
             if (decreaseGroggy < 0)
                 blackBoard.playerStatus.groggyValue += decreaseGroggy;
         }
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 		blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
 		playerData.timeWithoutDamage = 0;
-
+        //Debug.Log($"hp: {blackBoard.playerStatus.hp}");
         if (blackBoard.playerStatus.hp <= 0)
         {
             if (blackBoard.playerStatus.groggyable)  // Groggy
@@ -260,7 +263,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					return;
 				}
 
-                if (blackBoard.inputs[EKey.NUM_2])  // 폭탄 해체 중이었으면 Interaction 취소
+				if (blackBoard.inputs[EKey.NUM_2])  // 폭탄 해체 중이었으면 Interaction 취소
                 {
                     if (blackBoard.bombInteraction.GetBomb() != null)
                         blackBoard.bombInteraction.SetBombInteraction(false);
@@ -284,13 +287,23 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 			}
             else if (blackBoard.playerStatus.groggyValue <= 0)
 			{
+                blackBoard.playerStatus.groggyValue = 0;
 				blackBoard.hpBar.SetGroggyValue(0);
 				Death();
             }
         }
-    }
-    
-    private bool CanGroggy()
+
+		playerData.pv.RPC("SetHp", RpcTarget.All);
+	}
+
+	[PunRPC]
+	private void SetHp()
+    {
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
+        blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
+	}
+
+	private bool CanGroggy()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];

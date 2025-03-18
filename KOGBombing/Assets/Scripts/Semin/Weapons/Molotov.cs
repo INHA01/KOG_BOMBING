@@ -7,12 +7,15 @@ using UnityEngine;
 public class Molotov : AttackConsum
 {
 	[Range(1f, 100f), SerializeField] private float range;
-	[Range(1f, 100f), SerializeField] private float damage;
+	[Range(1f, 200f), SerializeField] private float damage;
 	[Range(0f, 100f), SerializeField] private float effectTime;
 	public override float Damage { get { return damage; } }
 	public float Range { get { return range; } }
+	float rigidityTime = 3.0f;
+	Coroutine coBomb;
 
-    private void Start()
+
+	private void Start()
 	{
 		attackCollider = gameObject.GetComponent<SphereCollider>();
 		attackCollider.radius = range / 2;
@@ -42,12 +45,16 @@ public class Molotov : AttackConsum
 		{
             IGetTeamTypeable otherTeam = other.transform.GetComponent<IGetTeamTypeable>();
 
+			if (!other.GetComponent<PlayerData>().pv.IsMine) return;
 			if (otherTeam == null) return;
 			if (!IsOtherTeam(otherTeam)) return;
 
 			IDamageAble player = other.transform.GetComponent<IDamageAble>();
 			if (player != null)
+			{
 				player.OnDamaged(Damage, playerIndex);
+				player.OnRigidity(rigidityTime);
+			}
 		}
 		
 	}

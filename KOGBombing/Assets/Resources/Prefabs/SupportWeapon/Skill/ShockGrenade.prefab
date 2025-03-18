@@ -142,7 +142,8 @@ MonoBehaviour:
   particle: {fileID: 4293124154268612038}
   type: 3
   isActive: 0
-  interval: 1.5
+  playerData: {fileID: 0}
+  interval: 1
   range: 7
   attackRange: 7
   damage: 50
@@ -320,7 +321,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862, type: 2}
     - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
         type: 3}
       propertyPath: _radius
@@ -385,7 +386,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -651,7 +652,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862, type: 2}
     - target: {fileID: 7508475911074558744, guid: ac7e673accb4d544991584666cc135d2,
         type: 3}
       propertyPath: _radius
@@ -716,7 +717,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

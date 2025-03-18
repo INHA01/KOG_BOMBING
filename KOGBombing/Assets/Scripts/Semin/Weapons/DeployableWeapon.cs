@@ -9,8 +9,13 @@ public class DeployableWeapon : DeployableBase
 {
 	Vector3 position;
 	Landmine landmine;
+	protected override void Init()
+	{
+		count = 2;
+		base.Init();
+	}
 
-    public override void Initialize(int count)
+	public override void Initialize(int count)
     {
         base.Initialize(count);
 		if (landmine != null && landmine.isActive)
@@ -19,8 +24,8 @@ public class DeployableWeapon : DeployableBase
 
     public override void Use()
     {
-        base.Use();
         count--;
+        base.Use();
         playerData.pv.RPC("PutConsum", RpcTarget.All);
     }
 

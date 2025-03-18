@@ -10,7 +10,7 @@ public class ThrowableSkill : ThrowableBase, ISkill
 {
 	bool bisUsableSkill;
 	float skillDeltaTime;
-	float cooldown = 5f;
+	float cooldown = 10f;
     protected override void Start()
 	{
 		base.Start();

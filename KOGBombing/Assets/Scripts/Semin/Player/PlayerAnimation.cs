@@ -73,7 +73,9 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 	public void SetAnimBool(AnimType type, bool value)
 	{
-		animator.SetBool("Is" + type.ToString(), value);
+		if (type == AnimType.IsMoving)
+			animator.SetBool(type.ToString(), value);
+		else animator.SetBool("Is" + type.ToString(), value);
 	}
 
 

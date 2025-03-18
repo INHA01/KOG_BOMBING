@@ -89,6 +89,7 @@ public class ShockGrenade : AttackConsum
 			if (hitColliders[i].CompareTag("Player"))
 			{
                 IGetTeamTypeable otherTeam = hitColliders[i].GetComponent<IGetTeamTypeable>();
+				if (!hitColliders[i].GetComponent<PlayerData>().pv.IsMine) continue;
 				if (otherTeam == null) continue;
 				if (!IsOtherTeam(otherTeam)) continue;
 
@@ -97,7 +98,7 @@ public class ShockGrenade : AttackConsum
 					player.OnDamaged(Damage, playerIndex);
 			}
 		}
-
+			
 		yield return new WaitForSeconds(0.5f);
 		Release();
 	}

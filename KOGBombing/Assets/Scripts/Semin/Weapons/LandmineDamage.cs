@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+// Landmine을 부술 수 있도록 Damage 체크 (collision 차이 때문에 따로 생성함)
 public class LandmineDamage : MonoBehaviour
 {
     [SerializeField] Landmine landmine;

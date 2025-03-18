@@ -16,13 +16,15 @@ namespace Semin
 		[Range(0f, 10f), SerializeField] private float interval;
 		[Range(1f, 10f), SerializeField] private float attackRange;
 		[Range(0f, 10f), SerializeField] private float rigidityTime;
-		[Range(1f, 100f), SerializeField] private float damage;
+		[Range(1f, 200f), SerializeField] private float damage;
 		[Range(0f, 100f), SerializeField] private float activeTime;
 		[Range(0f, 1000f), SerializeField] private float hp;
 		[SerializeField] SRPCircleRegionProjector decal;
 		public override float Damage { get { return damage; } }
 		PhotonView pView;
 		Coroutine destroyCoroutine;
+		Coroutine coBomb;
+		bool isDamagable;
 
 		private void Awake()
 		{
@@ -34,6 +36,7 @@ namespace Semin
 		{
 			destroyCoroutine = StartCoroutine(SetTimerToDestroy());
 			isActive = true;
+			isDamagable = true;
 		}
 
 		public override void SetTeam(int team, PlayerData playerData)
@@ -67,7 +70,8 @@ namespace Semin
 				if (!IsOtherTeam(otherTeam)) return;
 
 				ActiveWarringArea();
-				StartCoroutine(Bomb());
+				if (coBomb == null)
+					coBomb = StartCoroutine(Bomb());
 			}
 		}
 
@@ -112,29 +116,34 @@ namespace Semin
 			if (!pView) yield break;
 			ShowParticle();
 			yield return new WaitForSeconds(interval);
-			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange / 2);
-			for (int i = 0; i < hitColliders.Length; i++)
+			if (isDamagable == true)
 			{
-				if (hitColliders[i].CompareTag("Player"))
+				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange / 2);
+				for (int i = 0; i < hitColliders.Length; i++)
 				{
-                    IGetTeamTypeable otherTeam = hitColliders[i].GetComponent<IGetTeamTypeable>();
-					if (otherTeam == null) continue;
-					if (!IsOtherTeam(otherTeam)) continue;
-
-					IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
-					if (player != null)
+					if (hitColliders[i].CompareTag("Player"))
 					{
-						player.OnDamaged(Damage, playerIndex);
-						player.OnRigidity(rigidityTime);
+						IGetTeamTypeable otherTeam = hitColliders[i].GetComponent<IGetTeamTypeable>();
+						if (!hitColliders[i].GetComponent<PlayerData>().pv.IsMine) continue;
+						if (otherTeam == null) continue;
+						if (!IsOtherTeam(otherTeam)) continue;
+
+						IDamageAble player = hitColliders[i].GetComponent<IDamageAble>();
+						if (player != null)
+						{
+							player.OnDamaged(Damage, playerIndex);
+							player.OnRigidity(rigidityTime);
+						}
 					}
 				}
 			}
-
+			isDamagable = false;
 			if (destroyCoroutine != null)
 				StopCoroutine(destroyCoroutine);
 			yield return new WaitForSeconds(0.5f);
 			Release();
 			isActive = false;
+			coBomb = null;
 		}
 		public void DestroyLandmine()
 		{

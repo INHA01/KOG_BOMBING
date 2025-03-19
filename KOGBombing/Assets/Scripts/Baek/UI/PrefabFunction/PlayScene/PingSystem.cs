@@ -12,8 +12,10 @@ public class PingSystem : MonoBehaviour
     [SerializeField] GameObject pingUI;
     public PingCursorType pingCursorType;
     Vector2 mousePos;
+    ShowCursor showCursor;
     void Start()
     {
+        showCursor = GetComponent<ShowCursor>();
         for (int i = 0; i < (int)PingCursorType.Max; i++)
         {
             pings[i].Init();
@@ -35,14 +37,9 @@ public class PingSystem : MonoBehaviour
     }
     public void ShowPing(Vector2 pos)
     {
-        pings[(int)pingCursorType].Active(pos);
-        StartCoroutine(ShowPingUI(pos));
-    }
-    IEnumerator ShowPingUI(Vector2 pos)
-    {
+        if(pingIcons[(int)pingCursorType].activeSelf) return;
+        Vector3 pingPos = pings[(int)pingCursorType].Active(pos);
         pingIcons[(int)pingCursorType].SetActive(true);
-        pingIcons[(int)pingCursorType].transform.position = pos;
-        yield return new WaitForSeconds(3f);
-        pingIcons[(int)pingCursorType].SetActive(false);
+        StartCoroutine(showCursor.ShowPingCursor(pingPos, pingIcons[(int)pingCursorType]));
     }
 }

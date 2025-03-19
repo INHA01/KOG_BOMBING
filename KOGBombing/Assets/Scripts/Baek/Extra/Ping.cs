@@ -10,7 +10,7 @@ public class Ping : MonoBehaviour
     {
         visualEffects = this.gameObject.GetComponentsInChildren<VisualEffect>();
     }
-    public void Active(Vector2 pos)
+    public Vector3 Active(Vector2 pos)
     {
         Ray ray;
         RaycastHit hit;
@@ -22,6 +22,8 @@ public class Ping : MonoBehaviour
             {
                 visualEffects[i].SendEvent("Click");
             }
+            return hit.point;
         }
+        return Vector3.zero;
     }
 }

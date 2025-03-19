@@ -214,7 +214,20 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         return blackBoard.playerTeam;
     }
-    
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "BombInteract" || collision.collider.tag == "Bomb")
+            canBombInteract = true;
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.tag != "BombInteract" & collision.collider.tag != "Bomb") return;
+        Debug.Log($"BombInteract False!");
+        canBombInteract = false;
+        SetBombInteract(false);
+        
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

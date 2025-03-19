@@ -10,12 +10,6 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 {
     IInteractAble iInteractObj;
     public bool isInteracting = false;
-    /*Interacting interactUI;
-    private void Start()
-    {
-        interactUI = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
-        interactUI.ActiveCanInteract(false, InteractUI.Interact);
-    }*/
     [PunRPC]
 	private void ChangeWeaponInteract(int type)
 	{

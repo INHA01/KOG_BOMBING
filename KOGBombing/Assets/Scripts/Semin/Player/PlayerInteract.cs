@@ -14,6 +14,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     private void Start()
     {
         interactUI = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }
     [PunRPC]
 	private void ChangeWeaponInteract(int type)
@@ -88,7 +89,6 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         playerData.pv.RPC("ChangeWeaponInteract", RpcTarget.All, (int)WeaponType.GUN);
         blackBoard.speedDebuff.groggyValue = 1;
         playerData.isGroggyInteracting = false;
-
 	}
 
     public void Rescue()
@@ -101,6 +101,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     {
         IInteractAble interactObj = other.GetComponent<IInteractAble>();
         if (interactObj == null) return;
+        if (interactUI == null) return;
         Debug.Log("Active interact UI!");
         interactUI.ActiveCanInteract(true, InteractUI.Interact);
 
@@ -109,6 +110,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     {
         IInteractAble interactObj = other.GetComponent<IInteractAble>();
         if (interactObj == null) return;
+        if (interactUI == null) return;
         Debug.Log("Dective interact UI!");
         interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }

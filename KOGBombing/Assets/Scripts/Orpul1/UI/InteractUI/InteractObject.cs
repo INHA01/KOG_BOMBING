@@ -61,24 +61,19 @@ public abstract class InteractObject : Subject, IInteractAble
     protected abstract IEnumerator CoInteractDelay();
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
-        {
-            PhotonView pView = other.GetComponent<PhotonView>();
-            if (!pView.IsMine) return;
-            SetOutline(true);
-            interactUI.ActiveCanInteract(true, InteractUI.Interact);
-        }
+        if (other.tag != "Player") return;
+        if (interactUI == null) return;
+        PhotonView pView = other.GetComponent<PhotonView>();
+        if (!pView.IsMine) return;
+        SetOutline(true);
+        interactUI.ActiveCanInteract(true, InteractUI.Interact);
     }
     protected virtual void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            PhotonView pView = other.GetComponent<PhotonView>();
-            if (!pView.IsMine) return;
-            SetOutline(false);
-            interactUI.ActiveCanInteract(false, InteractUI.Interact);
-        }
-       
+        if (other.tag != "Player") return;
+        PhotonView pView = other.GetComponent<PhotonView>();
+        if (!pView.IsMine) return;
+        SetOutline(false);
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }
-
 }

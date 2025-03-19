@@ -477,42 +477,40 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         yield return new WaitForSeconds(time);
 		blackBoard.speedDebuff.rigidityValue = 1.0f;
     }
-
-	protected virtual void OnTriggerEnter(Collider other)
-	{
-		if (other.tag == "Bullet")
-		{
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Bullet")
+        {
             if (!playerData.pv.IsMine) return;
             bullet = other.GetComponent<BulletController>();
             if (bullet == null) return;
 
             //Debug.Log($"mine: {GetComponent<IGetTeamTypeable>().GetTeamType()}, other: {bullet.eTeamBullet}");
-			if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
-            //bullet.HitAndMakeParticle(GetComponent<Collider>());
+            if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
+            bullet.HitAndMakeParticle(GetComponent<Collider>());
 
-			Vector3 contactPoint = other.ClosestPoint(transform.position);
-			Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
-			Vector3 pos = contactPoint;
-		}
-	}
-	[PunRPC]
-	void SetParticleToHit(Vector3 pos, Quaternion rot, GameObject gameObject)
-	{
-		if (hitPrefab != null)
-		{
-			var hitVFX = Instantiate(hitPrefab, pos, rot);
-			var psHit = hitVFX.GetComponent<ParticleSystem>();
-			if (psHit != null)
-				Destroy(hitVFX, psHit.main.duration);
+            Vector3 contactPoint = other.ClosestPoint(transform.position);
+            Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
+            Vector3 pos = contactPoint;
 
-			else
-			{
-				var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
-				Destroy(hitVFX, psChild.main.duration);
-			}
-		}
-        BulletController bullet = gameObject.GetComponent<BulletController>();
-        if (bullet != null)
-		    bullet.Release();
-	}
+            playerData.pv.RPC("SetParticleToHit", RpcTarget.All, pos, rot);
+        }
+    }
+    [PunRPC]
+    void SetParticleToHit(Vector3 pos, Quaternion rot)
+    {
+        if (hitPrefab != null)
+        {
+            var hitVFX = Instantiate(hitPrefab, pos, rot);
+            var psHit = hitVFX.GetComponent<ParticleSystem>();
+            if (psHit != null)
+                Destroy(hitVFX, psHit.main.duration);
+
+            else
+            {
+                var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+                Destroy(hitVFX, psChild.main.duration);
+            }
+        }
+    }
 }

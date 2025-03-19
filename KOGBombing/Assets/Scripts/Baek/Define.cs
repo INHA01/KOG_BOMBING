@@ -33,4 +33,21 @@ namespace BAEK
         BombDefuse,
         Max
     }
+    public enum UIKEY
+    {
+        NONE,
+        BattleBoard,
+        CharacterChoose,
+        Interacting,
+        KeyDescription,
+        Loading,
+        Lobby,
+        Login,
+        Option,
+        Play,
+        Result,
+        SelectMode,
+        Winner,
+        Max
+    }
 }

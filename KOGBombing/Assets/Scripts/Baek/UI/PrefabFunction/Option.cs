@@ -15,7 +15,7 @@ public class Option : UIPopup
     {
         playerBlackBoard.inputs[EKey.ESC] = false;
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.Option);
     }
     public void ReturnLobby()
     {
@@ -31,7 +31,7 @@ public class Option : UIPopup
             Managers.PunData.Init();
             Managers.CamData.InitCamera();
             reCheckLobby.SetActive(false);
-            Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas").ResetPlayerScore();
+            Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetPlayerScore();
             Managers.SceneLoad.LoadScene("LobbyScene");
         }
         else

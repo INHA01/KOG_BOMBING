@@ -9,22 +9,24 @@ public class Winner : UIPopup
     [SerializeField] GameObject activeResultButton;
     [SerializeField] Animator animator;
 
-    public override void Init()
-    {
-        base.Init();
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
-        Managers.UI.ChangeAllCanvsRender(RenderMode.ScreenSpaceCamera);
-    }
-
 	public void SetWiner(int end)
     {
         WinnerTeam winTeam = Managers.RoundData.RoundWinTeam;
+        Camera uiCamera = null;
         if(end == 0)
+        {
+            uiCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
             winTeam = Managers.RoundData.RoundWinTeam;
+        }
         else
+        {
+            uiCamera = Managers.Resource.Instantiate("CameraPrefabs/UICamera").GetComponent<Camera>();
             winTeam = Managers.RoundData.WinTeam;
+        }
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = uiCamera;
+        Managers.UI.ChangeAllCanvsRender(RenderMode.ScreenSpaceCamera, uiCamera);
         ActiveRoundResultSound(winTeam);
         animator.Rebind();
         animator.SetInteger("winner", (int)winTeam);
@@ -32,8 +34,8 @@ public class Winner : UIPopup
     }
     public void OpenResult()
     {
-        Managers.UI.ShowPopupUI<UIPopup>("ResultCanvas");
-        Managers.UI.ClosePopupUI("WinnerCanvas");
+        Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.Result);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.Winner);
     }
     private void ActiveRoundResultSound(WinnerTeam winTeam)
     {

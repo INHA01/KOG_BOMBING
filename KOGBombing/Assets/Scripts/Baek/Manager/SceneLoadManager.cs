@@ -21,7 +21,7 @@ public class SceneLoadManager
         {
             // close all popup UI 잘 안되서 임시로 다 지워지게 코드 바꿈
             Managers.UI.CloseAllPopupUI(); 
-            loading = Managers.UI.ShowPopupUI<Loading>("LoadingCanvas");
+            loading = Managers.UI.ShowPopupUI<Loading>(BAEK.UIKEY.Loading);
             loading.LoadScene(sceneName);
         };
         currentScene = sceneName;

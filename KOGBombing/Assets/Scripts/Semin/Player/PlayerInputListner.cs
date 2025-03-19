@@ -22,14 +22,14 @@ public class PlayerInputListner : Subject
         blackBoard.inputs[EKey.ESC] = !blackBoard.inputs[EKey.ESC];
         if (blackBoard.inputs[EKey.ESC])
         {
-            blackBoard._uiScene = Managers.UI.ShowPopupUI<Option>("OptionCanvas");
+            blackBoard._uiScene = Managers.UI.ShowPopupUI<Option>(BAEK.UIKEY.Option);
             if (blackBoard._uiScene.GetComponent<Option>().playerBlackBoard == null)
             {
                 blackBoard._uiScene.GetComponent<Option>().playerBlackBoard = blackBoard;
             }
         }
         else
-            Managers.UI.ClosePopupUI("OptionCanvas");
+            Managers.UI.ClosePopupUI(BAEK.UIKEY.Option);
     }
 
     public void OnAttack(InputValue value)
@@ -108,15 +108,15 @@ public class PlayerInputListner : Subject
     public void OnOpenBattleboard(InputValue value)
     {
         if(value.isPressed)
-            Managers.UI.ShowPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
+            Managers.UI.ShowPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
         else
-            Managers.UI.ClosePopupUI("BattleBoardCanvas");
+            Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
     }
     public void OnOpenKeyDescription(InputValue value)
     {
         if (value.isPressed)
-            Managers.UI.ShowPopupUI<UIPopup>("KeyDescriptionCanvas");
+            Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.KeyDescription);
         else
-            Managers.UI.ClosePopupUI("KeyDescriptionCanvas");
+            Managers.UI.ClosePopupUI(BAEK.UIKEY.KeyDescription);
     }
 }

@@ -64,7 +64,7 @@ public class ChoosePlayer : Subject
         Notify();
         RemoveAllObserver();
         type = Semin.CharacterType.Ned;
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.CharacterChoose);
     }
     IEnumerator CountDown()
     {

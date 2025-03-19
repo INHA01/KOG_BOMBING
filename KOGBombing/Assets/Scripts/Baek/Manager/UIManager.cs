@@ -1,6 +1,9 @@
+using BAEK;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 
@@ -17,38 +20,55 @@ public class UIManager
         }
     }
     int _order = 0;
-    public Dictionary<string, UIPopup> _popupDictionary = new Dictionary<string, UIPopup>();
-    public T GetPopupUI<T>(string name = null) where T : UIPopup
+    //value
+    public UIPopup[] _popupArray = new UIPopup[(int)UIKEY.Max];
+    //key
+    public UIKEY[] _popupKey = new UIKEY[(int)UIKEY.Max];
+
+    public void Init()
     {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
-        if (_popupDictionary.ContainsKey(name))
+        _order = 0;
+        for (int i = 0; i < (int)UIKEY.Max; i++)
         {
-            return _popupDictionary[name].GetComponent<T>();
+            _popupKey[i] = UIKEY.NONE;
         }
-        T popup = ShowPopupUI<T>(name);
-        if (popup != null)
-            return popup.GetComponent<T>();
-        return default;
+    }
+    int GetHash(UIKEY key)
+    {
+        int hash = key.GetHashCode();
+        return Mathf.Abs(hash) % (int)UIKEY.Max;
     }
 
-    public T ShowPopupUI<T>(string name = null) where T : UIPopup
+    public T GetPopupUI<T>(UIKEY name) where T : UIPopup
     {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
+        if (name == UIKEY.NONE) return null;
+        int index = GetHash(name);
+        if (_popupKey[index].Equals(name))
+        {
+            return _popupArray[index].GetComponent<T>();
+        }
+        //T popup = ShowPopupUI<T>(name);
+        //if (popup != null)
+        //    return popup.GetComponent<T>();
+        return ShowPopupUI<T>(name);
+    }
+
+    public T ShowPopupUI<T>(UIKEY name) where T : UIPopup
+    {
+        if (name == UIKEY.NONE) return null;
+
+        int index = GetHash(name);
         GameObject go = null;
         bool isExist = false;
-        // ContainsKey : 키가 존재하면 true 반환
-        // TryGetValue : 키가 존재하면 true 반환하고 out으로 값을 반환
-        if (!_popupDictionary.ContainsKey(name))
+        if (_popupKey[index].Equals(name))
         {
-            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name}");
-            go.transform.SetParent(Root.transform);
-            isExist = true;
+            go = _popupArray[(int)name].gameObject;
         }
         else
         {
-            go = _popupDictionary[name].gameObject;
+            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name.ToString()}Canvas");
+            go.transform.SetParent(Root.transform);
+            isExist = true;
         }
         go.SetActive(true);
         T sceneUI = Util.GetOrAddComponent<T>(go);
@@ -59,21 +79,31 @@ public class UIManager
         }
         sceneUI.Init();
         if (isExist)
-            _popupDictionary.Add(name, sceneUI);
+        {
+            // 아직 생성되지 않은 팝업일 경우
+            // 키값 추가
+            _popupKey[index] = name;
+            _popupArray[index] = sceneUI;
+        }
 
         return sceneUI;
     }
-    public void ClosePopupUI(string name = null)
+    public void ClosePopupUI(UIKEY name)
     {
-        if (_popupDictionary.Count == 0) return;
         GameObject go = null;
-        if (string.IsNullOrEmpty(name))
+        int index = 0;
+        if (name == UIKEY.NONE)
         {
-            go = _popupDictionary.Last().Value.gameObject;
+            //go = _popupArray[index].gameObject;
+            return;
         }
-        else if (_popupDictionary.ContainsKey(name))
+        else
         {
-            go = _popupDictionary[name].gameObject;
+            index = GetHash(name);
+            if (_popupKey[index].Equals(name))
+            {
+                go = _popupArray[index].gameObject;
+            }
         }
         if (go != null)
         {
@@ -83,15 +113,10 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        Dictionary<string, bool> isActive = new Dictionary<string, bool>();
-        foreach (var popup in _popupDictionary)
+        for(int i = 0; i < (int)UIKEY.Max; i++)
         {
-            isActive.Add(popup.Key, popup.Value.gameObject.activeSelf);
-        }
-        foreach (var popup in isActive)
-        {
-            if (popup.Value)
-                ClosePopupUI(popup.Key);
+            if(_popupKey[i] != UIKEY.NONE)
+                ClosePopupUI(_popupKey[i]);
         }
     }
 
@@ -111,14 +136,17 @@ public class UIManager
             canvas.sortingOrder = 0;
         }
     }
-    public void ChangeAllCanvsRender(RenderMode mode)
+    public void ChangeAllCanvsRender(RenderMode mode , Camera camera = null)
     {
-        foreach (var popup in _popupDictionary)
+        for(int i = 0; i < (int)UIKEY.Max; i++)
         {
-            Canvas canvas = popup.Value.GetComponent<Canvas>();
-            canvas.renderMode = mode;
-            if(mode == RenderMode.ScreenSpaceCamera)
-                canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
+            if (_popupArray[i] != null)
+            {
+                Canvas canvas = _popupArray[i].GetComponent<Canvas>();
+                canvas.renderMode = mode;
+                if (mode == RenderMode.ScreenSpaceCamera)
+                    canvas.worldCamera = camera;
+            }
         }
     }
 }

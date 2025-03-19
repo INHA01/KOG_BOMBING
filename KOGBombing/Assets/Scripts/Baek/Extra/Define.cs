@@ -50,4 +50,12 @@ namespace BAEK
         Winner,
         Max
     }
+    public enum PingCursorType
+    {
+        Find,
+        Help,
+        Move,
+        Warning,
+        Max,
+    }
 }

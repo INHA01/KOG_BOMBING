@@ -16,6 +16,7 @@ namespace BAEK
             Death,
             Max,
         }
+        
         struct ScreenPos
         {
             public Vector3 canvasPos;
@@ -31,6 +32,8 @@ namespace BAEK
         ScreenPos screenPos;
         float cursorLength;
         public List<GameObject> soundCursor = new List<GameObject>();
+
+        
 
         void OnEnable()
         {

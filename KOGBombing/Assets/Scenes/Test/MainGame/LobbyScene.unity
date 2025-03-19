@@ -981,7 +981,7 @@ PrefabInstance:
     - target: {fileID: 4896325690462660920, guid: d52e45778cbd9004ba56f0a9c6152104,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -62
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 5161719865127682365, guid: d52e45778cbd9004ba56f0a9c6152104,
         type: 3}
@@ -1340,6 +1340,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LobbyPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465546873243250130, guid: c8277f10fd9656a448ab6ed8a85026d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

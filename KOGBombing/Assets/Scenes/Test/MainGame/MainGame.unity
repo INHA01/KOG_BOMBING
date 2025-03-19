@@ -881,40 +881,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1294026137512614654, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1390630727409305818, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1390630727409305818, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 61439
-      objectReference: {fileID: 0}
-    - target: {fileID: 1783906631379095402, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_Range
-      value: 110
-      objectReference: {fileID: 0}
-    - target: {fileID: 2404287261008882110, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4220428245430032157, guid: 659faca4a6665f948a01e5400ffc63db,
         type: 3}
       propertyPath: m_Name
       value: Level_001_V3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5473175001672483021, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_Range
-      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 7083233508454541631, guid: 659faca4a6665f948a01e5400ffc63db,
         type: 3}
@@ -965,26 +935,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7658919076689184928, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7658919076689184928, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 61439
-      objectReference: {fileID: 0}
-    - target: {fileID: 8430811455934970245, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8430811455934970245, guid: 659faca4a6665f948a01e5400ffc63db,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 61439
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9801,17 +9751,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObj: {fileID: 0}
-  debugRoundData:
-    teamScores: 0000000000000000
-    teamCounts: 0000000000000000
-    switchRoundScores: 0000000000000000
-    processRoundCnt: 0
-    maxRound: 10
-    winGap: 4
-    switchRound: 2
-    isAlreadySwitchRoll: 0
-    isSetBomb: 0
-    isEndRound: 0
   bombPos:
   - {fileID: 153203035}
   - {fileID: 153203034}

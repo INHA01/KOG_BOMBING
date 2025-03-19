@@ -39,6 +39,8 @@ public class Login : MonoBehaviourPunCallbacks
     [SerializeField] GameObject[] _buttons = new GameObject[(int)ButtonType.MAX];
     [SerializeField] Animator splashScreenAnimator;
     AccountType _accountType = AccountType.LOGIN;
+    Coroutine checkLogin;
+
     public void SwapLoginCreate()
     {
         _accountType = (AccountType)(((int)_accountType + 1) % (int)AccountType.MAX);
@@ -59,7 +61,8 @@ public class Login : MonoBehaviourPunCallbacks
             Managers.FirebaseAuth.Create(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
         else
             Managers.FirebaseAuth.Login(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
-        StartCoroutine(CheckLoginSuccess());
+        if (checkLogin == null)
+            checkLogin = StartCoroutine(CheckLoginSuccess());
     }
 
     IEnumerator CheckLoginSuccess()
@@ -85,12 +88,14 @@ public class Login : MonoBehaviourPunCallbacks
         while(Managers.UserData.userData == null)
         {
             yield return new WaitForSeconds(1.0f);
-        }
+		}
         if (Managers.UserData.userData.nickName == "User")
             _panels[(int)PanelType.NICKNAME].SetActive(true);
         else
             PhotonNetwork.ConnectUsingSettings();
-    }
+        checkLogin = null;
+
+	}
     public void OnGuestClick()
     {
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);

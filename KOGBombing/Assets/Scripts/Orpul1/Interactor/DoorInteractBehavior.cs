@@ -57,6 +57,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     private void DoInteractDoor()
     {
         Debug.Log("DoInteractDoor");
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
         OpenDoor();
         openOtherDoor();
 
@@ -69,7 +70,6 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         interactCollider.enabled = false;
         SetOutline(false);
         animator.SetTrigger(EDoorAni.TriOpenDoor.ToString());
-        interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }
     public void CloseDoor()
     {

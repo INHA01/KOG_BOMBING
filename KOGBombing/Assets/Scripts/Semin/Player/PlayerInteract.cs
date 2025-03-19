@@ -99,6 +99,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!playerData.pv.IsMine) return;
         IInteractAble interactObj = other.GetComponent<IInteractAble>();
         if (interactObj == null) return;
         if (interactUI == null) return;
@@ -108,6 +109,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     }
     private void OnTriggerExit(Collider other)
     {
+        if (!playerData.pv.IsMine) return;
         IInteractAble interactObj = other.GetComponent<IInteractAble>();
         if (interactObj == null) return;
         if (interactUI == null) return;

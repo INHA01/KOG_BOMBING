@@ -22,7 +22,7 @@ namespace Orpul1
         public int maxRoundScore;
         public int winScoreGap;
         public int switchRoundScore;
-        public bool[] isAlreadySwitchRoll;
+        public bool isAlreadySwitchRoll;
         public bool isSetBomb;
         public bool isEndRound;
         public void Init()
@@ -31,7 +31,7 @@ namespace Orpul1
             teamCounts = new int[2];
             roomTeamCounts = new int[2];
             switchRoundScores = new int[2];
-            isAlreadySwitchRoll = new bool[2];
+            processRoundCnt = 1;
             for (int i=0; i<(int)ETeam.END; i++)
             {
                 EPropertyType teamType = (EPropertyType)i;
@@ -39,7 +39,6 @@ namespace Orpul1
                 teamScores[i] = 0;
                 teamCounts[i] = roomTeamCounts[i];
                 switchRoundScores[i] = 0;
-                isAlreadySwitchRoll[i] = false;
             }
         }
         private void SwapTeam()
@@ -54,11 +53,6 @@ namespace Orpul1
             int teamCount = roomTeamCounts[(int)ETeam.REDTEAM];
             roomTeamCounts[(int)ETeam.REDTEAM] = roomTeamCounts[(int)ETeam.BLUETEAM];
             roomTeamCounts[(int)ETeam.BLUETEAM] = teamCount;
-
-            bool isSwitchRoll = isAlreadySwitchRoll[(int)ETeam.REDTEAM];
-            isAlreadySwitchRoll[(int)ETeam.REDTEAM] = isAlreadySwitchRoll[(int)ETeam.BLUETEAM];
-            isAlreadySwitchRoll[(int)ETeam.BLUETEAM] = isSwitchRoll;
-
         }
         public void Reset()
         {
@@ -70,30 +64,20 @@ namespace Orpul1
         }
         public bool IsSwitchRoll()
         {
-            for (int i = 0; i < (int)ETeam.END; i++)
-            {
-                if (switchRoundScores[i] < switchRoundScore) continue;
-                if (isAlreadySwitchRoll[i]) continue;
-                SwapTeam();
-                switchRoundScores[(int)ETeam.REDTEAM] = 0;
-                switchRoundScores[(int)ETeam.BLUETEAM] = 0;
-                isAlreadySwitchRoll[i] = true;
-                return true;
-            }
-            return false;
+            if (processRoundCnt != 3) return false;
+            SwapTeam();
+            return true;
         }
         public bool IsGameEnd()
         {
-            int teamScoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
-            if (teamScoreGap == winScoreGap) return true;
+            if (processRoundCnt == maxRoundScore) return true;
+            ETeam lowScoreTeam = teamScores[(int)ETeam.REDTEAM] > teamScores[(int)ETeam.BLUETEAM] ? ETeam.BLUETEAM : ETeam.REDTEAM;
+            ETeam highScoreTeam = ETeam.BLUETEAM - (int)lowScoreTeam;
+            int leftRound = maxRoundScore - processRoundCnt;
+            bool isGameEnd = leftRound + teamScores[(int)lowScoreTeam] <= teamScores[(int)highScoreTeam];
+            if (isGameEnd) return true;
+            return false;
 
-            bool isGameEnd = false;
-            for (int i = 0; i < (int)ETeam.END; i++)
-            {
-                if (teamScores[i] < maxRoundScore) continue;
-                isGameEnd = true;
-            }
-            return isGameEnd;
         }
     }
     public class GameProcess : GameProcessLogic,IBombStateAble,ISetTeamCountAble
@@ -192,6 +176,7 @@ namespace Orpul1
         {
             if (punData.Code != (int)PunEventType.ENDROUND) return;
             Managers.RoundData.roundCount++;
+            roundData.processRoundCnt++;
             object[] datas = (object[])punData.CustomData;
             nextRoundState = (EGameState)datas[0];
             winnerTeam = (ETeam)datas[1];

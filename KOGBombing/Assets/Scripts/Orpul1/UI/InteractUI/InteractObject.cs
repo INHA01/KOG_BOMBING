@@ -35,7 +35,7 @@ public abstract class InteractObject : Subject, IInteractAble
 
     protected virtual void Start()
     {
-        interactUI = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
+        interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
     }
     public abstract bool ProcessInteract(PhotonView pView);
     public virtual void AbortInteract()

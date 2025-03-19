@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {
                 PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
-                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
                 if (player.playerTeam != blackBoard.playerTeam && !player.showSoundEffect)
                 {
                     player.showSoundEffect = true;

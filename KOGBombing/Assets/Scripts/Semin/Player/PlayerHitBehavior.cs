@@ -227,20 +227,25 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerData.playerSound.hitDeathSound.ActiveSound(transform, (EHitDeathSound)soundIndex);
     }
-    //[PunRPC]
+    [PunRPC]
+    private void PunHitMaterial()
+    {
+        playerMaterialController.Hit();
+    }
     private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
         if(playerData.pv.IsMine)
         {
             playerPointController.SetAttackPlayer(playerIndex);
+            playerData.pv.RPC("PunHitMaterial",RpcTarget.All);
+
         }
-		//Debug.Log($"Damage, Player: {transform.name}, Damage: {damage}");
+        //Debug.Log($"Damage, Player: {transform.name}, Damage: {damage}");
 
         float decreaseHp = blackBoard.playerStatus.defence - damage;
         //Debug.Log($"Decrease Hp: {decreaseHp}, hp: {blackBoard.playerStatus.hp}");
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
-		playerMaterialController.Hit();
 		if (decreaseHp < 0)
         {
             float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
@@ -483,7 +488,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
             //Debug.Log($"mine: {GetComponent<IGetTeamTypeable>().GetTeamType()}, other: {bullet.eTeamBullet}");
 			if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
-            bullet.HitAndMakeParticle(GetComponent<Collider>());
+            //bullet.HitAndMakeParticle(GetComponent<Collider>());
 
 			Vector3 contactPoint = other.ClosestPoint(transform.position);
 			Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);

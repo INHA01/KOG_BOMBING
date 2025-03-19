@@ -15,7 +15,7 @@ namespace Orpul1
         IEnumerator Start()
         {
             yield return null;
-            interactUI = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
+            interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
             setCanActiveUI = player.GetComponent<ISetAble<bool>>();
             interactUI.ActiveCanInteract(false, InteractUI.Interact);
         }

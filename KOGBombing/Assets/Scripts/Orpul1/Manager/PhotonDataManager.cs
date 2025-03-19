@@ -8,15 +8,17 @@ using UnityEngine;
 public class PhotonDataManager 
 {
     Dictionary<string, PlayerBlackBoard> dictPlayerBlackBoard = new Dictionary<string, PlayerBlackBoard>();
-    Dictionary<int, PlayerInfo> dictPlayerInfo = new Dictionary<int, PlayerInfo>();
-    List<PlayerBlackBoard> blackBoardList = new List<PlayerBlackBoard>();
+    List<PlayerBlackBoard> myTeamBlackBoards = new List<PlayerBlackBoard>();
+
     public int blackBoardCnt { get { return dictPlayerBlackBoard.Count; } }
 
     public void AddPlayerBlackBoard(string nickname, PlayerBlackBoard blackBoard)
     {
         Debug.Log($"add ID {blackBoard.nickname}");
         dictPlayerBlackBoard.Add(nickname, blackBoard);
-        blackBoardList.Add(blackBoard);
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        if (myTeam != blackBoard.playerTeam) return;
+        myTeamBlackBoards.Add(blackBoard);
     }
     public bool IsContainKey(string key)
     {
@@ -31,14 +33,15 @@ public class PhotonDataManager
         }
         return dictPlayerBlackBoard[nickname];
     }
-    public List<PlayerBlackBoard> GetAllBlackBoard()
+    public PlayerBlackBoard GetMyTeamBlackboard(int index)
     {
-        return blackBoardList;
+        if (index < 0 || myTeamBlackBoards.Count <= index) return null;
+        return myTeamBlackBoards[index];
     }
     public void Init()
     {
         dictPlayerBlackBoard.Clear();
-        blackBoardList.Clear();
+        myTeamBlackBoards.Clear();
     }
 
 }

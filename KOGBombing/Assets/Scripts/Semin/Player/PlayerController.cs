@@ -102,7 +102,8 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
 		blackBoard.spawnPoint = spawnPosi;
         blackBoard.setTeam = roundEventObj.GetComponent<ISetTeamCountAble>();
         blackBoard.setBombState = roundEventObj.GetComponent<IBombStateAble>();
-	}
+        blackBoard.teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[blackBoard.playerTeam.ToString()];
+    }
 
     private void Update()
     {

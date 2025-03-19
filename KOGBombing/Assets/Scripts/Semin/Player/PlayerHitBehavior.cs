@@ -52,7 +52,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
 	}
-
     IEnumerator DamageTest(float damage, float time)
     {
         yield return new WaitForSeconds(time);
@@ -429,30 +428,33 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
-    public bool IsTargetDie()
+    public bool IsTargetChange()
     {
         if (blackBoard.observaTargetNickname == null) return true;
         if (blackBoard.observaTargetNickname.Equals("")) return true;
         bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
-        if (!isLiveTarget) return true;
+        if (!isLiveTarget || blackBoard.changeObservaPlayer) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
+    
     public INode.ENodeState FindAlivePlayer()
     {
-        List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         Debug.Log("Search Alive Player");
-        for (int i = 0; i < blackBoards.Count; i++)
+        
+        for (int i = blackBoard.observaPlayerIndex; i < blackBoard.teamCount; i++)
         {
-            if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
-            if (blackBoards[i].playerTeam != blackBoard.playerTeam) continue;
-            if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
-            if (!blackBoards[i].playerStatus.isLive) continue;
+            PlayerBlackBoard myTeamBlackboard = Managers.PunData.GetMyTeamBlackboard(i);
+            if (myTeamBlackboard == null) continue;
+            if (myTeamBlackboard.rigidBody == null) return INode.ENodeState.Fail;
+            if (myTeamBlackboard.nickname == blackBoard.nickname) continue;
+            if (myTeamBlackboard.playerStatus.isLive == false) continue;
 
-            Debug.Log($"Find Target {blackBoards[i].nickname}");
-            blackBoard.observaTarget = blackBoards[i].rigidBody.gameObject;
+            Debug.Log($"Find Target {myTeamBlackboard.nickname}");
+            blackBoard.observaTarget = myTeamBlackboard.rigidBody.gameObject;
             blackBoard.observaTargetNickname.Clear();
-            blackBoard.observaTargetNickname.Append(blackBoards[i].nickname);
+            blackBoard.observaTargetNickname.Append(myTeamBlackboard.nickname);
+            blackBoard.observaPlayerIndex = i;
             return INode.ENodeState.Success;
 
         }

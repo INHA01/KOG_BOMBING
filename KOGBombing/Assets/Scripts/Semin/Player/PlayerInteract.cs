@@ -10,12 +10,12 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 {
     IInteractAble iInteractObj;
     public bool isInteracting = false;
-    Interacting interactUI;
+    /*Interacting interactUI;
     private void Start()
     {
         interactUI = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
         interactUI.ActiveCanInteract(false, InteractUI.Interact);
-    }
+    }*/
     [PunRPC]
 	private void ChangeWeaponInteract(int type)
 	{
@@ -97,7 +97,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (!playerData.pv.IsMine) return;
         IInteractAble interactObj = other.GetComponent<IInteractAble>();
@@ -115,5 +115,5 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
         if (interactUI == null) return;
         Debug.Log("Dective interact UI!");
         interactUI.ActiveCanInteract(false, InteractUI.Interact);
-    }
+    }*/
 }

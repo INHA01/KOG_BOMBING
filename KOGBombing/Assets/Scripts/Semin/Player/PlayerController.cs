@@ -4,7 +4,7 @@ using Photon.Pun;
 using System.Collections;
 using Orpul1;
 using BAEK;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable
+public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable,ISetAble<bool>
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -214,20 +214,26 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         return blackBoard.playerTeam;
     }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
             Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
-        if (other.tag == "BombInteract" || other.tag == "Bomb")
-            canBombInteract = true;
+        /*if (other.tag == "BombInteract" || other.tag == "Bomb")
+            canBombInteract = true;*/
     }
-    private void OnTriggerExit(Collider other)
+    /*private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "BombInteract" || other.tag == "Bomb")
-        {
-            Debug.Log($"BombInteract False!");
-            canBombInteract = false;
-            SetBombInteract(false);
-        }
+        if (other.tag != "BombInteract" & other.tag != "Bomb") return;
+        Debug.Log($"BombInteract False!");
+        canBombInteract = false;
+        SetBombInteract(false);
+    }
+*/
+    public void SetValue(bool value)
+    {
+        canBombInteract = value;
+        Debug.Log($"canBombInteract {value}");
+        if(!value) SetBombInteract(false);
     }
 }

@@ -47,9 +47,6 @@ public class UIManager
         {
             return _popupArray[index].GetComponent<T>();
         }
-        //T popup = ShowPopupUI<T>(name);
-        //if (popup != null)
-        //    return popup.GetComponent<T>();
         return ShowPopupUI<T>(name);
     }
 

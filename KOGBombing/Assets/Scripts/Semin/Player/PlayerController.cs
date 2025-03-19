@@ -4,14 +4,13 @@ using Photon.Pun;
 using System.Collections;
 using Orpul1;
 using BAEK;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable
+public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable,ISetAble<bool>
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
-
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
-
 	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
+    bool canBombInteract = false;
 
 	public enum EDirection
 	{
@@ -119,27 +118,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         ConfirmSoundEffect();
     }
     
-    void ConfirmSoundEffect()
-    {
-        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 32f);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            float distance = Vector3.Distance(blackBoard.transform.position, colliders[i].transform.position);
-            if (distance < 28f) continue;
-            PlayerData playerD = colliders[i].GetComponent<PlayerData>();
-            if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
-            {
-                PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
-                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
-                if (player.playerTeam != blackBoard.playerTeam && !player.showSoundEffect)
-                {
-                    player.showSoundEffect = true;
-                    showCursor.ShowSoundCursor(player.transform.position, 2, player);
-                }
-
-            }
-        }
-    }
+    
     public void DoDestory()
     {
         if (!playerData.pv.IsMine) return;
@@ -163,13 +142,39 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         blackBoard.canRespawn = true;
     }
 
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.CompareTag("Player"))
-			Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
-    }
 
+    void ConfirmSoundEffect()
+    {
+        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 32f);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            float distance = Vector3.Distance(blackBoard.transform.position, colliders[i].transform.position);
+            if (distance < 28f) continue;
+            PlayerData playerD = colliders[i].GetComponent<PlayerData>();
+            if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
+            {
+                PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
+                ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
+                if (player.playerTeam != blackBoard.playerTeam && !player.showSoundEffect)
+                {
+                    player.showSoundEffect = true;
+                    showCursor.ShowSoundCursor(player.transform.position, 2, player);
+                }
+            }
+        }
+    }
     void ConfirmBombInteract()
+    {
+        bool isActive = (canBombInteract && blackBoard.inputs[EKey.NUM_2]);
+        if (isActive == false) return;
+        SetBombInteract(isActive);
+    }
+    private void SetBombInteract(bool isActive)
+    {
+        bombNotify.ActiveCanInteract(isActive, InteractUI.InteractBomb);
+        playerData.isInteract = isActive;
+    }
+    /*void ConfirmBombInteract()
     {
         bool tagBomb = false;
         Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
@@ -195,7 +200,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
             playerData.isInteract = false;
         }
-    }
+    }*/
     public void SetGameState(EGameState state)
     {
         if (EGameState.ROUNDENDWAIT == state)
@@ -208,5 +213,27 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     public ETeam GetTeamType()
     {
         return blackBoard.playerTeam;
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
+        /*if (other.tag == "BombInteract" || other.tag == "Bomb")
+            canBombInteract = true;*/
+    }
+    /*private void OnTriggerExit(Collider other)
+    {
+        if (other.tag != "BombInteract" & other.tag != "Bomb") return;
+        Debug.Log($"BombInteract False!");
+        canBombInteract = false;
+        SetBombInteract(false);
+    }
+*/
+    public void SetValue(bool value)
+    {
+        canBombInteract = value;
+        Debug.Log($"canBombInteract {value}");
+        if(!value) SetBombInteract(false);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BAEK;
 using Orpul1;
 using Photon.Pun;
 using UnityEngine;
@@ -28,15 +29,14 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     IResetAble interactUICamera;
     Action openOtherDoor;
    
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         interactTime = 3;
         activeAlertUI = doorUI.GetComponent<IActiveable>();
         openOtherDoor -= otherDoor.OpenDoor;
         openOtherDoor += otherDoor.OpenDoor;
         interactUICamera = lookUiCamera.GetComponent<IResetAble>();
-
-
     }
     private void OnEnable()
     {
@@ -57,6 +57,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     private void DoInteractDoor()
     {
         Debug.Log("DoInteractDoor");
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
         OpenDoor();
         openOtherDoor();
 
@@ -69,7 +70,6 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         interactCollider.enabled = false;
         SetOutline(false);
         animator.SetTrigger(EDoorAni.TriOpenDoor.ToString());
-        interactUI.DeactivePanel();
     }
     public void CloseDoor()
     {
@@ -93,7 +93,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         {
             if (interactState == InteractState.NONE) yield break;
             deltaTime += Time.deltaTime;
-            interactUI.SetValue(deltaTime);
+            interactUI.Interact(deltaTime / interactTime);
             yield return null;
         }
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);

@@ -27,8 +27,8 @@ namespace Orpul1
 
         public override void EnterState()
         {
-            Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").PublishRound(Managers.RoundData.roundCount);
-            Managers.UI.GetPopupUI<Interacting>("InteractingCanvas").SwitchGuide(false);
+            Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play).PublishRound(Managers.RoundData.roundCount);
+            Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).SwitchGuide(false);
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDWAIT);
             for (int i = 0; i < roundDoorController.Length; i++)
             {
@@ -87,7 +87,7 @@ namespace Orpul1
         void DoCountDown()
         {
             time += Time.deltaTime;
-            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas").timer;
+            TextMeshProUGUI timeTMP = Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play).timer;
             timeTMP.text = string.Format("{0:00}:{1:00}", (int)(gamestartInterval - time) / 60, (int)(gamestartInterval - time) % 60);
             if (time > gamestartInterval)
             {

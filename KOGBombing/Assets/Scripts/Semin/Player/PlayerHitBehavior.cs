@@ -181,7 +181,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
     private void PunShowKillUI()
     {
-        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play);
         playScene.ActiveKill();
         playerData.playerSound.hitDeathSound.ActiveSound(transform, EHitDeathSound.PLAYERKILL);
     }
@@ -326,7 +326,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
     private void Death()
     {
-        ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>("PlayCanvas");
+        ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
         int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
         EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
         playerData.playerSound.hitDeathSound.ActiveSound(transform, deathSound);

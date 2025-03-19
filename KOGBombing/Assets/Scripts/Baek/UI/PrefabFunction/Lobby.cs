@@ -49,7 +49,7 @@ public class Lobby : MonoBehaviour
     }
     public void OnSelectClick()
     {
-        _lobbyModeSelect = Managers.UI.ShowPopupUI<LobbyModeSelect>("SelectModeCanvas");
+        _lobbyModeSelect = Managers.UI.ShowPopupUI<LobbyModeSelect>(BAEK.UIKEY.SelectMode);
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
     }
     public void OnGameStartClick()

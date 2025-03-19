@@ -17,8 +17,8 @@ public class CharacterSelect : GameProcessLogic
     ERoundState roundState;
     private void Start()
     {
-        BattleBoardUpdater _uiPopup = Managers.UI.ShowPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
-        Managers.UI.ClosePopupUI("BattleBoardCanvas");
+        BattleBoardUpdater _uiPopup = Managers.UI.ShowPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
         if (_uiPopup != null)
         {
             halfRound = _uiPopup;
@@ -28,7 +28,7 @@ public class CharacterSelect : GameProcessLogic
     public override void EnterState()
     {
         halfRound.SetHalfRound(roundState);
-        _choosePlayerUI = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
+        _choosePlayerUI = Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.CharacterChoose);
         EventBusSystem.Subscribe(EndSelectCharacter);
         _choosePlayerUI.GetComponent<ChoosePlayer>().Init();
         isSelectCharacter = false;

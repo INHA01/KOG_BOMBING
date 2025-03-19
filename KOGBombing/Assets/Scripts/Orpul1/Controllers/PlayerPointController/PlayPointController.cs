@@ -33,8 +33,8 @@ public class PlayPointController : MonoBehaviour, ISetPointable
 
     public void Start()
     {
-        updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>("BattleBoardCanvas");
-        Managers.UI.ClosePopupUI("BattleBoardCanvas");
+        updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
         SetPlayerList();
         options.Receivers = ReceiverGroup.All;
         
@@ -101,7 +101,7 @@ public class PlayPointController : MonoBehaviour, ISetPointable
     [PunRPC]
     public void PunKill(int killPlayerIndex, int deathPlayerTeamIndex, ETeam killPlayerTeam)
     {
-        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
+        PlayScene playScene = Managers.UI.GetPopupUI<PlayScene>(BAEK.UIKEY.Play);
         ShowKillLogoUI(playScene, killPlayerIndex, killPlayerTeam);
         ShowKillLogUI(playScene, killPlayerIndex, deathPlayerTeamIndex, killPlayerTeam);
 

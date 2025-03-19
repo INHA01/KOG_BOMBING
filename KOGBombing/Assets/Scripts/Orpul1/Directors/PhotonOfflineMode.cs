@@ -80,7 +80,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     }
     void SelectPlayer()
     {
-        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>("CharacterChooseCanvas");
+        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>(UIKEY.CharacterChoose);
     }
     void SpawnPlayer()
     {
@@ -95,7 +95,7 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         Managers.CamData.AddCamera(cameraObj, ECameraType.MAINCAMERA);
         Managers.CamData.AddCamera(minimapCamera, ECameraType.MINIMAPCAMERA);
         Managers.CamData.AddCamera(cameraObj.transform.GetChild(0).gameObject, ECameraType.EFFECTCAMERA);
-        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>("PlayCanvas");
+        UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>(UIKEY.Play);
         //_uiPopup.GetComponent<ShowCursor>().bombPos = bombPos.position;
         _uiPopup.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
         EventBusSystem.Unsubscribe(SpawnPlayer);

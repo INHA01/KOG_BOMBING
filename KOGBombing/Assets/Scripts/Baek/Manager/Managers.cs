@@ -52,6 +52,7 @@ public class Managers : MonoBehaviour
     }
     void Init()
     {
+        _ui.Init();
         _firebaseAuth.Init();
         _sceneLoad.Init();
         _sound = gameObject.GetComponentInChildren<SoundManager>();

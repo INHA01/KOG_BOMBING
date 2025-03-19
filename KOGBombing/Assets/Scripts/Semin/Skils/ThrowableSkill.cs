@@ -42,8 +42,8 @@ public class ThrowableSkill : ThrowableBase, ISkill
 	{
 		if(playerData.pv.IsMine)
 		{
-			playScene = Managers.UI.GetPopupUI<PlayScene>("PlayCanvas");
-			playScene.SetSkillIcon(CharacterType.Ned);
+			playScene = Managers.UI.GetPopupUI<PlayScene>(BAEK.UIKEY.Play);
+            playScene.SetSkillIcon(CharacterType.Ned);
 		}
 
         consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");

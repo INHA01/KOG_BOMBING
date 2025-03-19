@@ -21,7 +21,7 @@ public class LobbyModeSelect : UIPopup
     IEnumerator FadeOut()
     {
         yield return new WaitForSeconds(0.8f);
-        Managers.UI.ClosePopupUI(this.gameObject.name);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.SelectMode);
     }
     public void OnBombModeClick()
     { 

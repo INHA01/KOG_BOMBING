@@ -48,8 +48,9 @@ namespace BAEK
         }
         public void SaveProfile()
         {
-            Managers.UserData.userData.profileType = (int)profileType;
             Managers.UserData.SettingNickName(nickName.text);
+            Managers.UserData.userData.profileType = (int)profileType;
+            Managers.UserData.SaveUserData();
             CloseProfile();
         }
         public void ProfileImgEditPopup()
@@ -60,8 +61,8 @@ namespace BAEK
         public void ChangeProfileImage(int type)
         { 
             profileType = (ProfileCharacterType)type;
-            profileImage[(int)ProfileImg.Standard].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Crop/Profile_" + type.ToString());
-            profileImage[(int)ProfileImg.Big].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Profile_" + type.ToString());
+            profileImage[(int)ProfileImg.Standard].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Crop/Profile_" + profileType.ToString());
+            profileImage[(int)ProfileImg.Big].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Profile_" + profileType.ToString());
             ProfileImgEditPopup();
         }
     }

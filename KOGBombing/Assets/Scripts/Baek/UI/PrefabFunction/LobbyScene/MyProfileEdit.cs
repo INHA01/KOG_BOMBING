@@ -34,6 +34,12 @@ namespace BAEK
                                 "mission : " + Managers.UserData.userData.mission + "\n" +
                                 "win : " + Managers.UserData.userData.win + "\n" +
                                 "lose : " + Managers.UserData.userData.lose + "\n";
+            StartCoroutine(InitProfilImg());
+        }
+        IEnumerator InitProfilImg()
+        { 
+            yield return new WaitForSeconds(0.1f);
+            ChangeProfileImage(Managers.UserData.userData.profileType);
         }
 
         public void OpenProfile()
@@ -44,6 +50,7 @@ namespace BAEK
         {
             ChangeProfileImage(Managers.UserData.userData.profileType);
             nickName.text = Managers.UserData.userData.nickName;
+            profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
             profileEditPanel[(int)PanelType.ProfileEdit].SetActive(false);
         }
         public void SaveProfile()

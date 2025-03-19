@@ -20,12 +20,20 @@ namespace BAEK
         }
         [SerializeField] GameObject[] profileEditPanel = new GameObject[(int)PanelType.Max];
         [SerializeField] TMPro.TMP_InputField nickName;
+        [SerializeField] TMPro.TextMeshProUGUI profileDetail;
         [SerializeField] Image[] profileImage = new Image[(int)ProfileImg.Max];
         ProfileCharacterType profileType;
         void Start()
         {
             ChangeProfileImage(Managers.UserData.userData.profileType);
             nickName.text = Managers.UserData.userData.nickName;
+            profileDetail.text = "level : " + Managers.UserData.userData.level + "\n" +
+                                "kill : " + Managers.UserData.userData.kill + "\n" +
+                                "death : " + Managers.UserData.userData.death + "\n" +
+                                "assist : " + Managers.UserData.userData.assist + "\n" +
+                                "mission : " + Managers.UserData.userData.mission + "\n" +
+                                "win : " + Managers.UserData.userData.win + "\n" +
+                                "lose : " + Managers.UserData.userData.lose + "\n";
         }
 
         public void OpenProfile()
@@ -42,17 +50,19 @@ namespace BAEK
         {
             Managers.UserData.userData.profileType = (int)profileType;
             Managers.UserData.SettingNickName(nickName.text);
+            CloseProfile();
         }
-        public void ProfileImgEditPopup(bool isOpen)
+        public void ProfileImgEditPopup()
         { 
-            profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(isOpen);
+            bool isOpen = profileEditPanel[(int)PanelType.ProfileImgEdit].activeSelf;
+            profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(!isOpen);
         }
         public void ChangeProfileImage(int type)
         { 
             profileType = (ProfileCharacterType)type;
             profileImage[(int)ProfileImg.Standard].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Crop/Profile_" + type.ToString());
             profileImage[(int)ProfileImg.Big].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Profile_" + type.ToString());
-            ProfileImgEditPopup(false);
+            ProfileImgEditPopup();
         }
     }
 }

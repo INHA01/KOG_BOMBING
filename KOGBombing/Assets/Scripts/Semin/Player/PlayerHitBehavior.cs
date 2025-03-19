@@ -24,10 +24,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     Coroutine groggyCoroutine;
     bool isActiveHitSound = false;
     BulletController bullet;
+    Coroutine hitCoroutine;
 
     protected override void Awake()
     {
         base.Awake();
+        playerData.pivot.GenerateProjector();
     }
     private void Start()
     {
@@ -115,7 +117,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         //playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
         Damage(damage, playerIndex);
-
+        playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
 		if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
@@ -126,6 +128,33 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             isActiveHitSound = true;
             StartCoroutine(CoHitSound());
         }
+    }
+
+    [PunRPC]
+    public void HitEffectToPivot()
+    {
+        if (hitCoroutine == null)
+            StartCoroutine(StartAnimatePivot());
+    }
+
+    IEnumerator StartAnimatePivot()
+    {
+        float time = 0;
+        float originRad = playerData.pivot.Radius;
+        while (time < 1)
+        {
+            time += Time.deltaTime;
+            playerData.pivot.Radius += 0.01f;
+            yield return null;
+        }
+        while (time < 2)
+		{
+			time += Time.deltaTime;
+			playerData.pivot.Radius -= 0.01f;
+            yield return null;
+        }
+        playerData.pivot.Radius = originRad;
+        hitCoroutine = null;
     }
     
     public INode.ENodeState SuccessNode()

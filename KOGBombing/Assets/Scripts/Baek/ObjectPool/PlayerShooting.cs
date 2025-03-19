@@ -1,14 +1,8 @@
-using Knife.Effects;
 using Orpul1;
 using BAEK;
 using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 
 public class PlayerShooting : Magazine

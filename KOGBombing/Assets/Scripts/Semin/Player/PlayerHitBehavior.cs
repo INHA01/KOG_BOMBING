@@ -7,12 +7,7 @@ using Semin;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
-using UnityEngine.Rendering;
 using BAEK;
-using Unity.VisualScripting;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.DebugUI.Table;
-using Photon.Pun.Demo.Asteroids;
 
 public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 {

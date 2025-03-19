@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using BAEK;
 using Orpul1;
 using Photon.Pun;
 using Semin;
@@ -9,8 +10,12 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
 {
     IInteractAble iInteractObj;
     public bool isInteracting = false;
-
-	[PunRPC]
+    Interacting interactUI;
+    private void Start()
+    {
+        interactUI = Managers.UI.GetPopupUI<Interacting>("InteractingCanvas");
+    }
+    [PunRPC]
 	private void ChangeWeaponInteract(int type)
 	{
 		ChangeWeapon(type);
@@ -90,5 +95,21 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     {
         playerData.pv.RPC("OnResurrect", RpcTarget.All);
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractAble interactObj = other.GetComponent<IInteractAble>();
+        if (interactObj == null) return;
+        Debug.Log("Active interact UI!");
+        interactUI.ActiveCanInteract(true, InteractUI.Interact);
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractAble interactObj = other.GetComponent<IInteractAble>();
+        if (interactObj == null) return;
+        Debug.Log("Dective interact UI!");
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }
 }

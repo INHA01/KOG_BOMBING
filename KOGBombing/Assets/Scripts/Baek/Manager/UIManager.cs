@@ -1,4 +1,5 @@
 using BAEK;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,49 +21,54 @@ public class UIManager
     }
     int _order = 0;
     //value
-    public List<UIPopup> _popupList = new List<UIPopup>();
+    public UIPopup[] _popupArray = new UIPopup[(int)UIKEY.Max];
     //key
-    public List<UIKEY> _popupKey = new List<UIKEY>();
+    public UIKEY[] _popupKey = new UIKEY[(int)UIKEY.Max];
+
     public void Init()
     {
-        _popupKey.Clear();
+        _order = 0;
         for (int i = 0; i < (int)UIKEY.Max; i++)
         {
-            _popupKey.Add(UIKEY.NONE);
+            _popupKey[i] = UIKEY.NONE;
         }
     }
     int GetHash(UIKEY key)
     {
-        return key.GetHashCode() % (int)UIKEY.Max;
+        int hash = key.GetHashCode();
+        return Mathf.Abs(hash) % (int)UIKEY.Max;
     }
 
     public T GetPopupUI<T>(UIKEY name) where T : UIPopup
     {
+        if (name == UIKEY.NONE) return null;
         int index = GetHash(name);
-        if (_popupKey[index] != UIKEY.NONE || _popupKey[index].Equals(name))
+        if (_popupKey[index].Equals(name))
         {
-            return _popupList[index].GetComponent<T>();
+            return _popupArray[index].GetComponent<T>();
         }
-        T popup = ShowPopupUI<T>(name);
-        if (popup != null)
-            return popup.GetComponent<T>();
-        return default;
+        //T popup = ShowPopupUI<T>(name);
+        //if (popup != null)
+        //    return popup.GetComponent<T>();
+        return ShowPopupUI<T>(name);
     }
 
     public T ShowPopupUI<T>(UIKEY name) where T : UIPopup
     {
+        if (name == UIKEY.NONE) return null;
+
         int index = GetHash(name);
         GameObject go = null;
         bool isExist = false;
-        if (_popupKey[index] == UIKEY.NONE || !_popupKey[index].Equals(name))
+        if (_popupKey[index].Equals(name))
+        {
+            go = _popupArray[(int)name].gameObject;
+        }
+        else
         {
             go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name.ToString()}Canvas");
             go.transform.SetParent(Root.transform);
             isExist = true;
-        }
-        else
-        {
-            go = _popupList[index].gameObject;
         }
         go.SetActive(true);
         T sceneUI = Util.GetOrAddComponent<T>(go);
@@ -74,26 +80,29 @@ public class UIManager
         sceneUI.Init();
         if (isExist)
         {
-            _popupList.Add(sceneUI);
+            // 아직 생성되지 않은 팝업일 경우
+            // 키값 추가
             _popupKey[index] = name;
+            _popupArray[index] = sceneUI;
         }
 
         return sceneUI;
     }
-    public void ClosePopupUI(UIKEY name = UIKEY.NONE)
+    public void ClosePopupUI(UIKEY name)
     {
-        if (_popupList.Count == 0) return;
         GameObject go = null;
+        int index = 0;
         if (name == UIKEY.NONE)
         {
-            go = _popupList.Last().gameObject;
+            //go = _popupArray[index].gameObject;
+            return;
         }
         else
         {
-            int index = GetHash(name);
+            index = GetHash(name);
             if (_popupKey[index].Equals(name))
             {
-                go = _popupList[index].gameObject;
+                go = _popupArray[index].gameObject;
             }
         }
         if (go != null)
@@ -104,9 +113,10 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        for(int i = 0; i < _popupList.Count; i++)
+        for(int i = 0; i < (int)UIKEY.Max; i++)
         {
-            ClosePopupUI();
+            if(_popupKey[i] != UIKEY.NONE)
+                ClosePopupUI(_popupKey[i]);
         }
     }
 
@@ -126,14 +136,17 @@ public class UIManager
             canvas.sortingOrder = 0;
         }
     }
-    public void ChangeAllCanvsRender(RenderMode mode)
+    public void ChangeAllCanvsRender(RenderMode mode , Camera camera = null)
     {
-        //foreach (var popup in _popupDictionary)
-        //{
-        //    Canvas canvas = popup.Value.GetComponent<Canvas>();
-        //    canvas.renderMode = mode;
-        //    if(mode == RenderMode.ScreenSpaceCamera)
-        //        canvas.worldCamera = Managers.CamData.GetCamera(ECameraType.EFFECTCAMERA).GetComponent<Camera>();
-        //}
+        for(int i = 0; i < (int)UIKEY.Max; i++)
+        {
+            if (_popupArray[i] != null)
+            {
+                Canvas canvas = _popupArray[i].GetComponent<Canvas>();
+                canvas.renderMode = mode;
+                if (mode == RenderMode.ScreenSpaceCamera)
+                    canvas.worldCamera = camera;
+            }
+        }
     }
 }

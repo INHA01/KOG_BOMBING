@@ -10,6 +10,8 @@ public class Login : MonoBehaviourPunCallbacks
         EMAIL,
         PW,
         NICKNAME,
+        SIGN_UP_EMAIL,
+        SIGN_UP_PW,
         MAX,
     }
     enum PanelType
@@ -19,7 +21,7 @@ public class Login : MonoBehaviourPunCallbacks
         SERVERSELECT,
         MAX,
     }
-    enum AccountType
+    public enum AccountType
     {
         LOGIN,
         CREATE,
@@ -31,16 +33,19 @@ public class Login : MonoBehaviourPunCallbacks
         GUEST,
         MAX,
     }
+
     [SerializeField] GameObject[] _panels = new GameObject[(int)PanelType.MAX];
     [SerializeField] TMPro.TMP_InputField[] _inputFields = new TMPro.TMP_InputField[(int)TextType.MAX];
     [SerializeField] GameObject[] _buttons = new GameObject[(int)ButtonType.MAX];
+    [SerializeField] Animator splashScreenAnimator;
     AccountType _accountType = AccountType.LOGIN;
     public void SwapLoginCreate()
     {
         _accountType = (AccountType)(((int)_accountType + 1) % (int)AccountType.MAX);
         _buttons[(int)ButtonType.SWAP].transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = _accountType.ToString();
     }
-    public void OnLoginClick()
+
+    public void OnLoginClick(int type)  // create와 login 분리하면서 버튼에 따라 type 넣어서 이벤트 진행되도록 함
     {
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         // >> :Button Disable
@@ -50,24 +55,29 @@ public class Login : MonoBehaviourPunCallbacks
             _buttons[i].SetActive(false);
         }
         // << :Button Disable
-        if (_accountType == AccountType.CREATE)
+        if (type == (int)AccountType.CREATE)
             Managers.FirebaseAuth.Create(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
         else
             Managers.FirebaseAuth.Login(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
         StartCoroutine(CheckLoginSuccess());
     }
+
     IEnumerator CheckLoginSuccess()
-    {
-        yield return new WaitForSeconds(5.0f);
+	{
+		yield return new WaitForSeconds(1f);
         if(Managers.FirebaseAuth.isLogin)
+        {
             StartCoroutine(CheckUserName());
+		}
         else
         {
-            _panels[(int)PanelType.LOGIN].SetActive(true);
-            for(int i = 0; i < (int)ButtonType.MAX; i++)
-            {
-                _buttons[i].SetActive(true);
-            }
+            //_panels[(int)PanelType.LOGIN].SetActive(true);
+
+            splashScreenAnimator.Play("Login Failed", -1, 0f);
+			//for (int i = 0; i < (int)ButtonType.MAX; i++)
+   //         {
+   //             _buttons[i].SetActive(true);
+   //         }
         }
     }
     IEnumerator CheckUserName()
@@ -103,6 +113,7 @@ public class Login : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         _panels[(int)PanelType.SERVERSELECT].SetActive(true);
+        splashScreenAnimator.Play("Login Success");
     }
     public void OnStartClick()
     {

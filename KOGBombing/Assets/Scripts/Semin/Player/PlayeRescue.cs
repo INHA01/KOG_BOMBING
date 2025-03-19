@@ -1,4 +1,5 @@
 using System.Collections;
+using BAEK;
 using Orpul1;
 using Photon.Pun;
 using Semin;
@@ -13,39 +14,44 @@ public class PlayeRescue : InteractObject
     IRescueAble rescuePlayer;
     GameObject target;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         interactCollider.enabled = false;
         rescuePlayer = GetComponent<PlayerInteract>();
     }
     public INode.ENodeState ActiveRescueCollider()
     {
-        playerData.pv.RPC("RPCActiveRescueCollider", RpcTarget.All);
+        if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
+        if (interactCollider.enabled == true) return INode.ENodeState.Fail;
+        playerData.pv.RPC("OnInteractColl", RpcTarget.All);
         return INode.ENodeState.Fail;
     }
     
     public INode.ENodeState DeactiveRescueCollider()
     {
-        playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.All);
+        if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
+        playerData.pv.RPC("OffInteractColl", RpcTarget.All);
         return INode.ENodeState.Fail;
     }
     [PunRPC]
-    private void RPCActiveRescueCollider()
+    private void OnInteractColl() //상호작용 전용 콜라이더 활성화
     {
         if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != blackBoard.playerTeam) return;
 
+        Debug.Log("Active InteractCollider");
         interactCollider.enabled = true;
-        interactUI.ActivePanel();
     }
     [PunRPC]
-    private void RPCDeactiveRescueCollider()
+    private void OffInteractColl()//상호작용 전용 콜라이더 비활성화
     {
+        Debug.Log("Deactive InteractCollider");
 		interactCollider.enabled = false;
-        interactUI.DeactivePanel();
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }
 
     [PunRPC]
-    private void RPCSetIsGroggyInteracting(bool isInteracting)
+    private void SetGroggyInteract(bool isInteracting)
 	{
 		playerData.isGroggyInteracting = isInteracting;
 	}
@@ -59,7 +65,7 @@ public class PlayeRescue : InteractObject
         if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
 
         target = pView.gameObject;
-		playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.All, true);
+		playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, true);
 		StartCoroutine(CoInteractDelay());
 		return true;
     }
@@ -69,40 +75,35 @@ public class PlayeRescue : InteractObject
         if (interactState == InteractState.INTERACTING) yield break;
         interactState = InteractState.INTERACTING;
         float deltaTime = 0;
-        while(deltaTime<interactTime)
+        while (deltaTime < interactTime) 
         {
             if (interactState == InteractState.NONE)
 			{
-				interactUI.ProgressInteract(0);
-				break;
+                playerData.pv.RPC("PunInteractGage", RpcTarget.All, 0f);
+                break;
             }
 
+            playerData.pv.RPC("PunInteractGage", RpcTarget.All, deltaTime/interactTime);
             deltaTime += Time.deltaTime;
-            interactUI.ProgressInteract(deltaTime);
             yield return null;
         }
-        if (deltaTime >= interactTime)
-        {
-			playerData.pv.RPC("RPCDeactiveRescueCollider", RpcTarget.All);
-			rescuePlayer.Rescue();
-			interactCollider.enabled = false;
-		}        
-	}
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        
+        if (deltaTime < interactTime) yield break;
+        playerData.pv.RPC("OffInteractColl", RpcTarget.All);
+        playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, false);
+        rescuePlayer.Rescue();
     }
-
+    [PunRPC]
+    private void PunInteractGage(float value)
+    {
+        interactUI.Interact(value);
+    }
     protected override void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
-            if (target == null || target != other.gameObject)
-                return;
-			playerData.pv.RPC("RPCSetIsGroggyInteracting", RpcTarget.All, false);
+            if (target == null || target != other.gameObject) return;
+            playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, false);
 		}
-
         target = null;
     }
 

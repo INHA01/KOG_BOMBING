@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BAEK;
 using Orpul1;
 using Photon.Pun;
 using UnityEngine;
 
 public abstract class InteractObject : Subject, IInteractAble
 {
-    [SerializeField]
-    protected InteractPresenter interactUI;
+    /*[SerializeField]
+    protected InteractPresenter interactUI;*/
     [SerializeField] 
     protected GameObject lookUiCamera;
     [SerializeField]
@@ -22,6 +23,7 @@ public abstract class InteractObject : Subject, IInteractAble
     protected int defualtLayer;
     [SerializeField]
     protected float interactTime = 0;
+    protected Interacting interactUI;
 
     protected enum InteractState
     {
@@ -30,14 +32,19 @@ public abstract class InteractObject : Subject, IInteractAble
         COMPLETE
     }
     protected InteractState interactState = InteractState.NONE;
+
+    protected virtual void Start()
+    {
+        interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+    }
     public abstract bool ProcessInteract(PhotonView pView);
     public virtual void AbortInteract()
     {
-        interactUI.AbortInteract();
+        interactUI.Interact(0);
 
         if (interactState == InteractState.COMPLETE) return;
 
-        interactUI.AbortInteract();
+        interactUI.Interact(0);
         interactState = InteractState.NONE;
     }
     protected void SetOutline(bool isAdd)
@@ -54,24 +61,19 @@ public abstract class InteractObject : Subject, IInteractAble
     protected abstract IEnumerator CoInteractDelay();
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
-        {
-            PhotonView pView = other.GetComponent<PhotonView>();
-            if (!pView.IsMine) return;
-            SetOutline(true);
-            interactUI.ActivePanel();
-        }
+        if (other.tag != "Player") return;
+        if (interactUI == null) return;
+        PhotonView pView = other.GetComponent<PhotonView>();
+        if (!pView.IsMine) return;
+        SetOutline(true);
+        //interactUI.ActiveCanInteract(true, InteractUI.Interact);
     }
     protected virtual void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            PhotonView pView = other.GetComponent<PhotonView>();
-            if (!pView.IsMine) return;
-            SetOutline(false);
-            interactUI.DeactivePanel();
-        }
-       
+        if (other.tag != "Player") return;
+        PhotonView pView = other.GetComponent<PhotonView>();
+        if (!pView.IsMine) return;
+        SetOutline(false);
+        //interactUI.ActiveCanInteract(false, InteractUI.Interact);
     }
-
 }

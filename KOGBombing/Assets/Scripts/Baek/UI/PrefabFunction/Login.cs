@@ -44,9 +44,12 @@ public class Login : MonoBehaviourPunCallbacks
 
     IEnumerator CheckLoginSuccess(int time)
 	{
-        // 여기에 로그인 중, 혹은 회원가입 중 패널 띄우기
-        yield return new WaitForSeconds(time);
-        if(Managers.FirebaseAuth.isLogin)
+		// 여기에 로그인 중, 혹은 회원가입 중 패널 띄우기
+		splashScreenAnimator.Play("Loading", -1, 0f);
+		yield return new WaitForSeconds(time);
+        splashScreenAnimator.Play("Loading Out", -1, 0f);
+		checkLogin = null;
+		if (Managers.FirebaseAuth.isLogin)
         {
             StartCoroutine(CheckUserName());
 		}
@@ -65,7 +68,6 @@ public class Login : MonoBehaviourPunCallbacks
             Managers.UserData.SettingNickName("User" + Random.Range(0, 1000));
 
         PhotonNetwork.ConnectUsingSettings();
-        checkLogin = null;
 	}
     public void OnGuestClick()
     {
@@ -77,9 +79,9 @@ public class Login : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         splashScreenAnimator.Play("Login Success");
-        PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
+		PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
 
-        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-        Managers.SceneLoad.LoadScene("LobbyScene");
-    }
+		Managers.Sound.PlayUISound(EUiSoundType.CLICK);
+		Managers.SceneLoad.LoadScene("LobbyScene");
+	}
 }

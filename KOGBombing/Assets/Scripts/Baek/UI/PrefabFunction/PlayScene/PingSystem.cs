@@ -2,11 +2,13 @@ using BAEK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PingSystem : MonoBehaviour
 {
     [Header("Ping")]
     public Ping[] pings = new Ping[(int)PingCursorType.Max];
+    [SerializeField] GameObject[] pingIcons = new GameObject[(int)PingCursorType.Max];
     [SerializeField] GameObject pingUI;
     public PingCursorType pingCursorType;
     Vector2 mousePos;
@@ -17,22 +19,30 @@ public class PingSystem : MonoBehaviour
             pings[i].Init();
         }
     }
-    private void Update()
+    public void OnPing(InputValue value)
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (value.isPressed)
         {
             mousePos = Input.mousePosition;
             pingUI.SetActive(true);
             pingUI.transform.position = mousePos;
         }
-        else if(Input.GetKeyUp(KeyCode.T))
+        else 
         {
-            ShowPingCursor(mousePos);
+            ShowPing(mousePos);
             pingUI.SetActive(false);
         }
     }
-    public void ShowPingCursor(Vector2 pos)
+    public void ShowPing(Vector2 pos)
     {
         pings[(int)pingCursorType].Active(pos);
+        StartCoroutine(ShowPingUI(pos));
+    }
+    IEnumerator ShowPingUI(Vector2 pos)
+    {
+        pingIcons[(int)pingCursorType].SetActive(true);
+        pingIcons[(int)pingCursorType].transform.position = pos;
+        yield return new WaitForSeconds(3f);
+        pingIcons[(int)pingCursorType].SetActive(false);
     }
 }

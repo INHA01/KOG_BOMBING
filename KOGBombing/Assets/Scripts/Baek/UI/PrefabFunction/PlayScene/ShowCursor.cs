@@ -53,7 +53,7 @@ namespace BAEK
             bombCursors[(int)BombCursorType.SectorA].transform.position = CursorScreenSet(bombDir1);
             bombCursors[(int)BombCursorType.SectorB].transform.position = CursorScreenSet(bombDir2);
         }
-        Vector3 CursorScreenSet(Vector3 dir)
+        public Vector2 CursorScreenSet(Vector3 dir)
         {
             // 지정된 방향으로 커서 위치 , 화면 밖으로 나가지 않게
             Vector3 cursorPos = main.WorldToScreenPoint(main.transform.position + dir.normalized * 10);

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayScene : UIPopup
@@ -76,7 +77,10 @@ public class PlayScene : UIPopup
             magazineCount.text = weapon.MagazineCount + "/4";
             chargeBar.fillAmount = weapon.ReloadTime;
         }
-        if(Input.GetKeyDown(KeyCode.M))
+    }
+    public void OnExtractMap(InputValue value)
+    {
+        if (value.isPressed)
         {
             maps[0].SetActive(!maps[0].activeSelf);
             maps[1].SetActive(!maps[1].activeSelf);

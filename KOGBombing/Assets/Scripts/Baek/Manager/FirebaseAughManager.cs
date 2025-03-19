@@ -50,7 +50,7 @@ public class FirebaseAughManager
         }
     }
 
-    public void Create(string email, string password)
+    public void Create(string email, string password , string nickName)
     {
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
@@ -71,6 +71,7 @@ public class FirebaseAughManager
             FirebaseUser newUser = result.User;
             Debug.LogFormat("회원가입 성공 : {0} ({1})", newUser.DisplayName, newUser.Email);
             Managers.UserData.Init(auth);
+            Managers.UserData.SettingNickName(nickName);
             SetDeviceStatus(newUser.UserId);
         });
     }
@@ -149,6 +150,7 @@ public class FirebaseAughManager
             }
         });
     }
+
 
     private void SetDeviceStatus(string userId)
     {

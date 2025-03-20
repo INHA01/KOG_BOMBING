@@ -117,19 +117,5 @@ namespace BAEK
             yield return new WaitForSeconds(3f);
             player.showSoundEffect = false;
         }
-        public IEnumerator ShowPingCursor(Vector3 pingPos, GameObject pingCursor)
-        {
-            float time = 0;
-            while (true)
-            {
-                Vector3 dir = pingPos - main.transform.position;
-                pingCursor.transform.position = CursorScreenSet(dir);
-                time += Time.deltaTime;
-                if (time > 3f)
-                    break;
-                yield return null;
-            }
-            pingCursor.SetActive(false);
-        }
     }
 }

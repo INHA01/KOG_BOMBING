@@ -27,15 +27,13 @@ public class PlayerBlackBoard : MonoBehaviour
     public ETeam playerTeam;
     public ISetTeamCountAble setTeam;
     public IBombStateAble setBombState;
+    public IChangeHitCursorAble cursorUI;
     public string nickname;
     public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;
     public bool showSoundEffect = false;
-    public bool changeObservaPlayer = true;
-    public int observaPlayerIndex = 0;
-    public int teamCount = 0;
 	[HideInInspector] public BombInteraction bombInteraction;
 	[HideInInspector] public PlayerStatus playerStatus;
     public EGameState currentGameState;

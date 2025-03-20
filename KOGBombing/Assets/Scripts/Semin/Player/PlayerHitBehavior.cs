@@ -24,10 +24,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     Coroutine groggyCoroutine;
     bool isActiveHitSound = false;
     BulletController bullet;
+    Coroutine hitCoroutine;
 
     protected override void Awake()
     {
         base.Awake();
+        playerData.pivot.GenerateProjector();
     }
     private void Start()
     {
@@ -47,11 +49,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.hpBar.SetIsMyTeam(true);
 			playerMaterialController.SetLayerToMyPlayer();
 		}
-
-		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
+        string nickname = playerData.pv.Owner.NickName;
+		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence,nickname);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
 	}
+
     IEnumerator DamageTest(float damage, float time)
     {
         yield return new WaitForSeconds(time);
@@ -114,10 +117,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         //playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
         Damage(damage, playerIndex);
-
+        playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
 		if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
+            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)blackBoard.playerTeam);
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
@@ -125,6 +129,45 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             isActiveHitSound = true;
             StartCoroutine(CoHitSound());
         }
+    }
+    [PunRPC]
+    private void ShowHitCursor(byte playerIndex, byte playerTeam)
+    {
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        if (playerTeam == (byte)mTeam) return;
+        if (playerIndex != mPlayerIndex) return;
+        blackBoard.cursorUI.ChangeHitCursor();
+    }
+    [PunRPC]
+    public void HitEffectToPivot()
+    {
+        if (hitCoroutine == null)
+            hitCoroutine = StartCoroutine(StartAnimatePivot());
+    }
+
+    IEnumerator StartAnimatePivot()
+    {
+        float time = 0;
+        float originRad = playerData.pivot.Radius;
+        while (time < 0.03f)
+        {
+            time += Time.deltaTime;
+            playerData.pivot.Radius += 0.1f;
+			playerData.pivot.GenerateProjector();
+            yield return new WaitForEndOfFrame();
+        }
+        time = 0;
+        while (time < 0.03f)
+		{
+			time += Time.deltaTime;
+			playerData.pivot.Radius -= 0.1f;
+			playerData.pivot.GenerateProjector();
+			yield return new WaitForEndOfFrame();
+		}
+        playerData.pivot.Radius = originRad;
+		playerData.pivot.GenerateProjector();
+		hitCoroutine = null;
     }
     
     public INode.ENodeState SuccessNode()
@@ -428,33 +471,30 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
-    public bool IsTargetChange()
+    public bool IsTargetDie()
     {
         if (blackBoard.observaTargetNickname == null) return true;
         if (blackBoard.observaTargetNickname.Equals("")) return true;
         bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
-        if (!isLiveTarget || blackBoard.changeObservaPlayer) return true;
+        if (!isLiveTarget) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
-    
     public INode.ENodeState FindAlivePlayer()
     {
+        List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         Debug.Log("Search Alive Player");
-        
-        for (int i = blackBoard.observaPlayerIndex; i < blackBoard.teamCount; i++)
+        for (int i = 0; i < blackBoards.Count; i++)
         {
-            PlayerBlackBoard myTeamBlackboard = Managers.PunData.GetMyTeamBlackboard(i);
-            if (myTeamBlackboard == null) continue;
-            if (myTeamBlackboard.rigidBody == null) return INode.ENodeState.Fail;
-            if (myTeamBlackboard.nickname == blackBoard.nickname) continue;
-            if (myTeamBlackboard.playerStatus.isLive == false) continue;
+            if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
+            if (blackBoards[i].playerTeam != blackBoard.playerTeam) continue;
+            if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
+            if (!blackBoards[i].playerStatus.isLive) continue;
 
-            Debug.Log($"Find Target {myTeamBlackboard.nickname}");
-            blackBoard.observaTarget = myTeamBlackboard.rigidBody.gameObject;
+            Debug.Log($"Find Target {blackBoards[i].nickname}");
+            blackBoard.observaTarget = blackBoards[i].rigidBody.gameObject;
             blackBoard.observaTargetNickname.Clear();
-            blackBoard.observaTargetNickname.Append(myTeamBlackboard.nickname);
-            blackBoard.observaPlayerIndex = i;
+            blackBoard.observaTargetNickname.Append(blackBoards[i].nickname);
             return INode.ENodeState.Success;
 
         }

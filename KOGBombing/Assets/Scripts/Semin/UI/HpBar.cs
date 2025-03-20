@@ -25,11 +25,6 @@ public class HpBar : MonoBehaviour
     Coroutine decrease;
     bool stopHpUI = false;
     bool isOtherTeam = false;
-
-    private void Start()
-    {
-        playerName.text = Managers.UserData.userData.nickName;
-    }
     public void SetHpValue(float hpValue, float defenceValue)
     {
         if (stopHpUI) return;
@@ -107,11 +102,12 @@ public class HpBar : MonoBehaviour
 		targetDefence = 1f;
 	}
 
-    public void Init(float maxHp, float maxDefence)
+    public void Init(float maxHp, float maxDefence, string name)
     {
         mainCamera = Camera.main;
         this.maxHp = maxHp;
         this.maxDefence = maxDefence;
+        playerName.text = name;
         hpValue = 1f;
         defenceValue = 1f;
         groggyValue = 1f;

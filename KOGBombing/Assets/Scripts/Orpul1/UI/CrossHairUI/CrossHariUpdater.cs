@@ -23,6 +23,9 @@ namespace Orpul1
         EScene curCursor = EScene.LobbyScene;
         void Start()
         {
+            Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
+            canvas.sortingOrder = 100;
+
             SceneManager.sceneLoaded += UpdateCursor;
             for (int i = 0; i < (int)EScene.END; i++)
             {

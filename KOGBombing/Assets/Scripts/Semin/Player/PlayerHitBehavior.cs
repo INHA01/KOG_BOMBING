@@ -47,8 +47,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.hpBar.SetIsMyTeam(true);
 			playerMaterialController.SetLayerToMyPlayer();
 		}
-
-		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
+        string nickname = playerData.pv.Owner.NickName;
+		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence,nickname);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
 	}

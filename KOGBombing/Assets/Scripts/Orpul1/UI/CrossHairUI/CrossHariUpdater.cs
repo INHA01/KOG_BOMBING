@@ -24,7 +24,7 @@ namespace Orpul1
         void Start()
         {
             Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
-            canvas.sortingOrder = 100;
+            canvas.sortingOrder = 30001;
 
             SceneManager.sceneLoaded += UpdateCursor;
             for (int i = 0; i < (int)EScene.END; i++)

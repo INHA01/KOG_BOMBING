@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
 		Debug.Log($"isDataAllGet {Managers.PunData.blackBoardCnt}");
         controller.SetTeamUI(playerShooting);
+        blackBoard.updateTeamState = controller;
 
     }
 	public void Init(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)

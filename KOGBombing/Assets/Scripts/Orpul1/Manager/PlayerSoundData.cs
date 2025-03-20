@@ -86,7 +86,7 @@ public struct SkillSound
     public void ActiveSound(Transform transform, ESkillSound soundType)
     {
         AudioClip skillSound = SkillList[(int)soundType];
-        Managers.Sound.PlayEffect(skillSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+        Managers.Sound.PlayEffect(skillSound, EMixerGroup.ATTACKSOUND, transform, 1, 0, 30);
     }
 }
 [Serializable]
@@ -106,7 +106,7 @@ public struct WeaponSound
     public void ActiveSound(Transform transform, EWeaponSound soundType)
     {
         AudioClip bombSound = WeaponSoundList[(int)soundType];
-        Managers.Sound.PlayEffect(bombSound, EMixerGroup.CHARACTER, transform, 1, 0, 30);
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.ATTACKSOUND, transform, 1, 0, 30);
     }
 }
 [Serializable]

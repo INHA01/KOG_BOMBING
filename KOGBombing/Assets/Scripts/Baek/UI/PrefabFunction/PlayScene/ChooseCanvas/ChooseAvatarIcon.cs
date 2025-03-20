@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,8 @@ public class ChooseAvatarIcon : ChooseObserver
 {
     [SerializeField] Image image;
     [SerializeField] Image topImage;
+    [SerializeField] public TextMeshProUGUI nicknameText;
+    [SerializeField] public TextMeshProUGUI levelText;
 	public override void Choosing(int index)
     {
         switch(index)

@@ -134,27 +134,34 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public void HitEffectToPivot()
     {
         if (hitCoroutine == null)
-            StartCoroutine(StartAnimatePivot());
+        {
+            Debug.Log("Hit Effect To Pivot");
+            hitCoroutine = StartCoroutine(StartAnimatePivot());
+        }
     }
 
     IEnumerator StartAnimatePivot()
     {
         float time = 0;
         float originRad = playerData.pivot.Radius;
-        while (time < 1)
+        while (time < 0.03f)
         {
             time += Time.deltaTime;
-            playerData.pivot.Radius += 0.01f;
-            yield return null;
+            playerData.pivot.Radius += 0.1f;
+			playerData.pivot.GenerateProjector();
+            yield return new WaitForEndOfFrame();
         }
-        while (time < 2)
+        time = 0;
+        while (time < 0.03f)
 		{
 			time += Time.deltaTime;
-			playerData.pivot.Radius -= 0.01f;
-            yield return null;
-        }
+			playerData.pivot.Radius -= 0.1f;
+			playerData.pivot.GenerateProjector();
+			yield return new WaitForEndOfFrame();
+		}
         playerData.pivot.Radius = originRad;
-        hitCoroutine = null;
+		playerData.pivot.GenerateProjector();
+		hitCoroutine = null;
     }
     
     public INode.ENodeState SuccessNode()

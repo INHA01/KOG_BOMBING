@@ -49,6 +49,7 @@ namespace BAEK
         SelectMode,
         Winner,
         CrossHair,
+        Emoticon,
         Max
     }
     public enum PingCursorType

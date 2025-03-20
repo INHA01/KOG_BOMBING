@@ -111,6 +111,8 @@ namespace BAEK
                     break;
             }
             Managers.UserData.SaveUserData();
+            Managers.UI.GetPopupUI<Emoticon>(UIKEY.Emoticon).InitImoticon();
+            profileEditPanel[(int)PanelType.EmoticonEdit].SetActive(false);
         }
         public void ChangeEmoticon(int type)
         {

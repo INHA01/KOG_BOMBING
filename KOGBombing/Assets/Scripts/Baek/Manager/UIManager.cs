@@ -112,7 +112,7 @@ public class UIManager
     {
         for(int i = 0; i < (int)UIKEY.Max; i++)
         {
-            if (_popupKey[i] == UIKEY.CrossHair) continue;
+            if (_popupKey[i] == UIKEY.CrossHair || _popupKey[i] == UIKEY.Emoticon) continue;
             if(_popupKey[i] != UIKEY.NONE)
                 ClosePopupUI(_popupKey[i]);
         }
@@ -140,7 +140,7 @@ public class UIManager
         {
             if (_popupArray[i] != null)
             {
-                if (_popupKey[i] == UIKEY.CrossHair) continue;
+                if (_popupKey[i] == UIKEY.CrossHair || _popupKey[i] == UIKEY.Emoticon) continue;
                 Canvas canvas = _popupArray[i].GetComponent<Canvas>();
                 canvas.renderMode = mode;
                 if (mode == RenderMode.ScreenSpaceCamera)

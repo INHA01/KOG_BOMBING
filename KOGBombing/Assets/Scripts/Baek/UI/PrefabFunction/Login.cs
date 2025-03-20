@@ -78,6 +78,7 @@ public class Login : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
+        Managers.UI.ShowPopupUI<Emoticon>(BAEK.UIKEY.Emoticon);
         splashScreenAnimator.Play("Login Success");
 		PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
 

@@ -139,8 +139,11 @@ public class FirebaseAughManager
                 DataSnapshot snapshot = task.Result;
                 if (snapshot.Exists && snapshot.Value.ToString() != "")
                 {
-                    Debug.Log("중복 로그인 감지! 로그아웃 처리 중...");
-                    Logout(true); // 중복 로그인 시 로그아웃
+                    if(snapshot.Value.ToString() != currentDeviceId)
+                    {
+                        Debug.Log("중복 로그인 감지! 로그아웃 처리 중...");
+                        Logout(true); // 중복 로그인 시 로그아웃
+                    }
                 }
                 else
                 {

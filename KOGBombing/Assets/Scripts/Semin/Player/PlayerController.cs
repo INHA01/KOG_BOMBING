@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
         isInitComplete = true;
+        blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
     }
 
     public void SetTeamUI(TeamUIController controller)

@@ -48,6 +48,7 @@ namespace BAEK
         Result,
         SelectMode,
         Winner,
+        CrossHair,
         Max
     }
     public enum PingCursorType

@@ -112,6 +112,7 @@ public class UIManager
     {
         for(int i = 0; i < (int)UIKEY.Max; i++)
         {
+            if (_popupKey[i] == UIKEY.CrossHair) continue;
             if(_popupKey[i] != UIKEY.NONE)
                 ClosePopupUI(_popupKey[i]);
         }

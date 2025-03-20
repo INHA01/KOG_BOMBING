@@ -6,16 +6,19 @@ using UnityEngine.UI;
 public class ChooseAvatarIcon : ChooseObserver
 {
     [SerializeField] Image image;
-    public override void Choosing(int index)
+    [SerializeField] Image topImage;
+	public override void Choosing(int index)
     {
         switch(index)
         {
             case 0:
                 image.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Ned_2");
-                break;
+				topImage.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Top_Profile_Ned_2");
+				break;
             case 1:
                 Sprite sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Uni_1");
-                image.sprite = sprite;
+				image.sprite = sprite;
+				topImage.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Top_Profile_Uni_1");
                 break;
         }
     }

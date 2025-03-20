@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 52936336572517067}
   - component: {fileID: 2113273515132340683}
   - component: {fileID: 6837293083094446864}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: CursorUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 10}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2113273515132340683
 CanvasRenderer:
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 5748447023199321522}
   - component: {fileID: 491299155317138190}
   - component: {fileID: 115299842505001846}
-  m_Layer: 5
+  m_Layer: 16
   m_Name: CrossHairCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,6 +177,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b889ef0124f73fa4298de5e962dac98b, type: 3}
   - {fileID: 21300000, guid: 8c89ed5746a4faa48bb97701cc2f2e35, type: 3}
   crossHairCamera: {fileID: 8139015284370472033}
+  cursorCanvas: {fileID: 5748447023199321522}
 --- !u!1 &6236501628772054509
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7016995052848216243}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: CrossHairPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +222,7 @@ GameObject:
   - component: {fileID: 3881947793791851435}
   - component: {fileID: 8139015284370472033}
   - component: {fileID: 1181866925559765584}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: CrossHairCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +283,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 65536
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -309,7 +310,7 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:

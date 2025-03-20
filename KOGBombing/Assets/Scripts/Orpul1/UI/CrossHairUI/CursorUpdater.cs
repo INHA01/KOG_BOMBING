@@ -17,6 +17,7 @@ public class CursorUpdater : MonoBehaviour
     [SerializeField] GameObject cursorUI;
     [SerializeField] List<Sprite> cursorList = new List<Sprite>();
     [SerializeField] Camera crossHairCamera;
+    [SerializeField] Canvas cursorCanvas;
     Dictionary<string, Sprite> dictCusrsor = new Dictionary<string, Sprite>();
     EScene curCursor = EScene.LobbyScene;
     void Start()

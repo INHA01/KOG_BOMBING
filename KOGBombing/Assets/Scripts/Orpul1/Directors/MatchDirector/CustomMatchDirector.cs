@@ -25,18 +25,18 @@ namespace Orpul1
         {
             isStopMatch = true;
             isCustomMatch = false;
+
+            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL);
+            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVECREATEROOMPANEL);
             if (PhotonNetwork.InLobby)
                 PhotonNetwork.LeaveLobby();
         }
-       
         public override void OnJoinedRoom()
         {
-            if (isCustomMatch)
-            {
-                base.OnJoinedRoom();
-                UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL);
-                UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
-            }
+            if (!isCustomMatch) return;
+            base.OnJoinedRoom();
+            UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL);
+            UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)

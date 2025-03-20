@@ -61,6 +61,7 @@ public class BulletController : PooledObject
     }
     protected virtual void OnTriggerEnter(Collider other)
 	{
+        bool isSameTeam = false;
 		if (other.CompareTag("IgnoreBullet"))
 		{
             if (other.GetComponent<Landmine>() != null) return;
@@ -76,6 +77,7 @@ public class BulletController : PooledObject
             if (teamType == null) return;
             if (!IsOtherTeam(teamType)) return;
             // << :
+            isSameTeam = true;
             IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
             {
@@ -86,9 +88,11 @@ public class BulletController : PooledObject
         }
 
 		HitAndMakeParticle(other);
-	}
+        if(!isSameTeam)
+            PhotonNetwork.RaiseEvent((byte)relaseEventCode, null, options, optionsSend);
+    }
 
-	public void HitAndMakeParticle(Collider other)
+    public void HitAndMakeParticle(Collider other)
     {
         // >> : HitEffect
 		Vector3 contactPoint = other.ClosestPoint(transform.position);
@@ -106,7 +110,6 @@ public class BulletController : PooledObject
 				Destroy(hitVFX, psChild.main.duration);
 			}
 		}
-        PhotonNetwork.RaiseEvent((byte)relaseEventCode, null, options, optionsSend);
 		/// << :
 		//distance = 0;
 		//Release();

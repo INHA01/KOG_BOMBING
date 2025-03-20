@@ -140,6 +140,7 @@ public class UIManager
         {
             if (_popupArray[i] != null)
             {
+                if (_popupKey[i] == UIKEY.CrossHair) continue;
                 Canvas canvas = _popupArray[i].GetComponent<Canvas>();
                 canvas.renderMode = mode;
                 if (mode == RenderMode.ScreenSpaceCamera)

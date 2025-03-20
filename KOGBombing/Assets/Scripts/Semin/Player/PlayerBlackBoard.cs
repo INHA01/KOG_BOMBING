@@ -28,6 +28,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public ISetTeamCountAble setTeam;
     public IBombStateAble setBombState;
     public IChangeHitCursorAble cursorUI;
+    public IUpdateStateAble updateTeamState;
     public string nickname;
     public CharacterType characterType;
     public PlayerStatus SOplayerStatus;

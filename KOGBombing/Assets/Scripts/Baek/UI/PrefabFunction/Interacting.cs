@@ -19,7 +19,7 @@ namespace BAEK
         }
         [SerializeField] GameObject[] guides = new GameObject[(int)Guide.Max];
         [SerializeField] GameObject[] interactUIs = new GameObject[(int)InteractUI.Max];
-        [SerializeField] Image interactBar;
+        [SerializeField] Slider interactBar;
         [SerializeField] TextMeshProUGUI bombTime;
 
         Coroutine bombSetCoroutine;
@@ -33,12 +33,14 @@ namespace BAEK
             if(!canInteract)
                 Interact(0);
             interactUIs[(int)interactUI].SetActive(canInteract);
-            interactUIs[(int)InteractUI.InteractBar].SetActive(canInteract);
+            if (canInteract == false)
+                interactUIs[(int)InteractUI.InteractBar].SetActive(canInteract);
         }
         public void Interact(float amount)
         {
-            interactBar.fillAmount = amount;
-        }
+			interactUIs[(int)InteractUI.InteractBar].SetActive(true);
+            interactBar.value = amount;
+		}
         public void SetTimeCount(float time)
         {
             bombTime.text = string.Format("{0:00}:{1:00}", (int)time, (int)((time - (int)time) * 100));

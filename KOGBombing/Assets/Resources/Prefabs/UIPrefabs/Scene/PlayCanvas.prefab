@@ -776,17 +776,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Round1
+  m_text: 1 Round
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 724589ae56e1da84ab4aa70bdac74d44, type: 2}
-  m_sharedMaterial: {fileID: 3514089410596274822, guid: 724589ae56e1da84ab4aa70bdac74d44,
+  m_fontAsset: {fileID: 11400000, guid: 194c956b3d864664890e731c63fd4a02, type: 2}
+  m_sharedMaterial: {fileID: 21704438749789640, guid: 194c956b3d864664890e731c63fd4a02,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 3640655871
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -804,13 +804,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 77.97
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 2
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2203,6 +2203,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9dfc9fb79de3e40b043c3a5cb4cbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pingSoundList:
+  - {fileID: 8300000, guid: 1111a401e7d945b49bc93302f267c330, type: 3}
+  - {fileID: 8300000, guid: 2a8b6138d07e07d4a9d26c7ea2947557, type: 3}
+  - {fileID: 8300000, guid: 8fc994638e752a9458709e309715abed, type: 3}
+  - {fileID: 8300000, guid: 9062c371604ceab45b4caaa3a170ee77, type: 3}
+  - {fileID: 8300000, guid: 42bd9165a9d693c4faa6dfde8038f990, type: 3}
+  - {fileID: 8300000, guid: d914c9ffebd8dc046b7b46371194f8ca, type: 3}
+  - {fileID: 8300000, guid: 6263c6a8cdf1b8c4aa4901fe8b849d4c, type: 3}
+  - {fileID: 8300000, guid: a71de23200b513348bddd7b2035746a9, type: 3}
   pings:
   - {fileID: 2144239535002145399}
   - {fileID: 4544600484043740085}
@@ -2750,15 +2759,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBAA9\uD45C\uBB3C\uC744 \uD30C\uAD34\uD558\uB77C."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 724589ae56e1da84ab4aa70bdac74d44, type: 2}
-  m_sharedMaterial: {fileID: 3514089410596274822, guid: 724589ae56e1da84ab4aa70bdac74d44,
+  m_fontAsset: {fileID: 11400000, guid: ef4136f0d99cf0c42af337743ea0f4f0, type: 2}
+  m_sharedMaterial: {fileID: 7697690478928752819, guid: ef4136f0d99cf0c42af337743ea0f4f0,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 1
   m_colorMode: 3
@@ -2776,10 +2785,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 77.97
+  m_fontSize: 65
+  m_fontSizeBase: 65
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

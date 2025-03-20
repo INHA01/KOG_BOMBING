@@ -12,6 +12,7 @@ public enum EMixerGroup
     EFFECT,
     UISOUND,
     CHARACTER,
+    ATTACKSOUND,
 }
 public class SoundManager : MonoBehaviour
 {

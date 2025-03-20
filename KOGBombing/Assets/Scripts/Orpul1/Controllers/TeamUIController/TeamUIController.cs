@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TeamUIController
+public class TeamUIController : IUpdateStateAble
 {
     private Action<string> updateProfile;
     private Action<ETeam, int> updateScore;
@@ -95,5 +95,8 @@ public class TeamUIController
         PhotonNetwork.NetworkingClient.EventReceived -= UpdateTeamScore;
     }
 
-
+    public void UpdateTeamState()
+    {
+        PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
+    }
 }

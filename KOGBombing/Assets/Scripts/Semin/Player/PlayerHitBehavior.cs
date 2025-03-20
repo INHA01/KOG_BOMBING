@@ -109,7 +109,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				playerData.timeWithoutDamage = 9f;
 			}
-			yield return null;
+
+            if (blackBoard.updateTeamState != null) 
+                blackBoard.updateTeamState.UpdateTeamState();
+
+            yield return null;
 		}
 	}
 
@@ -127,6 +131,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
             if (isActiveHitSound) return;
             isActiveHitSound = true;
+            blackBoard.updateTeamState.UpdateTeamState();
             StartCoroutine(CoHitSound());
         }
     }
@@ -390,6 +395,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.hpBar.SetStopHpUI(true);
             blackBoard.playerStatus.isLive = false;
             SetActiveState(false);
+            blackBoard.updateTeamState.UpdateTeamState();
         }
 		if (groggyCoroutine != null)
 			StopCoroutine(groggyCoroutine);

@@ -1,5 +1,7 @@
+using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
+using Photon.Realtime;
 using Semin;
 using System.Collections;
 using UnityEngine;
@@ -21,10 +23,27 @@ public class BulletController : PooledObject
     [Header("Effect")]
     public GameObject muzzlePrefab;
     public GameObject hitPrefab;
+    RaiseEventOptions options = new RaiseEventOptions();
+    SendOptions optionsSend;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     public float Damage { get { return damage; } }
-
-	protected virtual void FixedUpdate()
+    int relaseEventCode = 99;
+    private void Awake()
+    {
+        options.Receivers = ReceiverGroup.All;
+        optionsSend.Reliability = true;
+        optionsSend.DeliveryMode = DeliveryMode.Reliable;
+    }
+    private void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnRelase;
+        PhotonNetwork.NetworkingClient.EventReceived += OnRelase;
+    }
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnRelase;
+    }
+    protected virtual void FixedUpdate()
     {
         rb.velocity = direction * moveSpeed;
         distance += moveSpeed * Time.deltaTime;
@@ -62,7 +81,7 @@ public class BulletController : PooledObject
             {
 				player.OnDamaged(damage, playerIndex);
                 distance = 0;
-				return;
+				//return;
             }
         }
 
@@ -87,11 +106,17 @@ public class BulletController : PooledObject
 				Destroy(hitVFX, psChild.main.duration);
 			}
 		}
+        PhotonNetwork.RaiseEvent((byte)relaseEventCode, null, options, optionsSend);
 		/// << :
 		//distance = 0;
 		//Release();
     }
 
+    private void OnRelase(EventData punData)
+    {
+        if (punData.Code != relaseEventCode) return;
+        Release();
+    }
     public void ShowMuzzle()
     {
         if (muzzlePrefab != null)

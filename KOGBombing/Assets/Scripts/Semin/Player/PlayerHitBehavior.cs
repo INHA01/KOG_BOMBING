@@ -49,8 +49,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             blackBoard.hpBar.SetIsMyTeam(true);
 			playerMaterialController.SetLayerToMyPlayer();
 		}
-
-		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence);
+        string nickname = playerData.pv.Owner.NickName;
+		blackBoard.hpBar.Init(blackBoard.playerStatus.maxHp, blackBoard.playerStatus.maxDefence,nickname);
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
 	}
@@ -121,6 +121,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
+            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)blackBoard.playerTeam);
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
@@ -129,7 +130,15 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             StartCoroutine(CoHitSound());
         }
     }
-
+    [PunRPC]
+    private void ShowHitCursor(byte playerIndex, byte playerTeam)
+    {
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        if (playerTeam == (byte)mTeam) return;
+        if (playerIndex != mPlayerIndex) return;
+        blackBoard.cursorUI.ChangeHitCursor();
+    }
     [PunRPC]
     public void HitEffectToPivot()
     {

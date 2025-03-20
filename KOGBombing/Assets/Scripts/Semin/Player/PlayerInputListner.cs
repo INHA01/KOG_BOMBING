@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +7,7 @@ public class PlayerInputListner : Subject
 {
     [SerializeField]
     PlayerBlackBoard blackBoard;
+
     private void Start()
     {
         for (int i = 0; i < (int)EKey.MAX; i++)
@@ -96,7 +96,6 @@ public class PlayerInputListner : Subject
     {
         blackBoard.inputs[EKey.F] = value.isPressed;
     }
-
     public void OnSlowMove(InputValue value)
     {
         blackBoard.inputs[EKey.LEFTSHIFT] = value.isPressed;
@@ -119,17 +118,5 @@ public class PlayerInputListner : Subject
             Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.KeyDescription);
         else
             Managers.UI.ClosePopupUI(BAEK.UIKEY.KeyDescription);
-    }
-    public void OnObservePlayer(InputValue inputValue)
-    {
-        int value = (int)inputValue.Get<float>();
-        blackBoard.observaPlayerIndex += value;
-
-        if (blackBoard.observaPlayerIndex >= blackBoard.teamCount)
-            blackBoard.observaPlayerIndex = 0;
-        else if (blackBoard.observaPlayerIndex < 0)
-            blackBoard.observaPlayerIndex = blackBoard.teamCount - 1;
-        if (value == 0) return;
-        blackBoard.changeObservaPlayer = true;
     }
 }

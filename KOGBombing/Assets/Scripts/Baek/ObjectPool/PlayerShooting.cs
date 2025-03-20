@@ -89,7 +89,6 @@ public class PlayerShooting : Magazine
         }
         //+ new Vector3(1, 0, 1) * Random.Range(-0.05f, 0.05f)
         attackRange.ShowDistance(true);
-
         while (bulletCount > 0)
         {
             playerData.punAnimator.Shoot(playerData.mousePos);
@@ -97,6 +96,7 @@ public class PlayerShooting : Magazine
 			bulletCount--;
 			yield return new WaitForSeconds(0.1f);
 		}
+        
         magazineCount--;
 		if (magazineCount > 0)
         {

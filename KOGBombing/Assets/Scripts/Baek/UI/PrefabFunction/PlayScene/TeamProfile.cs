@@ -8,17 +8,14 @@ using UnityEngine.UI;
 
 public class TeamProfile : MonoBehaviour
 {
-    [SerializeField] Sprite[] profileSprites;
-    [SerializeField] TextMeshProUGUI nickName;
     [SerializeField] GameObject dieIcon;
-    [SerializeField] Image profileImage;
+    [SerializeField] TextMeshProUGUI nickName;
     [SerializeField] Image hpBar;
     [SerializeField] Image defenceBar;
     PlayerBlackBoard blackBoard;
     public void Init(PlayerBlackBoard blackBoard)
     {
         this.blackBoard = blackBoard;
-        profileImage.sprite = profileSprites[(int)blackBoard.characterType];
         defenceBar.fillAmount = 1;
         hpBar.fillAmount = 1;
         nickName.text = blackBoard.nickname;

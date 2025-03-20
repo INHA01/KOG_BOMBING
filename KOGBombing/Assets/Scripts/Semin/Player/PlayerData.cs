@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using BAEK;
+using DTT.AreaOfEffectRegions;
 
 public class PlayerData : MonoBehaviour
 {
@@ -17,14 +18,14 @@ public class PlayerData : MonoBehaviour
 
     [Header("Photon")]
     public PhotonView pv;
-    public IUpdateTeamStateable updateTeamState;
 
     [Header("Player Info")]
     public Rigidbody rigidBody;
 	public float timeWithoutDamage;
     public GameObject minimapIcon;
+    public SRPCircleRegionProjector pivot;
 
-    [Header("Model Anim")]
+	[Header("Model Anim")]
     public GameObject playerObj;
     public Transform playerLookObj;
     public PunAnimation punAnimator;

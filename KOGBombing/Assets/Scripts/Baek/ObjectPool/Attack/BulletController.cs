@@ -45,8 +45,7 @@ public class BulletController : PooledObject
     }
     protected virtual void FixedUpdate()
     {
-        //rb.velocity = direction * moveSpeed;
-        transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+        rb.velocity = direction * moveSpeed;
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {
@@ -92,7 +91,6 @@ public class BulletController : PooledObject
 	public void HitAndMakeParticle(Collider other)
     {
         // >> : HitEffect
-        Debug.Log("Hit Effect");
 		Vector3 contactPoint = other.ClosestPoint(transform.position);
 		Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
 		Vector3 pos = contactPoint;

@@ -3,8 +3,10 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ResultType
 {
@@ -14,11 +16,34 @@ public enum ResultType
 }
 public class Result : MonoBehaviour
 {
+    enum ButtonPos
+    {
+        Left,
+        Right,
+        Max
+    }
+    enum ResultButton
+    {
+        MoveMVP,
+        MoveLobby,
+        MoveTeamRecord,
+        MoveResult,
+        Max
+    }
+    [SerializeField] Transform[] buttonPos = new Transform[(int)ButtonPos.Max];
+    [SerializeField] GameObject[] resultButton = new GameObject[(int)ResultButton.Max];
+    [Header("MVP")]
     [SerializeField] GameObject[] resultText = new GameObject[2];
     ResultType type;
     int[] teamScore = new int[2] { 0, 0 };
     int[] teamKillScore = new int[2] { 0, 0 };
     int[] teamDeathScore = new int[2] { 0, 0 };
+    [Header("Record")]
+    [SerializeField] GameObject resultRecord;
+    [SerializeField] TextMeshProUGUI[] levelText = new TextMeshProUGUI[2];
+    [SerializeField] Image recordBar;
+    Coroutine fillBar;
+    bool isFillFinish = false;
     void Awake()
     {
         WinnerTeam myTeam = (WinnerTeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
@@ -100,12 +125,94 @@ public class Result : MonoBehaviour
             return WinnerTeam.REDTEAM;
         return WinnerTeam.BLUETEAM;
     }
-
+    public void OpenMVP()
+    {
+        if (fillBar != null) return;
+        // 왼쪽 : 없음 , 오른쪽 : 팀기록
+        resultButton[(int)ResultButton.MoveMVP].SetActive(false);
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.SetParent(buttonPos[(int)ButtonPos.Right]);
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector3.zero;
+        resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
+        resultButton[(int)ResultButton.MoveResult].SetActive(false);
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
+    }
+    public void OpenTeamRecord()
+    {
+        if (fillBar != null) return;
+        Managers.UI.ShowPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
+        resultRecord.SetActive(false);
+        // 왼쪽 : MVP , 오른쪽 : 결과창
+        resultButton[(int)ResultButton.MoveMVP].SetActive(true);
+        resultButton[(int)ResultButton.MoveResult].SetActive(true);
+        resultButton[(int)ResultButton.MoveTeamRecord].SetActive(false);
+    }
+    public void OpenResult()
+    {
+        Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
+        resultRecord.SetActive(true);
+        // 왼쪽 : 팀기록 , 오른쪽 : 로비
+        resultButton[(int)ResultButton.MoveMVP].SetActive(false);
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.SetParent(buttonPos[(int)ButtonPos.Left]);
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector3.zero;
+        resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
+        resultButton[(int)ResultButton.MoveLobby].SetActive(true);
+        resultButton[(int)ResultButton.MoveResult].SetActive(false);
+        if(fillBar == null && !isFillFinish)
+        {
+            fillBar = StartCoroutine(FillBar());
+        }
+    }
+    IEnumerator FillBar()
+    { 
+        // 이기면 경험치 500, 지면 200
+        // 경험치 총량은 level * 300
+        int level = Managers.UserData.userData.level;
+        int nextLevel = level + 1;
+        levelText[0].text = level.ToString();
+        levelText[1].text = nextLevel.ToString();
+        float currentExp = Managers.UserData.userData.exp;
+        float maxExp = level * 300;
+        float increaseExp = type == ResultType.Win ? 500 : 200;
+        float amount = 0;
+        while (amount < increaseExp)
+        {
+            currentExp += 1;
+            amount += 1;
+            recordBar.fillAmount = currentExp / maxExp;
+            if(currentExp >= maxExp)
+            {
+                level++;
+                nextLevel++;
+                currentExp = 0;
+                maxExp = level * 300;
+                levelText[0].text = level.ToString();
+                levelText[1].text = nextLevel.ToString();
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+        Managers.UserData.userData.exp = currentExp;
+        Managers.UserData.userData.level = level;
+        Managers.UserData.SaveUserData();
+        isFillFinish = true;
+        yield return new WaitForSeconds(2f);
+        fillBar = null;
+    }
     public void ReturnLobby()
     {
+        if (fillBar != null) return;
+        InitScreen();
         PhotonNetwork.LeaveRoom();
         Managers.PunData.Init();
         Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetPlayerScore();
         Managers.SceneLoad.LoadScene("LobbyScene");
+    }
+    void InitScreen()
+    {
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.SetParent(buttonPos[(int)ButtonPos.Right]);
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector3.zero;
+        resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
+        resultButton[(int)ResultButton.MoveResult].SetActive(false);
+        resultButton[(int)ResultButton.MoveMVP].SetActive(false);
+        resultRecord.SetActive(false);
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Loading : UIPopup
 {
     public string nextScene;
-    [SerializeField] Image loadingCircle;
 
     public void LoadScene(string sceneName)
     {
@@ -23,33 +22,20 @@ public class Loading : UIPopup
             Managers.UI.ClosePopupUI(BAEK.UIKEY.Loading);
         };
 
-        float time = Time.time + 1.0f; // 1 seconds term
+        float time = Time.time + 3.0f; // 3 seconds term
 
-        float elapsedTime = 0f;
-        float finishTime = 3f;
-        float k = 5f;
 
         while (!asyncLoad.isDone)
         {
             yield return null;
             {
-                // 지수 함수로 fillAmount 계산
-                float t = elapsedTime / finishTime;
-                loadingCircle.fillAmount = 1 - Mathf.Exp(-k * t);
-                elapsedTime += Time.deltaTime;
-
-                if (loadingCircle.fillAmount >= 0.99f)
+                if (asyncLoad.progress / 1.0f > 0.7f)
                 {
-                    if (asyncLoad.progress / 1.0f > 0.7f)
+                    if (Time.time > time)
                     {
-                        if (Time.time > time)
-                        {
-                            asyncLoad.allowSceneActivation = true;
-                            yield break;
-                        }
+                        asyncLoad.allowSceneActivation = true;
+                        yield break;
                     }
-                    loadingCircle.fillAmount = 0;
-                    elapsedTime = 0f;
                 }
             }
         }

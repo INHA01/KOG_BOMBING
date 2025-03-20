@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3514861385923709906}
   - component: {fileID: 1646843578199599417}
   - component: {fileID: 7841884655953752953}
+  - component: {fileID: -4030567973970201597}
   m_Layer: 5
   m_Name: WinnerCanvas
   m_TagString: Untagged
@@ -118,6 +119,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeResultButton: {fileID: 649232906613785990}
   animator: {fileID: 2342408231797723229}
+--- !u!81 &-4030567973970201597
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204566389589125730}
+  m_Enabled: 1
 --- !u!1 &462383608178559331
 GameObject:
   m_ObjectHideFlags: 0

@@ -192,6 +192,14 @@ public class Result : MonoBehaviour
         }
         Managers.UserData.userData.exp = currentExp;
         Managers.UserData.userData.level = level;
+        if(type == ResultType.Win)
+        {
+            Managers.UserData.userData.win++;
+        }
+        else
+        {
+            Managers.UserData.userData.lose++;
+        }
         Managers.UserData.SaveUserData();
         isFillFinish = true;
         yield return new WaitForSeconds(2f);
@@ -213,6 +221,7 @@ public class Result : MonoBehaviour
         resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
         resultButton[(int)ResultButton.MoveResult].SetActive(false);
         resultButton[(int)ResultButton.MoveMVP].SetActive(false);
+        resultButton[(int)ResultButton.MoveLobby].SetActive(false);
         resultRecord.SetActive(false);
     }
 }

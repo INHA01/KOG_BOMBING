@@ -4,6 +4,7 @@ using Photon.Pun;
 using System.Collections;
 using Orpul1;
 using BAEK;
+using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable,ISetAble<bool>
 {
 	[SerializeField]
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         StartCoroutine("CoMinimapInit");
         if (!playerData.pv.IsMine) return;
         playerData.pv.RPC("SendBlackBoard", RpcTarget.All);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.CHARACTER.ToString(), blackBoard.characterType } });
     }
     IEnumerator CoMinimapInit()
     {

@@ -3,6 +3,7 @@ using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
+using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ using UnityEngine.InputSystem;
 
 public class PingSystem : MonoBehaviour
 {
+    [Header("Ping Sounds")]
+    [SerializeField] List<AudioClip> pingSoundList;
     [Header("Ping")]
     public Ping[] pings = new Ping[(int)PingCursorType.Max];
     [SerializeField] GameObject[] pingIcons = new GameObject[(int)PingCursorType.Max];
@@ -59,20 +62,25 @@ public class PingSystem : MonoBehaviour
         if (pingIcons[(int)pingCursorType].activeSelf) return;
         Vector3 pingPos = pings[(int)pingCursorType].GetPingPos(pos);
         ETeam team = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        object[] sendDatas = new object[] { (int)team, pingPos, (int)pingCursorType };
+        CharacterType characterType = (CharacterType)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.CHARACTER.ToString()];
+        object[] sendDatas = new object[] { (byte)team, pingPos, (byte)pingCursorType , (byte)characterType};
         PhotonNetwork.RaiseEvent((byte)eventCode, sendDatas, options, sendOptions);
     }
     private void PunShowPing(EventData punData)
     {
         if (punData.Code != eventCode) return;
         object[] datas = (object[])punData.CustomData;
-        int team = (int)datas[0];
+        byte team = (byte)datas[0];
         if (team != (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()]) return;
         Vector3 pingPos = (Vector3)datas[1];
 
-        int pingCursorType = (int)datas[2];
+        byte pingCursorType = (byte)datas[2];
+        byte characterType = (byte)datas[3];
         pings[pingCursorType].ShowEffect(pingPos);
         pingIcons[(int)pingCursorType].SetActive(true);
         StartCoroutine(showCursor.ShowPingCursor(pingPos, pingIcons[(int)pingCursorType]));
+
+        int soundIndex = (int)pingCursorType + (characterType * 4);
+        Managers.Sound.PlayEffect(pingSoundList[soundIndex], EMixerGroup.UISOUND);
     }
 }

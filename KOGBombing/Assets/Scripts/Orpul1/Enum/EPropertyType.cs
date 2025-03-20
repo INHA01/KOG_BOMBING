@@ -9,5 +9,6 @@ public enum EPropertyType
     TEAM,
     TEAMINDEX,
     STATE,
-    ROOMSTATE
+    ROOMSTATE,
+    CHARACTER,
 }

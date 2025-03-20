@@ -68,7 +68,7 @@ namespace BAEK
             ChangeProfileImage(Managers.UserData.userData.profileType);
             StartCoroutine(InitProfilData());
             profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
-            profileEditPanel[(int)PanelType.ProfileEdit].SetActive(false);
+            //profileEditPanel[(int)PanelType.ProfileEdit].SetActive(false);
         }
         public void SaveProfile()
         {
@@ -91,7 +91,7 @@ namespace BAEK
             profileType = (ProfileCharacterType)type;
             profileImage[(int)ProfileImg.Standard].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Crop/Profile_" + profileType.ToString());
             profileImage[(int)ProfileImg.Big].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Profile_" + profileType.ToString());
-            profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
+            //profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
         }
         public void SelectEmoticon()
         {
@@ -112,7 +112,7 @@ namespace BAEK
             }
             Managers.UserData.SaveUserData();
             Managers.UI.GetPopupUI<Emoticon>(UIKEY.Emoticon).InitImoticon();
-            profileEditPanel[(int)PanelType.EmoticonEdit].SetActive(false);
+            //profileEditPanel[(int)PanelType.EmoticonEdit].SetActive(false);
         }
         public void ChangeEmoticon(int type)
         {

@@ -5,7 +5,7 @@ namespace Michsky.UI.Shift
     public class FriendsPanelManager : MonoBehaviour
     {
         Animator windowAnimator;
-        bool isOn = true;
+        public bool isOn = true;
 
         void Start()
         {

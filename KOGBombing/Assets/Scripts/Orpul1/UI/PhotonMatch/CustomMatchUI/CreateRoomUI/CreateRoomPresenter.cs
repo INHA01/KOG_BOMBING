@@ -14,6 +14,14 @@ namespace Orpul1
         {
             model = new CreateRoomModel(UpdateUI);
         }
+        private void OnEnable()
+        {
+            UIEventBus.Subscribe(UIEventBus.UIEventType.DEACTIVECREATEROOMPANEL, OnQuitBtn);
+        }
+        private void OnDisable()
+        {
+            UIEventBus.UnSubscribe(UIEventBus.UIEventType.DEACTIVECREATEROOMPANEL, OnQuitBtn);
+        }
         public void OnCreateRoomBtn()
         {
             if (!PhotonNetwork.InLobby) return;
@@ -28,6 +36,7 @@ namespace Orpul1
             view.tmpDropDPlayerCnt.value = 0;
             view.createRoomPopupPanel.SetActive(false);
         }
+
         public void OnQuitBtn()
         {
             Managers.Sound.PlayUISound(EUiSoundType.CLICK);

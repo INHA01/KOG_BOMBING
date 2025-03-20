@@ -240,7 +240,7 @@ public class PlayerAttack : PlayerBehavior
             {
                 if(playerData.isInteract == true)
                 {
-                    if (blackBoard.playerTeam == ETeam.REDTEAM)
+                    if (blackBoard.playerTeam == ETeam.BLUETEAM)
                     {
                         if (blackBoard.bombInteraction.GetBomb() != null)
                             blackBoard.bombInteraction.SetBombInteraction(true);

@@ -33,8 +33,10 @@ public class BombInteraction : MonoBehaviour
 
     [PunRPC]
     public void RPCSetBombInteraction(bool isInteraction)
-    {
-        if (bomb != null)
+	{
+		if (bomb != null)
+        {
 		    bomb.SetIsInteraction(isInteraction);
+		}
 	}
 }

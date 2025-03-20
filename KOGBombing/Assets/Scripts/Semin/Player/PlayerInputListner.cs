@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using BAEK;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -115,7 +116,7 @@ public class PlayerInputListner : Subject
     public void OnOpenKeyDescription(InputValue value)
     {
         if (value.isPressed)
-            Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.KeyDescription);
+            Managers.UI.ShowPopupUI<KeyDescription>(BAEK.UIKEY.KeyDescription).LoadImg(blackBoard.playerStatus.CharacterType);
         else
             Managers.UI.ClosePopupUI(BAEK.UIKEY.KeyDescription);
     }

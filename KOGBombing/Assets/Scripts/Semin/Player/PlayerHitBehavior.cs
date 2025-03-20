@@ -52,7 +52,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
 	}
-
     IEnumerator DamageTest(float damage, float time)
     {
         yield return new WaitForSeconds(time);
@@ -107,7 +106,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 				playerData.timeWithoutDamage = 9f;
 			}
-			yield return null;
+            if (playerData.updateTeamState != null) 
+                playerData.updateTeamState.Update();
+            yield return null;
 		}
 	}
 
@@ -120,7 +121,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         {
             Debug.Log($"OnDamged index {playerIndex}");
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
-            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
+            playerData.updateTeamState.Update();
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
             if (isActiveHitSound) return;
             isActiveHitSound = true;
@@ -147,8 +148,8 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerData.skill.LoadSkillIcon();
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
 		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
-
-		return INode.ENodeState.Success;
+        playerData.updateTeamState.Update();
+        return INode.ENodeState.Success;
     }
     [PunRPC]
     private void PunRespawn()
@@ -161,7 +162,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 		this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-	}
+    }
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;
@@ -241,15 +242,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             playerData.pv.RPC("PunHitMaterial",RpcTarget.All);
 
         }
-        //Debug.Log($"Damage, Player: {transform.name}, Damage: {damage}");
 
         float decreaseHp = blackBoard.playerStatus.defence - damage;
-        //Debug.Log($"Decrease Hp: {decreaseHp}, hp: {blackBoard.playerStatus.hp}");
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
 		if (decreaseHp < 0)
         {
             float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
-			//Debug.Log($"decreaseGroggy Hp: {decreaseGroggy}, hp: {blackBoard.playerStatus.hp}");
 			blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);
             if (decreaseGroggy < 0)
                 blackBoard.playerStatus.groggyValue += decreaseGroggy;
@@ -257,12 +255,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 		blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
 		playerData.timeWithoutDamage = 0;
-        //Debug.Log($"hp: {blackBoard.playerStatus.hp}");
         if (blackBoard.playerStatus.hp <= 0)
         {
             if (blackBoard.playerStatus.groggyable)  // Groggy
             {
-                if (!CanGroggy())   // ���� �Ѹ��� ������ �ٷ� ����
+                if (!CanGroggy())
 				{
 					blackBoard.playerStatus.groggyable = false;
 					blackBoard.hpBar.SetGroggyValue(0);
@@ -270,7 +267,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					return;
 				}
 
-				if (blackBoard.inputs[EKey.NUM_2])  // ��ź ��ü ���̾����� Interaction ���
+				if (blackBoard.inputs[EKey.NUM_2])
                 {
                     if (blackBoard.bombInteraction.GetBomb() != null)
                         blackBoard.bombInteraction.SetBombInteraction(false);
@@ -347,6 +344,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
             blackBoard.hpBar.SetStopHpUI(true);
             blackBoard.playerStatus.isLive = false;
+            playerData.updateTeamState.Update();
             SetActiveState(false);
         }
 		if (groggyCoroutine != null)
@@ -429,30 +427,33 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
     }
-    public bool IsTargetDie()
+    public bool IsTargetChange()
     {
         if (blackBoard.observaTargetNickname == null) return true;
         if (blackBoard.observaTargetNickname.Equals("")) return true;
         bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
-        if (!isLiveTarget) return true;
+        if (!isLiveTarget || blackBoard.changeObservaPlayer) return true;
         Debug.Log("IsTargetDie Return False");
         return false;
     }
+    
     public INode.ENodeState FindAlivePlayer()
     {
-        List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
         Debug.Log("Search Alive Player");
-        for (int i = 0; i < blackBoards.Count; i++)
+        
+        for (int i = blackBoard.observaPlayerIndex; i < blackBoard.teamCount; i++)
         {
-            if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
-            if (blackBoards[i].playerTeam != blackBoard.playerTeam) continue;
-            if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
-            if (!blackBoards[i].playerStatus.isLive) continue;
+            PlayerBlackBoard myTeamBlackboard = Managers.PunData.GetMyTeamBlackboard(i);
+            if (myTeamBlackboard == null) continue;
+            if (myTeamBlackboard.rigidBody == null) return INode.ENodeState.Fail;
+            if (myTeamBlackboard.nickname == blackBoard.nickname) continue;
+            if (myTeamBlackboard.playerStatus.isLive == false) continue;
 
-            Debug.Log($"Find Target {blackBoards[i].nickname}");
-            blackBoard.observaTarget = blackBoards[i].rigidBody.gameObject;
+            Debug.Log($"Find Target {myTeamBlackboard.nickname}");
+            blackBoard.observaTarget = myTeamBlackboard.rigidBody.gameObject;
             blackBoard.observaTargetNickname.Clear();
-            blackBoard.observaTargetNickname.Append(blackBoards[i].nickname);
+            blackBoard.observaTargetNickname.Append(myTeamBlackboard.nickname);
+            blackBoard.observaPlayerIndex = i;
             return INode.ENodeState.Success;
 
         }

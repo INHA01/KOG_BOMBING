@@ -14,6 +14,7 @@ public class UserData
     public int win;
     public int lose;
     public int assist;
+    public int mission;
     public int level;
     public float exp;
     public int profileType;
@@ -27,6 +28,7 @@ public class UserData
         win = 0;
         lose = 0;
         assist = 0;
+        mission = 0;
         level = 1;
         exp = 0;
         profileType = 0;

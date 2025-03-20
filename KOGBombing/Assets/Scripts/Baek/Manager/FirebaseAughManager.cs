@@ -27,8 +27,8 @@ public class FirebaseAughManager
         auth = FirebaseAuth.DefaultInstance; // FirebaseAuth 클래스의 인스턴스를 가져
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference; // Firebase Database의 루트 참조를 가져옴
         //// 임시 : 이미 로그인 되어있으면 로그아웃
-        //if (auth.CurrentUser != null)
-        //    Logout();
+        if (auth.CurrentUser != null)
+            Logout();
         auth.StateChanged += AuthStateChanged; // 인증 상태가 변경될 때 호출되는 이벤트
     }
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
@@ -50,7 +50,7 @@ public class FirebaseAughManager
         }
     }
 
-    public void Create(string email, string password)
+    public void Create(string email, string password , string nickName)
     {
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
@@ -71,6 +71,7 @@ public class FirebaseAughManager
             FirebaseUser newUser = result.User;
             Debug.LogFormat("회원가입 성공 : {0} ({1})", newUser.DisplayName, newUser.Email);
             Managers.UserData.Init(auth);
+            Managers.UserData.SettingNickName(nickName);
             SetDeviceStatus(newUser.UserId);
         });
     }
@@ -138,8 +139,16 @@ public class FirebaseAughManager
                 DataSnapshot snapshot = task.Result;
                 if (snapshot.Exists && snapshot.Value.ToString() != "")
                 {
-                    Debug.Log("중복 로그인 감지! 로그아웃 처리 중...");
-                    Logout(true); // 중복 로그인 시 로그아웃
+                    if (snapshot.Value.ToString() == currentDeviceId)
+                    {
+                        Debug.Log("접속 중 기기 일치 다시 로그인 시도하기");
+                        Logout(false);
+                    }
+                    else
+                    {
+                        Debug.Log("중복 로그인 감지! 로그아웃 처리 중...");
+                        Logout(true); // 중복 로그인 시 로그아웃
+                    }
                 }
                 else
                 {
@@ -149,6 +158,7 @@ public class FirebaseAughManager
             }
         });
     }
+
 
     private void SetDeviceStatus(string userId)
     {

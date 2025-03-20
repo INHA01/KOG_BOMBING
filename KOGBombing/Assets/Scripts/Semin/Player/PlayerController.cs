@@ -94,15 +94,16 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
 		Debug.Log($"isDataAllGet {Managers.PunData.blackBoardCnt}");
         controller.SetTeamUI(playerShooting);
-
+        playerData.updateTeamState = controller;
     }
-	public void Init(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
+    public void Init(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
 	{
         blackBoard.viewCamera = camera;
 		blackBoard.spawnPoint = spawnPosi;
         blackBoard.setTeam = roundEventObj.GetComponent<ISetTeamCountAble>();
         blackBoard.setBombState = roundEventObj.GetComponent<IBombStateAble>();
-	}
+        blackBoard.teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[blackBoard.playerTeam.ToString()];
+    }
 
     private void Update()
     {
@@ -214,22 +215,38 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     {
         return blackBoard.playerTeam;
     }
-    
+    private bool IsAttackTeamInteractBomb(string tag)
+    {
+        if (blackBoard.playerTeam != ETeam.REDTEAM) return false;
+        if (tag != "BombInteract") return false;
+        return true;
+    }
+    private bool IsDefenceTeamInteractBomb(string tag)
+    {
+        if (blackBoard.playerTeam != ETeam.BLUETEAM) return false;
+        if (tag != "Bomb") return false;
+        return true;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        string tag = collision.collider.tag;
+
+        if (IsAttackTeamInteractBomb(tag) || IsDefenceTeamInteractBomb(tag))
+            canBombInteract = true;
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.tag != "BombInteract" & collision.collider.tag != "Bomb") return;
+        Debug.Log($"BombInteract False!");
+        canBombInteract = false;
+        SetBombInteract(false);
+        
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
             Physics.IgnoreCollision(other.GetComponent<Collider>(), GetComponent<Collider>());
-        /*if (other.tag == "BombInteract" || other.tag == "Bomb")
-            canBombInteract = true;*/
     }
-    /*private void OnTriggerExit(Collider other)
-    {
-        if (other.tag != "BombInteract" & other.tag != "Bomb") return;
-        Debug.Log($"BombInteract False!");
-        canBombInteract = false;
-        SetBombInteract(false);
-    }
-*/
     public void SetValue(bool value)
     {
         canBombInteract = value;

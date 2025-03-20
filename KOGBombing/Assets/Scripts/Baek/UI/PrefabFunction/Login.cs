@@ -10,64 +10,52 @@ public class Login : MonoBehaviourPunCallbacks
         EMAIL,
         PW,
         NICKNAME,
+        SIGN_UP_EMAIL,
+        SIGN_UP_PW,
         MAX,
     }
-    enum PanelType
-    {
-        LOGIN,
-        NICKNAME,
-        SERVERSELECT,
-        MAX,
-    }
-    enum AccountType
+    public enum AccountType
     {
         LOGIN,
         CREATE,
         MAX,
     }
-    enum ButtonType
-    {
-        SWAP,
-        GUEST,
-        MAX,
-    }
-    [SerializeField] GameObject[] _panels = new GameObject[(int)PanelType.MAX];
     [SerializeField] TMPro.TMP_InputField[] _inputFields = new TMPro.TMP_InputField[(int)TextType.MAX];
-    [SerializeField] GameObject[] _buttons = new GameObject[(int)ButtonType.MAX];
-    AccountType _accountType = AccountType.LOGIN;
-    public void SwapLoginCreate()
-    {
-        _accountType = (AccountType)(((int)_accountType + 1) % (int)AccountType.MAX);
-        _buttons[(int)ButtonType.SWAP].transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = _accountType.ToString();
-    }
-    public void OnLoginClick()
+    [SerializeField] Animator splashScreenAnimator;
+    Coroutine checkLogin;
+    public void OnLoginClick(int type)  // create와 login 분리하면서 버튼에 따라 type 넣어서 이벤트 진행되도록 함
     {
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-        // >> :Button Disable
-        _panels[(int)PanelType.LOGIN].SetActive(false);
-        for (int i = 0; i < (int)ButtonType.MAX; i++)
+        int time = 0;
+        if (type == (int)AccountType.CREATE)
         {
-            _buttons[i].SetActive(false);
+            Managers.FirebaseAuth.Create(_inputFields[(int)TextType.SIGN_UP_EMAIL].text, _inputFields[(int)TextType.SIGN_UP_PW].text, _inputFields[(int)TextType.NICKNAME].text);
+            time = 5;
         }
-        // << :Button Disable
-        if (_accountType == AccountType.CREATE)
-            Managers.FirebaseAuth.Create(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
-        else
-            Managers.FirebaseAuth.Login(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
-        StartCoroutine(CheckLoginSuccess());
-    }
-    IEnumerator CheckLoginSuccess()
-    {
-        yield return new WaitForSeconds(5.0f);
-        if(Managers.FirebaseAuth.isLogin)
-            StartCoroutine(CheckUserName());
         else
         {
-            _panels[(int)PanelType.LOGIN].SetActive(true);
-            for(int i = 0; i < (int)ButtonType.MAX; i++)
-            {
-                _buttons[i].SetActive(true);
-            }
+            Managers.FirebaseAuth.Login(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
+            time = 1;
+        }
+        // 여기서 로그인,회원가입 성공 여부 확인
+        if (checkLogin == null)
+            checkLogin = StartCoroutine(CheckLoginSuccess(time));
+    }
+
+    IEnumerator CheckLoginSuccess(int time)
+	{
+		// 여기에 로그인 중, 혹은 회원가입 중 패널 띄우기
+		splashScreenAnimator.Play("Loading", -1, 0f);
+		yield return new WaitForSeconds(time);
+        splashScreenAnimator.Play("Loading Out", -1, 0f);
+		checkLogin = null;
+		if (Managers.FirebaseAuth.isLogin)
+        {
+            StartCoroutine(CheckUserName());
+		}
+        else
+        {
+            splashScreenAnimator.Play("Login Failed", -1, 0f);
         }
     }
     IEnumerator CheckUserName()
@@ -75,40 +63,25 @@ public class Login : MonoBehaviourPunCallbacks
         while(Managers.UserData.userData == null)
         {
             yield return new WaitForSeconds(1.0f);
-        }
+		}
         if (Managers.UserData.userData.nickName == "User")
-            _panels[(int)PanelType.NICKNAME].SetActive(true);
-        else
-            PhotonNetwork.ConnectUsingSettings();
-    }
+            Managers.UserData.SettingNickName("User" + Random.Range(0, 1000));
+
+        PhotonNetwork.ConnectUsingSettings();
+	}
     public void OnGuestClick()
     {
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         Managers.UserData.userData = new UserData("User");
         Managers.UserData.userData.nickName = "User" + Random.Range(0, 1000);
-        _panels[(int)PanelType.LOGIN].SetActive(false);
-        for(int i = 0; i < (int)ButtonType.MAX; i++)
-        {
-            _buttons[i].SetActive(false);
-        }
-        PhotonNetwork.ConnectUsingSettings();
-    }
-    public void OnNickNameSetClick()
-    {
-        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-        Managers.UserData.SettingNickName(_inputFields[(int)TextType.NICKNAME].text);
-        _panels[(int)PanelType.NICKNAME].SetActive(false);
         PhotonNetwork.ConnectUsingSettings();
     }
     public override void OnConnectedToMaster()
     {
-        _panels[(int)PanelType.SERVERSELECT].SetActive(true);
-    }
-    public void OnStartClick()
-    {
-        PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
+        splashScreenAnimator.Play("Login Success");
+		PhotonNetwork.LocalPlayer.NickName = Managers.UserData.userData.nickName;
 
-        Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-        Managers.SceneLoad.LoadScene("LobbyScene");
-    }
+		Managers.Sound.PlayUISound(EUiSoundType.CLICK);
+		Managers.SceneLoad.LoadScene("LobbyScene");
+	}
 }

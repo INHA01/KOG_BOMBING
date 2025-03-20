@@ -16,6 +16,7 @@ namespace BAEK
             Death,
             Max,
         }
+        
         struct ScreenPos
         {
             public Vector3 canvasPos;
@@ -31,6 +32,8 @@ namespace BAEK
         ScreenPos screenPos;
         float cursorLength;
         public List<GameObject> soundCursor = new List<GameObject>();
+
+        
 
         void OnEnable()
         {
@@ -50,7 +53,7 @@ namespace BAEK
             bombCursors[(int)BombCursorType.SectorA].transform.position = CursorScreenSet(bombDir1);
             bombCursors[(int)BombCursorType.SectorB].transform.position = CursorScreenSet(bombDir2);
         }
-        Vector3 CursorScreenSet(Vector3 dir)
+        public Vector2 CursorScreenSet(Vector3 dir)
         {
             // 지정된 방향으로 커서 위치 , 화면 밖으로 나가지 않게
             Vector3 cursorPos = main.WorldToScreenPoint(main.transform.position + dir.normalized * 10);
@@ -113,6 +116,20 @@ namespace BAEK
             go.SetActive(false);
             yield return new WaitForSeconds(3f);
             player.showSoundEffect = false;
+        }
+        public IEnumerator ShowPingCursor(Vector3 pingPos, GameObject pingCursor)
+        {
+            float time = 0;
+            while (true)
+            {
+                Vector3 dir = pingPos - main.transform.position;
+                pingCursor.transform.position = CursorScreenSet(dir);
+                time += Time.deltaTime;
+                if (time > 3f)
+                    break;
+                yield return null;
+            }
+            pingCursor.SetActive(false);
         }
     }
 }

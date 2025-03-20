@@ -11,10 +11,10 @@ public class ChooseAvatarIcon : ChooseObserver
         switch(index)
         {
             case 0:
-                image.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Avatar_Ned");
+                image.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Ned_2");
                 break;
             case 1:
-                Sprite sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Avatar_Uni");
+                Sprite sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Uni_1");
                 image.sprite = sprite;
                 break;
         }

@@ -17,6 +17,7 @@ public class PlayerData : MonoBehaviour
 
     [Header("Photon")]
     public PhotonView pv;
+    public IUpdateTeamStateable updateTeamState;
 
     [Header("Player Info")]
     public Rigidbody rigidBody;

@@ -41,14 +41,17 @@ namespace BAEK
         [SerializeField] Image[] detailImgs = new Image[(int)SpriteType.Max];
         LobbyPlayerStatus currentStatus;
 
+        [SerializeField] Animator skillStoryAnimator;
+
         void Start()
         {
             currentStatus = lobbyPlayerStatus[(int)CharacterType.Ned];
             LoadPlayerStatus();
             rot = lobbyPlayer.transform.localEulerAngles;
             lobbyPlayerTypes[(int)CharacterType.Ned].SetActive(true);
-            lobbyPlayerTypes[(int)CharacterType.Uni].SetActive(false);
-        }
+            lobbyPlayerTypes[(int)CharacterType.Uni].SetActive(false); 
+            skillStoryAnimator.Play("Close Description", -1, 0);
+		}
         #region LobbyPlayerControl
         public void OnDrag(PointerEventData eventData)
         {
@@ -58,21 +61,11 @@ namespace BAEK
         public void ChangePlayer(int type)
         {
             Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-            for(int i = 0; i < (int)CharacterType.Max; i++)
-            {
-                if(i == type)
-                {
-                    lobbyPlayerTypes[i].SetActive(true);
-                }
-                else
-                {
-                    lobbyPlayerTypes[i].SetActive(false);
-                }
-            }
-            currentStatus = lobbyPlayerStatus[type];
-            LoadPlayerStatus();
-            OpenPanel();
+			skillStoryAnimator.Play("Start", -1, 0);
+            //StartCoroutine(StartChangePlayer(type));
+            OpenPanel(type);
         }
+
         #endregion
         #region Detail
         void LoadPlayerStatus()
@@ -82,42 +75,65 @@ namespace BAEK
                 detailImgs[i].sprite = currentStatus.sprites[i];
             }
         }
-        void OpenPanel()
+        void OpenPanel(int type)
         {
-            if(descriptionParent.activeSelf)
+            if(!skillStoryAnimator.GetCurrentAnimatorStateInfo(0).IsName("Close Description"))
             {
                 ClosePanel();
                 return;
-            }
-            descriptionParent.SetActive(true);
-            detailPanel[(int)Panel.Common].SetActive(true);
+			}
+            Debug.Log($"Open Panel, type: {type.ToString()}");
+
+			for (int i = 0; i < (int)CharacterType.Max; i++)
+			{
+				if (i == type)
+				{
+					lobbyPlayerTypes[i].SetActive(true);
+				}
+				else
+				{
+					lobbyPlayerTypes[i].SetActive(false);
+				}
+			}
+			currentStatus = lobbyPlayerStatus[type];
+			LoadPlayerStatus();
+			//descriptionParent.SetActive(true);
+			skillStoryAnimator.Play("Click Skill", -1, 0);
+			skillStoryAnimator.Play("Open Description", -1, 0);
+			detailPanel[(int)Panel.Common].SetActive(true);
             detailPanel[(int)Panel.Story].SetActive(false);
-            detailPanel[(int)Panel.SkillDetail].SetActive(false);
+			detailPanel[(int)Panel.SkillDetail].SetActive(false);
         }
         void ClosePanel()
         {
-            descriptionParent.SetActive(false);
-        }
+			//descriptionParent.SetActive(false);
+			skillStoryAnimator.Play("Close Description", -1, 0);
+		}
         public void SwitchPanel(int type)
         {
             Managers.Sound.PlayUISound(EUiSoundType.CLICK);
-            Panel panel = (Panel)type;
-            for (int i = 0; i < (int)Panel.Max; i++)
+
+            switch (type)
             {
-                if (i == type)
-                {
-                    detailPanel[i].SetActive(true);
-                    if (i < (int)Button.Max)
-                        switchButtons[i].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + panel.ToString() + "_Select");
-                }
-                else
-                {
-                    detailPanel[i].SetActive(false);
-                    if(i < (int)Button.Max)
-                        switchButtons[i].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + panel.ToString());
-                }
+                case (int)Panel.Common:
+                    detailPanel[(int)Panel.Common].SetActive(true);
+					detailPanel[(int)Panel.Story].SetActive(false);
+                    detailPanel[(int)Panel.SkillDetail].SetActive(false);
+					switchButtons[(int)Button.Common].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Common.ToString() + "_Select");
+					switchButtons[(int)Button.Story].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Story.ToString());
+					skillStoryAnimator.Play("Click Skill", -1, 0);
+					break;
+                case (int)Panel.Story:
+					detailPanel[(int)Panel.Common].SetActive(false);
+					detailPanel[(int)Panel.Story].SetActive(true);
+					detailPanel[(int)Panel.SkillDetail].SetActive(false);
+					switchButtons[(int)Button.Story].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Story.ToString() + "_Select");
+					switchButtons[(int)Button.Common].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Common.ToString());
+					skillStoryAnimator.Play("Click Story", -1, 0);
+					break;
             }
         }
+
         public void LoadSkillDetail(int type)
         {
             skillDescription.text = currentStatus.description[type];

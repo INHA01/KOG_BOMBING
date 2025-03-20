@@ -72,7 +72,6 @@ public class BulletController : PooledObject
 	public void HitAndMakeParticle(Collider other)
     {
         // >> : HitEffect
-        Debug.Log("Hit Effect");
 		Vector3 contactPoint = other.ClosestPoint(transform.position);
 		Quaternion rot = Quaternion.FromToRotation(Vector3.up, other.transform.position - contactPoint);
 		Vector3 pos = contactPoint;

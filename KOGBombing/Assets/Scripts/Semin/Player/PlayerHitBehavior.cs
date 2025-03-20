@@ -134,10 +134,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     public void HitEffectToPivot()
     {
         if (hitCoroutine == null)
-        {
-            Debug.Log("Hit Effect To Pivot");
             hitCoroutine = StartCoroutine(StartAnimatePivot());
-        }
     }
 
     IEnumerator StartAnimatePivot()

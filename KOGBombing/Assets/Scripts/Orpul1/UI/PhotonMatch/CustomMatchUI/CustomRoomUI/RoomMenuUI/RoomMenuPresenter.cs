@@ -32,6 +32,7 @@ namespace Orpul1
 
         public void OnSwapTeamBtn(int team)
         {
+            if ((string)PhotonNetwork.CurrentRoom.CustomProperties[EPropertyType.ROOMSTATE.ToString()] == "Start") return;
             model.SetOtherTeam(team);
         }
         public void UpdateUI()

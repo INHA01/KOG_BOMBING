@@ -73,4 +73,19 @@ namespace BAEK
         US,
         Max
     }
+    public enum SpriteType
+    {
+        Background,
+        SkillButton,
+        Common,
+        Story,
+        Max
+    }
+    public enum VideoType
+    {
+        Skill,
+        Attack,
+        Defense,
+        Max
+    }
 }

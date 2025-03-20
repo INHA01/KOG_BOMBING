@@ -131,7 +131,7 @@ public class Result : MonoBehaviour
         // ¿ÞÂÊ : ¾øÀ½ , ¿À¸¥ÂÊ : ÆÀ±â·Ï
         resultButton[(int)ResultButton.MoveMVP].SetActive(false);
         resultButton[(int)ResultButton.MoveTeamRecord].transform.SetParent(buttonPos[(int)ButtonPos.Right]);
-        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector3.zero;
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector2.zero;
         resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
         resultButton[(int)ResultButton.MoveResult].SetActive(false);
         Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
@@ -145,6 +145,7 @@ public class Result : MonoBehaviour
         resultButton[(int)ResultButton.MoveMVP].SetActive(true);
         resultButton[(int)ResultButton.MoveResult].SetActive(true);
         resultButton[(int)ResultButton.MoveTeamRecord].SetActive(false);
+        resultButton[(int)ResultButton.MoveLobby].SetActive(false);
     }
     public void OpenResult()
     {
@@ -153,7 +154,7 @@ public class Result : MonoBehaviour
         // ¿ÞÂÊ : ÆÀ±â·Ï , ¿À¸¥ÂÊ : ·Îºñ
         resultButton[(int)ResultButton.MoveMVP].SetActive(false);
         resultButton[(int)ResultButton.MoveTeamRecord].transform.SetParent(buttonPos[(int)ButtonPos.Left]);
-        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector3.zero;
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector2.zero;
         resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
         resultButton[(int)ResultButton.MoveLobby].SetActive(true);
         resultButton[(int)ResultButton.MoveResult].SetActive(false);
@@ -216,8 +217,9 @@ public class Result : MonoBehaviour
     }
     void InitScreen()
     {
+        isFillFinish = false;
         resultButton[(int)ResultButton.MoveTeamRecord].transform.SetParent(buttonPos[(int)ButtonPos.Right]);
-        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector3.zero;
+        resultButton[(int)ResultButton.MoveTeamRecord].transform.localPosition = Vector2.zero;
         resultButton[(int)ResultButton.MoveTeamRecord].SetActive(true);
         resultButton[(int)ResultButton.MoveResult].SetActive(false);
         resultButton[(int)ResultButton.MoveMVP].SetActive(false);

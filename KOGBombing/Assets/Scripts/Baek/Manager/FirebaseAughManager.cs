@@ -27,8 +27,8 @@ public class FirebaseAughManager
         auth = FirebaseAuth.DefaultInstance; // FirebaseAuth 클래스의 인스턴스를 가져
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference; // Firebase Database의 루트 참조를 가져옴
         //// 임시 : 이미 로그인 되어있으면 로그아웃
-        //if (auth.CurrentUser != null)
-        //    Logout();
+        if (auth.CurrentUser != null)
+            Logout();
         auth.StateChanged += AuthStateChanged; // 인증 상태가 변경될 때 호출되는 이벤트
     }
     void AuthStateChanged(object sender, System.EventArgs eventArgs)

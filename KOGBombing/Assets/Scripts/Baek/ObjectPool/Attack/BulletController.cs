@@ -45,7 +45,7 @@ public class BulletController : PooledObject
     }
     protected virtual void FixedUpdate()
     {
-        rb.velocity = direction * moveSpeed;
+        transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {

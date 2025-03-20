@@ -59,4 +59,8 @@ public class Lobby : MonoBehaviour
         selectMode.GetComponent<Button>().interactable = !selectMode.GetComponent<Button>().interactable;
         networkDirector.Match((EMatchType)_lobbyModeSelect.mode);
     }
+    public void SetNickName(string nickName)
+    {
+        profile[(int)ProfileType.USERNAME].text = nickName;
+    }
 }

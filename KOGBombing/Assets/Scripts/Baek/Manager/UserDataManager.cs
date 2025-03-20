@@ -18,6 +18,10 @@ public class UserData
     public int level;
     public float exp;
     public int profileType;
+    public int emoticonT;
+    public int emoticonB;
+    public int emoticonR;
+    public int emoticonL;
 
     public UserData(string userId)
     {
@@ -32,6 +36,10 @@ public class UserData
         level = 1;
         exp = 0;
         profileType = 0;
+        emoticonT = 0;
+        emoticonB = 1;
+        emoticonR = 0;
+        emoticonL = 0;
     }
 }
 public class UserDataManager

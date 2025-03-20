@@ -89,4 +89,24 @@ namespace BAEK
         Defense,
         Max
     }
+    public enum EmoticonType
+    {
+        Common_1,
+        Common_2,
+        Ned_1,
+        Tau_1,
+        US_1,
+        Elvacia_1,
+        Uni_1,
+        Uni_2,
+        Max
+    }
+    public enum PingPos
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
+        Max
+    }
 }

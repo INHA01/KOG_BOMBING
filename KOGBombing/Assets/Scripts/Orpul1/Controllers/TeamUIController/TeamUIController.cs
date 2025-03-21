@@ -35,9 +35,14 @@ public class TeamUIController : IUpdateStateAble
         _uiScene.GetComponent<ShowCursor>().bombPos = bombPos;
         _uiScene.GetComponent<PlayScene>().weapon = playerShooting;
         _uiScene.GetComponent<PlayScene>().Reset();
+        int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        teamPlayerList.Add(PhotonNetwork.LocalPlayer);
+        _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName));
         for (int i = 0; i < players.Length; i++)
         {
             otherPlayerTeam = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
+            int otherPlayerIndex = (int)players[i].CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+            if (otherPlayerIndex == mPlayerIndex) continue;
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);

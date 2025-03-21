@@ -51,10 +51,7 @@ public class PlayerShooting : Magazine
         }
         else if (magazineCount == 0)
         {
-
-            if (playerData.playerSound.weaponSound.isPlayingSound) return;
-            playerData.playerSound.weaponSound.isPlayingSound = true;
-            StartCoroutine(playerData.playerSound.weaponSound.CoOneShotSound(transform, EWeaponSound.EMPTYCLICK));
+            playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.EMPTYCLICK);
             Debug.Log("No magazine");
         }
     }

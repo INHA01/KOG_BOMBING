@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Orpul1;
-using Photon.Pun;
 using UnityEngine;
 using static UnityEditor.Rendering.InspectorCurveEditor;
 
@@ -18,7 +17,6 @@ public class CheatController : MonoBehaviour
     private void OnGUI()
     {
         GUI.Label(new Rect(Screen.width * 0.25f, 100, 200, 100), "GameState " + gameDirector.CurState.ToString());
-        if (!PhotonNetwork.IsMasterClient) return;
         RoundCheat();
     }
     private void RoundCheat()

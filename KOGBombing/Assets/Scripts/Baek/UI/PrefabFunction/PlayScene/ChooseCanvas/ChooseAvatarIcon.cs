@@ -10,11 +10,9 @@ public class ChooseAvatarIcon : ChooseObserver
     [SerializeField] Image topImage;
     [SerializeField] public TextMeshProUGUI nicknameText;
     [SerializeField] public TextMeshProUGUI levelText;
-    [SerializeField] Image levelFrame;
 	public override void Choosing(int index)
     {
-        levelFrame.sprite = Managers.Resource.Load<Sprite>("UISettings/Userframe/Gui_icon_userframe_" + levelText.text);
-        switch (index)
+        switch(index)
         {
             case 0:
                 image.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Ned_2");

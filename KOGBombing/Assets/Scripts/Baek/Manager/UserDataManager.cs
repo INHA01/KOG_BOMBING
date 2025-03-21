@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using BAEK;
 
 public class UserData
 {
@@ -19,7 +18,11 @@ public class UserData
     public int level;
     public float exp;
     public int profileType;
-    public int[] emoticon = new int[(int)PingPos.Max];
+    public int emoticonT;
+    public int emoticonB;
+    public int emoticonR;
+    public int emoticonL;
+
     public UserData(string userId)
     {
         this.userId = userId;
@@ -33,10 +36,10 @@ public class UserData
         level = 1;
         exp = 0;
         profileType = 0;
-        for (int i = 0; i < (int)PingPos.Max; i++)
-        {
-            emoticon[i] = 0;
-        }
+        emoticonT = 0;
+        emoticonB = 1;
+        emoticonR = 0;
+        emoticonL = 0;
     }
 }
 public class UserDataManager

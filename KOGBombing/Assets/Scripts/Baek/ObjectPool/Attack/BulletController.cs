@@ -71,14 +71,12 @@ public class BulletController : PooledObject
 
         if (other.tag == "Player")
         {
-            // >> : �� ����
             IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
             hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
 
-            if (!other.GetComponent<PlayerData>().pv.IsMine) return;
+            //if (!other.GetComponent<PlayerData>().pv.IsMine) return;
             if (teamType == null) return;
             if (!IsOtherTeam(teamType)) return;
-            // << :
             isSameTeam = true;
             IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
@@ -89,9 +87,8 @@ public class BulletController : PooledObject
             }
         }
 
-		HitAndMakeParticle(other);
-        if(!isSameTeam)
-            PhotonNetwork.RaiseEvent((byte)relaseEventCode, null, options, optionsSend);
+        HitAndMakeParticle(other);
+        Release();
     }
     public void SetHitCursorDefency(IChangeHitCursorAble hitCursor)
     {

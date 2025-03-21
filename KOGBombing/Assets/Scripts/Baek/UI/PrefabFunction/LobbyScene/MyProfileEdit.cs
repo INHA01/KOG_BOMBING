@@ -64,7 +64,7 @@ namespace BAEK
         {
             ChangeProfileImage(Managers.UserData.userData.profileType);
             StartCoroutine(InitProfilData());
-            profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
+            //profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
             //profileEditPanel[(int)PanelType.ProfileEdit].SetActive(false);
         }
         public void SaveProfile()

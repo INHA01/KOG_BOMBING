@@ -6,10 +6,12 @@ namespace Michsky.UI.Shift
     {
         Animator windowAnimator;
         public bool isOn = true;
+        CanvasGroup canvasGroup;
 
         void Start()
         {
             windowAnimator = gameObject.GetComponent<Animator>();
+            canvasGroup = GetComponent<CanvasGroup>();
         }
 
         public void AnimateWindow()
@@ -43,6 +45,17 @@ namespace Michsky.UI.Shift
                 windowAnimator.CrossFade("Window Out", 0.1f);
                 isOn = false;
             }
-        }
-    }
+		}
+
+		public void WindowOutWithAlpha()
+		{
+			if (isOn == true)
+			{
+                if (canvasGroup.alpha <= 0) return;
+				
+                windowAnimator.CrossFade("Window Out", 0.1f);
+				isOn = false;
+			}
+		}
+	}
 }

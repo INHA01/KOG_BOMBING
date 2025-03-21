@@ -18,6 +18,7 @@ namespace Orpul1
         private int[] roomTeamCounts;
         public int[] teamScores;
         public int[] teamCounts;
+        public int[] secondHalfScores = new int[2];
         public int processRoundCnt;
         public int maxRoundScore;
         public int winScoreGap;
@@ -82,9 +83,12 @@ namespace Orpul1
                 return true;
             }
             if (!isAlreadySwitchRoll) return false;
+            for (int i = 0; i < (int)ETeam.END; i++)
+            {
+                if (secondHalfScores[i] == 3) return true;
+            }
             int teamScoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
             ETeam loseTeam = teamScores[(int)ETeam.REDTEAM] > teamScores[(int)ETeam.BLUETEAM] ? ETeam.BLUETEAM : ETeam.REDTEAM;
-            //int possibleGetScore = (int)(maxRoundScore*0.5) - teamScores[(int)loseTeam];
             if (teamScoreGap > canGetScore[(int)loseTeam]) return true;
             canGetScore[ETeam.BLUETEAM - loseTeam]--;
 
@@ -199,6 +203,10 @@ namespace Orpul1
             roundData.teamScores = (int[])datas[2];
             Managers.RoundData.SetRoundWinTeam((WinnerTeam)winnerTeam);
             Managers.RoundData.SetTeamScore(winnerTeam, roundData.teamScores[(int)winnerTeam]);
+            if(roundData.isAlreadySwitchRoll)
+            {
+                roundData.secondHalfScores[(int)winnerTeam]++;
+            }
             for (int i = 0; i < (int)ETeam.END; i++)
             {
                 gameData.teamUIController.UpdateTeamScore((ETeam)i, roundData.teamScores[i]);

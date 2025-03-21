@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BAEK;
+using Photon.Pun;
 
 public class UserData
 {
@@ -149,6 +150,7 @@ public class UserDataManager
                 // 닉네임이 사용 중이지 않은 경우
                 if (!snapshot.Exists)
                 {
+                    PhotonNetwork.LocalPlayer.NickName = nickName;
                     userData.nickName = nickName; // 닉네임 설정
                     SaveUserData(); // 사용자 데이터 저장
                 }

@@ -58,7 +58,7 @@ public class Emoticon : UIPopup
     {
         float time = 0;
         go.transform.position = Input.mousePosition;
-        GameObject emoticonObj = PunShowingEmoticon();
+        GameObject punEmoticonObj = PunShowingEmoticon();
         while (true)
         {
             time += Time.deltaTime;
@@ -71,12 +71,20 @@ public class Emoticon : UIPopup
             }
             yield return null;
         }
-        PhotonNetwork.Destroy(emoticonObj);
+        PunDestoryObject(punEmoticonObj);
     }
     private GameObject PunShowingEmoticon()
     {
+        if (!PhotonNetwork.InRoom) return null;
         EmoticonType emoticon = (EmoticonType)Managers.UserData.userData.emoticon[(int)pingPos];
-        string path = "UIPrefabs/Emoticon/" + emoticon.ToString();
-        return PhotonNetwork.Instantiate(path, Vector3.zero, Quaternion.Euler(0, 0, 0));
+        string path = "Prefabs/UIPrefabs/Emoticon/" + emoticon.ToString();
+        GameObject obj = PhotonNetwork.Instantiate(path, Vector3.zero, Quaternion.Euler(0, 0, 0));
+        return obj;
     }
+    private void PunDestoryObject(GameObject obj)
+    {
+        if (!PhotonNetwork.InRoom) return;
+        PhotonNetwork.Destroy(obj);
+    }
+
 }

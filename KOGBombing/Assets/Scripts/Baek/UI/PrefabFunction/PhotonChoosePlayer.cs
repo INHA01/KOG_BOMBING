@@ -38,7 +38,8 @@ public class PhotonChoosePlayer : ChoosePlayer
         Managers.Sound.StopRecentSound();
         Managers.Sound.PlayEffect(sound.selectSound[index],EMixerGroup.CHARACTER);
         base.Notify(index);
-        object[] sendMsg = new object[4] { index, playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam };
+
+        object[] sendMsg = new object[5] { (byte)index, (byte)playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam, Managers.UserData.userData.level };
         PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);
     }
     private void OnSelectEvent(EventData punEvent)
@@ -47,9 +48,10 @@ public class PhotonChoosePlayer : ChoosePlayer
         {
             Debug.Log("On ChoosePlayer Event");
             object[] receiveMsg = (object[])punEvent.CustomData;
-            int receiveChooseIndex = (int)receiveMsg[0];
-            int receiveTeamIndex = (int)receiveMsg[1];
+            byte receiveChooseIndex = (byte)receiveMsg[0];
+            byte receiveTeamIndex = (byte)receiveMsg[1];
             string playerNickname = (string)receiveMsg[2];
+            int playerLevel = (int)receiveMsg[4];
             ETeam receiveTeamType = (ETeam)receiveMsg[3];
             Debug.Log($"PlayerSelct {playerNickname}, {(CharacterType)receiveChooseIndex}");
             Managers.RoundData.SetSelectCharacter(playerNickname, (CharacterType)receiveChooseIndex);
@@ -57,6 +59,8 @@ public class PhotonChoosePlayer : ChoosePlayer
             ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
             if (chooseAvatarIcon == null) return;
             chooseAvatarIcon.Choosing(receiveChooseIndex);
+            chooseAvatarIcon.nicknameText.text = playerNickname;
+            chooseAvatarIcon.levelText.text = playerLevel.ToString();
         }
     }
     public override void Init()

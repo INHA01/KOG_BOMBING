@@ -57,7 +57,6 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     private void DoInteractDoor()
     {
         Debug.Log("DoInteractDoor");
-        interactUI.ActiveCanInteract(false, InteractUI.Interact);
         OpenDoor();
         openOtherDoor();
 
@@ -65,6 +64,8 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     public void OpenDoor()
     {
         Managers.Sound.PlayEffect(sound.DoorSounds[(int)EDoorSound.OPEN], EMixerGroup.EFFECT, transform, 1, 0, 30);
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
+
         activeAlertUI.Active();
         interactState = InteractState.COMPLETE;
         interactCollider.enabled = false;
@@ -81,6 +82,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     [PunRPC]
     private void AbortInteractDoor()
     {
+        interactUI.ActiveCanInteract(false, InteractUI.InteractBar);
         interactState = InteractState.NONE;
     }
     protected override IEnumerator CoInteractDelay()
@@ -97,5 +99,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
             yield return null;
         }
         pView.RPC("DoInteractDoor", RpcTarget.AllBuffered);
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
+
     }
 }

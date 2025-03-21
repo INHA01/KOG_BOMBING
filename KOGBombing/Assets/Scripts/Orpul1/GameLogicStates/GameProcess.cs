@@ -8,6 +8,7 @@ using PhotnHashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.AI;
 
 namespace Orpul1
 {
@@ -17,29 +18,26 @@ namespace Orpul1
         private int[] roomTeamCounts;
         public int[] teamScores;
         public int[] teamCounts;
-        public int[] switchRoundScores;
         public int processRoundCnt;
         public int maxRoundScore;
         public int winScoreGap;
         public int switchRoundScore;
-        public bool[] isAlreadySwitchRoll;
+        public bool isAlreadySwitchRoll;
         public bool isSetBomb;
         public bool isEndRound;
+        int[] canGetScore = new int[2] { 3, 3 }; 
         public void Init()
         {
             teamScores = new int[2];
             teamCounts = new int[2];
             roomTeamCounts = new int[2];
-            switchRoundScores = new int[2];
-            isAlreadySwitchRoll = new bool[2];
+            isAlreadySwitchRoll = false;
             for (int i=0; i<(int)ETeam.END; i++)
             {
                 EPropertyType teamType = (EPropertyType)i;
                 roomTeamCounts[i] = (int)PhotonNetwork.CurrentRoom.CustomProperties[teamType.ToString()];
                 teamScores[i] = 0;
                 teamCounts[i] = roomTeamCounts[i];
-                switchRoundScores[i] = 0;
-                isAlreadySwitchRoll[i] = false;
             }
         }
         private void SwapTeam()
@@ -55,10 +53,6 @@ namespace Orpul1
             roomTeamCounts[(int)ETeam.REDTEAM] = roomTeamCounts[(int)ETeam.BLUETEAM];
             roomTeamCounts[(int)ETeam.BLUETEAM] = teamCount;
 
-            bool isSwitchRoll = isAlreadySwitchRoll[(int)ETeam.REDTEAM];
-            isAlreadySwitchRoll[(int)ETeam.REDTEAM] = isAlreadySwitchRoll[(int)ETeam.BLUETEAM];
-            isAlreadySwitchRoll[(int)ETeam.BLUETEAM] = isSwitchRoll;
-
         }
         public void Reset()
         {
@@ -72,28 +66,30 @@ namespace Orpul1
         {
             for (int i = 0; i < (int)ETeam.END; i++)
             {
-                if (switchRoundScores[i] < switchRoundScore) continue;
-                if (isAlreadySwitchRoll[i]) continue;
+                if (isAlreadySwitchRoll) continue;
+                if (teamScores[i] < switchRoundScore) continue;
                 SwapTeam();
-                switchRoundScores[(int)ETeam.REDTEAM] = 0;
-                switchRoundScores[(int)ETeam.BLUETEAM] = 0;
-                isAlreadySwitchRoll[i] = true;
+                isAlreadySwitchRoll = true;
                 return true;
             }
             return false;
         }
         public bool IsGameEnd()
         {
-            int teamScoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
-            if (teamScoreGap == winScoreGap) return true;
-
-            bool isGameEnd = false;
             for (int i = 0; i < (int)ETeam.END; i++)
             {
                 if (teamScores[i] < maxRoundScore) continue;
-                isGameEnd = true;
+                return true;
             }
-            return isGameEnd;
+            if (!isAlreadySwitchRoll) return false;
+            int teamScoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
+            ETeam loseTeam = teamScores[(int)ETeam.REDTEAM] > teamScores[(int)ETeam.BLUETEAM] ? ETeam.BLUETEAM : ETeam.REDTEAM;
+            //int possibleGetScore = (int)(maxRoundScore*0.5) - teamScores[(int)loseTeam];
+            if (teamScoreGap > canGetScore[(int)loseTeam]) return true;
+            canGetScore[ETeam.BLUETEAM - loseTeam]--;
+
+
+            return false;
         }
     }
     public class GameProcess : GameProcessLogic,IBombStateAble,ISetTeamCountAble
@@ -255,7 +251,6 @@ namespace Orpul1
         {
             //TODO: ÆÀ Á¡¼ö ¼³Á¤
             roundData.teamScores[(int)teamType] += 1;
-            roundData.switchRoundScores[(int)teamType] += 1;
         }
         bool isGameEnd = false;
         private void OnGUI()

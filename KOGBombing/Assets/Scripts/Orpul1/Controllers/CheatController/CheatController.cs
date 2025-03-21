@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Orpul1;
 using Photon.Pun;
 using UnityEngine;
-using static UnityEditor.Rendering.InspectorCurveEditor;
 
 public class CheatController : MonoBehaviour
 {

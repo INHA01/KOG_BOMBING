@@ -2,9 +2,7 @@ using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,7 +46,7 @@ public class Result : MonoBehaviour
     [Header("Record")]
     [SerializeField] GameObject resultRecord;
     [SerializeField] TextMeshProUGUI[] levelText = new TextMeshProUGUI[2];
-    [SerializeField] Image recordBar;
+    [SerializeField] Slider recordBar;
     [SerializeField] TextMeshProUGUI[] recordText = new TextMeshProUGUI[(int)RecordType.Max];
     [SerializeField] Image[] recordFrame = new Image[(int)RecordType.Max];
     int currentLevel;
@@ -168,8 +166,9 @@ public class Result : MonoBehaviour
     public void OpenTeamRecord()
     {
         if (fillBar != null) return;
-        Managers.UI.ShowPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
-        resultRecord.SetActive(false);
+        BattleBoardUpdater battleBoard = Managers.UI.ShowPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
+		battleBoard.SetHalfRound(ERoundState.RESULT);
+		resultRecord.SetActive(false);
         // 왼쪽 : MVP , 오른쪽 : 결과창
         resultButton[(int)ResultButton.MoveMVP].SetActive(true);
         resultButton[(int)ResultButton.MoveResult].SetActive(true);
@@ -240,7 +239,7 @@ public class Result : MonoBehaviour
         {
             currentExp += 1;
             amount += 1;
-            recordBar.fillAmount = currentExp / maxExp;
+            recordBar.value = currentExp / maxExp;
             if(currentExp >= maxExp)
             {
                 currentLevel++;

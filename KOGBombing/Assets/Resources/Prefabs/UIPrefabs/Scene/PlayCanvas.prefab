@@ -623,8 +623,8 @@ RectTransform:
   m_GameObject: {fileID: 1225829540235405116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2058229301182372923}
   - {fileID: 2150679342659464445}
@@ -786,7 +786,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3640655871
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1049,12 +1049,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mark: {fileID: 8836554456051819748}
-  pingCursorType: 0
-  pingSystem: {fileID: 1200721264986838783}
   choosePings:
   - {fileID: 4879371101245194775}
   - {fileID: 1713663315689776092}
   - {fileID: 5534479288139228227}
+  pingCursorType: 0
+  pingSystem: {fileID: 1200721264986838783}
 --- !u!1 &2028547726444342582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,12 +1144,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mark: {fileID: 432877057770660737}
-  pingCursorType: 2
-  pingSystem: {fileID: 1200721264986838783}
   choosePings:
   - {fileID: 1363216363075272845}
   - {fileID: 4879371101245194775}
   - {fileID: 5534479288139228227}
+  pingCursorType: 2
+  pingSystem: {fileID: 1200721264986838783}
 --- !u!1 &2323636931355631351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1973,12 +1973,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mark: {fileID: 7407131511245608439}
-  pingCursorType: 1
-  pingSystem: {fileID: 1200721264986838783}
   choosePings:
   - {fileID: 1363216363075272845}
   - {fileID: 1713663315689776092}
   - {fileID: 5534479288139228227}
+  pingCursorType: 1
+  pingSystem: {fileID: 1200721264986838783}
 --- !u!1 &4025657195159300340
 GameObject:
   m_ObjectHideFlags: 0
@@ -2767,7 +2767,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 1
   m_colorMode: 3
@@ -2916,12 +2916,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mark: {fileID: 201368366400619634}
-  pingCursorType: 3
-  pingSystem: {fileID: 1200721264986838783}
   choosePings:
   - {fileID: 1363216363075272845}
   - {fileID: 4879371101245194775}
   - {fileID: 1713663315689776092}
+  pingCursorType: 3
+  pingSystem: {fileID: 1200721264986838783}
 --- !u!1 &5042204094747163412
 GameObject:
   m_ObjectHideFlags: 0

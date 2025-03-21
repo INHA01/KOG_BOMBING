@@ -1,5 +1,6 @@
 public enum ERoundState
 {
     FIRSTHALF,
-    SECONDHALF
+    SECONDHALF,
+    RESULT
 }

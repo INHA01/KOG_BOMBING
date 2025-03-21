@@ -116,6 +116,7 @@ public class UIManager
             if(_popupKey[i] != UIKEY.NONE)
                 ClosePopupUI(_popupKey[i]);
         }
+        _order = 0;
     }
 
     public void SetCanvas(GameObject go, bool sort = true)

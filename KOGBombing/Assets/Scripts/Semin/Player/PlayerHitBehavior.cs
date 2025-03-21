@@ -142,7 +142,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         if (playerTeam == (byte)mTeam) return;
         if (playerIndex != mPlayerIndex) return;
-        blackBoard.cursorUI.ChangeHitCursor();
+        //blackBoard.cursorUI.ChangeHitCursor();
     }
     [PunRPC]
     public void HitEffectToPivot()

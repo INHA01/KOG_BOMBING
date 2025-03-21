@@ -1,4 +1,6 @@
+using Orpul1;
+
 public interface IChangeHitCursorAble
 {
-    public void ChangeHitCursor();
+    public void ChangeHitCursor(int playerIndex, ETeam playerTeam);
 }

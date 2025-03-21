@@ -1,5 +1,6 @@
 using BAEK;
 using ExitGames.Client.Photon;
+using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -49,6 +50,7 @@ public class Emoticon : UIPopup
     }
     public void OnEmoticon(InputValue value)
     {
+        if (!PhotonNetwork.InRoom) return;
         if (value.isPressed)
         {
             mousePos = Input.mousePosition;
@@ -60,8 +62,8 @@ public class Emoticon : UIPopup
         {
             //ShowEmoticon(mousePos);
             pingUI.SetActive(false);
-            
-            object[] sendDatas = new object[] { Managers.UserData.userData.emoticon[(int)pingPos], mousePos };
+            ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+            object[] sendDatas = new object[] { Managers.UserData.userData.emoticon[(int)pingPos], mousePos, mTeam };
             PhotonNetwork.RaiseEvent((int)PunEventType.EMOTICON, sendDatas, optoins, SendOptions.SendReliable);
         }
     }
@@ -76,8 +78,6 @@ public class Emoticon : UIPopup
     IEnumerator ShowingEmotincon(GameObject go)
     {
         float time = 0;
-        //go.transform.position = Input.mousePosition;
-        //GameObject punEmoticonObj = PunShowingEmoticon();
         while (true)
         {
             time += Time.deltaTime;
@@ -86,19 +86,20 @@ public class Emoticon : UIPopup
             if (time > 1.5)
             {
                 Destroy(go);
-                //go.SetActive(false);
                 break;
             }
             yield return null;
         }
-        //PunDestoryObject(punEmoticonObj);
     }
     private void PunEmoticon(EventData punEvent)
     {
         if (punEvent.Code != (int)PunEventType.EMOTICON) return;
         object[] receiveDatas = (object[])punEvent.CustomData;
+        ETeam team = (ETeam)receiveDatas[2];
+        if (team != (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()]) return;
         int emoticonType = (int)receiveDatas[0];
         Vector2 emoticonPosi = (Vector2)receiveDatas[1];
+
         EmoticonType emoticonPath = (EmoticonType)emoticonType;
         GameObject emoticon = Managers.Resource.Instantiate("UIPrefabs/Emoticon/" + emoticonPath.ToString(), emoticonPos);
         emoticon.transform.position = emoticonPosi;

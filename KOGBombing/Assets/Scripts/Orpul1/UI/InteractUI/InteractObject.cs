@@ -40,8 +40,6 @@ public abstract class InteractObject : Subject, IInteractAble
     public abstract bool ProcessInteract(PhotonView pView);
     public virtual void AbortInteract()
     {
-        interactUI.Interact(0);
-
         if (interactState == InteractState.COMPLETE) return;
 
         interactUI.Interact(0);

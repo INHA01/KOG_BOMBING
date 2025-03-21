@@ -27,6 +27,7 @@ public class BulletController : PooledObject
     SendOptions optionsSend;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     public float Damage { get { return damage; } }
+    IChangeHitCursorAble hitCursor;
     int relaseEventCode = 99;
     private void Awake()
     {
@@ -72,6 +73,7 @@ public class BulletController : PooledObject
         {
             // >> : �� ����
             IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
+            hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
 
             if (!other.GetComponent<PlayerData>().pv.IsMine) return;
             if (teamType == null) return;
@@ -91,7 +93,10 @@ public class BulletController : PooledObject
         if(!isSameTeam)
             PhotonNetwork.RaiseEvent((byte)relaseEventCode, null, options, optionsSend);
     }
-
+    public void SetHitCursorDefency(IChangeHitCursorAble hitCursor)
+    {
+        this.hitCursor = hitCursor;
+    }
     public void HitAndMakeParticle(Collider other)
     {
         // >> : HitEffect

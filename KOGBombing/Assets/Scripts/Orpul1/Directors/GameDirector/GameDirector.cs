@@ -6,6 +6,7 @@ using Photon.Realtime;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using System;
+using BAEK;
 namespace Orpul1
 {
     public enum EGameState
@@ -42,6 +43,14 @@ namespace Orpul1
         private void Awake()
         {
             InitializeState();
+        }
+        private void Start()
+        {
+
+            ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+            int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+            ISetPunInfo punInfo = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+            punInfo.SetPunInfo(mTeam, playerIndex);
         }
         private void InitializeState()
         {

@@ -11,7 +11,7 @@ namespace Orpul1
         MainGame,
         END
     }
-    public class CrossHariUpdater : UIPopup, IChangeHitCursorAble
+    public class CrossHariUpdater : UIPopup, IChangeHitCursorAble, ISetPunInfo
     {
         [SerializeField] GameObject cursorObj;
         [SerializeField] Image cursorUI;
@@ -21,11 +21,12 @@ namespace Orpul1
         [SerializeField] Animator cursorAnimation;
         Dictionary<string, Sprite> dictCusrsor = new Dictionary<string, Sprite>();
         EScene curCursor = EScene.LobbyScene;
+        ETeam playerTeam;
+        int playerIndex = 0;
         void Start()
         {
             Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
             canvas.sortingOrder = 30001;
-
             SceneManager.sceneLoaded += UpdateCursor;
             for (int i = 0; i < (int)EScene.END; i++)
             {
@@ -45,9 +46,18 @@ namespace Orpul1
             Sprite cursorTexture = dictCusrsor[arg.name];
             cursorUI.sprite = cursorTexture;
         }
-        public void ChangeHitCursor()
+        public void ChangeHitCursor(int playerIndex, ETeam playerTeam)
         {
+            if (this.playerIndex != playerIndex) return;
+            if (this.playerTeam != playerTeam) return;
+
             cursorAnimation.SetTrigger("HitCursor");
+        }
+
+        public void SetPunInfo(ETeam team, int playerIndex)
+        {
+            playerTeam = team;
+            this.playerIndex = playerIndex;
         }
     }
 }

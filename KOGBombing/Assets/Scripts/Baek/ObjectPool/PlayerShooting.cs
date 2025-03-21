@@ -23,6 +23,7 @@ public class PlayerShooting : Magazine
     AttackRange attackRange;
     PlayerData playerData;
     PlayerInfo playerInfo;
+    IChangeHitCursorAble hitCursor;
 
     public int MagazineCount { get { return magazineCount; } }
     public float ReloadTime { get { return time / reloadTime; } }
@@ -37,6 +38,7 @@ public class PlayerShooting : Magazine
         this.attackRange = attackRange;
         this.animator = animator;
         this.playerInfo = playerInfo;
+        hitCursor = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
     }
     public void RoundChange()
     {
@@ -77,8 +79,8 @@ public class PlayerShooting : Magazine
         bullet.GetComponent<BulletController>().DestroyDistance = playerData. maxLength;
         bullet.GetComponent<BulletController>().eTeamBullet = playerInfo.team; 
         bullet.GetComponent<BulletController>().playerIndex = playerInfo.teamIndex;
-        bullet.transform.position = shootPosi;// + new Vector3(1, 0, 1) * Random.Range(-0.05f, 0.05f);// + new Vector3(0, 0.8f, 0);
-        //bullet.transform.position = playerData.shootPos[(int)ShootPos.Start].position + new Vector3(1, 0, 1) * Random.Range(-0.05f, 0.05f);// + new Vector3(0, 0.8f, 0);
+        bullet.GetComponent<BulletController>().SetHitCursorDefency(hitCursor);
+        bullet.transform.position = shootPosi;
         bullet.transform.rotation = playerData.playerObj.transform.rotation;
         bullet.GetComponent<BulletController>().ShowMuzzle();
         bullet.SetActive(true);

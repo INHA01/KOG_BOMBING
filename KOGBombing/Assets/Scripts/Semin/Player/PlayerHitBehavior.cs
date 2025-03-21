@@ -89,38 +89,37 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		{
             if (!blackBoard.playerStatus.isGroggy)
                 playerData.timeWithoutDamage += Time.deltaTime;
-			if (playerData.timeWithoutDamage >= duration)
-			{
-                float value = 0;
-                if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp�� ä������ ���
-                {
-                    float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100 * 10;
-                    value = blackBoard.playerStatus.maxHp / 100 * 10 - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
-                    blackBoard.playerStatus.hp = Mathf.Min(temp, blackBoard.playerStatus.maxHp);
-                    if (value <= 0) value = 0;
-                }
-                else  // defence�� ä������ ���
-                {
-					value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100 * 10;
-					blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
-                    value = 0;
-				}
-				blackBoard.playerStatus.defence = Mathf.Min(blackBoard.playerStatus.defence + value, blackBoard.playerStatus.maxDefence);
-				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
-				playerData.timeWithoutDamage = 9f;
-			}
-
-            if (blackBoard.updateTeamState != null) 
-                blackBoard.updateTeamState.UpdateTeamState();
-
             yield return null;
-		}
-	}
+
+            if (playerData.timeWithoutDamage < duration) continue;
+
+            float value = 0;
+            if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp�� ä������ ���
+            {
+                float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100.0f * 10.0f;
+                value = blackBoard.playerStatus.maxHp / 100.0f * 10.0f - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
+                blackBoard.playerStatus.hp = Mathf.Min(temp, blackBoard.playerStatus.maxHp);
+                if (value <= 0) value = 0;
+            }
+            else  // defence�� ä������ ���
+            {
+                value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100.0f * 10.0f;
+                blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);
+                value = 0;
+            }
+            blackBoard.playerStatus.defence = Mathf.Min(blackBoard.playerStatus.defence + value, blackBoard.playerStatus.maxDefence);
+            blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
+            playerData.timeWithoutDamage = 9f;
+
+            if (blackBoard.updateTeamState != null)
+                blackBoard.updateTeamState.UpdateTeamState();
+        }
+    }
 
 	public void OnDamaged(float damage, int playerIndex)
     {
-        //playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
-        Damage(damage, playerIndex);
+        playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
+        //Damage(damage, playerIndex);
         playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
 		if (playerData.pv.IsMine)
         {
@@ -142,7 +141,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         if (playerTeam == (byte)mTeam) return;
         if (playerIndex != mPlayerIndex) return;
-        //blackBoard.cursorUI.ChangeHitCursor();
     }
     [PunRPC]
     public void HitEffectToPivot()
@@ -202,7 +200,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         blackBoard.Initialize();
         playerMaterialController.StartCreateEffect();
-		//animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         SetActiveState(true);
         playerData.InitializeCount();
 
@@ -249,7 +246,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         playerPointController.OnDeathPoint();
         playerPointController.OnAssistPoint();
         playerPointController.Initialize();
-        blackBoard.setTeam.DecreaseTeamCount((int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]);//blackBoard.playerTeam
+        blackBoard.setTeam.DecreaseTeamCount((int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()]);
         blackBoard.isSetScore = true;
         return INode.ENodeState.Success;
     }
@@ -279,6 +276,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerMaterialController.Hit();
     }
+    [PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
@@ -288,15 +286,12 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             playerData.pv.RPC("PunHitMaterial",RpcTarget.All);
 
         }
-        //Debug.Log($"Damage, Player: {transform.name}, Damage: {damage}");
 
         float decreaseHp = blackBoard.playerStatus.defence - damage;
-        //Debug.Log($"Decrease Hp: {decreaseHp}, hp: {blackBoard.playerStatus.hp}");
         blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
 		if (decreaseHp < 0)
         {
             float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
-			//Debug.Log($"decreaseGroggy Hp: {decreaseGroggy}, hp: {blackBoard.playerStatus.hp}");
 			blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);
             if (decreaseGroggy < 0)
                 blackBoard.playerStatus.groggyValue += decreaseGroggy;
@@ -304,12 +299,11 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
 		blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
 		playerData.timeWithoutDamage = 0;
-        //Debug.Log($"hp: {blackBoard.playerStatus.hp}");
         if (blackBoard.playerStatus.hp <= 0)
         {
-            if (blackBoard.playerStatus.groggyable)  // Groggy
+            if (blackBoard.playerStatus.groggyable) 
             {
-                if (!CanGroggy())   // ���� �Ѹ��� ������ �ٷ� ����
+                if (!CanGroggy())
 				{
 					blackBoard.playerStatus.groggyable = false;
 					blackBoard.hpBar.SetGroggyValue(0);
@@ -317,7 +311,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 					return;
 				}
 
-				if (blackBoard.inputs[EKey.NUM_2])  // ��ź ��ü ���̾����� Interaction ���
+				if (blackBoard.inputs[EKey.NUM_2])
                 {
                     if (blackBoard.bombInteraction.GetBomb() != null)
                         blackBoard.bombInteraction.SetBombInteraction(false);
@@ -346,8 +340,9 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 				Death();
             }
         }
+        SetHp();
 
-		playerData.pv.RPC("SetHp", RpcTarget.All);
+        //playerData.pv.RPC("SetHp", RpcTarget.All);
 	}
 
 	[PunRPC]
@@ -364,15 +359,17 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
 		for (int i = 0; i < players.Length; i++)
         {
-            if (players[i] == gameObject) continue;
+            if (players[i] == gameObject) 
+                continue;
+
             ETeam otherPlayerTeam = (ETeam)players[i].GetComponent<PlayerData>().pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            if (myTeam == otherPlayerTeam)  // ���� ���ٸ� �°� ����ִ��� Ȯ��
-            {
-                Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
-                if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
-                    return true;
-            }
-		}
+            if (myTeam != otherPlayerTeam)
+                continue;
+
+            Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
+            if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
+                return true;
+        }
         return false;
     }
 
@@ -404,7 +401,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
         blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
-		//animator.SetAnimBool(PlayerAnimation.AnimType.Groggy, false);
         blackBoard.playerStatus.groggyable = true;
 		blackBoard.playerStatus.isGroggy = false;
         blackBoard.speedDebuff.Initialize();
@@ -422,16 +418,21 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         float time = 1f;
         while (blackBoard.playerStatus.groggyValue > 0)
 		{
-			if (!blackBoard.playerStatus.isGroggy) break;
-            while (playerData.isGroggyInteracting) yield return null;
+			if (!blackBoard.playerStatus.isGroggy) 
+                break;
+
+            while (playerData.isGroggyInteracting) 
+                yield return null;
+
 			groggyTime += Time.deltaTime;
-            if (groggyTime >= time)
-            {
-                Damage(blackBoard.playerStatus.maxGroggy / 10, -1);
-				groggyTime = 0;
-			}
             yield return null;
-		}
+
+            if (groggyTime < time) 
+                continue;
+
+            playerData.pv.RPC("Damage", RpcTarget.All, blackBoard.playerStatus.maxGroggy / 10, -1);
+            groggyTime = 0;
+        }
 	}
 
     private void SetActiveState(bool isDie)
@@ -442,6 +443,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.rigidBody.isKinematic = !isDie;
         blackBoard.playerCollider.enabled = isDie;
     }
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

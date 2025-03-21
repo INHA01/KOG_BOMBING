@@ -11,9 +11,11 @@ public class ChooseAvatarIcon : ChooseObserver
     [SerializeField] public TextMeshProUGUI nicknameText;
     [SerializeField] public TextMeshProUGUI levelText;
     [SerializeField] Image levelFrame;
-	public override void Choosing(int index)
+    public int level;
+    public override void Choosing(int index)
     {
-        levelFrame.sprite = Managers.Resource.Load<Sprite>("UISettings/Userframe/Gui_icon_userframe_" + levelText.text);
+        level = level > 31 ? 31 : level;
+        levelFrame.sprite = Managers.Resource.Load<Sprite>("UISettings/Userframe/Gui_icon_userframe_" + level.ToString());
         switch (index)
         {
             case 0:
@@ -26,5 +28,11 @@ public class ChooseAvatarIcon : ChooseObserver
 				topImage.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Top_Profile_Uni_1");
                 break;
         }
+    }
+    public void SettingText(string nickname, int level)
+    {
+        this.level = level;
+        nicknameText.text = nickname;
+        levelText.text = level.ToString();
     }
 }

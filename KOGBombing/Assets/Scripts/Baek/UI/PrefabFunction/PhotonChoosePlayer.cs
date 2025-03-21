@@ -58,9 +58,8 @@ public class PhotonChoosePlayer : ChoosePlayer
             if (receiveTeamType != eTeam) return;
             ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
             if (chooseAvatarIcon == null) return;
+            chooseAvatarIcon.SettingText(playerNickname, playerLevel);
             chooseAvatarIcon.Choosing(receiveChooseIndex);
-            chooseAvatarIcon.nicknameText.text = playerNickname;
-            chooseAvatarIcon.levelText.text = playerLevel.ToString();
         }
     }
     public override void Init()
@@ -114,7 +113,9 @@ public class PhotonChoosePlayer : ChoosePlayer
         int teamIndex = mTeamIndex.Dequeue();
         if (isMine)
         {
-            go.GetComponent<ChooseAvatarIcon>().SetSubject(this, true);
+            ChooseAvatarIcon chooseAvatarIcon = go.GetComponent<ChooseAvatarIcon>();
+            chooseAvatarIcon.SetSubject(this, true);
+            chooseAvatarIcon.SettingText(Managers.UserData.userData.nickName, Managers.UserData.userData.level);
         }
         else
         { 

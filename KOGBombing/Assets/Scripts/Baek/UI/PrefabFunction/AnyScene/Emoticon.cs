@@ -1,5 +1,7 @@
 using BAEK;
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,11 +16,24 @@ public class Emoticon : UIPopup
     GameObject[] emoticons = new GameObject[(int)PingPos.Max];
     public PingPos pingPos = PingPos.Left;
     Vector2 mousePos;
+    Vector2 canvasPos;
+    RaiseEventOptions optoins = new RaiseEventOptions();
     void Start()
     {
+        optoins.Receivers = ReceiverGroup.All;
         Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
+        canvasPos = canvas.transform.position;
         canvas.sortingOrder = 30000;
         InitImoticon();
+    }
+    private void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= PunEmoticon;
+        PhotonNetwork.NetworkingClient.EventReceived += PunEmoticon;
+    }
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= PunEmoticon;
     }
     public void InitImoticon()
     {
@@ -37,13 +52,17 @@ public class Emoticon : UIPopup
         if (value.isPressed)
         {
             mousePos = Input.mousePosition;
+
             pingUI.SetActive(true);
             pingUI.transform.position = mousePos;
         }
         else
         {
-            ShowEmoticon(mousePos);
+            //ShowEmoticon(mousePos);
             pingUI.SetActive(false);
+            
+            object[] sendDatas = new object[] { Managers.UserData.userData.emoticon[(int)pingPos], mousePos };
+            PhotonNetwork.RaiseEvent((int)PunEventType.EMOTICON, sendDatas, optoins, SendOptions.SendReliable);
         }
     }
     void ShowEmoticon(Vector2 pos)
@@ -57,8 +76,8 @@ public class Emoticon : UIPopup
     IEnumerator ShowingEmotincon(GameObject go)
     {
         float time = 0;
-        go.transform.position = Input.mousePosition;
-        GameObject punEmoticonObj = PunShowingEmoticon();
+        //go.transform.position = Input.mousePosition;
+        //GameObject punEmoticonObj = PunShowingEmoticon();
         while (true)
         {
             time += Time.deltaTime;
@@ -66,26 +85,25 @@ public class Emoticon : UIPopup
 
             if (time > 1.5)
             {
-                go.SetActive(false);
+                Destroy(go);
+                //go.SetActive(false);
                 break;
             }
             yield return null;
         }
-        PunDestoryObject(punEmoticonObj);
+        //PunDestoryObject(punEmoticonObj);
     }
-    private GameObject PunShowingEmoticon()
+    private void PunEmoticon(EventData punEvent)
     {
-        if (!PhotonNetwork.InRoom) return null;
-        EmoticonType emoticon = (EmoticonType)Managers.UserData.userData.emoticon[(int)pingPos];
-        string path = "Prefabs/UIPrefabs/Emoticon/" + emoticon.ToString();
-        GameObject obj = PhotonNetwork.Instantiate(path, mousePos, Quaternion.Euler(0, 0, 0));
-        obj.transform.SetParent(transform);
-        return obj;
-    }
-    private void PunDestoryObject(GameObject obj)
-    {
-        if (!PhotonNetwork.InRoom) return;
-        PhotonNetwork.Destroy(obj);
+        if (punEvent.Code != (int)PunEventType.EMOTICON) return;
+        object[] receiveDatas = (object[])punEvent.CustomData;
+        int emoticonType = (int)receiveDatas[0];
+        Vector2 emoticonPosi = (Vector2)receiveDatas[1];
+        EmoticonType emoticonPath = (EmoticonType)emoticonType;
+        GameObject emoticon = Managers.Resource.Instantiate("UIPrefabs/Emoticon/" + emoticonPath.ToString(), emoticonPos);
+        emoticon.transform.position = emoticonPosi;
+        //emoticon.transform.position = canvasPos + emoticonPosi;
+        StartCoroutine(ShowingEmotincon(emoticon));
     }
 
 }

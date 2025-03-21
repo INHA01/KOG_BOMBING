@@ -7,5 +7,6 @@ public enum PunEventType
     PLAYERREADY,
     ROUNDREADY,
     BOMBEVENT,
+    EMOTICON,
     ENDROUND
 }

@@ -63,7 +63,7 @@ namespace Orpul1
             ETeam playerTeam = (ETeam)playerInfo.CustomProperties[EPropertyType.TEAM.ToString()];
             GameObject playerUi = Instantiate(playerPanelPref, trTeamPanel[(int)playerTeam]);
             DisplayPlayerPresenter panel = playerUi.GetComponent<DisplayPlayerPresenter>();
-            panel.Init(new StringBuilder(playerInfo.NickName), new StringBuilder("0"));
+            panel.Init(new StringBuilder(playerInfo.NickName), new StringBuilder(Managers.UserData.userData.level));
             dicPlayerInfo.Add(playerInfo.NickName, panel);
         }
 

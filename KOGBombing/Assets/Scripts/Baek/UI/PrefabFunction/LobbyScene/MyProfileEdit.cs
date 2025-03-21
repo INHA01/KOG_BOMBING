@@ -27,7 +27,7 @@ namespace BAEK
         ProfileCharacterType profileType;
         [Header("Emoticon")]
         public PingPos pingPos = PingPos.Left;
-        EmoticonType emoticonType;
+        EmoticonType[] emoticonType = new EmoticonType[(int)PingPos.Max];
         [SerializeField] Image[] emoticonImage = new Image[(int)PingPos.Max];
         void Start()
         {
@@ -44,14 +44,11 @@ namespace BAEK
                                 "mission : " + Managers.UserData.userData.mission + "\n" +
                                 "win : " + Managers.UserData.userData.win + "\n" +
                                 "lose : " + Managers.UserData.userData.lose + "\n";
-            EmoticonType top = (EmoticonType)Managers.UserData.userData.emoticonT;
-            EmoticonType bottom = (EmoticonType)Managers.UserData.userData.emoticonB;
-            EmoticonType right = (EmoticonType)Managers.UserData.userData.emoticonR;
-            EmoticonType left = (EmoticonType)Managers.UserData.userData.emoticonL;
-            emoticonImage[(int)PingPos.Top].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + top.ToString());
-            emoticonImage[(int)PingPos.Bottom].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + bottom.ToString());
-            emoticonImage[(int)PingPos.Right].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + right.ToString());
-            emoticonImage[(int)PingPos.Left].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + left.ToString());
+            for(int i = 0; i < (int)PingPos.Max; i++)
+            {
+                emoticonType[i] = (EmoticonType)Managers.UserData.userData.emoticon[i];
+                emoticonImage[i].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + emoticonType[i].ToString());
+            }
         }
         IEnumerator InitProfilData()
         {
@@ -95,29 +92,18 @@ namespace BAEK
         }
         public void SelectEmoticon()
         {
-            switch (pingPos)
+            for(int i = 0; i < (int)PingPos.Max; i++)
             {
-                case PingPos.Top:
-                    Managers.UserData.userData.emoticonT = (int)emoticonType;
-                    break;
-                case PingPos.Bottom:
-                    Managers.UserData.userData.emoticonB = (int)emoticonType;
-                    break;
-                case PingPos.Right:
-                    Managers.UserData.userData.emoticonR = (int)emoticonType;
-                    break;
-                case PingPos.Left:
-                    Managers.UserData.userData.emoticonL = (int)emoticonType;
-                    break;
+                Managers.UserData.userData.emoticon[i] = (int)emoticonType[i];
             }
-            Managers.UserData.SaveUserData();
             Managers.UI.GetPopupUI<Emoticon>(UIKEY.Emoticon).InitImoticon();
-            //profileEditPanel[(int)PanelType.EmoticonEdit].SetActive(false);
+            Managers.UserData.SaveUserData();
         }
         public void ChangeEmoticon(int type)
         {
-            emoticonType = (EmoticonType)type;
-            emoticonImage[(int)pingPos].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + emoticonType.ToString());
+            EmoticonType eType = (EmoticonType)type;
+            emoticonType[(int)pingPos] = (EmoticonType)type;
+            emoticonImage[(int)pingPos].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + eType.ToString());
         }
     }
 }

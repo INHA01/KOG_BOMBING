@@ -57,7 +57,7 @@ public enum EMissionSound
     BOMBNARRATION,
 }
 [Serializable]
-public struct FootSound
+public class FootSound
 {
     enum EFootStepSound
     {
@@ -80,7 +80,7 @@ public struct FootSound
 }
 
 [Serializable]
-public struct SkillSound
+public class SkillSound
 {
     public List<AudioClip> SkillList;
     public void ActiveSound(Transform transform, ESkillSound soundType)
@@ -90,7 +90,7 @@ public struct SkillSound
     }
 }
 [Serializable]
-public struct MissionSound
+public class MissionSound
 {
     public List<AudioClip> BombSound;
     public void ActiveSound(Transform transform, EMissionSound soundType)
@@ -100,9 +100,24 @@ public struct MissionSound
     }
 }
 [Serializable]
-public struct WeaponSound
+public class WeaponSound
 {
     public List<AudioClip> WeaponSoundList;
+    public bool isPlayingSound;
+    public void ActiveOneShotSound(Transform transform, EWeaponSound soundType)
+    {
+        Managers.Sound.StopRecentSound();
+        AudioClip bombSound = WeaponSoundList[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.ATTACKSOUND, transform, 1, 0, 30);
+    }
+    public IEnumerator CoOneShotSound(Transform transform, EWeaponSound soundType)
+    {
+        Debug.Log("PlayOneShot Sound");
+        AudioClip bombSound = WeaponSoundList[(int)soundType];
+        Managers.Sound.PlayEffect(bombSound, EMixerGroup.ATTACKSOUND, transform, 1, 0, 30);
+        yield return new WaitForSeconds(bombSound.length);
+        isPlayingSound = false;
+    }
     public void ActiveSound(Transform transform, EWeaponSound soundType)
     {
         AudioClip bombSound = WeaponSoundList[(int)soundType];
@@ -110,7 +125,7 @@ public struct WeaponSound
     }
 }
 [Serializable]
-public struct PingSound
+public class PingSound
 {
     public List<AudioClip> PingSoundList;
     public void ActiveSound(Transform transform, EPingSound soundType)
@@ -120,7 +135,7 @@ public struct PingSound
     }
 }
 [Serializable]
-public struct HitDeathSound
+public class HitDeathSound
 {
     public List<AudioClip> HitDeathList;
     public void ActiveSound(Transform transform, EHitDeathSound soundType)
@@ -130,7 +145,7 @@ public struct HitDeathSound
     }
 }
 [Serializable]
-public struct GeneralSound
+public class GeneralSound
 {
     public List<AudioClip> GeneralList;
     public void ActiveSound(Transform transform, EGenralSound soundType)

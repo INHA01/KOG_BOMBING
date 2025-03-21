@@ -1,4 +1,5 @@
 using BAEK;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,7 @@ public class Emoticon : UIPopup
     void ShowEmoticon(Vector2 pos)
     {
         if(emoticons[(int)pingPos].activeSelf) return;
+        
         emoticons[(int)pingPos].transform.position = pos;
         emoticons[(int)pingPos].SetActive(true);
         StartCoroutine(ShowingEmotincon(emoticons[(int)pingPos]));
@@ -56,10 +58,12 @@ public class Emoticon : UIPopup
     {
         float time = 0;
         go.transform.position = Input.mousePosition;
+        GameObject emoticonObj = PunShowingEmoticon();
         while (true)
         {
             time += Time.deltaTime;
             go.transform.Translate(Vector3.up * Time.deltaTime * 100);
+
             if (time > 1.5)
             {
                 go.SetActive(false);
@@ -67,5 +71,12 @@ public class Emoticon : UIPopup
             }
             yield return null;
         }
+        PhotonNetwork.Destroy(emoticonObj);
+    }
+    private GameObject PunShowingEmoticon()
+    {
+        EmoticonType emoticon = (EmoticonType)Managers.UserData.userData.emoticon[(int)pingPos];
+        string path = "UIPrefabs/Emoticon/" + emoticon.ToString();
+        return PhotonNetwork.Instantiate(path, Vector3.zero, Quaternion.Euler(0, 0, 0));
     }
 }

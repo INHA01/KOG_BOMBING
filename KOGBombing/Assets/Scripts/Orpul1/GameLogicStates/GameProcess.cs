@@ -12,7 +12,7 @@ using System;
 namespace Orpul1
 {
     [Serializable]
-    struct RoundData
+    public class RoundData
     {
         private int[] roomTeamCounts;
         public int[] teamScores;
@@ -104,6 +104,11 @@ namespace Orpul1
         ETeam winnerTeam;
         EGameState nextRoundState;
         SendOptions sendOptions = new SendOptions();
+        public RoundData RoundData { get { return roundData; } set { roundData = value; } }
+        public void DoCheatGameEnd(ETeam winnerTeam)
+        {
+            RaiseEventRoundEnd(winnerTeam);
+        }
         private void Start()
         {
             setNextEndRoundGameState = GetComponent<RoundEndWaiter>();
@@ -252,10 +257,10 @@ namespace Orpul1
             roundData.teamScores[(int)teamType] += 1;
             roundData.switchRoundScores[(int)teamType] += 1;
         }
-
+        bool isGameEnd = false;
         private void OnGUI()
         {
-            for (int i = 0; i < (int)ETeam.END; i++)
+            /*for (int i = 0; i < (int)ETeam.END; i++)
             {
                 ETeam team = (ETeam)i;
                 string labelStr = team.ToString()+" " + Managers.RoundData.TeamScore[i].ToString();
@@ -263,6 +268,28 @@ namespace Orpul1
             }
             GUI.Label(new Rect(Screen.width * 0.25f, 60, 200, 100), "isSetBomb " + (roundData.isSetBomb == true ? "True" : "False"));
             GUI.Label(new Rect(Screen.width * 0.25f, 80, 200, 100), "isEndRound " + (roundData.isEndRound == true ? "True" : "False"));
+            bool isRedTeamWin = GUI.Button(new Rect(Screen.width * 0.25f, 150, 100, 20), "RedTeamWin");
+            bool isBlueTeamWin = GUI.Button(new Rect(Screen.width * 0.25f, 180, 100, 20), "BlueTeamWin");
+            
+            isGameEnd = GUI.Toggle(new Rect(Screen.width * 0.25f, 200, 100, 20), isGameEnd, "IsGameEnd");
+            if(isRedTeamWin)
+            {
+                if(isGameEnd)
+                {
+                    roundData.teamScores[(int)ETeam.REDTEAM] = roundData.maxRoundScore;
+                    roundData.teamScores[(int)ETeam.BLUETEAM] = 0;
+                }
+                RaiseEventRoundEnd(ETeam.REDTEAM);
+            }
+            else if(isBlueTeamWin)
+            {
+                if (isGameEnd)
+                {
+                    roundData.teamScores[(int)ETeam.REDTEAM] = 0;
+                    roundData.teamScores[(int)ETeam.BLUETEAM] = roundData.maxRoundScore;
+                }
+                RaiseEventRoundEnd(ETeam.BLUETEAM);
+            }*/
         }
     }
 }

@@ -38,6 +38,7 @@ namespace Orpul1
         public static int redScore = 0;
         Dictionary<int, IState> dicGameState = new Dictionary<int, IState>();
         IState curState;
+        public IState CurState { get { return curState; } }
         private void Awake()
         {
             InitializeState();

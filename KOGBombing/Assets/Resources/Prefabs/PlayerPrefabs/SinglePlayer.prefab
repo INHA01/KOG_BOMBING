@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 1785431844168192495}
   - component: {fileID: 1028599783360021738}
   - component: {fileID: 137854597267470949}
+  - component: {fileID: 8406903108694021548}
   m_Layer: 8
   m_Name: SinglePlayer
   m_TagString: Player
@@ -508,6 +509,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9c643568007f3924f82eded353af87a6, type: 3}
     - {fileID: 8300000, guid: 65994517d0cf504409097c79685a5cb7, type: 3}
     - {fileID: 8300000, guid: 5500e7a3484c9ed4dbc62f366653de3e, type: 3}
+    isPlayingSound: 0
   footSound:
     FootStepList:
     - {fileID: 8300000, guid: 87d8d3febd23bf041b3005f2a442f4a8, type: 3}
@@ -707,12 +709,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 8894044268401136495}
-  - {fileID: -4870366558248218115}
-  - {fileID: 3710897373183232210}
-  - {fileID: 7799719852954471310}
-  - {fileID: 7300479445460102179}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -835,6 +832,7 @@ MonoBehaviour:
   playerPointController: {fileID: 137854597267470949}
   hitPrefab: {fileID: 8724144560775444214, guid: edb46ad28e3aa514faccc0d22a0ac7a4,
     type: 3}
+  healthUpdater: {fileID: 8406903108694021548}
 --- !u!114 &8207651971063068235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,6 +914,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pView: {fileID: 2047044685979704218}
+  playerData: {fileID: 9216994139945491648}
+--- !u!114 &8406903108694021548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084845064576805521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bc1d25a49be3349b0fb0677482f5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackBoard: {fileID: 6782088153960012666}
+  playerAnimation: {fileID: 7300479445460102179}
   playerData: {fileID: 9216994139945491648}
 --- !u!1 &1190640062829256390
 GameObject:

@@ -59,7 +59,7 @@ public class PlayerAttack : PlayerBehavior
 	[PunRPC]
     private void ChangeWeaponAttack(int type)
     {
-        ChangeWeapon(type);
+        animator.ChangeWeapon(playerData, type);
     }
 
 

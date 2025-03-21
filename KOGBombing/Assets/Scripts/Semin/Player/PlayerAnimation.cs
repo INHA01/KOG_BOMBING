@@ -210,4 +210,14 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 			netWorkPointToLookAt = (Vector3)stream.ReceiveNext();
 		}
     }
+
+    public void ChangeWeapon(PlayerData playerData, int type)
+    {
+        for (int i = 0; i < playerData.weapons.Count; i++)
+        {
+            if (playerData.weapons[i].type == (WeaponType)type)
+                playerData.weapons[i].obj.SetActive(true);
+            else playerData.weapons[i].obj.SetActive(false);
+        }
+    }
 }

@@ -4,12 +4,11 @@ using UnityEngine;
 using Orpul1;
 using Photon.Pun;
 using Semin;
-using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
 using BAEK;
 
-public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
+public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
 {
     [SerializeField]
     GameDirector gameDirector;
@@ -25,7 +24,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     bool isActiveHitSound = false;
     BulletController bullet;
     Coroutine hitCoroutine;
-
+    [SerializeField] PlayerHealthUpdater healthUpdater;
     protected override void Awake()
     {
         base.Awake();
@@ -69,7 +68,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     [PunRPC]
 	private void ChangeWeaponHit(int type)
 	{
-		ChangeWeapon(type);
+        animator.ChangeWeapon(playerData, type);
 	}
 
     public void SetInvincibility(bool isInvincibility)
@@ -116,24 +115,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         }
     }
 
-	public void OnDamaged(float damage, int playerIndex)
-    {
-        playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
-        //Damage(damage, playerIndex);
-        playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
-		if (playerData.pv.IsMine)
-        {
-            Debug.Log($"OnDamged index {playerIndex}");
-            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)blackBoard.playerTeam);
-            playerPointController.OnDamagePoint(playerIndex, (int)damage);
-            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
-            blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
-            if (isActiveHitSound) return;
-            isActiveHitSound = true;
-            blackBoard.updateTeamState.UpdateTeamState();
-            StartCoroutine(CoHitSound());
-        }
-    }
+	
     [PunRPC]
     private void ShowHitCursor(byte playerIndex, byte playerTeam)
     {
@@ -276,165 +258,35 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
     {
         playerMaterialController.Hit();
     }
+    public void OnDamaged(float damage, int playerIndex)
+    {
+        playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
+        playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
+        if (playerData.pv.IsMine)
+        {
+            Debug.Log($"OnDamged index {playerIndex}");
+            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)blackBoard.playerTeam);
+            playerPointController.OnDamagePoint(playerIndex, (int)damage);
+            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
+            blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
+            playerPointController.SetAttackPlayer(playerIndex);
+            playerData.timeWithoutDamage = 0;
+            if (isActiveHitSound) return;
+            isActiveHitSound = true;
+            blackBoard.updateTeamState.UpdateTeamState();
+            StartCoroutine(CoHitSound());
+        }
+    }
     [PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
         if(playerData.pv.IsMine)
         {
-            playerPointController.SetAttackPlayer(playerIndex);
-            playerData.pv.RPC("PunHitMaterial",RpcTarget.All);
-
+            PunHitMaterial();
         }
-
-        float decreaseHp = blackBoard.playerStatus.defence - damage;
-        blackBoard.playerStatus.defence = Mathf.Max(decreaseHp, 0);
-		if (decreaseHp < 0)
-        {
-            float decreaseGroggy = blackBoard.playerStatus.hp + decreaseHp;
-			blackBoard.playerStatus.hp = Mathf.Max(decreaseGroggy, 0);
-            if (decreaseGroggy < 0)
-                blackBoard.playerStatus.groggyValue += decreaseGroggy;
-        }
-        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
-		blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
-		playerData.timeWithoutDamage = 0;
-        if (blackBoard.playerStatus.hp <= 0)
-        {
-            if (blackBoard.playerStatus.groggyable) 
-            {
-                if (!CanGroggy())
-				{
-					blackBoard.playerStatus.groggyable = false;
-					blackBoard.hpBar.SetGroggyValue(0);
-					Death();
-					return;
-				}
-
-				if (blackBoard.inputs[EKey.NUM_2])
-                {
-                    if (blackBoard.bombInteraction.GetBomb() != null)
-                        blackBoard.bombInteraction.SetBombInteraction(false);
-                }
-
-				blackBoard.playerStatus.isGroggy = true;
-				blackBoard.playerStatus.groggyable = false;
-				blackBoard.speedDebuff.groggyValue = 0.1f;
-
-                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Skill, false);
-                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Granade, false);
-                playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, true);
-				if (playerData.skill is ThrowableSkill skill)
-					skill.Disable();
-				playerData.supportWeapon.Disable();
-
-				playerData.pv.RPC("ChangeWeaponHit", RpcTarget.All, (int)WeaponType.NONE);
-                blackBoard.hpBar.ShowGroggy();
-				blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
-				groggyCoroutine = StartCoroutine(Groggy());
-			}
-            else if (blackBoard.playerStatus.groggyValue <= 0)
-			{
-                blackBoard.playerStatus.groggyValue = 0;
-				blackBoard.hpBar.SetGroggyValue(0);
-				Death();
-            }
-        }
-        SetHp();
-
-        //playerData.pv.RPC("SetHp", RpcTarget.All);
+        healthUpdater.Damage(damage, playerIndex);
 	}
-
-	[PunRPC]
-	private void SetHp()
-    {
-        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
-        blackBoard.hpBar.SetGroggyValue(blackBoard.playerStatus.groggyValue);
-	}
-
-	private bool CanGroggy()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-
-		for (int i = 0; i < players.Length; i++)
-        {
-            if (players[i] == gameObject) 
-                continue;
-
-            ETeam otherPlayerTeam = (ETeam)players[i].GetComponent<PlayerData>().pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            if (myTeam != otherPlayerTeam)
-                continue;
-
-            Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
-            if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
-                return true;
-        }
-        return false;
-    }
-
-    private void Death()
-    {
-        ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
-        int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
-        EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
-        playerData.playerSound.hitDeathSound.ActiveSound(transform, deathSound);
-        if (!blackBoard.showSoundEffect)
-        {
-            blackBoard.showSoundEffect = true;
-            showCursor.ShowSoundCursor(blackBoard.transform.position, 3, blackBoard);
-        }
-        if (playerData.pv.IsMine)
-		{
-			ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
-
-            blackBoard.hpBar.SetStopHpUI(true);
-            blackBoard.playerStatus.isLive = false;
-            SetActiveState(false);
-            blackBoard.updateTeamState.UpdateTeamState();
-        }
-		if (groggyCoroutine != null)
-			StopCoroutine(groggyCoroutine);
-
-        blackBoard.playerStatus.hp = blackBoard.playerStatus.maxHp;
-		blackBoard.playerStatus.defence = blackBoard.playerStatus.maxDefence;
-        blackBoard.playerStatus.groggyValue = blackBoard.playerStatus.maxGroggy;
-        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
-        blackBoard.playerStatus.groggyable = true;
-		blackBoard.playerStatus.isGroggy = false;
-        blackBoard.speedDebuff.Initialize();
-		blackBoard.hpBar.InitializeValues();
-        blackBoard.hpBar.HideGroggy();
-		this.transform.position = blackBoard.spawnPoint;
-	}
-
-    IEnumerator Groggy()
-    {
-        blackBoard.playerStatus.invincibility = true;
-        yield return new WaitForSeconds(2f);
-		blackBoard.playerStatus.invincibility = false;
-		groggyTime = 0;
-        float time = 1f;
-        while (blackBoard.playerStatus.groggyValue > 0)
-		{
-			if (!blackBoard.playerStatus.isGroggy) 
-                break;
-
-            while (playerData.isGroggyInteracting) 
-                yield return null;
-
-			groggyTime += Time.deltaTime;
-            yield return null;
-
-            if (groggyTime < time) 
-                continue;
-
-            playerData.pv.RPC("Damage", RpcTarget.All, blackBoard.playerStatus.maxGroggy / 10, -1);
-            groggyTime = 0;
-        }
-	}
-
     private void SetActiveState(bool isDie)
     {
         for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
@@ -444,7 +296,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
         blackBoard.playerCollider.enabled = isDie;
     }
     
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
@@ -467,7 +319,7 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
 
             blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
         }
-    }
+    }*/
 
     public void OnRigidity(float time)
     {
@@ -535,7 +387,6 @@ public class PlayerHitBehavior : PlayerBehavior, IPunObservable, IDamageAble
             bullet = other.GetComponent<BulletController>();
             if (bullet == null) return;
 
-            //Debug.Log($"mine: {GetComponent<IGetTeamTypeable>().GetTeamType()}, other: {bullet.eTeamBullet}");
             if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
             bullet.HitAndMakeParticle(GetComponent<Collider>());
 

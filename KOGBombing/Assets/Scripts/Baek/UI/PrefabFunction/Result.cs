@@ -30,6 +30,13 @@ public class Result : MonoBehaviour
         MoveResult,
         Max
     }
+    enum RecordType
+    {
+        Misson,
+        Kill,
+        Death,
+        Max
+    }
     [SerializeField] Transform[] buttonPos = new Transform[(int)ButtonPos.Max];
     [SerializeField] GameObject[] resultButton = new GameObject[(int)ResultButton.Max];
     [Header("MVP")]
@@ -42,10 +49,30 @@ public class Result : MonoBehaviour
     [SerializeField] GameObject resultRecord;
     [SerializeField] TextMeshProUGUI[] levelText = new TextMeshProUGUI[2];
     [SerializeField] Image recordBar;
+    [SerializeField] TextMeshProUGUI[] recordText = new TextMeshProUGUI[(int)RecordType.Max];
+    [SerializeField] Image[] recordFrame = new Image[(int)RecordType.Max];
+    int currentLevel;
+    float currentExp;
+
     Coroutine fillBar;
     bool isFillFinish = false;
-    void Awake()
+    PlayerPointInfo resultInfo;
+    void OnEnable()
     {
+        // >> Record 데이터 초기화
+        currentLevel = Managers.UserData.userData.level;
+        levelText[0].text = currentLevel.ToString();
+        levelText[1].text = (currentLevel + 1).ToString();
+        currentExp = Managers.UserData.userData.exp;
+        resultInfo = Managers.PointData.GetPlayerInfo(PhotonNetwork.LocalPlayer.NickName);
+        recordText[(int)RecordType.Misson].text = resultInfo.MissionPoint.ToString();
+        LoadRecordFrame(resultInfo.MissionPoint, RecordType.Misson);
+        recordText[(int)RecordType.Kill].text = resultInfo.KillPoint.ToString();
+        LoadRecordFrame(resultInfo.KillPoint, RecordType.Kill);
+        recordText[(int)RecordType.Death].text = resultInfo.DeathPoint.ToString();
+        LoadRecordFrame(resultInfo.DeathPoint, RecordType.Death);
+        // << Record 데이터 초기화
+
         WinnerTeam myTeam = (WinnerTeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         type = GetWinTeam() == myTeam ? ResultType.Win : ResultType.Lose;
         for(int i = 0; i < (int)ResultType.Max; i++)
@@ -57,6 +84,8 @@ public class Result : MonoBehaviour
         }
         GameObject resultAvatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
         resultAvatar.GetComponent<ISetWinTypeable>().SetWinType((ResultTeam)type);
+        // 데이터 저장
+        SaveRecordData();
     }
 
     private WinnerTeam GetWinTeam()
@@ -147,6 +176,7 @@ public class Result : MonoBehaviour
         resultButton[(int)ResultButton.MoveTeamRecord].SetActive(false);
         resultButton[(int)ResultButton.MoveLobby].SetActive(false);
     }
+    
     public void OpenResult()
     {
         Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
@@ -163,37 +193,32 @@ public class Result : MonoBehaviour
             fillBar = StartCoroutine(FillBar());
         }
     }
-    IEnumerator FillBar()
-    { 
-        // 이기면 경험치 500, 지면 200
-        // 경험치 총량은 level * 300
-        int level = Managers.UserData.userData.level;
-        int nextLevel = level + 1;
-        levelText[0].text = level.ToString();
-        levelText[1].text = nextLevel.ToString();
-        float currentExp = Managers.UserData.userData.exp;
-        float maxExp = level * 300;
-        float increaseExp = type == ResultType.Win ? 500 : 200;
-        float amount = 0;
-        while (amount < increaseExp)
+    void LoadRecordFrame(int score, RecordType type)
+    {
+        int frameIndex = 0;
+        if (score > 5)
+            frameIndex = 2;
+        else if (score > 3)
+            frameIndex = 1;
+        recordFrame[(int)type].sprite = Managers.Resource.Load<Sprite>("UISettings/End/End_UI_BayLeaf_" + frameIndex + "_Icon");
+    }
+
+    void SaveRecordData()
+    {
+        float addExp = type == ResultType.Win ? 500 : 200;
+        float maxExp = currentLevel * 300;
+        float saveExp = Managers.UserData.userData.exp + addExp;
+        if (saveExp >= maxExp)
         {
-            currentExp += 1;
-            amount += 1;
-            recordBar.fillAmount = currentExp / maxExp;
-            if(currentExp >= maxExp)
-            {
-                level++;
-                nextLevel++;
-                currentExp = 0;
-                maxExp = level * 300;
-                levelText[0].text = level.ToString();
-                levelText[1].text = nextLevel.ToString();
-            }
-            yield return new WaitForSeconds(0.01f);
+            Managers.UserData.userData.level++;
+            saveExp -= maxExp;
         }
-        Managers.UserData.userData.exp = currentExp;
-        Managers.UserData.userData.level = level;
-        if(type == ResultType.Win)
+        Managers.UserData.userData.exp = saveExp;
+        Managers.UserData.userData.kill += resultInfo.KillPoint;
+        Managers.UserData.userData.death += resultInfo.DeathPoint;
+        Managers.UserData.userData.assist += resultInfo.AsistPoint;
+        Managers.UserData.userData.mission += resultInfo.MissionPoint;
+        if (type == ResultType.Win)
         {
             Managers.UserData.userData.win++;
         }
@@ -202,6 +227,32 @@ public class Result : MonoBehaviour
             Managers.UserData.userData.lose++;
         }
         Managers.UserData.SaveUserData();
+    }
+    IEnumerator FillBar()
+    { 
+        // 이기면 경험치 500, 지면 200
+        // 경험치 총량은 level * 300
+        int nextLevel = currentLevel + 1;
+        float maxExp = currentLevel * 300;
+        float increaseExp = type == ResultType.Win ? 500 : 200;
+        float amount = 0;
+        while (amount <= increaseExp)
+        {
+            currentExp += 1;
+            amount += 1;
+            recordBar.fillAmount = currentExp / maxExp;
+            if(currentExp >= maxExp)
+            {
+                currentLevel++;
+                nextLevel++;
+                currentExp = 0;
+                maxExp = currentLevel * 300;
+                levelText[0].text = currentLevel.ToString();
+                levelText[1].text = nextLevel.ToString();
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+        
         isFillFinish = true;
         yield return new WaitForSeconds(2f);
         fillBar = null;

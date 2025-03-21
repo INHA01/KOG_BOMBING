@@ -79,6 +79,7 @@ public class Emoticon : UIPopup
         EmoticonType emoticon = (EmoticonType)Managers.UserData.userData.emoticon[(int)pingPos];
         string path = "Prefabs/UIPrefabs/Emoticon/" + emoticon.ToString();
         GameObject obj = PhotonNetwork.Instantiate(path, mousePos, Quaternion.Euler(0, 0, 0));
+        obj.transform.SetParent(transform);
         return obj;
     }
     private void PunDestoryObject(GameObject obj)

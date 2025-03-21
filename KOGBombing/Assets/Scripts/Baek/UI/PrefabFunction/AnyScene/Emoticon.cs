@@ -21,15 +21,11 @@ public class Emoticon : UIPopup
     }
     public void InitImoticon()
     {
-        EmoticonType[] emoticonTypes = new EmoticonType[(int)PingPos.Max];
-        emoticonTypes[(int)PingPos.Top] = (EmoticonType)Managers.UserData.userData.emoticonT;
-        emoticonTypes[(int)PingPos.Bottom] = (EmoticonType)Managers.UserData.userData.emoticonB;
-        emoticonTypes[(int)PingPos.Right] = (EmoticonType)Managers.UserData.userData.emoticonR;
-        emoticonTypes[(int)PingPos.Left] = (EmoticonType)Managers.UserData.userData.emoticonL;
-
+        EmoticonType emoticonType;
         for(int i = 0; i < (int)PingPos.Max; i++)
         {
-            string path =  emoticonTypes[i].ToString();
+            emoticonType = (EmoticonType)Managers.UserData.userData.emoticon[i];
+            string path = emoticonType.ToString();
             emoticonImage[i].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + path);
             emoticons[i] = Managers.Resource.Instantiate("UIPrefabs/Emoticon/" + path, emoticonPos);
             emoticons[i].SetActive(false);

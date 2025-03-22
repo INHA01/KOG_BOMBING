@@ -44,7 +44,7 @@ public class PhotonDataManager
     {
         if(!IsContainKey(index))
         {
-            Debug.Log("NULL blackBoard!");
+            Debug.Log("NULL PlayerStateData!");
             return null;
         }
         return playerStateDataList[index];

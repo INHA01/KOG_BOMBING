@@ -28,8 +28,10 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     Interacting bombNotify;
 
     bool isInitComplete = false;
+    int readyPlayerCount = 0;
     void Awake()
     {
+        readyPlayerCount = 0;
         isInitComplete = false;
         InitPlayerData();
         StartCoroutine("CoMinimapInit");
@@ -99,15 +101,17 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
 	private void SetStateData()
 	{
         ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        readyPlayerCount++;
         if (mTeam != playerStateData.playerTeam) return;
         Managers.PunData.AddPlayerBlackBoard(playerStateData);
     }
     IEnumerator WaitSetTeamUI(TeamUIController controller)
 	{
-        while (Managers.PunData.DataCount != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
-		Debug.Log($"isDataAllGet {Managers.PunData.DataCount}");
-        controller.SetTeamUI(playerShooting);
         blackBoard.updateTeamState = controller;
+        Debug.Log("TeamUI Wait");
+        while (readyPlayerCount != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
+        Debug.Log("TeamUI Start");
+        controller.SetTeamUI(playerShooting);
 
     }
 	public void Initialize(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)

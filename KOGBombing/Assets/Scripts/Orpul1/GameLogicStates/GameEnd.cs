@@ -9,12 +9,10 @@ namespace Orpul1
     {
         public override void EnterState()
         {
-            int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
             GameObject mainCam = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
             GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
-            GameObject playerObj = Managers.PunData.GetPlayerStateData(playerIndex).playerObj;
 
-            PhotonNetwork.Destroy(playerObj);
+            gameData.playerObj.GetComponent<IDestroyAble>().DoDestory();
             Destroy(mainCam);
             Destroy(miniMapCam);
 

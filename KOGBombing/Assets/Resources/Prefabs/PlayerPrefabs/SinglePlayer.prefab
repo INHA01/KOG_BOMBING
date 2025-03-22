@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 9216994139945491648}
   - component: {fileID: 3900849375641417542}
   - component: {fileID: 2047044685979704218}
-  - component: {fileID: 8894044268401136495}
+  - component: {fileID: -4755872078649291671}
   - component: {fileID: 4574309590161329535}
   - component: {fileID: 6782088153960012666}
   - component: {fileID: 777691158875268194}
@@ -592,9 +592,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackBoard: {fileID: 6782088153960012666}
-  playerSateData:
-    playerObj: {fileID: 1084845064576805521}
-    rigidBody: {fileID: 1272812946582949491}
+  playerStateData:
+    playerObj: {fileID: 0}
+    rigidBody: {fileID: 0}
     playerStatus: {fileID: 0}
     spawnPosi: {x: 0, y: 0, z: 0}
     playerTeam: 0
@@ -719,13 +719,13 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8894044268401136495}
+  - {fileID: -4755872078649291671}
   - {fileID: 3710897373183232210}
   - {fileID: 7799719852954471310}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8894044268401136495
+--- !u!114 &-4755872078649291671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -734,13 +734,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1084845064576805521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &4574309590161329535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3641,7 +3641,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   RotateSpeed: 8
-  pv: {fileID: 2047044685979704218}
 --- !u!1 &8640340925602032193 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8332975365436845854, guid: 309ef7cd2893d1c43ac007a0f766a9a2,

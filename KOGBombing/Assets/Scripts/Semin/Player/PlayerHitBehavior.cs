@@ -8,7 +8,7 @@ using ExitGames.Client.Photon;
 using Photon.Realtime;
 using BAEK;
 
-public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
+public class PlayerHitBehavior : PlayerBehavior, IDamageAble
 {
     [SerializeField]
     PlayerMaterialController playerMaterialController;
@@ -101,9 +101,17 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
 
             if (blackBoard.updateTeamState != null)
                 blackBoard.updateTeamState.UpdateTeamState();
+            playerData.pv.RPC("UpdateState", RpcTarget.All, (byte)blackBoard.playerStatus.hp, (byte)blackBoard.playerStatus.defence);
         }
     }
 
+    [PunRPC]
+    private void UpdateState(byte hp, byte defence)
+    {
+        blackBoard.playerStatus.hp = hp;
+        blackBoard.playerStatus.defence = defence;
+        blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
+    }
 	
     [PunRPC]
     private void ShowHitCursor(byte playerIndex, byte playerTeam)
@@ -261,8 +269,8 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
             playerPointController.SetAttackPlayer(playerIndex);
             playerData.timeWithoutDamage = 0;
             if (isActiveHitSound) return;
-            isActiveHitSound = true;
             blackBoard.updateTeamState.UpdateTeamState();
+            isActiveHitSound = true;
             StartCoroutine(CoHitSound());
         }
     }
@@ -284,31 +292,6 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
         blackBoard.rigidBody.isKinematic = !isDie;
         blackBoard.playerCollider.enabled = isDie;
     }
-    
-    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(blackBoard.playerStatus.isLive);
-            stream.SendNext((int)blackBoard.playerStatus.hp);
-            stream.SendNext((int)blackBoard.playerStatus.defence);
-            stream.SendNext(blackBoard.playerStatus.groggyable);
-            stream.SendNext((int)blackBoard.playerStatus.groggyValue);
-            stream.SendNext(blackBoard.playerStatus.isGroggy);
-        }
-        else if (stream.IsReading)
-        {
-            blackBoard.playerStatus.isLive = (bool)stream.ReceiveNext();
-            blackBoard.playerStatus.hp = (int)stream.ReceiveNext();
-            blackBoard.playerStatus.defence = (int)stream.ReceiveNext();
-            blackBoard.playerStatus.groggyable = (bool)stream.ReceiveNext();
-            blackBoard.playerStatus.groggyValue = (int)stream.ReceiveNext();
-            blackBoard.playerStatus.isGroggy = (bool)stream.ReceiveNext();
-            SetActiveState(blackBoard.playerStatus.isLive);
-
-            blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
-        }
-    }*/
 
     public void OnRigidity(float time)
     {

@@ -10,6 +10,7 @@ public class CheatController : MonoBehaviour
     [SerializeField] GameProcess gameProcess;
     [SerializeField] GameDirector gameDirector;
     bool isGameEnd = false;
+    bool isSwitchRoll = false;
     private void Awake()
     {
         roundData = gameProcess.RoundData;
@@ -34,11 +35,17 @@ public class CheatController : MonoBehaviour
         bool isBlueTeamWin = GUI.Button(new Rect(Screen.width * 0.25f, 180, 100, 20), "BlueTeamWin");
 
         isGameEnd = GUI.Toggle(new Rect(Screen.width * 0.25f, 200, 100, 20), isGameEnd, "IsGameEnd");
+        isSwitchRoll = GUI.Toggle(new Rect(Screen.width * 0.25f, 230, 100, 20), isSwitchRoll, "IsSwitchRoll");
         if (isRedTeamWin)
         {
             if (isGameEnd)
             {
                 roundData.teamScores[(int)ETeam.REDTEAM] = roundData.maxRoundScore;
+                roundData.teamScores[(int)ETeam.BLUETEAM] = 0;
+            }
+            else if(isSwitchRoll)
+            {
+                roundData.teamScores[(int)ETeam.REDTEAM] = 3;
                 roundData.teamScores[(int)ETeam.BLUETEAM] = 0;
             }
             gameProcess.DoCheatGameEnd(ETeam.REDTEAM);
@@ -49,6 +56,11 @@ public class CheatController : MonoBehaviour
             {
                 roundData.teamScores[(int)ETeam.REDTEAM] = 0;
                 roundData.teamScores[(int)ETeam.BLUETEAM] = roundData.maxRoundScore;
+            }
+            else if (isSwitchRoll)
+            {
+                roundData.teamScores[(int)ETeam.REDTEAM] = 0;
+                roundData.teamScores[(int)ETeam.BLUETEAM] = 3;
             }
             gameProcess.DoCheatGameEnd(ETeam.BLUETEAM);
         }

@@ -98,7 +98,8 @@ namespace Orpul1
                 blackBoard.playerStatus.isLive = false;
                 playerData.pv.RPC("SetActiveState", RpcTarget.All, false);
                 //SetActiveState(false);
-                blackBoard.updateTeamState.UpdateTeamState();
+                if (blackBoard.updateTeamState != null)
+                    blackBoard.updateTeamState.UpdateTeamState();
             }
             if (groggyCoroutine != null)
                 StopCoroutine(groggyCoroutine);

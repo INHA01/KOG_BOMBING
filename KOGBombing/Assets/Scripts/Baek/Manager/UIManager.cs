@@ -1,4 +1,5 @@
 using BAEK;
+using Orpul1;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ public class UIManager
         {
             _popupKey[i] = UIKEY.NONE;
         }
+        ShowPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
     }
     int GetHash(UIKEY key)
     {
@@ -63,8 +65,7 @@ public class UIManager
         }
         else
         {
-            go = Managers.Resource.Instantiate($"UIPrefabs/Scene/{name.ToString()}Canvas");
-            go.transform.SetParent(Root.transform);
+            go = Managers.Resource.Instantiate(FactoryType.UI, (int)name, Root.transform);
             isExist = true;
         }
         go.SetActive(true);
@@ -89,18 +90,11 @@ public class UIManager
     {
         GameObject go = null;
         int index = 0;
-        if (name == UIKEY.NONE)
+        if (name == UIKEY.NONE) return;
+        index = GetHash(name);
+        if (_popupKey[index].Equals(name))
         {
-            //go = _popupArray[index].gameObject;
-            return;
-        }
-        else
-        {
-            index = GetHash(name);
-            if (_popupKey[index].Equals(name))
-            {
-                go = _popupArray[index].gameObject;
-            }
+            go = _popupArray[index].gameObject;
         }
         if (go != null)
         {

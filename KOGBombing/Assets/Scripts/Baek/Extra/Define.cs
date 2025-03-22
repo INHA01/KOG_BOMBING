@@ -61,7 +61,7 @@ namespace BAEK
         Max,
     }
     public enum ProfileCharacterType
-    { 
+    {
         Elvacia_1,
         Elvacia_2,
         Ned_1,
@@ -108,6 +108,11 @@ namespace BAEK
         Bottom,
         Right,
         Left,
+        Max
+    }
+    public enum FactoryType
+    {
+        UI,
         Max
     }
 }

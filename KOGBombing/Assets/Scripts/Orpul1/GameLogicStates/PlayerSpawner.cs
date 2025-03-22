@@ -1,10 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Orpul1;
 using Photon.Pun;
 using UnityEngine;
-using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Orpul1
 {
@@ -17,6 +16,7 @@ namespace Orpul1
         [SerializeField]
         GameObject minimapCamera;
 
+        [SerializeField] int DebugSpawnPlayerCount = 5;
         bool isSpawnPlayer = false;
 
         public override void EnterState()
@@ -52,8 +52,6 @@ namespace Orpul1
             spawnPosi.x += (teamSpawnSpot % 2) * 0.5f - 1 * 2;
             spawnPosi.z += teamSpawnSpot * 0.5f * 2;
 
-            Debug.Log($"teamSpawnSpot : {teamSpawnSpot}");
-            Debug.Log($"spawnPosi : {spawnPosi}");
             return spawnPosi;
         }
         void DoSpawnPlayer(Vector3 spawnPosi)
@@ -72,6 +70,24 @@ namespace Orpul1
             playerObj.GetComponent<ITeamUIInitAble>().SetTeamUI(gameData.teamUIController);
             gameData.playerSetGameState = playerObj.GetComponent<ISetGameStateAble>();
             gameData.playerObj = playerObj;
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            for (int teamType = 0; teamType < (int)ETeam.END; teamType++)
+            {
+                for (int index = 0; index < DebugSpawnPlayerCount; index++)
+                {
+                    DebugDrawSpawnPosi(index, teamType);
+                }
+            }
+        }
+        private void DebugDrawSpawnPosi(int index, int teamType)
+        {
+            Vector3 spawnPosi = teamSpawnPoints[teamType].position;
+            spawnPosi.x += index * 0.5f * 2;
+            spawnPosi.z += (index % 2) * 0.5f - 1 * 2; 
+            Gizmos.DrawWireSphere(spawnPosi, 0.8f);
         }
     }
 }

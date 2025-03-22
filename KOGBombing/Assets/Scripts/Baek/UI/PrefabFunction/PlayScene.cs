@@ -118,15 +118,15 @@ public class PlayScene : UIPopup
         animator.Rebind();
         animator.Play("RoundGuide", 0, 0);
     }
-    public void SetTeam(PlayerBlackBoard blackBoard)
+    public void SetTeam(PlayerStateData playerStateData)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
         go.transform.SetParent(teamProfile.transform);
         go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();
-        profile.Init(blackBoard);
-        dicTeamProfile.Add(blackBoard.nickname, profile);
+        profile.Init(playerStateData);
+        dicTeamProfile.Add(playerStateData.nickname.ToString(), profile);
     }
     public void UpdateKillLog(PlayerInfo[] logInfos)
     {

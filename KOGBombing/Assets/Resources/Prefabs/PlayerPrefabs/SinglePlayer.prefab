@@ -592,6 +592,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackBoard: {fileID: 6782088153960012666}
+  playerSateData:
+    playerObj: {fileID: 1084845064576805521}
+    rigidBody: {fileID: 1272812946582949491}
+    playerStatus: {fileID: 0}
+    spawnPosi: {x: 0, y: 0, z: 0}
+    playerTeam: 0
+    playerIndex: 0
 --- !u!114 &3327122899350027625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,6 +636,7 @@ MonoBehaviour:
   mousePos: {x: 0, y: 0, z: 0}
   playerSound: {fileID: -6883398266351926395}
   pv: {fileID: 2047044685979704218}
+  playerTeam: 0
   rigidBody: {fileID: 1272812946582949491}
   timeWithoutDamage: 0
   minimapIcon: {fileID: 1190640062829256390}
@@ -671,6 +679,7 @@ MonoBehaviour:
   ConsumPos: {fileID: 7676723418722959363}
   isInteract: 0
   isGroggyInteracting: 0
+  showSoundEffect: 0
 --- !u!114 &3900849375641417542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +718,10 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8894044268401136495}
+  - {fileID: 3710897373183232210}
+  - {fileID: 7799719852954471310}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -769,17 +781,16 @@ MonoBehaviour:
   hpBar: {fileID: 2206209511068946223}
   fieldOfView: {fileID: 297773431431672600}
   observaTarget: {fileID: 0}
+  observaTargetIndex: 0
   interactUIObj: {fileID: 0}
   speedValue: {x: 0, y: 0}
   mousePos: {x: 0, y: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
-  playerTeam: 0
   nickname: 
   characterType: 0
   SOplayerStatus: {fileID: 11400000, guid: d57402e405a5d7a4da349a45ea0b6a1a, type: 2}
   canRespawn: 0
   isSetScore: 0
-  showSoundEffect: 0
   bombInteraction: {fileID: 0}
   playerStatus: {fileID: 0}
   currentGameState: 0
@@ -827,7 +838,6 @@ MonoBehaviour:
   blackBoard: {fileID: 6782088153960012666}
   animator: {fileID: 7300479445460102179}
   playerData: {fileID: 9216994139945491648}
-  gameDirector: {fileID: 0}
   playerMaterialController: {fileID: 4574309590161329535}
   playerPointController: {fileID: 137854597267470949}
   hitPrefab: {fileID: 8724144560775444214, guid: edb46ad28e3aa514faccc0d22a0ac7a4,

@@ -37,7 +37,7 @@ public class PlayeRescue : InteractObject
     [PunRPC]
     private void OnInteractColl() //상호작용 전용 콜라이더 활성화
     {
-        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != blackBoard.playerTeam) return;
+        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerData.playerTeam) return;
 
         Debug.Log("Active InteractCollider");
         interactCollider.enabled = true;
@@ -58,11 +58,17 @@ public class PlayeRescue : InteractObject
 
     public override bool ProcessInteract(PhotonView pView)
     {
-        if (pView == null) return false;
-        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
+        if (pView == null) 
+            return false;
 
-        if (otherTeam != blackBoard.playerTeam) return false;
-        if (!Managers.PunData.GetPlayerBlackBoard(pView.Owner.NickName).playerStatus.isLive) return false;
+        int playerIndex = (int)pView.Owner.CustomProperties[EPropertyType.TEAMINDEX];
+        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM];
+
+        if (otherTeam != playerData.playerTeam) 
+            return false;
+
+        if (!Managers.PunData.GetPlayerStateData(playerIndex).playerStatus.isLive) 
+            return false;
 
         target = pView.gameObject;
 		playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, true);

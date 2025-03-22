@@ -62,7 +62,6 @@ public class BulletController : PooledObject
     }
     protected virtual void OnTriggerEnter(Collider other)
 	{
-        bool isSameTeam = false;
 		if (other.CompareTag("IgnoreBullet"))
 		{
             if (other.GetComponent<Landmine>() != null) return;
@@ -77,7 +76,6 @@ public class BulletController : PooledObject
             //if (!other.GetComponent<PlayerData>().pv.IsMine) return;
             if (teamType == null) return;
             if (!IsOtherTeam(teamType)) return;
-            isSameTeam = true;
             IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
             {

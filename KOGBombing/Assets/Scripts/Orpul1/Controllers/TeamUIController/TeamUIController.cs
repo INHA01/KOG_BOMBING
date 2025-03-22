@@ -15,12 +15,14 @@ public class TeamUIController : IUpdateStateAble
     List<Player> teamPlayerList  = new List<Player>();
     RaiseEventOptions options = new RaiseEventOptions();
     Vector3[] bombPos = new Vector3[(int)BombCursorType.Max];
+    int playerIndex = 0;
     public void Init(Transform[] bombPos)
     {
         for(int i = 0; i < bombPos.Length; i++)
         {
             this.bombPos[i] = bombPos[i].position;
         }
+        playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
     }
     public void SetTeamUI(PlayerShooting playerShooting)
     {
@@ -37,7 +39,7 @@ public class TeamUIController : IUpdateStateAble
         _uiScene.GetComponent<PlayScene>().Reset();
         int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         teamPlayerList.Add(PhotonNetwork.LocalPlayer);
-        _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName));
+        _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerStateData(playerIndex));
         for (int i = 0; i < players.Length; i++)
         {
             otherPlayerTeam = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
@@ -46,7 +48,7 @@ public class TeamUIController : IUpdateStateAble
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);
-                _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerBlackBoard(players[i].NickName));
+                _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerStateData(otherPlayerIndex));
             }
         }
         if (_uiScene != null)
@@ -72,16 +74,12 @@ public class TeamUIController : IUpdateStateAble
     private void UpdateTeamState(EventData photonEvent)
     {
         int eventcode = photonEvent.Code;
-        if (eventcode == (int)PunEventType.UPDATETEAMSTATE)
+        if (eventcode != (int)PunEventType.UPDATETEAMSTATE) return;
+        Debug.Log("On UpdateTeamState Event");
+        for (int i = 0; i < teamPlayerList.Count; i++)
         {
-            Debug.Log("On UpdateTeamState Event");
-            for (int i = 0; i < teamPlayerList.Count; i++)
-            {
-                PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(teamPlayerList[i].NickName);
-
-                if (updateProfile != null)
-                    updateProfile(teamPlayerList[i].NickName);
-            }
+            if (updateProfile != null)
+                updateProfile(teamPlayerList[i].NickName);
         }
     }
     private void UpdateTeamScore(EventData photonEvent)

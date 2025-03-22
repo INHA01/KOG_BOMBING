@@ -82,41 +82,35 @@ public class DashSkill : MonoBehaviour, ISkill
 		float time = 0;
 		Vector3 movement;
 		CapsuleCollider collider = playerData.gameObject.GetComponent<CapsuleCollider>();
-		/*AudioClip dashSound = playerData.soundList.SkillList[(int)ESkillSound.UNI_DASH];
-
-		Managers.Sound.PlayEffect(dashSound,EMixerGroup.CHARACTER, transform, 1, 0, 25);*/
 		playerData.playerSound.skillSound.ActiveSound(transform, ESkillSound.UNI_DASH);
-		// >> Managers.PunData를 통해 플레이어의 blackBoard를 가져오는 방식으로 변경
-		PlayerBlackBoard blackBoard = Managers.PunData.GetPlayerBlackBoard(playerData.pv.Owner.NickName);
+
 		while (blackboard == null) yield return null;
 		playerData.isInteract = true;
 		while (time < 0.5f)
 		{
 			time += Time.deltaTime;
 			movement = playerData.animator.transform.forward;
-			movement.y = blackBoard.rigidBody.velocity.y;
-            blackBoard.rigidBody.velocity = movement;
+			movement.y = blackboard.rigidBody.velocity.y;
+            blackboard.rigidBody.velocity = movement;
 			yield return null;
         }
-        //particle.gameObject.SetActive(true);
 		while (time < 1.5f)
 		{
 			time += Time.deltaTime;
-			movement = playerData.animator.transform.forward * blackBoard.playerStatus.moveSpeed * blackBoard.speedDebuff.GetValue();
-			movement.y = blackBoard.rigidBody.velocity.y;
-            blackBoard.rigidBody.velocity = movement;
+			movement = playerData.animator.transform.forward * blackboard.playerStatus.moveSpeed * blackboard.speedDebuff.GetValue();
+			movement.y = blackboard.rigidBody.velocity.y;
+            blackboard.rigidBody.velocity = movement;
 			if (Vector3.Distance(playerData.animator.transform.position, position) < 1f)
 			{
-                blackBoard.rigidBody.velocity = Vector3.zero;
+                blackboard.rigidBody.velocity = Vector3.zero;
 				time = 1.5f;
 			}	
 			yield return null;
 		}
 		playerData.isInteract = false;
-		//particle.gameObject.SetActive(false);
         isRunning = false;
 		time = 0;
-        blackBoard.speedDebuff.skillValue = 1.5f;
+        blackboard.speedDebuff.skillValue = 1.5f;
 		playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd, playerData.mousePos);
 		playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		while (time < buffTime)
@@ -124,11 +118,10 @@ public class DashSkill : MonoBehaviour, ISkill
 			time += Time.deltaTime;
 			yield return null;
 		}
-		blackBoard.speedDebuff.skillValue = 1f;
+        blackboard.speedDebuff.skillValue = 1f;
         playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.DashEnd, playerData.mousePos);
         playerData.punAnimator.ResetAnimTrigger(PlayerAnimation.AnimType.Skill);
 		dash = null;
-		// << :
 	}
 
 	IEnumerator Cooldown(float time)

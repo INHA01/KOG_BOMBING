@@ -85,10 +85,10 @@ namespace Orpul1
             int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
             EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
             playerData.playerSound.hitDeathSound.ActiveSound(blackBoard.transform, deathSound);
-            if (!blackBoard.showSoundEffect)
+            if (!playerData.showSoundEffect)
             {
-                blackBoard.showSoundEffect = true;
-                showCursor.ShowSoundCursor(blackBoard.transform.position, 3, blackBoard);
+                playerData.showSoundEffect = true;
+                showCursor.ShowSoundCursor(blackBoard.transform.position, 3, playerData);
             }
             if (playerData.pv.IsMine)
             {

@@ -74,10 +74,10 @@ namespace Orpul1
 
         void SetPlayerPosi()
         {
-            if (!Managers.PunData.IsContainKey(PhotonNetwork.LocalPlayer.NickName)) return;
-            
-            Vector3 spawnPoint = Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).spawnPoint;
-            Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).transform.position = spawnPoint;
+            int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+            if (!Managers.PunData.IsContainKey(playerIndex)) return;
+            Vector3 spawnPoint = Managers.PunData.GetPlayerStateData(playerIndex).spawnPosi;
+            gameData.playerObj.GetComponent<ISetAble<Vector3>>().SetValue(spawnPoint);
         }
         void OoCountDown(EventData punEvent)
         {

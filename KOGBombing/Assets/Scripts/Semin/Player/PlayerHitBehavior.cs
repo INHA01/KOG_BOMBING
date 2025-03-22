@@ -11,16 +11,12 @@ using BAEK;
 public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
 {
     [SerializeField]
-    GameDirector gameDirector;
-    [SerializeField]
     PlayerMaterialController playerMaterialController;
     [SerializeField]
     PlayPointController playerPointController;
     RaiseEventOptions options = new RaiseEventOptions();
 	[SerializeField] public GameObject hitPrefab;
 
-	float groggyTime;
-    Coroutine groggyCoroutine;
     bool isActiveHitSound = false;
     BulletController bullet;
     Coroutine hitCoroutine;
@@ -39,7 +35,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
             playerMaterialController.SetLayerToMyPlayer();
         }
         
-        if (blackBoard.playerTeam != localPlayerTeam)
+        if (playerData.playerTeam != localPlayerTeam)
         {
             SetOtherTeamInfo();
         }
@@ -258,7 +254,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
         if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
-            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)blackBoard.playerTeam);
+            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
@@ -326,28 +322,30 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
     }
     public bool IsTargetDie()
     {
-        if (blackBoard.observaTargetNickname == null) return true;
-        if (blackBoard.observaTargetNickname.Equals("")) return true;
-        bool isLiveTarget = Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive;
-        if (!isLiveTarget) return true;
-        Debug.Log("IsTargetDie Return False");
-        return false;
+        if (!Managers.PunData.IsContainKey(blackBoard.observaTargetIndex))
+            return false ;
+
+        bool isLiveTarget = Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive;
+        if (isLiveTarget) 
+            return false;
+
+        return true;
     }
     public INode.ENodeState FindAlivePlayer()
     {
-        List<PlayerBlackBoard> blackBoards = Managers.PunData.GetAllBlackBoard();
+        List<PlayerStateData> playerStateList = Managers.PunData.GetAllStateData();
         Debug.Log("Search Alive Player");
-        for (int i = 0; i < blackBoards.Count; i++)
+        for (int i = 0; i < playerStateList.Count; i++)
         {
-            if (blackBoards[i].rigidBody == null) return INode.ENodeState.Fail;
-            if (blackBoards[i].playerTeam != blackBoard.playerTeam) continue;
-            if (blackBoards[i].rigidBody.gameObject == gameObject) continue;
-            if (!blackBoards[i].playerStatus.isLive) continue;
+            if (playerStateList[i].rigidBody == null) return INode.ENodeState.Fail;
+            if (playerStateList[i].playerTeam != playerData.playerTeam) continue;
+            if (playerStateList[i].rigidBody.gameObject == gameObject) continue;
+            if (!playerStateList[i].playerStatus.isLive) continue;
 
-            Debug.Log($"Find Target {blackBoards[i].nickname}");
-            blackBoard.observaTarget = blackBoards[i].rigidBody.gameObject;
-            blackBoard.observaTargetNickname.Clear();
-            blackBoard.observaTargetNickname.Append(blackBoards[i].nickname);
+            Debug.Log($"Find Target {playerStateList[i].nickname}");
+            blackBoard.observaTarget = playerStateList[i].rigidBody.gameObject;
+            blackBoard.observaTargetIndex = 0;
+            blackBoard.observaTargetIndex = playerStateList[i].playerIndex;
             return INode.ENodeState.Success;
 
         }
@@ -357,7 +355,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
     public INode.ENodeState SetCameraTarget()
     {
         
-        if (Managers.PunData.GetPlayerBlackBoard(blackBoard.observaTargetNickname.ToString()).playerStatus.isLive)
+        if (Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive)
         {
             blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.observaTarget);
             blackBoard.viewCamera.transform.LookAt(blackBoard.observaTarget.transform);

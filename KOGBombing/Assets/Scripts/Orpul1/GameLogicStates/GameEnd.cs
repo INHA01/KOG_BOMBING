@@ -1,4 +1,5 @@
 using System.Text;
+using Michsky.UI.Shift;
 using Photon.Pun;
 using UnityEngine;
 
@@ -8,12 +9,15 @@ namespace Orpul1
     {
         public override void EnterState()
         {
-            string playerNickname = PhotonNetwork.LocalPlayer.NickName;
+            int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
             GameObject mainCam = Managers.CamData.GetCamera(ECameraType.MAINCAMERA);
             GameObject miniMapCam = Managers.CamData.GetCamera(ECameraType.MINIMAPCAMERA);
-            PhotonNetwork.Destroy(Managers.PunData.GetPlayerBlackBoard(playerNickname).gameObject);
+            GameObject playerObj = Managers.PunData.GetPlayerStateData(playerIndex).playerObj;
+
+            PhotonNetwork.Destroy(playerObj);
             Destroy(mainCam);
             Destroy(miniMapCam);
+
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI(BAEK.UIKEY.Play);
             Managers.UI.ShowPopupUI<Winner>(BAEK.UIKEY.Winner).SetWiner(1);

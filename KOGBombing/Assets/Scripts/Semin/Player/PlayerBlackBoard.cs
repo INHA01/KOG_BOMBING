@@ -18,13 +18,12 @@ public class PlayerBlackBoard : MonoBehaviour
     public HpBar hpBar;
     public GameObject fieldOfView;
     public GameObject observaTarget;
-    public StringBuilder observaTargetNickname = new StringBuilder();
+    public int observaTargetIndex = 0;
     public GameObject interactUIObj;
     public Vector2 speedValue;
     public SpeedDebuff speedDebuff = new SpeedDebuff();
 	public Vector2 mousePos;
     public Vector3 spawnPoint;
-    public ETeam playerTeam;
     public ISetTeamCountAble setTeam;
     public IBombStateAble setBombState;
     public IChangeHitCursorAble cursorUI;
@@ -34,7 +33,7 @@ public class PlayerBlackBoard : MonoBehaviour
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;
-    public bool showSoundEffect = false;
+    
 	[HideInInspector] public BombInteraction bombInteraction;
 	[HideInInspector] public PlayerStatus playerStatus;
     public EGameState currentGameState;
@@ -54,7 +53,7 @@ public class PlayerBlackBoard : MonoBehaviour
         hpBar.InitializeValues();
 		hpBar.HideGroggy();
         hpBar.ShowHpUI();
-        observaTargetNickname.Clear();
+        observaTargetIndex = 0;
 
         if (bombInteraction.GetBomb() != null)
         {

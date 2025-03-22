@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class FactoryBase : MonoBehaviour
 {
-    public abstract GameObject GetPrefab(int index);
+    public abstract T GetPrefab<T>(int index);
 }

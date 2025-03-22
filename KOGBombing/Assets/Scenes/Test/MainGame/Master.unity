@@ -154,6 +154,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 483719654}
+  - {fileID: 1492612494}
   m_Father: {fileID: 1608455991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &247203765
@@ -170,6 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   factories:
   - {fileID: 483719653}
+  - {fileID: 1492612493}
 --- !u!1 &483719652
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +306,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 806742735}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1492612492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1492612494}
+  - component: {fileID: 1492612493}
+  m_Layer: 0
+  m_Name: AttackFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1492612493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492612492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a96629706ae4834baacc14b5137d52a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackPrefabs:
+  - {fileID: 2569459658997218507, guid: c49ab790699a1ea4c9a7afee3434dacb, type: 3}
+  - {fileID: 2630419124817733095, guid: 34b3ba4a075f3394b86614f999fb83cb, type: 3}
+  - {fileID: 2630419124817733095, guid: 217ebb3caefac0249970fbdbe6df61db, type: 3}
+  - {fileID: 4025673733828750908, guid: 4dd30b73c0991f64fbd56857a2ac5a4b, type: 3}
+  - {fileID: 3848186856526553340, guid: 6c355e73cbe6bc94588d7bc27c5f2a36, type: 3}
+  - {fileID: 2170241771327594758, guid: de44e4d607306b540ae720aeb30d6901, type: 3}
+--- !u!4 &1492612494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492612492}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 247203764}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1608455990
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +368,7 @@ GameObject:
   - component: {fileID: 1608455991}
   - component: {fileID: 1608455992}
   m_Layer: 0
-  m_Name: Managers
+  m_Name: '@Managers'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

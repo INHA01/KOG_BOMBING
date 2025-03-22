@@ -6,13 +6,18 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     [SerializeField] FactoryBase[] factories = new FactoryBase[(int)FactoryType.Max];
+    public T Load<T>(FactoryType type, int index) where T : Object
+    {
+        T prefab = factories[(int)type].GetPrefab<T>(index);
+        return prefab;
+    }
     public T Load<T>(string path) where T : Object
     {
         return Resources.Load<T>(path);
     }
-    public GameObject Instantiate(FactoryType type ,int index, Transform parent = null)
+    public GameObject Instantiate(FactoryType type, int index, Transform parent = null)
     {
-        GameObject prefab = factories[(int)type].GetPrefab(index);
+        GameObject prefab = factories[(int)type].GetPrefab<GameObject>(index);
         if (prefab == null)
         {
             Debug.Log($"Failed to load prefab");

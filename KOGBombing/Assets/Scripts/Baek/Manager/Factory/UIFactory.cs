@@ -8,9 +8,10 @@ namespace BAEK
     {
         [SerializeField] GameObject[] _uiPrefabs = new GameObject[(int)UIKEY.Max];
         
-        public override GameObject GetPrefab(int index)
+        public override T GetPrefab<T>(int index)
         {
-            return _uiPrefabs[index];
+            T prefab = _uiPrefabs[index].GetComponent<T>();
+            return prefab;
         }
     }
 }

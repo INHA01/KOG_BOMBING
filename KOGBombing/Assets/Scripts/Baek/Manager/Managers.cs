@@ -37,11 +37,11 @@ public class Managers : MonoBehaviour , InitClass
         {
             if (s_instance == null)
             {
-                GameObject go = GameObject.Find("@MyManagers");
+                GameObject go = GameObject.Find("@Managers");
                 if (go == null)
                 {
                     // Hierarchi 코드로 오브젝트 만들고 스크립트 넣음
-                    go = new GameObject { name = "@MyManagers" };
+                    go = new GameObject { name = "@Managers" };
                     go.AddComponent<Managers>();
                 }
 
@@ -52,11 +52,12 @@ public class Managers : MonoBehaviour , InitClass
     }
     public void Init()
     {
+        s_instance = GetComponent<Managers>();
+        _ui.Init();
         _firebaseAuth.Init();
         _sceneLoad.Init();
         _sound = gameObject.GetComponentInChildren<SoundManager>();
         _sound.Init();
-        s_instance = GetComponent<Managers>();
     }
     private void Start()
     {

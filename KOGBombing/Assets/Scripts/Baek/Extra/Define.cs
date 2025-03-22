@@ -113,6 +113,17 @@ namespace BAEK
     public enum FactoryType
     {
         UI,
+        Attack,
+        Max
+    }
+    public enum AttackPrefab
+    {
+        Magazine,
+        Bullet,
+        BulletHide,
+        AttackRange,
+        NoAttackRange,
+        MaxAttackRange,
         Max
     }
 }

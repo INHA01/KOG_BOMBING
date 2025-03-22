@@ -53,13 +53,6 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
         playerMaterialController.SaveCurrentMaterial();
         options.Receivers = ReceiverGroup.All;
 	}
-
-    IEnumerator DamageTest(float damage, float time)
-    {
-        yield return new WaitForSeconds(time);
-        int playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-        OnDamaged(damage, playerIndex);
-    }
     private void OnEnable()
     {
         if (playerData.pv.IsMine)
@@ -93,14 +86,14 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble//IPunObservable
             if (playerData.timeWithoutDamage < duration) continue;
 
             float value = 0;
-            if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    // hp�� ä������ ���
+            if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    //HP 회복
             {
                 float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100.0f * 10.0f;
                 value = blackBoard.playerStatus.maxHp / 100.0f * 10.0f - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
                 blackBoard.playerStatus.hp = Mathf.Min(temp, blackBoard.playerStatus.maxHp);
                 if (value <= 0) value = 0;
             }
-            else  // defence�� ä������ ���
+            else  //Defence 회복
             {
                 value = blackBoard.playerStatus.defence + blackBoard.playerStatus.maxDefence / 100.0f * 10.0f;
                 blackBoard.playerStatus.defence = Mathf.Min(value, blackBoard.playerStatus.maxDefence);

@@ -5,7 +5,7 @@ using System.Collections;
 using Orpul1;
 using BAEK;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable,ISetAble<bool>
+public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IResetAble, ISetGameStateAble, IGetTeamTypeable,ISetAble<bool>
 {
 	[SerializeField]
     public PlayerBlackBoard blackBoard;
@@ -132,7 +132,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     [PunRPC]
     private void DestroyPlayer()
     {
-        Debug.Log($"DestroyPlayer {blackBoard.nickname}");
         playerShooting.DoDestory();
         playerData.supportWeapon.DoDestory();
         playerData.bomb.DoDestory();
@@ -178,33 +177,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         bombNotify.ActiveCanInteract(isActive, InteractUI.InteractBomb);
         playerData.isInteract = isActive;
     }
-    /*void ConfirmBombInteract()
-    {
-        bool tagBomb = false;
-        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-        for(int i = 0; i < colliders.Length; i++)
-        {
-            if (
-                (blackBoard.playerTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
-                ||
-                (blackBoard.playerTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
-               )
-            {
-                if (blackBoard.inputs[EKey.NUM_2])
-                {
-                    bombNotify.ActiveCanInteract(true, InteractUI.InteractBomb);
-                    tagBomb = true;
-                    playerData.isInteract = true;
-                }
-            }
-        }
-        
-        if (!tagBomb && bombNotify != null)
-        {
-            bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
-            playerData.isInteract = false;
-        }
-    }*/
     public void SetGameState(EGameState state)
     {
         if (EGameState.ROUNDENDWAIT == state)
@@ -240,7 +212,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     private void OnCollisionExit(Collision collision)
     {
         if (collision.collider.tag != "BombInteract" & collision.collider.tag != "Bomb") return;
-        Debug.Log($"BombInteract False!");
         canBombInteract = false;
         SetBombInteract(false);
         
@@ -253,7 +224,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     public void SetValue(bool value)
     {
         canBombInteract = value;
-        Debug.Log($"canBombInteract {value}");
         if(!value) SetBombInteract(false);
     }
 }

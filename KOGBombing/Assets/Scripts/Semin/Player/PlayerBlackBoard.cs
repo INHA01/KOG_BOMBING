@@ -5,6 +5,7 @@ using Semin;
 using Orpul1;
 using System.Text;
 
+// TODO : 행동트리의 노드 흐름에 관여되는 것만 저장할 것
 public class PlayerBlackBoard : MonoBehaviour
 {
     public Collider playerCollider;
@@ -21,7 +22,6 @@ public class PlayerBlackBoard : MonoBehaviour
     public GameObject interactUIObj;
     public Vector2 speedValue;
     public SpeedDebuff speedDebuff = new SpeedDebuff();
-	//public float speedDebuffPercent = 1;
 	public Vector2 mousePos;
     public Vector3 spawnPoint;
     public ETeam playerTeam;

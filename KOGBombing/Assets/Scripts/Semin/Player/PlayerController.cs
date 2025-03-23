@@ -108,8 +108,9 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     IEnumerator WaitSetTeamUI(TeamUIController controller)
 	{
         blackBoard.updateTeamState = controller;
+        int teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[playerData.playerTeam.ToString()];
         Debug.Log("TeamUI Wait");
-        while (readyPlayerCount != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
+        while (readyPlayerCount != teamCount || !isInitComplete) yield return null;
         Debug.Log("TeamUI Start");
         controller.SetTeamUI(playerShooting);
 

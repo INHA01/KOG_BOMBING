@@ -51,17 +51,19 @@ public class TeamUIController : IUpdateStateAble
                 _uiScene.GetComponent<PlayScene>().SetTeam(Managers.PunData.GetPlayerStateData(otherPlayerIndex));
             }
         }
-        if (_uiScene != null)
-        {
-            updateProfile = _uiScene.GetComponent<PlayScene>().UpdateProfile;
-            updateScore = _uiScene.GetComponent<PlayScene>().UpdateScore;
-            PhotonNetwork.NetworkingClient.EventReceived -= UpdateTeamState;
-            PhotonNetwork.NetworkingClient.EventReceived -= UpdateTeamScore;
-            PhotonNetwork.NetworkingClient.EventReceived += UpdateTeamState;
-            PhotonNetwork.NetworkingClient.EventReceived += UpdateTeamScore;
-            updateScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.REDTEAM]);
-            updateScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM]);
-        }
+        Debug.Log("TeamUIcONTROLLER uPDATE");
+        if (_uiScene == null) return;
+
+        updateProfile = _uiScene.GetComponent<PlayScene>().UpdateProfile;
+        updateScore = _uiScene.GetComponent<PlayScene>().UpdateScore;
+        Debug.Log("SetRaiseEvent UpdateTeamState");
+        PhotonNetwork.NetworkingClient.EventReceived -= UpdateTeamState;
+        PhotonNetwork.NetworkingClient.EventReceived -= UpdateTeamScore;
+        PhotonNetwork.NetworkingClient.EventReceived += UpdateTeamState;
+        PhotonNetwork.NetworkingClient.EventReceived += UpdateTeamScore;
+        updateScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.REDTEAM]);
+        updateScore(ETeam.REDTEAM, Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM]);
+
     }
 
 
@@ -85,12 +87,12 @@ public class TeamUIController : IUpdateStateAble
     private void UpdateTeamScore(EventData photonEvent)
     {
         int eventcode = photonEvent.Code;
-        if (eventcode == (int)PunEventType.UPDATETEAMSCORE)
-        {
-            object[] datas = (object[])photonEvent.CustomData;
-            Debug.Log($"On UpdateTeamScore Event {(ETeam)datas[0]} {(int)datas[1]}");
-            updateScore((ETeam)datas[0], (int)datas[1]);
-        }
+        if (eventcode != (int)PunEventType.UPDATETEAMSCORE) return;
+
+        object[] datas = (object[])photonEvent.CustomData;
+        Debug.Log($"On UpdateTeamScore Event {(ETeam)datas[0]} {(int)datas[1]}");
+        updateScore((ETeam)datas[0], (int)datas[1]);
+
     }
     public void EndRound()
     {

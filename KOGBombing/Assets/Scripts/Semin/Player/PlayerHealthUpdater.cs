@@ -93,11 +93,9 @@ namespace Orpul1
             if (playerData.pv.IsMine)
             {
                 PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
-
                 blackBoard.hpBar.SetStopHpUI(true);
                 blackBoard.playerStatus.isLive = false;
                 playerData.pv.RPC("SetActiveState", RpcTarget.All, false);
-                //SetActiveState(false);
                 if (blackBoard.updateTeamState != null)
                     blackBoard.updateTeamState.UpdateTeamState();
             }

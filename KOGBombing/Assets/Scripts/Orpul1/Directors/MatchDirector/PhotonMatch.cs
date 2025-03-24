@@ -44,7 +44,7 @@ namespace Orpul1
         public override void OnRoomPropertiesUpdate(PhotonHashTable properties)
         {
             if (!properties.ContainsKey(EPropertyType.ROOMSTATE.ToString())) return;
-            if ((string)properties[EPropertyType.ROOMSTATE.ToString()] != "Start") return;
+            if ((int)properties[EPropertyType.ROOMSTATE.ToString()] != (int)ERoomState.START) return;
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });

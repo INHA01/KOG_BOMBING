@@ -14,7 +14,8 @@ namespace Orpul1
         }
         public void SetStartRoomState()
         {
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.ROOMSTATE.ToString(), "Start" } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.ROOMSTATE.ToString(), (int)ERoomState.START } });
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             updateUI();
         }
         public void SetOtherTeam(int changeTeam)

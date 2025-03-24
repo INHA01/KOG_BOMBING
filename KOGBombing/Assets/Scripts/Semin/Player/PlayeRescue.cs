@@ -3,6 +3,7 @@ using BAEK;
 using Orpul1;
 using Photon.Pun;
 using Semin;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayeRescue : InteractObject
@@ -13,6 +14,7 @@ public class PlayeRescue : InteractObject
     PlayerData playerData;
     IRescueAble rescuePlayer;
     GameObject target;
+    bool canInteract = false;
 
     protected override void Start()
     {
@@ -41,6 +43,7 @@ public class PlayeRescue : InteractObject
 
         Debug.Log("Active InteractCollider");
         interactCollider.enabled = true;
+        canInteract = true;
     }
     [PunRPC]
     private void OffInteractColl()//상호작용 전용 콜라이더 비활성화
@@ -48,6 +51,7 @@ public class PlayeRescue : InteractObject
         Debug.Log("Deactive InteractCollider");
 		interactCollider.enabled = false;
         interactUI.ActiveCanInteract(false, InteractUI.Interact);
+        canInteract = false;
     }
 
     [PunRPC]
@@ -58,11 +62,12 @@ public class PlayeRescue : InteractObject
 
     public override bool ProcessInteract(PhotonView pView)
     {
+        if (!canInteract) return false;
         if (pView == null) 
             return false;
 
-        int playerIndex = (int)pView.Owner.CustomProperties[EPropertyType.TEAMINDEX];
-        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM];
+        int playerIndex = (int)pView.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        ETeam otherTeam = (ETeam)pView.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
         if (otherTeam != playerData.playerTeam) 
             return false;
@@ -75,6 +80,11 @@ public class PlayeRescue : InteractObject
 		StartCoroutine(CoInteractDelay());
 		return true;
     }
+    public override void AbortInteract()
+    {
+        if (!canInteract) return;
+        base.AbortInteract();
+    }
 
     protected override IEnumerator CoInteractDelay()
     {
@@ -85,11 +95,11 @@ public class PlayeRescue : InteractObject
         {
             if (interactState == InteractState.NONE)
 			{
-                playerData.pv.RPC("PunInteractGage", RpcTarget.All, 0f);
+                playerData.pv.RPC("PunInteractGage", RpcTarget.All, 0f, (byte)playerData.playerTeam);
                 break;
             }
 
-            playerData.pv.RPC("PunInteractGage", RpcTarget.All, deltaTime/interactTime);
+            playerData.pv.RPC("PunInteractGage", RpcTarget.All, deltaTime/interactTime, (byte)playerData.playerTeam);
             deltaTime += Time.deltaTime;
             yield return null;
         }
@@ -99,17 +109,21 @@ public class PlayeRescue : InteractObject
         rescuePlayer.Rescue();
     }
     [PunRPC]
-    private void PunInteractGage(float value)
+    private void PunInteractGage(float value, byte team)
     {
+        ETeam mteam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        if (team != (byte)mteam) return;
         interactUI.Interact(value);
     }
     protected override void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            if (target == null || target != other.gameObject) return;
-            playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, false);
-		}
+        if (other.tag != "Player") return;
+        if (!canInteract) return;
+        ETeam otherTeam = other.GetComponent<IGetTeamTypeable>().GetTeamType();
+        if (otherTeam != playerData.playerTeam) return;
+        interactUI.ActiveCanInteract(false, InteractUI.Interact);
+        if (target == null || target != other.gameObject) return;
+        playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, false);
         target = null;
     }
 

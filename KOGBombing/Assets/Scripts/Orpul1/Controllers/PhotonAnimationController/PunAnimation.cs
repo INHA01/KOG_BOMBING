@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening.Core.Easing;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using static PlayerAnimation;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PunAnimation : MonoBehaviour
 {

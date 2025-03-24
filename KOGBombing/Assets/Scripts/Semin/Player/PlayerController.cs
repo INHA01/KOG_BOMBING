@@ -97,6 +97,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         playerStateData.playerStatus = blackBoard.playerStatus;
         playerStateData.playerTeam = playerData.playerTeam;
         playerStateData.playerIndex = blackBoard.playerIndex;
+        playerStateData.rigidBody = playerData.rigidBody;
         playerStateData.nickname = new StringBuilder(playerData.pv.Owner.NickName);
         ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         if(mTeam == playerStateData.playerTeam)

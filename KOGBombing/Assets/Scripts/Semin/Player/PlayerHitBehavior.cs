@@ -309,9 +309,10 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
             return false ;
 
         bool isLiveTarget = Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive;
+        Debug.Log("PlayerDie Search alive Other Player");
         if (isLiveTarget) 
             return false;
-
+        Debug.Log("PlayerDie Observe Other Player");
         return true;
     }
     public INode.ENodeState FindAlivePlayer()

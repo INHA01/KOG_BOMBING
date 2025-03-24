@@ -13,6 +13,7 @@ public class PlayerStateData: IComparer<PlayerStateData>
     public Rigidbody rigidBody;
     public PlayerStatus playerStatus;
     public StringBuilder nickname = new StringBuilder();
+    public GameObject observaTarget;
     public Vector3 spawnPosi = Vector3.zero;
     public ETeam playerTeam = ETeam.REDTEAM;
     public int playerIndex = 0;

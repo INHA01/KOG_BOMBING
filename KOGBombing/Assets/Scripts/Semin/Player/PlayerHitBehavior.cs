@@ -327,7 +327,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
             if (!playerStateList[i].playerStatus.isLive) continue;
 
             Debug.Log($"Find Target {playerStateList[i].nickname}");
-            blackBoard.observaTarget = playerStateList[i].rigidBody.gameObject;
+            blackBoard.observaTarget = playerStateList[i].observaTarget;
             blackBoard.observaTargetIndex = 0;
             blackBoard.observaTargetIndex = playerStateList[i].playerIndex;
             return INode.ENodeState.Success;

@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class TeamUIController : IUpdateStateAble
 {
-    private Action<string> updateProfile;
+    private Action<int> updateProfile;
     private Action<ETeam, int> updateScore;
     List<Player> teamPlayerList  = new List<Player>();
     RaiseEventOptions options = new RaiseEventOptions();
@@ -28,7 +28,7 @@ public class TeamUIController : IUpdateStateAble
     {
         options.Receivers = ReceiverGroup.All;
        
-        Player[] players = PhotonNetwork.PlayerList;
+        Player[] players = PhotonNetwork.PlayerListOthers;
         UIPopup _uiScene = null;
         ETeam selfPlayerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         ETeam otherPlayerTeam;
@@ -44,7 +44,6 @@ public class TeamUIController : IUpdateStateAble
         {
             otherPlayerTeam = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
             int otherPlayerIndex = (int)players[i].CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-            if (otherPlayerIndex == mPlayerIndex) continue;
             if (selfPlayerTeam == otherPlayerTeam)
             {
                 teamPlayerList.Add(players[i]);
@@ -80,8 +79,9 @@ public class TeamUIController : IUpdateStateAble
         Debug.Log("On UpdateTeamState Event");
         for (int i = 0; i < teamPlayerList.Count; i++)
         {
+            int playerIndex = (int)teamPlayerList[i].CustomProperties[EPropertyType.TEAMINDEX.ToString()];
             if (updateProfile != null)
-                updateProfile(teamPlayerList[i].NickName);
+                updateProfile(playerIndex);
         }
     }
     private void UpdateTeamScore(EventData photonEvent)

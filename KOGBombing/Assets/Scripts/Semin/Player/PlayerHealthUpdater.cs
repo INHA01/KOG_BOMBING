@@ -3,7 +3,6 @@ using BAEK;
 using System.Collections;
 using Photon.Pun;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
-using DG.Tweening.Core.Easing;
 namespace Orpul1
 {
     public class PlayerHealthUpdater : MonoBehaviour
@@ -15,23 +14,24 @@ namespace Orpul1
         float groggyTime = 0;
         public void Damage(float damage, int playerIndex)
         {
-
             DecreaseHp(blackBoard, damage);
-            if (blackBoard.playerStatus.hp <= 0)
-            {
-                if (blackBoard.playerStatus.groggyable)
-                {
-                    DoGroggyState(blackBoard);
-                }
-                else if (blackBoard.playerStatus.groggyValue <= 0)
-                {
-                    blackBoard.playerStatus.groggyValue = 0;
-                    blackBoard.hpBar.SetGroggyValue(0);
-                    Death();
-                }
-            }
             SetHpbar();
+            if (blackBoard.playerStatus.hp > 0) return;
+
+            if (blackBoard.playerStatus.groggyable)
+            {
+                DoGroggyState(blackBoard);
+            }
+            else if (blackBoard.playerStatus.groggyValue <= 0)
+            {
+                blackBoard.playerStatus.groggyValue = 0;
+                blackBoard.hpBar.SetGroggyValue(0);
+                Death();
+            }
+            if (!playerData.pv.IsMine) return;
+            blackBoard.updateTeamState.UpdateTeamState();
         }
+
         private void DecreaseHp(PlayerBlackBoard blackBoard, float damage)
         {
             float decreaseHp = blackBoard.playerStatus.defence - damage;

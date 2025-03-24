@@ -32,19 +32,19 @@ public class PhotonDataManager
     {
         Debug.Log($"add ID {playerStateData.nickname}");
         playerStateDataList.Add(playerStateData);
-        playerStateDataList.Sort();
+        playerStateDataList.Sort(playerStateData);
     }
     public bool IsContainKey(int index)
     {
         if (index < 0) return false;
-        if (index > playerStateDataList.Count) return false;
+        if (index >= playerStateDataList.Count) return false;
         return true;
     }
     public PlayerStateData GetPlayerStateData(int index )
     {
         if(!IsContainKey(index))
         {
-            Debug.Log("NULL PlayerStateData!");
+            Debug.Log($"NULL PlayerStateData! index is {index}");
             return null;
         }
         return playerStateDataList[index];

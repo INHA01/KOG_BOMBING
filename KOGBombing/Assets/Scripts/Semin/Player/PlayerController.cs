@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
+using System.Text;
 using Orpul1;
 using BAEK;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
-using Photon.Realtime;
+using UnityEngine.InputSystem.XR;
 public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IResetAble, ISetGameStateAble,ISetAble<bool>, ISetAble<Vector3>
 {
 
@@ -26,17 +27,10 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
     Interacting bombNotify;
-
-    bool isInitComplete = false;
-    int readyPlayerCount = 0;
     void Awake()
     {
-        readyPlayerCount = 0;
-        isInitComplete = false;
         InitPlayerData();
-        StartCoroutine("CoMinimapInit");
         if (!playerData.pv.IsMine) return;
-        playerData.pv.RPC("SetStateData", RpcTarget.All);
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.CHARACTER.ToString(), blackBoard.characterType } });
     }
     IEnumerator CoMinimapInit()
@@ -69,13 +63,22 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         if (bombNotify == null)
             bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
-        isInitComplete = true;
         blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
-    }
+        
 
+        StartCoroutine("CoMinimapInit");
+    }
+    IEnumerator CoSetTeamUI(TeamUIController teamUIController)
+    {
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        int teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[mTeam.ToString()];
+        while (Managers.PunData.DataCount != teamCount) yield return null;
+        teamUIController.SetTeamUI(playerShooting);
+    }
     public void SetTeamUI(TeamUIController controller)
     {
-        StartCoroutine(WaitSetTeamUI(controller));
+        blackBoard.updateTeamState = controller;
+        StartCoroutine(CoSetTeamUI(controller));
     }
     private void InitPlayerData()
 	{
@@ -93,36 +96,20 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
 
         playerStateData.playerStatus = blackBoard.playerStatus;
         playerStateData.playerTeam = playerData.playerTeam;
-        playerStateData.playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-
-    }
-
-	[PunRPC]
-	private void SetStateData()
-	{
+        playerStateData.playerIndex = blackBoard.playerIndex;
+        playerStateData.nickname = new StringBuilder(playerData.pv.Owner.NickName);
         ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        readyPlayerCount++;
-        if (mTeam != playerStateData.playerTeam) return;
-        Managers.PunData.AddPlayerBlackBoard(playerStateData);
+        if(mTeam == playerStateData.playerTeam)
+            Managers.PunData.AddPlayerBlackBoard(playerStateData);
     }
-    IEnumerator WaitSetTeamUI(TeamUIController controller)
-	{
-        blackBoard.updateTeamState = controller;
-        int teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[playerData.playerTeam.ToString()];
-        Debug.Log("TeamUI Wait");
-        while (readyPlayerCount != teamCount || !isInitComplete) yield return null;
-        Debug.Log("TeamUI Start");
-        controller.SetTeamUI(playerShooting);
 
-    }
-	public void Initialize(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
+    public void Initialize(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
 	{
         blackBoard.viewCamera = camera;
 		blackBoard.spawnPoint = spawnPosi;
         blackBoard.setTeam = roundEventObj.GetComponent<ISetTeamCountAble>();
         blackBoard.setBombState = roundEventObj.GetComponent<IBombStateAble>();
         playerStateData.spawnPosi = blackBoard.spawnPoint;
-
     }
 
     private void Update()

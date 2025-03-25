@@ -20,7 +20,7 @@ namespace Orpul1
             Managers.UI.ClosePopupUI(BAEK.UIKEY.Play);
             Managers.UI.ShowPopupUI<Winner>(BAEK.UIKEY.Winner).SetWiner(1);
             Managers.PointData.SetBestPlayer();
-            Managers.PunData.Init();
+            Managers.PunData.Initialize();
             Managers.CamData.InitCamera();
         }
         public override void UpdateState()

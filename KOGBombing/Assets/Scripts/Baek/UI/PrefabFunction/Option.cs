@@ -28,7 +28,7 @@ public class Option : UIPopup
         if (yes)
         {
             PhotonNetwork.LeaveRoom();
-            Managers.PunData.Init();
+            Managers.PunData.Initialize();
             Managers.CamData.InitCamera();
             reCheckLobby.SetActive(false);
             Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetPlayerScore();

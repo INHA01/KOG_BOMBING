@@ -47,6 +47,7 @@ namespace Orpul1
                 teamMissionScore[i] = 0;
             }
             dicCharacterSelects.Clear();
+            roundCount = 1;
             roundWinTeam = WinnerTeam.REDTEAM;
         }
         public void IncreaseTeamKillScore(ETeam type)

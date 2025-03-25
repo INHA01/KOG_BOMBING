@@ -39,7 +39,7 @@ namespace Orpul1
             Destroy(mainCam);
             Destroy(miniMapCam);
             gameData.playerObj.GetComponent<IDestroyAble>().DoDestory();
-            Managers.PunData.Init();
+            Managers.PunData.Initialize();
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI(BAEK.UIKEY.Play);
         }

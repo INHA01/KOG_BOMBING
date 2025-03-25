@@ -73,7 +73,13 @@ namespace Orpul1
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), team } });
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { team.ToString(), teamCounts[(int)team] + 1 } });
         }
-
+        protected void InitRoundData()
+        {
+            Managers.RoundData.Initialize();
+            Managers.PunData.Initialize();
+            Managers.CamData.InitCamera();
+            Managers.PointData.Initialize();
+        }
         protected virtual IEnumerator CoStartDelay()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -81,6 +87,7 @@ namespace Orpul1
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.IsMessageQueueRunning = true;
             }
+            InitRoundData();
             float time = Time.time + matchData.StartDelay;
             int count = 0;
             Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);

@@ -262,7 +262,7 @@ public class Result : MonoBehaviour
         if (fillBar != null) return;
         InitScreen();
         PhotonNetwork.LeaveRoom();
-        Managers.PunData.Init();
+        Managers.PunData.Initialize();
         Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetPlayerScore();
         Managers.SceneLoad.LoadScene("LobbyScene");
     }

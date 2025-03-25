@@ -16,6 +16,7 @@ namespace Orpul1
         public int[] teamScores;
         public int[] teamCounts;
         public int[] secondHalfScores = new int[2];
+        public int[] canGetScore = new int[2] { 3, 3 }; 
         public int processRoundCnt;
         public int maxRoundScore;
         public int winScoreGap;
@@ -23,7 +24,6 @@ namespace Orpul1
         public bool isAlreadySwitchRoll;
         public bool isSetBomb;
         public bool isEndRound;
-        int[] canGetScore = new int[2] { 3, 3 }; 
         public void Init()
         {
             teamScores = new int[2];
@@ -200,9 +200,11 @@ namespace Orpul1
             nextRoundState = (EGameState)datas[0];
             winnerTeam = (ETeam)datas[1];
             roundData.teamScores = (int[])datas[2];
+
             Managers.RoundData.SetRoundWinTeam((WinnerTeam)winnerTeam);
             Managers.RoundData.SetTeamScore(winnerTeam, roundData.teamScores[(int)winnerTeam]);
             updateScore.UpdateTeamScore(winnerTeam, ETeamScore.WINSCORE);
+
             if (roundData.isAlreadySwitchRoll)
             {
                 roundData.secondHalfScores[(int)winnerTeam]++;

@@ -55,7 +55,7 @@ public class PhotonDataManager
         return playerStateDataList;
     }
     
-    public void Init()
+    public void Initialize()
     {
         playerStateDataList.Clear();
         blackBoardList.Clear();

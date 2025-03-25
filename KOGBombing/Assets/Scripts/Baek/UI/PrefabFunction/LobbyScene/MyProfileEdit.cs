@@ -47,7 +47,7 @@ namespace BAEK
             for(int i = 0; i < (int)PingPos.Max; i++)
             {
                 emoticonType[i] = (EmoticonType)Managers.UserData.userData.emoticon[i];
-                emoticonImage[i].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + emoticonType[i].ToString());
+                emoticonImage[i].sprite = Managers.Resource.Load<Image>(FactoryType.Emoticon, (int)emoticonType[i]).sprite;
             }
         }
         IEnumerator InitProfilData()
@@ -86,8 +86,8 @@ namespace BAEK
         public void ChangeProfileImage(int type)
         {
             profileType = (ProfileCharacterType)type;
-            profileImage[(int)ProfileImg.Standard].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Crop/Profile_" + profileType.ToString());
-            profileImage[(int)ProfileImg.Big].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Profile_" + profileType.ToString());
+            profileImage[(int)ProfileImg.Standard].sprite = Managers.Resource.LoadImg(ImgLoaderType.Profile, (int)profileType);
+            profileImage[(int)ProfileImg.Big].sprite = Managers.Resource.LoadImg(ImgLoaderType.Profile, (int)profileType + (int)ProfileCharacterType.Max);
             //profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
         }
         public void SelectEmoticon()
@@ -103,7 +103,7 @@ namespace BAEK
         {
             EmoticonType eType = (EmoticonType)type;
             emoticonType[(int)pingPos] = (EmoticonType)type;
-            emoticonImage[(int)pingPos].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + eType.ToString());
+            emoticonImage[(int)pingPos].sprite = Managers.Resource.Load<Image>(FactoryType.Emoticon, (int)eType).sprite;
         }
     }
 }

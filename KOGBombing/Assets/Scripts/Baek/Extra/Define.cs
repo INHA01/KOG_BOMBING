@@ -119,6 +119,13 @@ namespace BAEK
         SupportAttack,
         Max
     }
+    public enum ImgLoaderType
+    {
+        Description,
+        Profile,
+        Play,
+        Max
+    }
     public enum AttackPrefab
     {
         Magazine,
@@ -148,6 +155,27 @@ namespace BAEK
         MoveCursor,
         ResultPlayer,
         ResultAvatar,
+        Max
+    }
+
+    public enum Description
+    {
+        Common,
+        Common_Select,
+        Story,
+        Story_Select,
+        PlayNedSkill,
+        PlayUniSkill,
+        Max
+    }
+    public enum PlayUI
+    {
+        Molotov,
+        Landmine,
+        NedSkill,
+        NedSkillActive,
+        UniSkill,
+        UniSkillActive,
         Max
     }
 }

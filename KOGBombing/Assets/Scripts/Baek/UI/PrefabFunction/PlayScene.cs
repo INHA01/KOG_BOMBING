@@ -122,8 +122,6 @@ public class PlayScene : UIPopup
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
-        //go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
-        //go.transform.SetParent(teamProfile.transform);
         go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.PlayProfile, teamProfile.transform);
         go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();

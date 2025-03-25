@@ -114,6 +114,7 @@ namespace BAEK
     {
         UI,
         SupportUI,
+        Emoticon,
         Attack,
         SupportAttack,
         Max

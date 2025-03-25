@@ -155,6 +155,7 @@ Transform:
   m_Children:
   - {fileID: 483719654}
   - {fileID: 556970042}
+  - {fileID: 1939165488}
   - {fileID: 1492612494}
   - {fileID: 887158294}
   m_Father: {fileID: 1608455991}
@@ -174,6 +175,7 @@ MonoBehaviour:
   factories:
   - {fileID: 483719653}
   - {fileID: 556970043}
+  - {fileID: 1939165489}
   - {fileID: 1492612493}
   - {fileID: 887158295}
 --- !u!1 &483719652
@@ -511,6 +513,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resource: {fileID: 247203765}
+--- !u!1 &1939165487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1939165488}
+  - component: {fileID: 1939165489}
+  m_Layer: 0
+  m_Name: EmoticonFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1939165488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939165487}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 247203764}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1939165489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939165487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27a9331755473844ac65c92e34e03c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emoticons:
+  - {fileID: 5561097768941899700, guid: 552d3d37ca4287d498a5f835d4924f0d, type: 3}
+  - {fileID: 8967172587487147784, guid: 436b9165ce7ffc847ae08111910defcc, type: 3}
+  - {fileID: 8898377498933958368, guid: 3dfa97494cc84924f9299e9a1bac9090, type: 3}
+  - {fileID: 9018710782062907026, guid: 00b5e9e04eaeb82448525a0743891511, type: 3}
+  - {fileID: 891818181678607287, guid: cd06aac6185bcc74a8525bce559507fd, type: 3}
+  - {fileID: 671984865190604677, guid: 86c73205c78b527428abdc29e3d0d2a3, type: 3}
+  - {fileID: 3720858174766501876, guid: b421e439945d4624496c0783e399a73c, type: 3}
+  - {fileID: 389845781325937238, guid: 320f1a266734d78448a6215b6184d45c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

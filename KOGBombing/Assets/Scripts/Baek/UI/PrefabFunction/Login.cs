@@ -1,6 +1,8 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class Login : MonoBehaviourPunCallbacks
@@ -74,6 +76,7 @@ public class Login : MonoBehaviourPunCallbacks
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         Managers.UserData.userData = new UserData("User");
         Managers.UserData.userData.nickName = "User" + Random.Range(0, 1000);
+        
         PhotonNetwork.ConnectUsingSettings();
     }
     public override void OnConnectedToMaster()

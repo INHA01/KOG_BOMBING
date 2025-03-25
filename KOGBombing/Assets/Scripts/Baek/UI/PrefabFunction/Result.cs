@@ -250,7 +250,7 @@ public class Result : MonoBehaviour
                 levelText[0].text = currentLevel.ToString();
                 levelText[1].text = nextLevel.ToString();
             }
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.001f);
         }
         
         isFillFinish = true;

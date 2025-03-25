@@ -111,11 +111,15 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
 
     private void SetTeamScore()
     {
-        for (int i = 0; i < teamScorePanels.Length; i++) 
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        ETeam otherTeam = ETeam.BLUETEAM - (int)mTeam;
+        int[] teamIndex = new int[] { (int)mTeam, (int)otherTeam };
+        for (int i = 0; i < (int)ETeam.END; i++)
         {
             ISetScoreable<ETeamScore> teamScoreUI = teamScorePanels[i].GetComponent<ISetScoreable<ETeamScore>>();
-            dicTeamScore.Add((ETeam)i, teamScoreUI);
+            dicTeamScore.Add((ETeam)teamIndex[i], teamScoreUI);
         }
+        
     }
 
     public void UpdatePlayerScore(StringBuilder nickname, EPlayerScore updateType , int score)

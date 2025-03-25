@@ -180,7 +180,8 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         playerData.supportWeapon.LoadWeaponIcon();
         playerData.skill.LoadSkillIcon();
         blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
+        blackBoard.updateTeamState.UpdateTeamState();
+        playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 
 		return INode.ENodeState.Success;
     }

@@ -18,6 +18,7 @@ namespace Orpul1
 
             Managers.CamData.InitCamera();
             Managers.UI.ClosePopupUI(BAEK.UIKEY.Play);
+            Managers.RoundData.CalcWinTeam();
             Managers.UI.ShowPopupUI<Winner>(BAEK.UIKEY.Winner).SetWiner(1);
             Managers.PointData.SetBestPlayer();
             Managers.PunData.Initialize();

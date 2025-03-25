@@ -105,7 +105,7 @@ public class Emoticon : UIPopup
         EmoticonType emoticonPath = (EmoticonType)emoticonType;
         GameObject emoticon = Managers.Resource.Instantiate("UIPrefabs/Emoticon/" + emoticonPath.ToString(), emoticonPos);
         emoticon.transform.position = emoticonPosi;
-        Managers.Sound.PlayEffect(emoticonSounds[(int)emoticonPath], EMixerGroup.EFFECT);
+        Managers.Sound.PlayEffect(emoticonSounds[(int)emoticonPath], EMixerGroup.UISOUND);
         //emoticon.transform.position = canvasPos + emoticonPosi;
         StartCoroutine(ShowingEmotincon(emoticon));
     }

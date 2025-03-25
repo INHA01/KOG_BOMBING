@@ -52,12 +52,12 @@ public class Managers : MonoBehaviour , InitClass
     }
     public void Init()
     {
-        s_instance = GetComponent<Managers>();
         _ui.Init();
         _firebaseAuth.Init();
         _sceneLoad.Init();
         _sound = gameObject.GetComponentInChildren<SoundManager>();
         _sound.Init();
+        s_instance = GetComponent<Managers>();
     }
     private void Start()
     {

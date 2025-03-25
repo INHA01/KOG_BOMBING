@@ -33,7 +33,6 @@ public class UIManager
         {
             _popupKey[i] = UIKEY.NONE;
         }
-        ShowPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
     }
     int GetHash(UIKEY key)
     {

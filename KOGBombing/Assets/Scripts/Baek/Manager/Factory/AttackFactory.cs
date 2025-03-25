@@ -10,8 +10,11 @@ namespace BAEK
 
         public override T GetPrefab<T>(int index)
         {
-            T prefab = _attackPrefabs[index].GetComponent<T>();
-            return prefab;
+            if(typeof(T) == typeof(GameObject))
+            {
+                return (T)(object)_attackPrefabs[index];
+            }
+            return _attackPrefabs[index].GetComponent<T>();
         }
     }
 }

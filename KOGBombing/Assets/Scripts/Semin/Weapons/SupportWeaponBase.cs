@@ -1,5 +1,6 @@
 using Orpul1;
 using Semin;
+using BAEK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,13 +30,13 @@ public abstract class SupportWeaponBase : Magazine, ISupportWeapon
         switch (type)
 		{
 			case WeaponType.LANDMINE:
-                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Landmine");
+				consum = Managers.Resource.Load<AttackConsum>(FactoryType.SupportAttack , (int)SupportAttackPrefab.LandMine);
                 break;
 			case WeaponType.MOLOTOV:
-				consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Molotov");
+                consum = Managers.Resource.Load<AttackConsum>(FactoryType.SupportAttack, (int)SupportAttackPrefab.Molotov);
                 break;
 			case WeaponType.BOMB:
-                consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Bomb");
+                consum = Managers.Resource.Load<AttackConsum>(FactoryType.SupportAttack, (int)SupportAttackPrefab.Bomb);
                 break;
         }
 		this.type = type;

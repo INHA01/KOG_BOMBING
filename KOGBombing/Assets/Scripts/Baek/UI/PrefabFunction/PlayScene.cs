@@ -1,4 +1,5 @@
 using Orpul1;
+using BAEK;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
@@ -121,8 +122,9 @@ public class PlayScene : UIPopup
     public void SetTeam(PlayerBlackBoard blackBoard)
     {
         GameObject go = null;
-        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
-        go.transform.SetParent(teamProfile.transform);
+        //go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/Profile");
+        //go.transform.SetParent(teamProfile.transform);
+        go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.PlayProfile, teamProfile.transform);
         go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();
         profile.Init(blackBoard);

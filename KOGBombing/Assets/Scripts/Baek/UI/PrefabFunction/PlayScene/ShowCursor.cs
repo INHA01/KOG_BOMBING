@@ -77,7 +77,7 @@ namespace BAEK
                     soundEffect = soundCursor[i];
             }
             if (soundEffect == null)
-                soundEffect = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/SoundCursor", cursorParent.transform);
+                soundEffect = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.MoveCursor, cursorParent.transform);
             else
                 soundEffect.SetActive(true);
             soundCursor.Add(soundEffect);

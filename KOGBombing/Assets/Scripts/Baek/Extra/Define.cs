@@ -113,7 +113,9 @@ namespace BAEK
     public enum FactoryType
     {
         UI,
+        SupportUI,
         Attack,
+        SupportAttack,
         Max
     }
     public enum AttackPrefab
@@ -124,6 +126,27 @@ namespace BAEK
         AttackRange,
         NoAttackRange,
         MaxAttackRange,
+        Max
+    }
+    public enum SupportAttackPrefab
+    {
+        AttackRangeDecal,
+        AttackLineRenderer,
+        AttackRangeLineRenderer,
+        WarningAreaDecal,
+        Bomb,
+        LandMine,
+        Molotov,
+        Max
+    }
+    public enum SupportUI
+    {
+        ChooseAvatar,
+        ChooseIconBack,
+        PlayProfile,
+        MoveCursor,
+        ResultPlayer,
+        ResultAvatar,
         Max
     }
 }

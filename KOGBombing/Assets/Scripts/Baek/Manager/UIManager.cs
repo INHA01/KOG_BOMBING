@@ -22,9 +22,9 @@ public class UIManager
     }
     int _order = 0;
     //value
-    public UIPopup[] _popupArray = new UIPopup[(int)UIKEY.Max];
+    UIPopup[] _popupArray = new UIPopup[(int)UIKEY.Max];
     //key
-    public UIKEY[] _popupKey = new UIKEY[(int)UIKEY.Max];
+    UIKEY[] _popupKey = new UIKEY[(int)UIKEY.Max];
 
     public void Init()
     {

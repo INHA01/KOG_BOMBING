@@ -1,3 +1,4 @@
+using BAEK;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
@@ -108,7 +109,7 @@ public class PhotonChoosePlayer : ChoosePlayer
     public override void SetIcon(bool isMine)
     {
         GameObject go = null;
-        go = Managers.Resource.Instantiate($"UIPrefabs/Scene/PlayScene/ChoosePlayer/IconBack");
+        go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.ChooseIconBack);
         go.transform.SetParent(teamIconBack);
         int teamIndex = mTeamIndex.Dequeue();
         if (isMine)

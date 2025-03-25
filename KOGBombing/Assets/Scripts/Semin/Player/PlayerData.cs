@@ -53,9 +53,12 @@ public class PlayerData : MonoBehaviour, IGetTeamTypeable
     [Header("Skill")]
     public ISkill skill;
 
-    public GameObject AttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/AttackRange"); } }
-    public GameObject NoAttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/NoAttackRange"); } }
-    public GameObject MaxAttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/MaxAttackRange"); } }
+    public GameObject AttackRange { get { return Managers.Resource.Instantiate(FactoryType.Attack, (int)AttackPrefab.AttackRange); } }
+    //public GameObject AttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/AttackRange"); } }
+    public GameObject NoAttackRange { get { return Managers.Resource.Instantiate(FactoryType.Attack, (int)AttackPrefab.NoAttackRange); } }
+    //public GameObject NoAttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/NoAttackRange"); } }
+    public GameObject MaxAttackRange { get { return Managers.Resource.Instantiate(FactoryType.Attack, (int)AttackPrefab.MaxAttackRange); } }
+    //public GameObject MaxAttackRange { get { return Managers.Resource.Instantiate("AttackPrefabs/MaxAttackRange"); } }
     public LineRenderer SetRenderer(GameObject attackRange) 
     { 
         LineRenderer lineRenderer = attackRange.GetComponent<LineRenderer>();

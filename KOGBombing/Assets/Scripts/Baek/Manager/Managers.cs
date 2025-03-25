@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 using Orpul1;
-public class Managers : MonoBehaviour
+using BAEK;
+public class Managers : MonoBehaviour , InitClass
 {
     static Managers s_instance;
-
     FirebaseAughManager _firebaseAuth = new FirebaseAughManager();
     UserDataManager _userData = new UserDataManager();
     PlayerPointManager _pointData = new PlayerPointManager();
@@ -15,7 +15,7 @@ public class Managers : MonoBehaviour
     SoundManager _sound;
 
     UIManager _ui = new UIManager();
-    ResourceManager _resource = new ResourceManager();
+    [SerializeField] ResourceManager _resource;
     PhotonDataManager _punData = new PhotonDataManager();
     CameraManager _camData = new CameraManager();
     
@@ -37,11 +37,11 @@ public class Managers : MonoBehaviour
         {
             if (s_instance == null)
             {
-                GameObject go = GameObject.Find("@MyManagers");
+                GameObject go = GameObject.Find("@Managers");
                 if (go == null)
                 {
                     // Hierarchi 코드로 오브젝트 만들고 스크립트 넣음
-                    go = new GameObject { name = "@MyManagers" };
+                    go = new GameObject { name = "@Managers" };
                     go.AddComponent<Managers>();
                 }
 
@@ -50,7 +50,7 @@ public class Managers : MonoBehaviour
             return s_instance;
         } 
     }
-    void Init()
+    public void Init()
     {
         _ui.Init();
         _firebaseAuth.Init();

@@ -16,7 +16,7 @@ public class ThrowableWeapon : ThrowableBase
 		playerData = GetComponent<PlayerData>();
 	}
 
-	public override void SetConsum(WeaponType type, PlayerData playerData)
+    public override void SetConsum(WeaponType type, PlayerData playerData)
 	{
 		this.type = type;
 		base.SetConsum(type, playerData);
@@ -41,8 +41,8 @@ public class ThrowableWeapon : ThrowableBase
 
 	public override void Use()
 	{
-		base.Use();
         count--;
+		base.Use();
         playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.All);
 		//playerData.pv.RPC("SpawnThrowWeapon", RpcTarget.AllBuffered);
     }

@@ -1,6 +1,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using BAEK;
+using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -25,6 +27,10 @@ public class Login : MonoBehaviourPunCallbacks
     [SerializeField] TMPro.TMP_InputField[] _inputFields = new TMPro.TMP_InputField[(int)TextType.MAX];
     [SerializeField] Animator splashScreenAnimator;
     Coroutine checkLogin;
+    private void Start()
+    {
+        Managers.UI.ShowPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+    }
     public void OnLoginClick(int type)  // create와 login 분리하면서 버튼에 따라 type 넣어서 이벤트 진행되도록 함
     {
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);

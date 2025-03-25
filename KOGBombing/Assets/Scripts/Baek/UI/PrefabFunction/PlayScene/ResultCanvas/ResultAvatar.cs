@@ -1,3 +1,4 @@
+using BAEK;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
@@ -26,8 +27,7 @@ public class ResultAvatar : MonoBehaviour,ISetWinTypeable
         {
             if ((ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString().ToString()] == team)
             {
-                GameObject avatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultPlayer");
-                avatar.transform.SetParent(avatarParents[index++].transform);
+                GameObject avatar = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.ResultPlayer, avatarParents[index++].transform);
                 avatar.transform.localPosition = Vector3.zero;
                 
                 PlayerPointInfo pointInfo = Managers.PointData.GetPlayerInfo(players[i].NickName);

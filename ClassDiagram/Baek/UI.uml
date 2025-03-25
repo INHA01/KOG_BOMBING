@@ -3301,8 +3301,8 @@
 <XPD:OBJ name="OwnedViews[82]" type="UMLClassView" guid="MrST3TKNOkGX1LCvFTLbIAAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Left" type="integer">2712</XPD:ATTR>
-<XPD:ATTR name="Top" type="integer">1644</XPD:ATTR>
+<XPD:ATTR name="Left" type="integer">2656</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">1660</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">216</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">69</XPD:ATTR>
 <XPD:REF name="Model">WFUyrXjo2kqm/vjv/+qvlAAA</XPD:REF>
@@ -3391,7 +3391,7 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="LineStyle" type="LineStyleKind">lsRectilinear</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">2767,1644;2767,1596</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">2767,1660;2767,1596</XPD:ATTR>
 <XPD:REF name="Model">gTZKkx5+A0KkD37TCcqCGgAA</XPD:REF>
 <XPD:REF name="Head">CxUYP9ISyEOwc+qIeGWC5AAA</XPD:REF>
 <XPD:REF name="Tail">MrST3TKNOkGX1LCvFTLbIAAA</XPD:REF>
@@ -7036,11 +7036,20 @@
 <XPD:REF name="Views[3]">r4iO+UsgsEuyta668Q8GDwAA</XPD:REF>
 <XPD:ATTR name="#Specializations" type="integer">1</XPD:ATTR>
 <XPD:REF name="Specializations[0]">gTZKkx5+A0KkD37TCcqCGgAA</XPD:REF>
-<XPD:ATTR name="#Attributes" type="integer">1</XPD:ATTR>
-<XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="Doib9FPEF0eX/cY+TvUrlAAA">
-<XPD:ATTR name="Name" type="string">GetPrefab(int)</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">abstract GameObject</XPD:ATTR>
+<XPD:ATTR name="#Operations" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Operations[0]" type="UMLOperation" guid="i2YHSZiAgkKy4SgnrIzMRgAA">
+<XPD:ATTR name="Name" type="string">GetPrefab</XPD:ATTR>
 <XPD:REF name="Owner">u4rdyN26q0epeP3cyhn8YwAA</XPD:REF>
+<XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="iVYrMwP8xEG6+FaRhzG/BwAA">
+<XPD:ATTR name="DirectionKind" type="UMLParameterDirectionKind">pdkReturn</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">abstract GameObject</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">i2YHSZiAgkKy4SgnrIzMRgAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="dDtsvA0bXU+EWsuzJILoigAA">
+<XPD:ATTR name="Name" type="string">int</XPD:ATTR>
+<XPD:REF name="BehavioralFeature">i2YHSZiAgkKy4SgnrIzMRgAA</XPD:REF>
+</XPD:OBJ>
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[119]" type="UMLGeneralization" guid="gTZKkx5+A0KkD37TCcqCGgAA">

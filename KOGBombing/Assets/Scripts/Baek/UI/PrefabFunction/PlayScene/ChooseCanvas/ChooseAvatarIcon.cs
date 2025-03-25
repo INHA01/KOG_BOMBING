@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using BAEK;
 
 public class ChooseAvatarIcon : ChooseObserver
 {
@@ -15,17 +16,16 @@ public class ChooseAvatarIcon : ChooseObserver
     public override void Choosing(int index)
     {
         level = level > 31 ? 31 : level;
-        levelFrame.sprite = Managers.Resource.Load<Sprite>("UISettings/Userframe/Gui_icon_userframe_" + level.ToString());
+        levelFrame.sprite = Managers.Resource.LoadImg(ImgLoaderType.Frame, level - 1);
         switch (index)
         {
             case 0:
-                image.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Ned_2");
-				topImage.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Top_Profile_Ned_2");
-				break;
+                image.sprite = Managers.Resource.LoadImg(ImgLoaderType.ChooseAvatar, (int)ProfileCharacterType.Ned_2);
+                topImage.sprite = Managers.Resource.LoadImg(ImgLoaderType.ChooseAvatar, (int)ProfileCharacterType.Ned_2 + (int)ProfileCharacterType.Max);
+                break;
             case 1:
-                Sprite sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_Uni_1");
-				image.sprite = sprite;
-				topImage.sprite = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Top_Profile_Uni_1");
+				image.sprite = Managers.Resource.LoadImg(ImgLoaderType.ChooseAvatar, (int)ProfileCharacterType.Uni_1);
+                topImage.sprite = Managers.Resource.LoadImg(ImgLoaderType.ChooseAvatar, (int)ProfileCharacterType.Uni_1 + (int)ProfileCharacterType.Max);
                 break;
         }
     }

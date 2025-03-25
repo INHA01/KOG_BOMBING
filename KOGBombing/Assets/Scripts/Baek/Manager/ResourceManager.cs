@@ -6,10 +6,16 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     [SerializeField] FactoryBase[] factories = new FactoryBase[(int)FactoryType.Max];
+    [SerializeField] ImgLoaderBase[] imgLoaders = new ImgLoaderBase[(int)ImgLoaderType.Max];
     public T Load<T>(FactoryType type, int index) where T : Object
     {
         T prefab = factories[(int)type].GetPrefab<T>(index);
         return prefab;
+    }
+    public Sprite LoadImg(ImgLoaderType type, int index)
+    {
+        Sprite sprite = imgLoaders[(int)type].LoadImg(index);
+        return sprite;
     }
     public T Load<T>(string path) where T : Object
     {

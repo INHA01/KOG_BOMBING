@@ -11,7 +11,8 @@ namespace BAEK
         [SerializeField] Image backGround;
         public void LoadImg(CharacterType type)
         {
-            backGround.sprite = Managers.Resource.Load<Sprite>("UISettings/KeyDescription/SkillDescription_" + type.ToString());
+            Description imgType = type == CharacterType.Ned ? Description.PlayNedSkill : Description.PlayUniSkill;
+            backGround.sprite = Managers.Resource.LoadImg(ImgLoaderType.Description, (int)imgType);
         }
     }
 }

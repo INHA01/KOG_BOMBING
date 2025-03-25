@@ -119,17 +119,17 @@ namespace BAEK
                     detailPanel[(int)Panel.Common].SetActive(true);
 					detailPanel[(int)Panel.Story].SetActive(false);
                     //detailPanel[(int)Panel.SkillDetail].SetActive(false);
-					switchButtons[(int)Button.Common].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Common.ToString() + "_Select");
-					switchButtons[(int)Button.Story].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Story.ToString());
-					skillStoryAnimator.Play("Click Skill", -1, 0);
+					switchButtons[(int)Button.Common].sprite = Managers.Resource.LoadImg(ImgLoaderType.Description, (int)Description.Common_Select);
+                    switchButtons[(int)Button.Story].sprite = Managers.Resource.LoadImg(ImgLoaderType.Description, (int)Description.Story);
+                    skillStoryAnimator.Play("Click Skill", -1, 0);
 					break;
                 case (int)Panel.Story:
 					detailPanel[(int)Panel.Common].SetActive(false);
 					detailPanel[(int)Panel.Story].SetActive(true);
 					//detailPanel[(int)Panel.SkillDetail].SetActive(false);
-					switchButtons[(int)Button.Story].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Story.ToString() + "_Select");
-					switchButtons[(int)Button.Common].sprite = Managers.Resource.Load<Sprite>("UISettings/CharacterDescription/Character_Description_Button_" + Button.Common.ToString());
-					skillStoryAnimator.Play("Click Story", -1, 0);
+					switchButtons[(int)Button.Story].sprite = Managers.Resource.LoadImg(ImgLoaderType.Description, (int)Description.Story_Select);
+                    switchButtons[(int)Button.Common].sprite = Managers.Resource.LoadImg(ImgLoaderType.Description, (int)Description.Common);
+                    skillStoryAnimator.Play("Click Story", -1, 0);
 					break;
             }
         }

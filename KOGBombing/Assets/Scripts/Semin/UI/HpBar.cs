@@ -12,6 +12,7 @@ public class HpBar : MonoBehaviour
     [SerializeField] Image defence;
     [SerializeField] Image groggy;
     [SerializeField] TextMeshProUGUI level;
+    [SerializeField] GameObject circleProjection;
     [SerializeField] GameObject myTeam;
     [SerializeField] GameObject otherTeam;
     [SerializeField] GameObject groggyObject;
@@ -68,11 +69,15 @@ public class HpBar : MonoBehaviour
     {
         myTeam.SetActive(!isOtherTeam);
         otherTeam.SetActive(isOtherTeam);
+        circleProjection.SetActive(true);
+        playerName.gameObject.SetActive(true);
     }
     public void HideHpUI()
     {
         myTeam.SetActive(false);
         otherTeam.SetActive(false);
+        circleProjection.SetActive(false);
+        playerName.gameObject.SetActive(false);
     }
     
 

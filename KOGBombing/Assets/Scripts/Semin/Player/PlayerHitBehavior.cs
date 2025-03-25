@@ -73,16 +73,23 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     }
 	IEnumerator RecoverDefence(float duration)
 	{
-		while (true)
+        bool isMaxHP = false;
+        bool isMaxDefence = false;
+
+        while (true)
 		{
             if (!blackBoard.playerStatus.isGroggy)
                 playerData.timeWithoutDamage += Time.deltaTime;
             yield return null;
 
+            isMaxHP = blackBoard.playerStatus.hp >= blackBoard.playerStatus.maxHp;
+            isMaxDefence = blackBoard.playerStatus.defence >= blackBoard.playerStatus.maxDefence;
+
+            if (isMaxHP && isMaxDefence) continue;
             if (playerData.timeWithoutDamage < duration) continue;
 
             float value = 0;
-            if (blackBoard.playerStatus.hp != blackBoard.playerStatus.maxHp)    //HP 회복
+            if (!isMaxHP)    //HP 회복
             {
                 float temp = blackBoard.playerStatus.hp + blackBoard.playerStatus.maxHp / 100.0f * 10.0f;
                 value = blackBoard.playerStatus.maxHp / 100.0f * 10.0f - (blackBoard.playerStatus.maxHp - blackBoard.playerStatus.hp);
@@ -99,9 +106,12 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
             blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
             playerData.timeWithoutDamage = 9f;
 
+
+            // >> : RPC
             if (blackBoard.updateTeamState != null)
                 blackBoard.updateTeamState.UpdateTeamState();
             playerData.pv.RPC("UpdateState", RpcTarget.All, (byte)blackBoard.playerStatus.hp, (byte)blackBoard.playerStatus.defence);
+            // << :
         }
     }
 

@@ -118,7 +118,6 @@ namespace Orpul1
             for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
                 playerData.changeMaterialMeshs[i].SetActive(isDie);
 
-            blackBoard.hpBar.HideHpUI();
             blackBoard.rigidBody.isKinematic = !isDie;
             blackBoard.playerCollider.enabled = isDie;
         }

@@ -124,6 +124,8 @@ namespace BAEK
         Description,
         Profile,
         Play,
+        ChooseAvatar,
+        Frame,
         Max
     }
     public enum AttackPrefab
@@ -145,6 +147,7 @@ namespace BAEK
         Bomb,
         LandMine,
         Molotov,
+        NedSkill,
         Max
     }
     public enum SupportUI
@@ -176,6 +179,8 @@ namespace BAEK
         NedSkillActive,
         UniSkill,
         UniSkillActive,
+        BattleBoardRed,
+        BattleBoardBlue,
         Max
     }
 }

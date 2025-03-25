@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BAEK
 {
-    public class PlayUILoader : ImgLoaderBase
+    public class PlayIconLoader : ImgLoaderBase
     {
         [SerializeField] Sprite[] playUISprites = new Sprite[(int)PlayUI.Max];
         public override Sprite LoadImg(int index)

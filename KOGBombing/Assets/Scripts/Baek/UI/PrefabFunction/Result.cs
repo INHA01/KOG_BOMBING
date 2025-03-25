@@ -200,7 +200,7 @@ public class Result : MonoBehaviour
             frameIndex = 2;
         else if (score > 3)
             frameIndex = 1;
-        recordFrame[(int)type].sprite = Managers.Resource.Load<Sprite>("UISettings/End/End_UI_BayLeaf_" + frameIndex + "_Icon");
+        recordFrame[(int)type].sprite = Managers.Resource.LoadImg(ImgLoaderType.Frame, frameIndex + 31);
     }
 
     void SaveRecordData()

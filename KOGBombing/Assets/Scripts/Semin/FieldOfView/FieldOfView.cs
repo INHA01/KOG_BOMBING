@@ -34,7 +34,7 @@ namespace Semin
 		public float edgeDstThreshold;
 
 		public MeshFilter viewMeshFilter;
-		protected Mesh viewMesh;
+		public Mesh viewMesh;
 
 		protected void Start()
 		{

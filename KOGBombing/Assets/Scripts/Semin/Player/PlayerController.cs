@@ -147,6 +147,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     public void DoReset()
     {
         Debug.Log($"Set Respawn");
+        blackBoard.playerStatus.isBombDefuse = false;
         blackBoard.canRespawn = true;
     }
 

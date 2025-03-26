@@ -174,7 +174,8 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     }
     public INode.ENodeState RespawnNode()
     {
-        if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
+        blackBoard.Initialize();
+        if (!playerData.pv.IsMine)return INode.ENodeState.Fail;
         playerData.pv.RPC("PunRespawn", RpcTarget.All);
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.supportWeapon.LoadWeaponIcon();

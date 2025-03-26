@@ -141,7 +141,6 @@ namespace Orpul1
             if (groggyCoroutine != null)
                 StopCoroutine(groggyCoroutine);
 
-            blackBoard.Initialize();
             blackBoard.playerStatus.isLive = false;
             playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
             blackBoard.transform.position = blackBoard.spawnPoint;

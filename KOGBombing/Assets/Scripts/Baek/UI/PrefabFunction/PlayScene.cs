@@ -35,7 +35,7 @@ public class PlayScene : UIPopup
     List<Sprite[]> scoreImageList = new List<Sprite[]>();
     [SerializeField] Image[] scoreImgs;
     [Header("Map")]
-    [SerializeField] GameObject[] maps;
+    [SerializeField] GameObject miniMap;
 
     [Header("Skill")]
     public Image skillFade;
@@ -65,8 +65,7 @@ public class PlayScene : UIPopup
         {
             subWeaponFades[i].SetActive(false);
         }
-        maps[0].SetActive(true);
-        maps[1].SetActive(false);
+        miniMap.SetActive(true);
         scoreImgs[(int)ETeam.REDTEAM].sprite = scoreImageList[(int)ETeam.REDTEAM][0];
         scoreImgs[(int)ETeam.BLUETEAM].sprite = scoreImageList[(int)ETeam.BLUETEAM][0];
     }
@@ -83,8 +82,18 @@ public class PlayScene : UIPopup
     {
         if (value.isPressed)
         {
-            maps[0].SetActive(!maps[0].activeSelf);
-            maps[1].SetActive(!maps[1].activeSelf);
+            // 애니메이션 리셋
+            bool isExtract = miniMap.GetComponent<Animator>().GetBool("Extract");   
+            if(isExtract)
+            {
+                miniMap.GetComponent<Animator>().SetBool("Minimize", true);
+                miniMap.GetComponent<Animator>().SetBool("Extract", false);
+            }
+            else
+            {
+                miniMap.GetComponent<Animator>().SetBool("Minimize", false);
+                miniMap.GetComponent<Animator>().SetBool("Extract", true);
+            }
         }
     }
     public void Reset()

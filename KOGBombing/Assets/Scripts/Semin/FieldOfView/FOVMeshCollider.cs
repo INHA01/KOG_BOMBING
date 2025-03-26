@@ -30,7 +30,7 @@ public class FOVMeshCollider : MonoBehaviour
 	private void SetSpriteColor(PlayerData playerData, int value)
 	{
         Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
-        color.a = 1;
+        color.a = value;
         playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
     }
 	private void OnTriggerEnter(Collider other)

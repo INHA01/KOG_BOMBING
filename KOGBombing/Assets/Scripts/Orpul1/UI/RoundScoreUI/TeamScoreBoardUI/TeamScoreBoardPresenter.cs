@@ -8,13 +8,15 @@ public class TeamScoreBoardPresenter : MonoBehaviour, ISetScoreable<ETeamScore>
     [SerializeField]
     TeamScoreBoardView view;
     TeamScoreBoardModel model;
-    private void Awake()
-    {
-        model = new TeamScoreBoardModel(UpdateUI);
-    }
+ 
     public void Initialize()
     {
+        model = new TeamScoreBoardModel(UpdateUI);
         model.Initialize();
+        for(int i=0; i<(int)ETeamScore.END; i++)
+        {
+            model.SetScore((ETeamScore)i, 0);
+        }
     }
     public void SetTitle(StringBuilder title) { }
 

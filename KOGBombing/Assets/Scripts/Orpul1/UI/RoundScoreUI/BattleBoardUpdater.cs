@@ -36,20 +36,14 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     [SerializeField] Sprite[] halfRoundImages;
     [SerializeField] Image[] displayHalfRoundImages;
     bool isAlreadyReset = false;
-    void Awake()
-    {
-        Initialize();
-    }
     void OnEnable()
     { 
         LoadTeamPanelIcon();
     }
     public void Initialize()
     {
-        if (isAlreadyReset) return;
         SetTeamScore();
         SetPlayerScore();
-        isAlreadyReset = true;
     }
     private void SetPlayersMapping()
     {
@@ -93,7 +87,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
             dictPlayerScore.Add(players.ElementAt(i).Value.NickName, playerScoreUI);
         }
     }
-    public void ResetPlayerScore()
+    public void ResetScore()
     {
         for (int i = 0; i < dictPlayerScore.Count; i++)
         {
@@ -118,6 +112,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         for (int i = 0; i < (int)ETeam.END; i++)
         {
             ISetScoreable<ETeamScore> teamScoreUI = teamScorePanels[i].GetComponent<ISetScoreable<ETeamScore>>();
+            teamScoreUI.Initialize();
             dicTeamScore.Add((ETeam)teamIndex[i], teamScoreUI);
         }
         
@@ -152,11 +147,8 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         }
 
         teamScorePanels[0].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = myK.ToString();
-        
         teamScorePanels[0].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = myM.ToString();
-
         teamScorePanels[1].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = otherK.ToString();
-        
         teamScorePanels[1].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = otherM.ToString();
     }
     public void UpdateTeamWinScore()

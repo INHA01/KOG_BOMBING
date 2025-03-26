@@ -72,7 +72,7 @@ public class BulletController : PooledObject
         {
 
             IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
-            //if (!other.GetComponent<PlayerData>().pv.IsMine) return;
+            if (!other.GetComponent<PlayerData>().pv.IsMine) return;
             if (teamType == null) return;
             if (!IsOtherTeam(teamType)) return;
             hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);

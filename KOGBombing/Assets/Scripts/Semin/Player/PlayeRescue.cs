@@ -48,6 +48,8 @@ public class PlayeRescue : InteractObject
     {
         Debug.Log("Deactive InteractCollider");
 		interactCollider.enabled = false;
+        if (interactUI == null)
+            interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         interactUI.ActiveCanInteract(false, InteractUI.Interact);
         canInteract = false;
     }

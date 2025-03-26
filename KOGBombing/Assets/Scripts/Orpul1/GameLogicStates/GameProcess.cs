@@ -184,7 +184,7 @@ namespace Orpul1
         {
             if (!PhotonNetwork.IsMasterClient) return;
             if (roundData.teamCounts[(int)ETeam.REDTEAM] == 0 && roundData.isSetBomb) return;
-            //IncreaseTeamScore(winnerTeam);
+            IncreaseTeamScore(winnerTeam);
             EGameState nextRound = GetNextRoundState();
             object[] customDatas = new object[] { nextRound, winnerTeam, roundData.teamScores };
             PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, customDatas, gameData.options, sendOptions);

@@ -82,7 +82,7 @@ namespace Orpul1
         private void Death()
         {
             ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
-            int soundIndex = (int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH;
+            int soundIndex = (int)playerData.characterType * (int)EHitDeathSound.UNI_DEATH;
             EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
             playerData.playerSound.hitDeathSound.ActiveSound(blackBoard.transform, deathSound);
             if (!playerData.showSoundEffect)

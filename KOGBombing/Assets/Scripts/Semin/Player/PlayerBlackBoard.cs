@@ -29,7 +29,6 @@ public class PlayerBlackBoard : MonoBehaviour
     public IChangeHitCursorAble cursorUI;
     public IUpdateStateAble updateTeamState;
     public string nickname;
-    public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;

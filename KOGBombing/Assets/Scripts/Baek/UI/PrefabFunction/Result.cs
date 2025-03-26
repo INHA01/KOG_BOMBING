@@ -51,6 +51,7 @@ public class Result : MonoBehaviour
     [SerializeField] Slider recordBar;
     [SerializeField] TextMeshProUGUI[] recordText = new TextMeshProUGUI[(int)RecordType.Max];
     [SerializeField] Image[] recordFrame = new Image[(int)RecordType.Max];
+    [SerializeField] AudioClip levelUpBarAudio;
     int currentLevel;
     float currentExp;
 
@@ -172,6 +173,8 @@ public class Result : MonoBehaviour
         float maxExp = currentLevel * 300;
         float increaseExp = type == ResultType.Win ? 500 : 200;
         float amount = 0;
+
+        Managers.Sound.PlayEffect(levelUpBarAudio, EMixerGroup.UISOUND);
         while (amount <= increaseExp)
         {
             currentExp += 1;

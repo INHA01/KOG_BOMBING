@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 using BAEK;
 using DTT.AreaOfEffectRegions;
 using Orpul1;
+using Semin;
 
 public class PlayerData : MonoBehaviour, IGetTeamTypeable
 {
@@ -26,6 +27,7 @@ public class PlayerData : MonoBehaviour, IGetTeamTypeable
 	public float timeWithoutDamage;
     public GameObject minimapIcon;
     public SRPCircleRegionProjector pivot;
+    public CharacterType characterType;
 
 	[Header("Model Anim")]
     public GameObject playerObj;

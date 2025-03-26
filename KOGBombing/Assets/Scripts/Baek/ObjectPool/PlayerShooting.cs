@@ -125,7 +125,7 @@ public class PlayerShooting : Magazine
             {
                 time = 0;
                 magazineCount++;
-                playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.RELOAD);
+                playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.RELOAD,EMixerGroup.EXTRA_ATKSOUND);
                 if (bulletCount == 0)
                     bulletCount = InitBulletCount;
             }

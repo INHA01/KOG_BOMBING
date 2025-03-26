@@ -75,12 +75,12 @@ public class PlayerAttack : PlayerBehavior
 
     public bool IsUni()
     {
-        return (blackBoard.characterType == CharacterType.Uni);
+        return (playerData.characterType == CharacterType.Uni);
     }
 
     public bool IsNed()
     {
-        return (blackBoard.characterType == CharacterType.Ned);
+        return (playerData.characterType == CharacterType.Ned);
     }
 
 
@@ -119,7 +119,7 @@ public class PlayerAttack : PlayerBehavior
     }
     void InitSkill()
     {
-        switch (blackBoard.characterType)
+        switch (playerData.characterType)
         {
             case CharacterType.Ned:
                 playerData.skill = gameObject.AddComponent<ThrowableSkill>();
@@ -351,7 +351,7 @@ public class PlayerAttack : PlayerBehavior
 
     public INode.ENodeState SetSkill()
     {
-        if (blackBoard.characterType != CharacterType.Ned) 
+        if (playerData.characterType != CharacterType.Ned) 
             return INode.ENodeState.Fail;
 
         Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
@@ -391,7 +391,7 @@ public class PlayerAttack : PlayerBehavior
 
     public INode.ENodeState DashSkill()
     {
-        if (blackBoard.characterType != CharacterType.Uni)
+        if (playerData.characterType != CharacterType.Uni)
             return INode.ENodeState.Fail;
 
 		if (playerData.skill is DashSkill dash)

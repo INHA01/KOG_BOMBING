@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     {
         InitPlayerData();
         if (!playerData.pv.IsMine) return;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.CHARACTER.ToString(), blackBoard.characterType } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.CHARACTER.ToString(), playerData.characterType } });
     }
     IEnumerator CoMinimapInit()
     {
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
         if (bombNotify == null)
             bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
-        playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
+        playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], playerData.characterType);
         blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
         
 

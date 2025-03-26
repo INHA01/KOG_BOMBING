@@ -243,12 +243,12 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     [PunRPC]
     private void PunDeathSound()
     {
-        EHitDeathSound soundType = (EHitDeathSound)((int)blackBoard.characterType * (int)EHitDeathSound.UNI_DEATH);
+        EHitDeathSound soundType = (EHitDeathSound)((int)playerData.characterType * (int)EHitDeathSound.UNI_DEATH);
         playerData.playerSound.hitDeathSound.ActiveSound(transform, soundType);
     }
     private IEnumerator CoHitSound()
     {
-        int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)blackBoard.characterType * 4;
+        int soundIndex = (int)EHitDeathSound.NED_HIT1 + (int)playerData.characterType * 4;
         
         AudioClip hitSoundClip = playerData.playerSound.hitDeathSound.HitDeathList[soundIndex];
         float time = Time.time + hitSoundClip.length;

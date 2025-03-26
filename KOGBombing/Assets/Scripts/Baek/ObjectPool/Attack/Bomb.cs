@@ -72,6 +72,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
         {
             if (bombNotify == null)
                 bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+            bombNotify.gameObject.SetActive(true);
             if (player.playerStatus.isBombDefuse)
             {
                 player.playerStatus.isBombDefuse = false;

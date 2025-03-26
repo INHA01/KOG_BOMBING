@@ -203,6 +203,7 @@ public class Result : MonoBehaviour
         PhotonNetwork.LeaveRoom();
         Managers.PunData.Initialize();
         Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetScore();
+        Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).ActiveFalseAll();
         Managers.SceneLoad.LoadScene("LobbyScene");
     }
     void InitScreen()

@@ -219,6 +219,7 @@ public class PlayerAttack : PlayerBehavior
 					if (animChange == null)
 					{
 						playerData.bomb.Use();
+                        bombNotify.gameObject.SetActive(true);
                         bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
                         bombNotify.SwitchGuide(false);
                         isChangableAnim = true;

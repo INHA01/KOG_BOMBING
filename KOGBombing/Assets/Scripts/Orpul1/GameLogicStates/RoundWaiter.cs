@@ -28,7 +28,9 @@ namespace Orpul1
         public override void EnterState()
         {
             Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play).PublishRound(Managers.RoundData.roundCount);
-            Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).SwitchGuide(false);
+            Interacting interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+            interactUI.SwitchGuide(false);
+            interactUI.gameObject.SetActive(true);
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDWAIT);
             for (int i = 0; i < roundDoorController.Length; i++)
             {

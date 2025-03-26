@@ -125,16 +125,24 @@ namespace Orpul1
             roundData.Reset();
             for (int i = 0; i < (int)ETeam.END; i++)
                 gameData.teamUIController.UpdateTeamScore((ETeam)i, roundData.teamScores[i]);
-            
-            PhotonNetwork.NetworkingClient.EventReceived -= OnRoundEnd;
-            PhotonNetwork.NetworkingClient.EventReceived -= OnDecreaseTeamCount;
-            PhotonNetwork.NetworkingClient.EventReceived -= OnBombEvent;
-            PhotonNetwork.NetworkingClient.EventReceived += OnRoundEnd;
-            PhotonNetwork.NetworkingClient.EventReceived += OnDecreaseTeamCount;
-            PhotonNetwork.NetworkingClient.EventReceived += OnBombEvent;
+            UnSubscribeEvent();
+            SubscribeEvent();
+
             StartCoroutine("CoStartCountDown");
         }
 
+        private void SubscribeEvent()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived += OnRoundEnd;
+            PhotonNetwork.NetworkingClient.EventReceived += OnDecreaseTeamCount;
+            PhotonNetwork.NetworkingClient.EventReceived += OnBombEvent;
+        }
+        private void UnSubscribeEvent()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= OnRoundEnd;
+            PhotonNetwork.NetworkingClient.EventReceived -= OnDecreaseTeamCount;
+            PhotonNetwork.NetworkingClient.EventReceived -= OnBombEvent;
+        }
         public override void UpdateState()
         {
             if (!roundData.isEndRound) return;
@@ -145,9 +153,7 @@ namespace Orpul1
 
         public override void ExitState()
         {
-            PhotonNetwork.NetworkingClient.EventReceived -= OnRoundEnd;
-            PhotonNetwork.NetworkingClient.EventReceived -= OnDecreaseTeamCount;
-            PhotonNetwork.NetworkingClient.EventReceived -= OnBombEvent;
+            UnSubscribeEvent();
             roundData.isEndRound = true;
             roundData.isSetBomb = false;
         }

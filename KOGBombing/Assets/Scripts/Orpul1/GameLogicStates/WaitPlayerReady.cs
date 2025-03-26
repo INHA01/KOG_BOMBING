@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using BAEK;
 using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
@@ -23,6 +24,8 @@ namespace Orpul1
             curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
             gameData.options.Receivers = ReceiverGroup.All;
             Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).Initialize();
+            Managers.UI.ShowPopupUI<Interacting>(UIKEY.Interacting);
+            Managers.UI.ClosePopupUI(UIKEY.Interacting);
             PhotonNetwork.NetworkingClient.EventReceived += OnWaitPlayer;
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashtable { { EPropertyType.STATE.ToString(), EPlayerState.READY } });
             Managers.RoundData.Initialize();

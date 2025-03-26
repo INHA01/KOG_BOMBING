@@ -18,6 +18,7 @@ namespace Orpul1
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDENDWAIT);
             time = 0;
             Interacting bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+            
             if (bombNotify!=null)
                 bombNotify.ActiveFalseAll();
             Managers.UI.ShowPopupUI<Winner>(BAEK.UIKEY.Winner).SetWiner(0);

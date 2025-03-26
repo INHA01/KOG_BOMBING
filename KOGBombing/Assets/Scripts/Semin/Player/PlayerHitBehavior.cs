@@ -229,7 +229,6 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     public INode.ENodeState SetPlayerScore()
     {
         if (blackBoard.isSetScore) return INode.ENodeState.Fail;
-        //if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
         playerData.pv.RPC("PunDeathSound", RpcTarget.All);
 
         playerPointController.OnKillPoint();

@@ -43,11 +43,14 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
     PhotonView pv;
     BombData bombData;
     RaiseEventOptions options = new RaiseEventOptions();
+    SendOptions sendOptions = new SendOptions();
     public float BombTime { get { return bombTime; } } 
 	private void Awake()
 	{
 		pv = GetComponent<PhotonView>();
         options.Receivers = ReceiverGroup.All;
+        sendOptions.DeliveryMode = DeliveryMode.Reliable;
+        sendOptions.Reliability = true;
 
     }
     public void Notify()

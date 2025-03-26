@@ -66,48 +66,6 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
             bombData.bombState.BombEvent(EBombState.SET, -1);*/
         bombNotify.NotifyBombSet();
     }
-    /*private void OnCollisionStay(Collision collision)
-    {
-        PlayerBlackBoard player = collision.collider.GetComponent<PlayerBlackBoard>();
-        if (player != null)
-        {
-            if (bombNotify == null)
-                bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
-            bombNotify.gameObject.SetActive(true);
-            if (player.playerStatus.isBombDefuse)
-            {
-                player.playerStatus.isBombDefuse = false;
-                // ÆøÅº ÇØÁ¦ ¸ðµç ÇÃ·¹ÀÌ¾îµé¿¡°Ô Notify
-                bombNotify.NotifyBombDefuse();
-                Release();
-                Debug.Log("ÆøÅº ÇØÁ¦");
-                *//*
-                if (bombData.bombState != null)
-                    bombData.bombState.BombEvent(EBombState.CLEAR, player.playerIndex);*//*
-                //RPCDestroy();
-            }
-        }
-    }*/
-  /*  private void OnTriggerStay(Collider other)
-    {
-        PlayerBlackBoard player = other.GetComponent<PlayerBlackBoard>();
-        if (player != null)
-        {
-            if (bombNotify == null)
-                bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
-            if (player.playerStatus.isBombDefuse)
-            {
-                player.playerStatus.isBombDefuse = false;
-                // ÆøÅº ÇØÁ¦ ¸ðµç ÇÃ·¹ÀÌ¾îµé¿¡°Ô Notify
-                bombNotify.NotifyBombDefuse();
-                Debug.Log("ÆøÅº ÇØÁ¦");
-                if (bombData.bombState != null)
-                    bombData.bombState.BombEvent(EBombState.CLEAR, player.playerIndex);
-                Release();
-                //RPCDestroy();
-            }
-        }
-    }*/
     
     public void SetIsInteraction(bool isInteraction)
 	{

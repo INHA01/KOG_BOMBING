@@ -167,7 +167,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         return INode.ENodeState.Success;
     }
 
-    public bool CanRespawnPlayer()
+   /* public bool CanRespawnPlayer()
     {
         if (!blackBoard.canRespawn) return false;
         return true;
@@ -185,7 +185,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 
 		return INode.ENodeState.Success;
-    }
+    }*/
     [PunRPC]
     private void PunRespawn()
     {

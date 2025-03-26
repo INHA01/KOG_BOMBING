@@ -155,13 +155,13 @@ public class PlayerAttack : PlayerBehavior
 
 		playerData.bomb.Disable();
 	}
-    public INode.ENodeState ResetAttackData()
+    /*public INode.ENodeState ResetAttackData()
     {
         //if (playerData.bomb is DeployableBomb bomb)
         //    bomb.RoundReset();
         playerShooting.RoundChange();
         return INode.ENodeState.Success;
-    }
+    }*/
     public INode.ENodeState BombInteract()
     {
         if((blackBoard.playerStatus.isLive == false)|| (blackBoard.playerStatus.isGroggy == true) || (blackBoard.playerStatus.canSettingBomb == false))

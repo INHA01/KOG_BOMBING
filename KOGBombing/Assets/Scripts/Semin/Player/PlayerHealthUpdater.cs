@@ -196,7 +196,8 @@ namespace Orpul1
             while(true)
             {
                 yield return null;
-                if(FindAlivePlayer())
+                if (blackBoard.playerStatus.isLive) yield break;
+                if (FindAlivePlayer())
                 {
                     SetCameraTarget();
                     break;

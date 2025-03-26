@@ -30,11 +30,9 @@ public class PlayeRescue : InteractObject
         return INode.ENodeState.Fail;
     }
     
-    public INode.ENodeState DeactiveRescueCollider()
+    public void DeactiveRescueCollider()
     {
-        if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
         playerData.pv.RPC("OffInteractColl", RpcTarget.All);
-        return INode.ENodeState.Fail;
     }
     [PunRPC]
     private void OnInteractColl() //상호작용 전용 콜라이더 활성화

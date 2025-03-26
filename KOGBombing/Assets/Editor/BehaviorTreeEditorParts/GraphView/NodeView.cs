@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.PackageManager.UI;
+using UnityEngine.UIElements;
+using UnityEditor;
+using Unity.VisualScripting;
 
 namespace Semin
 {
@@ -14,7 +17,7 @@ namespace Semin
 		public Port input;
 		public Port output;
 
-		public NodeView(Node node)
+		public NodeView(Node node) : base("Assets/Editor/UIBuilder/NodeView.uxml")
 		{
 			this.node = node;
 			this.title = node.name;
@@ -25,27 +28,49 @@ namespace Semin
 
 			CreateInputPorts();
 			CreateOutputPorts();
+			SetupClasses();
+		}
+
+		private void SetupClasses()
+		{
+			if (node is ActionNode)
+			{
+				AddToClassList("action");
+			}
+			else if (node is CompositeNode)
+			{
+				AddToClassList("composite");
+			}
+			else if (node is DecoratorNode)
+			{
+				AddToClassList("decorator");
+			}
+			else if (node is RootNode)
+			{
+				AddToClassList("root"); 
+			}
 		}
 
 		private void CreateInputPorts()
 		{
 			if (node is ActionNode)
 			{
-				input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+				input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
 			}
 			else if (node is CompositeNode)
 			{
-				input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+				input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
 			}
 			else if (node is DecoratorNode)
 			{
-				input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+				input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
 			}
 			else if (node is RootNode) { }
 
 			if (input != null)
 			{
 				input.portName = "";
+				input.style.flexDirection = FlexDirection.Column;
 				inputContainer.Add(input);
 			}
 		}
@@ -58,21 +83,22 @@ namespace Semin
 			}
 			else if (node is CompositeNode)
 			{
-				output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+				output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(bool));
 			}
 			else if (node is DecoratorNode)
 			{
-				output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+				output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
 			}
 			else if (node is RootNode)
 			{
-				output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+				output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
 			}
 
 
 			if (output != null)
 			{
 				output.portName = "";
+				output.style.flexDirection = FlexDirection.ColumnReverse;
 				outputContainer.Add(output);
 			}
 		}
@@ -80,9 +106,10 @@ namespace Semin
 		public override void SetPosition(Rect newPos)
 		{
 			base.SetPosition(newPos);
+			Undo.RecordObject(node, "Behavior Tree (Set Position)");
 			node.position.x = newPos.xMin;
 			node.position.y = newPos.yMin;
-
+			EditorUtility.SetDirty(node);
 		}
 
 		public override void OnSelected()
@@ -91,6 +118,19 @@ namespace Semin
 			if (OnNodeSelected != null)
 				OnNodeSelected.Invoke(this);
 		}
-    }
 
+		public void SortChildren()
+		{
+			CompositeNode composite = node as CompositeNode;
+			if (composite)
+			{
+				composite.GetChildren().Sort(SortByHorizontalPosition);
+			}
+		}
+
+		private int SortByHorizontalPosition(Node left, Node right)
+		{
+			return left.position.x < right.position.x ? -1 : 1;
+		}
+	}
 }

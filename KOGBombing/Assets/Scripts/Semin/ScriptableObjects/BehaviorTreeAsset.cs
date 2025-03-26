@@ -2,6 +2,7 @@ using Semin;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -34,6 +35,7 @@ public class BehaviorTreeAsset : ScriptableObject
             if (node != null)
             {
                 node.name = type.Name;
+
 				nodes.Add(node);
             }
             else
@@ -46,7 +48,8 @@ public class BehaviorTreeAsset : ScriptableObject
 
 	public void DeleteNode(Node node)
 	{
-        nodes.Remove(node);
+		nodes.Remove(node);
+		//AssetDatabase.RemoveObjectFromAsset(node);
 	}
 
 	public void AddChild(Node parent, Node child)
@@ -67,7 +70,9 @@ public class BehaviorTreeAsset : ScriptableObject
 
 		CompositeNode composite = parent as CompositeNode;
 		if (composite)
+		{
 			composite.AddChild(child);
+		}
 	}
 
 	public void RemoveChild(Node parent, Node child)
@@ -88,10 +93,12 @@ public class BehaviorTreeAsset : ScriptableObject
 
 		CompositeNode composite = parent as CompositeNode;
 		if (composite)
+		{
 			composite.RemoveChild(child);
+		}
 	}
 
-	public List<Node> GetChild(Node parent)
+	public List<Node> GetChildren(Node parent)
 	{
 		List<Node> children = new List<Node>();
 		DecoratorNode decorator = parent as DecoratorNode;
@@ -106,15 +113,31 @@ public class BehaviorTreeAsset : ScriptableObject
 
 		CompositeNode composite = parent as CompositeNode;
 		if (composite)
-			return composite.GetChild();
+			return composite.GetChildren();
 
 		return children;
+	}
+
+	public void Traverse(Node node, System.Action<Node> visiter)
+	{
+		if (node)
+		{
+			visiter.Invoke(node);
+			var children = GetChildren(node);
+			children.ForEach((n) => Traverse(n, visiter));
+		}
+
 	}
 
 	public BehaviorTreeAsset Clone()
 	{
 		BehaviorTreeAsset tree = Instantiate(this);
 		tree.rootNode = tree.rootNode.Clone();
+		tree.nodes = new List<Node>();
+		Traverse(tree.rootNode, (n) =>
+		{
+			tree.nodes.Add(n);
+		});
 		return tree;
 	}
 }

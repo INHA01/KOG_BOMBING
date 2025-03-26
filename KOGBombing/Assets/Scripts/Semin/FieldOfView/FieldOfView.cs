@@ -34,7 +34,7 @@ namespace Semin
 		public float edgeDstThreshold;
 
 		public MeshFilter viewMeshFilter;
-		protected Mesh viewMesh;
+		public Mesh viewMesh;
 
 		protected void Start()
 		{
@@ -52,12 +52,13 @@ namespace Semin
 			Attach(true);
 		}
 
-		public void SyncMesh(Vector3[] vertices, int[] triangles)
+		public void SyncMesh(Vector3[] vertices, int[] triangles, Quaternion rotation)
 		{
 			if (viewMesh != null)
 			{
 				viewMesh.vertices = vertices;
 				viewMesh.triangles = triangles;
+				transform.rotation = rotation;
 			}
 		}
 
@@ -188,7 +189,7 @@ namespace Semin
 
 		public void SetSyncMesh()
 		{
-			SyncMesh(viewMesh.vertices, viewMesh.triangles);
+			SyncMesh(viewMesh.vertices, viewMesh.triangles, transform.rotation);
 		}
 
 		protected EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)

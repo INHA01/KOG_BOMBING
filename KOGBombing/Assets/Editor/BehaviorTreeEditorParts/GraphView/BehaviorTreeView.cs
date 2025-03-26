@@ -29,6 +29,14 @@ public class BehaviorTreeView : GraphView
 		
 		var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/BehaviorTreeEditor.uss");
 		styleSheets.Add(styleSheet);
+
+		Undo.undoRedoPerformed += OnUndoRedo;
+	}
+
+	private void OnUndoRedo()
+	{
+		PopulateView(tree);
+		AssetDatabase.SaveAssets();
 	}
 
 	NodeView FindNodeView(Semin.Node node)
@@ -48,7 +56,7 @@ public class BehaviorTreeView : GraphView
 
 		tree.nodes.ForEach(n =>
 		{
-			var children = tree.GetChild(n);
+			var children = tree.GetChildren(n);
 			children.ForEach(c =>
 			{
 				NodeView parentView = FindNodeView(n);
@@ -98,6 +106,15 @@ public class BehaviorTreeView : GraphView
 				NodeView parentView = edge.output.node as NodeView;
 				NodeView childView = edge.input.node as NodeView;
 				tree.AddChild(parentView.node, childView.node);
+			});
+		}
+
+		if (graphViewChange.movedElements != null)
+		{
+			nodes.ForEach((n) =>
+			{
+				NodeView view = n as NodeView;
+				view.SortChildren();
 			});
 		}
 		EditorUtility.SetDirty(tree);

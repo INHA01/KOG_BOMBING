@@ -29,7 +29,7 @@ namespace Semin
             children.Remove(child);
         }
 
-        public List<Node> GetChild()
+        public List<Node> GetChildren()
         {
             return children;
         }

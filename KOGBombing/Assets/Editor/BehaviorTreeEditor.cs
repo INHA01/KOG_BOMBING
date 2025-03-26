@@ -9,6 +9,7 @@ using Unity.VisualScripting.FullSerializer.Internal;
 using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine.InputSystem.XR;
 using UnityEditor.Rendering;
+using System;
 
 public class BehaviorTreeEditor : EditorWindow
 {
@@ -75,15 +76,62 @@ public class BehaviorTreeEditor : EditorWindow
         directionParameterView.SetEnabled(false);
     }
 
+	private void OnEnable()
+	{
+        EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+		EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+	}
+
+	private void OnDisable()
+	{
+		EditorApplication.playModeStateChanged -= OnPlayModeStateChanged; 
+	}
+
+	private void OnPlayModeStateChanged(PlayModeStateChange obj)
+	{
+        switch (obj)
+        {
+            case PlayModeStateChange.EnteredEditMode:
+                OnSelectionChange();
+                break;
+			case PlayModeStateChange.ExitingEditMode:
+				break;
+			case PlayModeStateChange.EnteredPlayMode:
+				OnSelectionChange();
+				break;
+			case PlayModeStateChange.ExitingPlayMode:
+				break;
+		}
+	}
+
 	private void OnSelectionChange()
 	{
 		BehaviorTreeAsset tree = Selection.activeObject as BehaviorTreeAsset;
 
-        if (tree)
+        if (!tree)
         {
-            treeView.PopulateView(tree);
-            EditorUtility.SetDirty(tree);
+            if (Selection.activeGameObject)
+            {
+                BehaviorTreeRunner runner = Selection.activeGameObject.GetComponent<BehaviorTreeRunner>();
+                if (runner)
+                    tree = runner.tree;
+            }
         }
+
+        if (Application.isPlaying)
+        {
+			if (tree)
+				treeView.PopulateView(tree);
+		}
+        else
+		{
+			if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+			{
+				treeView.PopulateView(tree);
+				EditorUtility.SetDirty(tree);
+			}
+		}
+
     }
 
     void OnNodeSelectionChanged(NodeView node)

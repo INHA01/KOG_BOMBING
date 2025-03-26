@@ -1070,7 +1070,7 @@ Camera:
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!81 &4220175647554410059
@@ -8861,7 +8861,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 537ce6442db93e04c9120129f4c6546d, type: 3}
   m_Controller: {fileID: 9100000, guid: 733eef4b03c985749b26756c1b190b5a, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0

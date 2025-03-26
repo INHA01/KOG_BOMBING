@@ -132,6 +132,7 @@ public class PlayPointController : MonoBehaviour, ISetPointable
     [PunRPC]
     public void PunMission(int playerIndex, ETeam team)
     {
+        if (!pView.IsMine) return;
         string[] playerList = GetPlayerList(team);
         StringBuilder targetPlayer = new StringBuilder(playerList[playerIndex]);
         updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);

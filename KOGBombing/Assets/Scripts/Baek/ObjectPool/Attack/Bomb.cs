@@ -107,7 +107,7 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
             yield return null;
         }
         ShowParticle();
-        PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, new object[] { EBombState.SET, playerIndex }, options, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, new object[] { EBombState.EXPLOSION, playerIndex }, options, SendOptions.SendReliable);
         /* if (bombData.bombState != null)
              bombData.bombState.BombEvent(EBombState.EXPLOSION, playerIndex);*/
         bombSound.ActiveSound(transform, (int)EBombSound.EXPLOSION);

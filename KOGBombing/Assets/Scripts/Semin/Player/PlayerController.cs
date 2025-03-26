@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         Debug.Log($"Set Respawn");
         blackBoard.Initialize();
         if (!playerData.pv.IsMine) return;
-        PunRespawn();
+        playerData.pv.RPC("PunRespawn", RpcTarget.All);
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.supportWeapon.LoadWeaponIcon();
         playerData.skill.LoadSkillIcon();
@@ -161,6 +161,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         //playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
         playerData.pv.RPC("PunReset", RpcTarget.All);
     }
+    [PunRPC]
     private void PunRespawn()
     {
         blackBoard.Initialize();

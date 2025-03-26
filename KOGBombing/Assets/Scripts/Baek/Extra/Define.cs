@@ -114,8 +114,18 @@ namespace BAEK
     {
         UI,
         SupportUI,
+        Emoticon,
         Attack,
         SupportAttack,
+        Max
+    }
+    public enum ImgLoaderType
+    {
+        Description,
+        Profile,
+        Play,
+        ChooseAvatar,
+        Frame,
         Max
     }
     public enum AttackPrefab
@@ -137,6 +147,7 @@ namespace BAEK
         Bomb,
         LandMine,
         Molotov,
+        NedSkill,
         Max
     }
     public enum SupportUI
@@ -147,6 +158,29 @@ namespace BAEK
         MoveCursor,
         ResultPlayer,
         ResultAvatar,
+        Max
+    }
+
+    public enum Description
+    {
+        Common,
+        Common_Select,
+        Story,
+        Story_Select,
+        PlayNedSkill,
+        PlayUniSkill,
+        Max
+    }
+    public enum PlayUI
+    {
+        Molotov,
+        Landmine,
+        NedSkill,
+        NedSkillActive,
+        UniSkill,
+        UniSkillActive,
+        BattleBoardRed,
+        BattleBoardBlue,
         Max
     }
 }

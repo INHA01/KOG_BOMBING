@@ -313,7 +313,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     {
 		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
-    }
+    }/*
     public bool IsTargetDie()
     {
         if (!Managers.PunData.IsContainKey(blackBoard.observaTargetIndex))
@@ -359,7 +359,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         }
         blackBoard.observaTarget = null;
         return INode.ENodeState.Fail;
-    }
+    }*/
     IEnumerator ResetRigidity(float time)
     {
         yield return new WaitForSeconds(time);

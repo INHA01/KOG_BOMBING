@@ -6,6 +6,7 @@ using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using UnityEditor;
 using System.Collections.Generic;
 using Michsky.UI.Shift;
+using Semin;
 namespace Orpul1
 {
     public class PlayerHealthUpdater : MonoBehaviour
@@ -137,6 +138,7 @@ namespace Orpul1
                 playerData.pv.RPC("SetActiveState", RpcTarget.All, false);
                 if (blackBoard.updateTeamState != null)
                     blackBoard.updateTeamState.UpdateTeamState();
+                StartCoroutine("CoObservePlayer");
             }
             if (groggyCoroutine != null)
                 StopCoroutine(groggyCoroutine);
@@ -187,6 +189,74 @@ namespace Orpul1
                 Damage(blackBoard.playerStatus.maxGroggy / 10, -1);
                 groggyTime = 0;
             }
+        }
+
+        IEnumerator CoObservePlayer()
+        {
+            while(true)
+            {
+                yield return null;
+                if(FindAlivePlayer())
+                {
+                    SetCameraTarget();
+                    break;
+                }
+            }
+            while(true)
+            {
+                yield return null;
+                if (blackBoard.playerStatus.isLive) yield break;
+                if (!IsTargetDie()) continue;
+                if (!FindAlivePlayer()) continue;
+                SetCameraTarget();
+            }
+        }
+        public bool IsTargetDie()
+        {
+            if (!Managers.PunData.IsContainKey(blackBoard.observaTargetIndex))
+                return false;
+
+            bool isLiveTarget = Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive;
+            Debug.Log("PlayerDie Search alive Other Player");
+            if (isLiveTarget)
+                return false;
+            Debug.Log("PlayerDie Observe Other Player");
+            return true;
+        }
+        public bool FindAlivePlayer()
+        {
+            List<PlayerStateData> playerStateList = Managers.PunData.GetAllStateData();
+            Debug.Log("Search Alive Player");
+            bool isFindPlayer = false;
+            for (int i = 0; i < playerStateList.Count; i++)
+            {
+                if (playerStateList[i].rigidBody == null) return false;
+                if (playerStateList[i].playerTeam != playerData.playerTeam) continue;
+                if (playerStateList[i].rigidBody.gameObject == gameObject) continue;
+                if (!playerStateList[i].playerStatus.isLive) continue;
+
+                Debug.Log($"Find Target {playerStateList[i].nickname}");
+                blackBoard.observaTarget = playerStateList[i].observaTarget;
+                blackBoard.observaTargetIndex = 0;
+                blackBoard.observaTargetIndex = playerStateList[i].playerIndex;
+                isFindPlayer = true;
+
+            }
+            blackBoard.observaTarget = null;
+            return isFindPlayer;
+        }
+        public void SetCameraTarget()
+        {
+
+            if (Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive)
+            {
+                blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.observaTarget);
+                blackBoard.viewCamera.transform.LookAt(blackBoard.observaTarget.transform);
+                Debug.Log("Set Camera Look Alive Player");
+                return;
+            }
+            blackBoard.observaTarget = null;
+            return;
         }
     }
    

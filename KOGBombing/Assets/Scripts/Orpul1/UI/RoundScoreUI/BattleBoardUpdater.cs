@@ -165,6 +165,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     }
     public void UpdateTeamScore(ETeam team, ETeamScore updateType)
     {
+        Debug.Log($"UpdateBattleBoard {updateType.ToString()}");
         dicTeamScore[team].SetScore(updateType, 1);
     }
 

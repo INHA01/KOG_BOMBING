@@ -211,6 +211,9 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     {
         if(blackBoard.nickname ==playerPointController.GetKillPlayerNickname().ToString())
             playerData.pv.RPC("PunShowKillUI", RpcTarget.All);
+        //임시 초기화
+        GetComponent<PlayeRescue>().DeactiveRescueCollider();
+
         return INode.ENodeState.Success;
     }
     [PunRPC]

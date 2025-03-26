@@ -1,9 +1,6 @@
-using Knife.Effects.SimpleController;
 using Photon.Pun;
 using Semin;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class DeployableWeapon : DeployableBase

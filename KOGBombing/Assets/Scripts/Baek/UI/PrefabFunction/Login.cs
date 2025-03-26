@@ -29,7 +29,7 @@ public class Login : MonoBehaviourPunCallbacks
     Coroutine checkLogin;
     private void Start()
     {
-        Managers.UI.ShowPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+        Managers.UI.ShowPopupUI<CrossHairController>(UIKEY.CrossHair);
     }
     public void OnLoginClick(int type)  // create와 login 분리하면서 버튼에 따라 type 넣어서 이벤트 진행되도록 함
     {

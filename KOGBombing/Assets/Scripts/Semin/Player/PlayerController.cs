@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         if (bombNotify == null)
             bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], playerData.characterType);
-        blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+        blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHairController>(UIKEY.CrossHair);
         
 
         StartCoroutine("CoMinimapInit");

@@ -38,7 +38,7 @@ public class PlayerShooting : Magazine
         this.attackRange = attackRange;
         this.animator = animator;
         this.playerInfo = playerInfo;
-        hitCursor = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+        hitCursor = Managers.UI.GetPopupUI<CrossHairController>(UIKEY.CrossHair);
     }
     public void RoundChange()
     {

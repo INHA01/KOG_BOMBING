@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ namespace Orpul1
         MainGame,
         END
     }
-    public class CrossHariUpdater : UIPopup, IChangeHitCursorAble, ISetPunInfo
+    public class CrossHairController : UIPopup, IChangeHitCursorAble, ISetPunInfo
     {
         [SerializeField] GameObject cursorObj;
         [SerializeField] Image cursorUI;
@@ -23,6 +24,18 @@ namespace Orpul1
         EScene curCursor = EScene.LobbyScene;
         ETeam playerTeam;
         int playerIndex = 0;
+        void Reset()
+        {
+            cursorList.Clear();
+            cursorObj = transform.GetChild(0).gameObject;
+            cursorUI = cursorObj.transform.GetChild(1).GetComponent<Image>();
+            Sprite cursorHair06 = Resources.Load<Sprite>("UISettings/CrossHair/Crosshair_06");
+            Sprite cursorHair03 = Resources.Load<Sprite>("UISettings/CrossHair/Crosshair_03");
+            cursorList.Add(cursorHair06);
+            cursorList.Add(cursorHair03);
+            cursorCanvas = GetComponent<Canvas>();
+            cursorAnimation = GetComponent<Animator>();
+        }
         void Start()
         {
             Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);

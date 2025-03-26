@@ -49,7 +49,7 @@ namespace Orpul1
 
             ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
             int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-            ISetPunInfo punInfo = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+            ISetPunInfo punInfo = Managers.UI.GetPopupUI<CrossHairController>(UIKEY.CrossHair);
             punInfo.SetPunInfo(mTeam, playerIndex);
         }
         private void InitializeState()

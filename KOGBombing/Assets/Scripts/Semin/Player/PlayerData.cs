@@ -76,6 +76,8 @@ public class PlayerData : MonoBehaviour, IGetTeamTypeable
 
     public void InitializeCount()
     {
+        if (supportWeapon == null) return;
+
         if (supportWeapon is DeployableWeapon)
 			supportWeapon.Initialize(2);
 		else supportWeapon.Initialize(1);

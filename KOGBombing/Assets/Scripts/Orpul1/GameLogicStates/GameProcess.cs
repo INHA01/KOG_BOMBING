@@ -249,7 +249,7 @@ namespace Orpul1
                 roundData.isSetBomb = true;
                 return;
             }
-            Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
+            //Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
             roundData.isSetBomb = false;
             if (!PhotonNetwork.IsMasterClient) return;
             gameData.playerObj.GetComponent<ISetPointable>().SetMissionPoint((ETeam)bombState, playerIndex);

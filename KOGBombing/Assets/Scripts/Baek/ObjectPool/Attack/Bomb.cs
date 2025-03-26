@@ -112,8 +112,6 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
              bombData.bombState.BombEvent(EBombState.EXPLOSION, playerIndex);*/
         bombSound.ActiveSound(transform, (int)EBombSound.EXPLOSION);
         //폭탄 설치한 플레이어 미션 포인트 + 1 이벤트
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.RaiseEvent((int)EPointType.MISSION, bombData.nickname, options, SendOptions.SendReliable);
 
         yield return new WaitForSeconds(0.5f);
         Release();

@@ -152,10 +152,12 @@ public class PlayPointController : MonoBehaviour, ISetPointable
     {
         ETeam playerTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+        if (!pView.IsMine) return;
         pView.RPC("PunDeath", RpcTarget.All, playerIndex, playerTeam);
     }
     public void OnMissionPoint(ETeam playerTeam, int playerIndex)
     {
+        if (!pView.IsMine) return;
         pView.RPC("PunMission", RpcTarget.All, playerIndex, playerTeam);
     }
     public void OnKillPoint()
@@ -172,11 +174,13 @@ public class PlayPointController : MonoBehaviour, ISetPointable
         if (assistPlayerList.Contains(lastAttackPlayerIndex))
             assistPlayerList.Remove(lastAttackPlayerIndex);
         if (assistPlayerList.Count == 0) return;
+        if (!pView.IsMine) return;
         ETeam team = ETeam.BLUETEAM - (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         pView.RPC("PunAssist", RpcTarget.All, assistPlayerList.ToArray(), team);
     }
     public void OnDamagePoint(int index, int damage)
     {
+        if (!pView.IsMine) return;
         ETeam damagePlayerTeam = ETeam.BLUETEAM - (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         pView.RPC("PunDamage", RpcTarget.All, damagePlayerTeam, index, damage);
     }

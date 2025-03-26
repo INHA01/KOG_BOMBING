@@ -227,7 +227,6 @@ namespace Orpul1
         {
             List<PlayerStateData> playerStateList = Managers.PunData.GetAllStateData();
             Debug.Log("Search Alive Player");
-            bool isFindPlayer = false;
             for (int i = 0; i < playerStateList.Count; i++)
             {
                 if (playerStateList[i].rigidBody == null) return false;
@@ -237,13 +236,11 @@ namespace Orpul1
 
                 Debug.Log($"Find Target {playerStateList[i].nickname}");
                 blackBoard.observaTarget = playerStateList[i].observaTarget;
-                blackBoard.observaTargetIndex = 0;
                 blackBoard.observaTargetIndex = playerStateList[i].playerIndex;
-                isFindPlayer = true;
-
+                return true;
             }
             blackBoard.observaTarget = null;
-            return isFindPlayer;
+            return false;
         }
         public void SetCameraTarget()
         {

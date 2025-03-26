@@ -12,19 +12,19 @@ public class TeamProfile : MonoBehaviour
     [SerializeField] TextMeshProUGUI nickName;
     [SerializeField] Image hpBar;
     [SerializeField] Image defenceBar;
-    PlayerBlackBoard blackBoard;
-    public void Init(PlayerBlackBoard blackBoard)
+    PlayerStateData playerStateData;
+    public void Init(PlayerStateData playerStateData)
     {
-        this.blackBoard = blackBoard;
+        this.playerStateData = playerStateData;
         defenceBar.fillAmount = 1;
         hpBar.fillAmount = 1;
-        nickName.text = blackBoard.nickname;
+        nickName.text = playerStateData.nickname.ToString();
     }
     public void UpdateUI()
     {
-        if (blackBoard == null) return;
-        dieIcon.SetActive(!blackBoard.playerStatus.isLive);
-        hpBar.fillAmount = blackBoard.playerStatus.hp / blackBoard.playerStatus.maxHp;
-        defenceBar.fillAmount = blackBoard.playerStatus.defence / blackBoard.playerStatus.maxDefence;
+        if (playerStateData == null) return;
+        dieIcon.SetActive(!playerStateData.playerStatus.isLive);
+        hpBar.fillAmount = playerStateData.playerStatus.hp / playerStateData.playerStatus.maxHp;
+        defenceBar.fillAmount = playerStateData.playerStatus.defence / playerStateData.playerStatus.maxDefence;
     }
 }

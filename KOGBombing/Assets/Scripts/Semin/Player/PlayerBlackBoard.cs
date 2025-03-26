@@ -5,6 +5,7 @@ using Semin;
 using Orpul1;
 using System.Text;
 
+// TODO : 행동트리의 노드 흐름에 관여되는 것만 저장할 것
 public class PlayerBlackBoard : MonoBehaviour
 {
     public Collider playerCollider;
@@ -17,24 +18,21 @@ public class PlayerBlackBoard : MonoBehaviour
     public HpBar hpBar;
     public GameObject fieldOfView;
     public GameObject observaTarget;
-    public StringBuilder observaTargetNickname = new StringBuilder();
+    public int observaTargetIndex = 0;
     public GameObject interactUIObj;
     public Vector2 speedValue;
     public SpeedDebuff speedDebuff = new SpeedDebuff();
-	//public float speedDebuffPercent = 1;
 	public Vector2 mousePos;
     public Vector3 spawnPoint;
-    public ETeam playerTeam;
     public ISetTeamCountAble setTeam;
     public IBombStateAble setBombState;
     public IChangeHitCursorAble cursorUI;
     public IUpdateStateAble updateTeamState;
     public string nickname;
-    public CharacterType characterType;
     public PlayerStatus SOplayerStatus;
     public bool canRespawn = false;
     public bool isSetScore = false;
-    public bool showSoundEffect = false;
+    
 	[HideInInspector] public BombInteraction bombInteraction;
 	[HideInInspector] public PlayerStatus playerStatus;
     public EGameState currentGameState;
@@ -54,7 +52,7 @@ public class PlayerBlackBoard : MonoBehaviour
         hpBar.InitializeValues();
 		hpBar.HideGroggy();
         hpBar.ShowHpUI();
-        observaTargetNickname.Clear();
+        observaTargetIndex = 0;
 
         if (bombInteraction.GetBomb() != null)
         {

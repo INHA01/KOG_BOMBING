@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening.Core.Easing;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using static PlayerAnimation;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PunAnimation : MonoBehaviour
 {
@@ -42,7 +39,7 @@ public class PunAnimation : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
         if (stateInfo.IsName(AnimType.Throw.ToString()))
             return;
-        playerAnime.SetPointToLookAt(pointToLookAt);
+        pView.RPC("SetLookAt", RpcTarget.All, pointToLookAt);
         Vector3 direction = pointToLookAt - rotatePlayer.position;
         direction.y = 0;
         float angle = Vector3.SignedAngle(rotatePlayer.forward, direction, Vector3.up);
@@ -85,6 +82,11 @@ public class PunAnimation : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    private void SetLookAt(Vector3 pointToLookAt)
+    {
+        playerAnime.SetPointToLookAt(pointToLookAt);
+    }
     [PunRPC]
     private void PunRotate(ERotateAniType aniType, bool value)
     {

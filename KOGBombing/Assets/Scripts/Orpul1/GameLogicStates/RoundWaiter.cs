@@ -28,7 +28,9 @@ namespace Orpul1
         public override void EnterState()
         {
             Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play).PublishRound(Managers.RoundData.roundCount);
-            Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).SwitchGuide(false);
+            Interacting interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+            interactUI.SwitchGuide(false);
+            interactUI.gameObject.SetActive(true);
             gameData.playerSetGameState.SetGameState(EGameState.ROUNDWAIT);
             for (int i = 0; i < roundDoorController.Length; i++)
             {
@@ -74,10 +76,10 @@ namespace Orpul1
 
         void SetPlayerPosi()
         {
-            if (!Managers.PunData.IsContainKey(PhotonNetwork.LocalPlayer.NickName)) return;
-            
-            Vector3 spawnPoint = Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).spawnPoint;
-            Managers.PunData.GetPlayerBlackBoard(PhotonNetwork.LocalPlayer.NickName).transform.position = spawnPoint;
+            int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+            if (!Managers.PunData.IsContainKey(playerIndex)) return;
+            Vector3 spawnPoint = Managers.PunData.GetPlayerStateData(playerIndex).spawnPosi;
+            gameData.playerObj.GetComponent<ISetAble<Vector3>>().SetValue(spawnPoint);
         }
         void OoCountDown(EventData punEvent)
         {

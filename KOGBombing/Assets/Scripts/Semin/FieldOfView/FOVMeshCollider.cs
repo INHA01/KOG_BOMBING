@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class FOVMeshCollider : MonoBehaviour
 {
@@ -13,58 +14,43 @@ public class FOVMeshCollider : MonoBehaviour
 	{
 		boxCollider = GetComponent<BoxCollider>();
 	}
+	private bool IsSameTeam(Collider other)
+	{
+        IGetTeamTypeable team = other.GetComponent<PlayerData>();
+        if (team == null)
+            return false;
+
+        ETeam playerTeam = team.GetTeamType();
+
+        if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] == playerTeam)
+            return false;
+
+		return true;
+    }
+	private void SetSpriteColor(PlayerData playerData, int value)
+	{
+        Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
+        color.a = value;
+        playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
+    }
 	private void OnTriggerEnter(Collider other)
 	{
-		PlayerController player = other.GetComponent<PlayerController>();
-		if (player == null) return;
+		if (!IsSameTeam(other)) return;
 
-		ETeam playerTeam = player.blackBoard.playerTeam;
-		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
-		{
-			PlayerData playerData = other.GetComponent<PlayerData>();
-			if (!playerData.pv.IsMine)
-			{
-				Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
-				color.a = 1;
-				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
-			}
-		}
-	}
+        PlayerData playerData = other.GetComponent<PlayerData>();
+        if (playerData.pv.IsMine)
+            return;
 
-	/*private void OnTriggerStay(Collider other)
+		SetSpriteColor(playerData, 1);
+    }
+    private void OnTriggerExit(Collider other)
 	{
-		PlayerController player = other.GetComponent<PlayerController>();
-		if (player == null) return;
-		if (!player.blackBoard.hpBar.IsShowUI())
-		{
-			PlayerData playerData = other.GetComponent<PlayerData>();
-			if (!playerData.pv.IsMine)
-			{
-				Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
-				color.a = 1;
-				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
-			}
-			//player.blackBoard.hpBar.ShowOtherTeamUI();
-			//if (player.blackBoard.playerStatus.isGroggy)
-			//	player.blackBoard.hpBar.ShowGroggy();
-		}
-	}*/
+        if (!IsSameTeam(other)) return;
 
-	private void OnTriggerExit(Collider other)
-	{
-		PlayerController player = other.GetComponent<PlayerController>();
-		if (player == null) return;
+        PlayerData playerData = other.GetComponent<PlayerData>();
+		if (playerData.pv.IsMine) 
+			return;
 
-		ETeam playerTeam = player.blackBoard.playerTeam;
-		if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] != playerTeam)
-		{
-			PlayerData playerData = other.GetComponent<PlayerData>();
-			if (!playerData.pv.IsMine)
-			{
-				Color color = playerData.minimapIcon.GetComponent<SpriteRenderer>().color;
-				color.a = 0;
-				playerData.minimapIcon.GetComponent<SpriteRenderer>().color = color;
-			}
-		}
-	}
+        SetSpriteColor(playerData, 0);
+    }
 }

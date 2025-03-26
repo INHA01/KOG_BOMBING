@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour,IPunObservable
+public class PlayerAnimation : MonoBehaviour
 {
 	public enum AnimType
 	{
@@ -30,7 +30,6 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
     [SerializeField] public Animator animator;
 	[Range(1f, 20f)] public float RotateSpeed;
-	[SerializeField] PhotonView pv;
 	GameObject playerObj;
 	Vector3 pointToLookAt;
 	Vector3 speedValue;
@@ -112,9 +111,9 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 
 	public void SetPointToLookAt(Vector3 pointToLookAt)
 	{
-		this.pointToLookAt = pointToLookAt;
-	}
-	public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)
+        this.pointToLookAt = pointToLookAt;
+    }
+    public void Rotation(Vector3 pointToLookAt, Vector3 speedValue)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(1);
 		if (stateInfo.IsName("Throw"))
@@ -179,12 +178,9 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 	private void OnAnimatorIK(int layerIndex)
 	{
 		if (animator == null) return;
-		if (pv.IsMine)
-		{
-			if (!GetCurAnim(AnimType.Skill))
-				animator.SetLookAtPosition(pointToLookAt);
-		}
-		else
+        if (!GetCurAnim(AnimType.Skill))
+            animator.SetLookAtPosition(pointToLookAt);
+        else
 			animator.SetLookAtPosition(netWorkPointToLookAt);
 		if (GetAnimBool(AnimType.Groggy))
 		{
@@ -199,15 +195,14 @@ public class PlayerAnimation : MonoBehaviour,IPunObservable
 		else animator.SetLookAtWeight(0.5f);
 	}
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+
+    public void ChangeWeapon(PlayerData playerData, int type)
     {
-		if(stream.IsWriting)
-		{
-			stream.SendNext(pointToLookAt);
-		}
-		else if(stream.IsReading)
-		{
-			netWorkPointToLookAt = (Vector3)stream.ReceiveNext();
-		}
+        for (int i = 0; i < playerData.weapons.Count; i++)
+        {
+            if (playerData.weapons[i].type == (WeaponType)type)
+                playerData.weapons[i].obj.SetActive(true);
+            else playerData.weapons[i].obj.SetActive(false);
+        }
     }
 }

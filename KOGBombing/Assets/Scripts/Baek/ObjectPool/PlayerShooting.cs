@@ -38,7 +38,7 @@ public class PlayerShooting : Magazine
         this.attackRange = attackRange;
         this.animator = animator;
         this.playerInfo = playerInfo;
-        hitCursor = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+        hitCursor = Managers.UI.GetPopupUI<CrossHairController>(UIKEY.CrossHair);
     }
     public void RoundChange()
     {
@@ -125,7 +125,7 @@ public class PlayerShooting : Magazine
             {
                 time = 0;
                 magazineCount++;
-                playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.RELOAD);
+                playerData.playerSound.weaponSound.ActiveSound(transform, EWeaponSound.RELOAD,EMixerGroup.EXTRA_ATKSOUND);
                 if (bulletCount == 0)
                     bulletCount = InitBulletCount;
             }

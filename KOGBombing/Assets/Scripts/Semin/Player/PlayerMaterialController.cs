@@ -35,7 +35,7 @@ public class PlayerMaterialController : MonoBehaviour
 	{
 		effectMaterial.skinnedMesh = skinnedMeshRenderers;
 		PlayerBlackBoard blackBoard = GetComponent<PlayerBlackBoard>();
-		if (blackBoard.characterType == Semin.CharacterType.Uni)
+		if (playerData.characterType == Semin.CharacterType.Uni)
 			PoolingToDashTrails();
 	}
 

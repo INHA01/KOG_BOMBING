@@ -1,3 +1,4 @@
+using BAEK;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,10 +29,11 @@ public class Option : UIPopup
         if (yes)
         {
             PhotonNetwork.LeaveRoom();
-            Managers.PunData.Init();
+            Managers.PunData.Initialize();
             Managers.CamData.InitCamera();
             reCheckLobby.SetActive(false);
-            Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetPlayerScore();
+            Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).ResetScore();
+            Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).ActiveFalseAll();
             Managers.SceneLoad.LoadScene("LobbyScene");
         }
         else

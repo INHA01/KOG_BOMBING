@@ -62,7 +62,6 @@ public class BulletController : PooledObject
     }
     protected virtual void OnTriggerEnter(Collider other)
 	{
-        bool isSameTeam = false;
 		if (other.CompareTag("IgnoreBullet"))
 		{
             if (other.GetComponent<Landmine>() != null) return;
@@ -71,13 +70,12 @@ public class BulletController : PooledObject
 
         if (other.tag == "Player")
         {
-            IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
-            hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
 
-            //if (!other.GetComponent<PlayerData>().pv.IsMine) return;
+            IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
+            if (!other.GetComponent<PlayerData>().pv.IsMine) return;
             if (teamType == null) return;
             if (!IsOtherTeam(teamType)) return;
-            isSameTeam = true;
+            hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
             IDamageAble player = other.transform.GetComponent<IDamageAble>();
             if (player != null)
             {

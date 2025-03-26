@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using BAEK;
 using DTT.AreaOfEffectRegions;
+using Orpul1;
+using Semin;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : MonoBehaviour, IGetTeamTypeable
 {
     [Header("Shooting")]
     public Transform[] shootPos = new Transform[(int)ShootPos.Max];
@@ -18,12 +20,14 @@ public class PlayerData : MonoBehaviour
 
     [Header("Photon")]
     public PhotonView pv;
+    public ETeam playerTeam;
 
     [Header("Player Info")]
     public Rigidbody rigidBody;
 	public float timeWithoutDamage;
     public GameObject minimapIcon;
     public SRPCircleRegionProjector pivot;
+    public CharacterType characterType;
 
 	[Header("Model Anim")]
     public GameObject playerObj;
@@ -46,6 +50,7 @@ public class PlayerData : MonoBehaviour
     [Header("Interact")]
     public bool isInteract = false;
     public bool isGroggyInteracting = false;
+    public bool showSoundEffect = false;
 
     [Header("Skill")]
     public ISkill skill;
@@ -75,5 +80,10 @@ public class PlayerData : MonoBehaviour
 			supportWeapon.Initialize(2);
 		else supportWeapon.Initialize(1);
         bomb.Initialize(1);
+    }
+
+    public ETeam GetTeamType()
+    {
+        return playerTeam;
     }
 }

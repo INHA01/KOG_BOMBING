@@ -8,8 +8,6 @@ using UnityEngine;
 
 public abstract class InteractObject : Subject, IInteractAble
 {
-    /*[SerializeField]
-    protected InteractPresenter interactUI;*/
     [SerializeField] 
     protected GameObject lookUiCamera;
     [SerializeField]
@@ -64,6 +62,7 @@ public abstract class InteractObject : Subject, IInteractAble
         PhotonView pView = other.GetComponent<PhotonView>();
         if (!pView.IsMine) return;
         SetOutline(true);
+        interactUI.gameObject.SetActive(true);
         interactUI.ActiveCanInteract(true, InteractUI.Interact);
     }
     protected virtual void OnTriggerExit(Collider other)

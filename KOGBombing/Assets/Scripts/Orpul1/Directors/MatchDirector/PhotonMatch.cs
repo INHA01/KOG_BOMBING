@@ -44,7 +44,7 @@ namespace Orpul1
         public override void OnRoomPropertiesUpdate(PhotonHashTable properties)
         {
             if (!properties.ContainsKey(EPropertyType.ROOMSTATE.ToString())) return;
-            if ((string)properties[EPropertyType.ROOMSTATE.ToString()] != "Start") return;
+            if ((int)properties[EPropertyType.ROOMSTATE.ToString()] != (int)ERoomState.START) return;
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEWAITMATCHPAENL);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAIT } });
@@ -73,7 +73,13 @@ namespace Orpul1
             PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAM.ToString(), team } });
             PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { team.ToString(), teamCounts[(int)team] + 1 } });
         }
-
+        protected void InitRoundData()
+        {
+            Managers.RoundData.Initialize();
+            Managers.PunData.Initialize();
+            Managers.CamData.InitCamera();
+            Managers.PointData.Initialize();
+        }
         protected virtual IEnumerator CoStartDelay()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -81,6 +87,7 @@ namespace Orpul1
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.IsMessageQueueRunning = true;
             }
+            InitRoundData();
             float time = Time.time + matchData.StartDelay;
             int count = 0;
             Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);

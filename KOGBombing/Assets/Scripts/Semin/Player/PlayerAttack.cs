@@ -59,7 +59,7 @@ public class PlayerAttack : PlayerBehavior
 	[PunRPC]
     private void ChangeWeaponAttack(int type)
     {
-        ChangeWeapon(type);
+        animator.ChangeWeapon(playerData, type);
     }
 
 
@@ -75,12 +75,12 @@ public class PlayerAttack : PlayerBehavior
 
     public bool IsUni()
     {
-        return (blackBoard.characterType == CharacterType.Uni);
+        return (playerData.characterType == CharacterType.Uni);
     }
 
     public bool IsNed()
     {
-        return (blackBoard.characterType == CharacterType.Ned);
+        return (playerData.characterType == CharacterType.Ned);
     }
 
 
@@ -119,7 +119,7 @@ public class PlayerAttack : PlayerBehavior
     }
     void InitSkill()
     {
-        switch (blackBoard.characterType)
+        switch (playerData.characterType)
         {
             case CharacterType.Ned:
                 playerData.skill = gameObject.AddComponent<ThrowableSkill>();
@@ -219,6 +219,7 @@ public class PlayerAttack : PlayerBehavior
 					if (animChange == null)
 					{
 						playerData.bomb.Use();
+                        bombNotify.gameObject.SetActive(true);
                         bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
                         bombNotify.SwitchGuide(false);
                         isChangableAnim = true;
@@ -240,7 +241,7 @@ public class PlayerAttack : PlayerBehavior
             {
                 if(playerData.isInteract == true)
                 {
-                    if (blackBoard.playerTeam == ETeam.BLUETEAM)
+                    if (playerData.playerTeam == ETeam.BLUETEAM)
                     {
                         if (blackBoard.bombInteraction.GetBomb() != null)
                             blackBoard.bombInteraction.SetBombInteraction(true);
@@ -351,7 +352,7 @@ public class PlayerAttack : PlayerBehavior
 
     public INode.ENodeState SetSkill()
     {
-        if (blackBoard.characterType != CharacterType.Ned) 
+        if (playerData.characterType != CharacterType.Ned) 
             return INode.ENodeState.Fail;
 
         Ray cameraRay = blackBoard.viewCamera.ScreenPointToRay(blackBoard.mousePos);
@@ -391,7 +392,7 @@ public class PlayerAttack : PlayerBehavior
 
     public INode.ENodeState DashSkill()
     {
-        if (blackBoard.characterType != CharacterType.Uni)
+        if (playerData.characterType != CharacterType.Uni)
             return INode.ENodeState.Fail;
 
 		if (playerData.skill is DashSkill dash)

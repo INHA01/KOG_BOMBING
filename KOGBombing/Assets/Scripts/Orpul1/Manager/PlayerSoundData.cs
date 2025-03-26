@@ -37,6 +37,7 @@ public enum EPingSound
 public enum ESkillSound
 {
     NED_FLASH,
+    NED_MINE,
     UNI_DASH,
     UNI_MINE,
     GREN,
@@ -83,10 +84,10 @@ public class FootSound
 public class SkillSound
 {
     public List<AudioClip> SkillList;
-    public void ActiveSound(Transform transform, ESkillSound soundType)
+    public void ActiveSound(Transform transform, ESkillSound soundType, EMixerGroup eMixer = EMixerGroup.ATTACKSOUND)
     {
         AudioClip skillSound = SkillList[(int)soundType];
-        Managers.Sound.PlayEffect(skillSound, EMixerGroup.ATTACKSOUND, transform, 1, 0, 30);
+        Managers.Sound.PlayEffect(skillSound, eMixer, transform, 1, 0, 30);
     }
 }
 [Serializable]
@@ -118,10 +119,10 @@ public class WeaponSound
         yield return new WaitForSeconds(bombSound.length);
         isPlayingSound = false;
     }
-    public void ActiveSound(Transform transform, EWeaponSound soundType)
+    public void ActiveSound(Transform transform, EWeaponSound soundType, EMixerGroup eMixer = EMixerGroup.ATTACKSOUND)
     {
         AudioClip bombSound = WeaponSoundList[(int)soundType];
-        Managers.Sound.PlayEffect(bombSound, EMixerGroup.ATTACKSOUND, transform, 1, 0, 30);
+        Managers.Sound.PlayEffect(bombSound, eMixer, transform, 1, 0, 30);
     }
 }
 [Serializable]

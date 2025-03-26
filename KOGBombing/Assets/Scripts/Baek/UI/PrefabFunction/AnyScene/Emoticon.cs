@@ -9,11 +9,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+
 public class Emoticon : UIPopup
 {
     [SerializeField] Transform emoticonPos;
     [SerializeField] GameObject pingUI;
     [SerializeField] Image[] emoticonImage = new Image[(int)PingPos.Max];
+    [SerializeField] List<AudioClip> emoticonSounds = new List<AudioClip>();
     GameObject[] emoticons = new GameObject[(int)PingPos.Max];
     public PingPos pingPos = PingPos.Left;
     Vector2 mousePos;
@@ -102,6 +104,8 @@ public class Emoticon : UIPopup
         EmoticonType emoticonPath = (EmoticonType)emoticonType;
         GameObject emoticon = Managers.Resource.Instantiate(FactoryType.Emoticon, (int)emoticonPath, emoticonPos);
         emoticon.transform.position = emoticonPosi;
+        Managers.Sound.PlayEffect(emoticonSounds[(int)emoticonPath], EMixerGroup.UISOUND);
+        //emoticon.transform.position = canvasPos + emoticonPosi;
         StartCoroutine(ShowingEmotincon(emoticon));
     }
 

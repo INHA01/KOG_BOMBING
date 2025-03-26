@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Orpul1;
 using UnityEngine;
 using Semin;
+using Photon.Pun;
+using Photon.Realtime;
 namespace Orpul1
 {
     public class RoundInfoManager
@@ -13,6 +15,11 @@ namespace Orpul1
         int[] teamMissionScore = new int[2];
         Dictionary<string, CharacterType> dicCharacterSelects = new Dictionary<string, CharacterType>();
         private WinnerTeam roundWinTeam;
+        
+        int[] playerMissionScores = new int[2];
+        int[] playerKillScores = new int[2];
+        int[] playerDeathScores = new int[2];
+
         public WinnerTeam RoundWinTeam
         {
             get
@@ -25,19 +32,7 @@ namespace Orpul1
         public int[] TeamMissionScore{ get { return teamMissionScore; } }
         public Dictionary<string, CharacterType> CharacterSelects {  get { return dicCharacterSelects; } }
 
-        public WinnerTeam WinTeam
-        { 
-            get 
-            {
-                int result = teamScore[(int)WinnerTeam.REDTEAM] - teamScore[(int)WinnerTeam.BLUETEAM];
-                if (result > 1)
-                    return WinnerTeam.REDTEAM;
-                else if (result < 0)
-                    return WinnerTeam.BLUETEAM;
-
-                return WinnerTeam.DRAW;
-            } 
-        }
+        public WinnerTeam WinTeam;
         public void Initialize()
         {
             for (int i = 0; i < 2; i++) 
@@ -47,6 +42,7 @@ namespace Orpul1
                 teamMissionScore[i] = 0;
             }
             dicCharacterSelects.Clear();
+            roundCount = 1;
             roundWinTeam = WinnerTeam.REDTEAM;
         }
         public void IncreaseTeamKillScore(ETeam type)
@@ -73,6 +69,68 @@ namespace Orpul1
                 return;
             }
             dicCharacterSelects.Add(nickname, type);
+        }
+        public void CalcWinTeam()
+        {
+            WinTeam = GetWinTeam();
+        }
+        private WinnerTeam GetWinTeam()
+        {
+            int result = teamScore[(int)WinnerTeam.REDTEAM] - teamScore[(int)WinnerTeam.BLUETEAM];
+            if (result > 1)
+                return WinnerTeam.REDTEAM;
+            else if (result < 0)
+                return WinnerTeam.BLUETEAM;
+
+            return GetSameScoreWinTeam();
+        }
+
+        /// <summary>
+        /// °ø°Ý ÆÀ ½Â¸®: 1,
+        /// ¹æ¾î ÆÀ ½Â¸®: 0,
+        /// µ¿Á¡: -1
+        /// </summary>
+        /// <returns>int</returns>
+        private WinnerTeam GetSameScoreWinTeam()
+        {
+            WinnerTeam winnerTeam = CalcMissionPoint();
+            if (winnerTeam == WinnerTeam.DRAW)
+            {
+                return CalcKillDeathScore();
+            }
+            return WinnerTeam.REDTEAM;
+        }
+        private WinnerTeam CalcMissionPoint()
+        {
+            Player[] players = PhotonNetwork.PlayerList;
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                PlayerPointInfo pointInfo = Managers.PointData.GetPlayerInfo(players[i].NickName);
+                ETeam team = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
+                playerMissionScores[(int)team] += pointInfo.MissionPoint;
+                playerKillScores[(int)team] += pointInfo.KillPoint;
+                playerDeathScores[(int)team] += pointInfo.DeathPoint;
+            }
+            int scoreResult = playerMissionScores[(int)WinnerTeam.REDTEAM] - playerMissionScores[(int)WinnerTeam.BLUETEAM];
+
+            if (scoreResult > 0)
+            {
+                return WinnerTeam.REDTEAM;
+            }
+            else if (scoreResult < 0)
+            {
+                return WinnerTeam.DRAW;
+            }
+            return WinnerTeam.BLUETEAM;
+        }
+        private WinnerTeam CalcKillDeathScore()
+        {
+            int redTeamScore = playerKillScores[(int)WinnerTeam.REDTEAM] / (playerDeathScores[(int)WinnerTeam.REDTEAM] + 1);
+            int blueTeamScore = playerKillScores[(int)WinnerTeam.BLUETEAM] / (playerDeathScores[(int)WinnerTeam.BLUETEAM] + 1);
+            if (redTeamScore > blueTeamScore)
+                return WinnerTeam.REDTEAM;
+            return WinnerTeam.BLUETEAM;
         }
     }
 

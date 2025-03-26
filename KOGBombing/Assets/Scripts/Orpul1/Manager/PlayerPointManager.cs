@@ -10,7 +10,7 @@ namespace Orpul1
 {
     public class PlayerPointManager
     {
-        private Dictionary<string, PlayerPointInfo> dicPlayers = new Dictionary<string, PlayerPointInfo>();
+        private Dictionary<string, PlayerPointInfo> dictPlayers = new Dictionary<string, PlayerPointInfo>();
         private List<string> myTeamPlayers = new List<string>();
         private List<string> otherTeamPlayers = new List<string>();
 
@@ -37,9 +37,10 @@ namespace Orpul1
         }
         public void Initialize()
         {
-            dicPlayers.Clear();
+            dictPlayers.Clear();
             myTeamPlayers.Clear();
             bestPlayer.Clear();
+            otherTeamPlayers.Clear();
         }
         public void SetBestPlayer()
         {
@@ -47,9 +48,9 @@ namespace Orpul1
             int bestPlayerIndex = 0;
             for(int i=0; i<myTeamPlayers.Count; i++)
             {
-                float deathPoint = dicPlayers[myTeamPlayers[i]].DeathPoint;
-                float killPoint = dicPlayers[myTeamPlayers[i]].KillPoint;
-                float assistPoint = dicPlayers[myTeamPlayers[i]].AsistPoint;
+                float deathPoint = dictPlayers[myTeamPlayers[i]].DeathPoint;
+                float killPoint = dictPlayers[myTeamPlayers[i]].KillPoint;
+                float assistPoint = dictPlayers[myTeamPlayers[i]].AsistPoint;
                 float total = (killPoint + assistPoint) / (deathPoint + 1);
                 if (maxPoint < total) 
                 {
@@ -63,17 +64,17 @@ namespace Orpul1
         
         public void AddPlayerInfo(string key, PlayerPointInfo info)
         {
-            if (dicPlayers.ContainsKey(key)) return;
-            dicPlayers.Add(key, info);
+            if (dictPlayers.ContainsKey(key)) return;
+            dictPlayers.Add(key, info);
         }
         public void RemovePlayerInfo(string key)
         {
-            if (!dicPlayers.ContainsKey(key)) return;
-            dicPlayers.Remove(key);
+            if (!dictPlayers.ContainsKey(key)) return;
+            dictPlayers.Remove(key);
         }
         public PlayerPointInfo GetPlayerInfo(string key)
         {
-            return dicPlayers[key];
+            return dictPlayers[key];
         }
         public void AddPoint(string key, EPointType type)
         {
@@ -81,20 +82,20 @@ namespace Orpul1
             switch (type)
             {
                 case EPointType.KILL:
-                    score = dicPlayers[key].KillPoint;
-                    dicPlayers[key].SetKillPoint(score + 1);
+                    score = dictPlayers[key].KillPoint;
+                    dictPlayers[key].SetKillPoint(score + 1);
                     break;
                 case EPointType.DEATH:
-                    score = dicPlayers[key].DeathPoint;
-                    dicPlayers[key].SetDeathPoint(score + 1);
+                    score = dictPlayers[key].DeathPoint;
+                    dictPlayers[key].SetDeathPoint(score + 1);
                     break;
                 case EPointType.ASSIST:
-                    score = dicPlayers[key].AsistPoint;
-                    dicPlayers[key].SetAsistePoint(score + 1);
+                    score = dictPlayers[key].AsistPoint;
+                    dictPlayers[key].SetAsistePoint(score + 1);
                     break;
                 case EPointType.MISSION:
-                    score = dicPlayers[key].MissionPoint;
-                    dicPlayers[key].SetMissionPoint(score + 1);
+                    score = dictPlayers[key].MissionPoint;
+                    dictPlayers[key].SetMissionPoint(score + 1);
                     break;
             }
         }

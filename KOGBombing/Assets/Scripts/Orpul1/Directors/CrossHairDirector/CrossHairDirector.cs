@@ -9,7 +9,7 @@ namespace Orpul1
     {
         private void Start()
         {
-            Managers.UI.ShowPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+            Managers.UI.ShowPopupUI<CrossHairController>(UIKEY.CrossHair);
         }
     }
 }

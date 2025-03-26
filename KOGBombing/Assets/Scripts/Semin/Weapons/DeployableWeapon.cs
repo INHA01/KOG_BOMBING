@@ -1,8 +1,6 @@
-using Knife.Effects.SimpleController;
 using Photon.Pun;
 using Semin;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeployableWeapon : DeployableBase
@@ -10,9 +8,9 @@ public class DeployableWeapon : DeployableBase
 	Vector3 position;
 	Landmine landmine;
 	protected override void Init()
-	{
-		count = 2;
-		base.Init();
+    {
+        count = 2;
+        base.Init();
 	}
 
 	public override void Initialize(int count)
@@ -32,7 +30,9 @@ public class DeployableWeapon : DeployableBase
     [PunRPC]
     public virtual void PutConsum()
     {
-        playerData.playerSound.skillSound.ActiveSound(transform, ESkillSound.UNI_MINE);
+		ESkillSound mineSound = (ESkillSound)((int)playerData.characterType * 2) + (int)ESkillSound.NED_MINE;
+		EMixerGroup eMixer = playerData.characterType == CharacterType.Ned ? EMixerGroup.EXTRA_ATKSOUND : EMixerGroup.ATTACKSOUND;
+		playerData.playerSound.skillSound.ActiveSound(transform, mineSound, eMixer);
         StartCoroutine(PutAfterAnim());
     }
 

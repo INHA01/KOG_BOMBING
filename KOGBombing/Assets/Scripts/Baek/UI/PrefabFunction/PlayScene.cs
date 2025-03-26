@@ -26,7 +26,7 @@ public class PlayScene : UIPopup
     [SerializeField] GameObject teamProfile;
     [SerializeField] GameObject killLogo;
     [SerializeField] KillLogUpdater killLogUpdater;
-    Dictionary<string,TeamProfile> dicTeamProfile = new Dictionary<string,TeamProfile>();
+    Dictionary<int,TeamProfile> dicTeamProfile = new Dictionary<int,TeamProfile>();
     [Header("ScoreIcon")]
     public TextMeshProUGUI timer;
     [SerializeField] GameObject roundGuide;
@@ -119,23 +119,23 @@ public class PlayScene : UIPopup
         animator.Rebind();
         animator.Play("RoundGuide", 0, 0);
     }
-    public void SetTeam(PlayerBlackBoard blackBoard)
+    public void SetTeam(PlayerStateData playerStateData)
     {
         GameObject go = null;
         go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.PlayProfile, teamProfile.transform);
         go.transform.localScale = Vector3.one;
         TeamProfile profile = go.GetComponent<TeamProfile>();
-        profile.Init(blackBoard);
-        dicTeamProfile.Add(blackBoard.nickname, profile);
+        profile.Init(playerStateData);
+        dicTeamProfile.Add(playerStateData.playerIndex, profile);
     }
     public void UpdateKillLog(PlayerInfo[] logInfos)
     {
         killLogUpdater.UpdateKillLog(logInfos);
     }
-    public void UpdateProfile(string nickname)
+    public void UpdateProfile(int key)
     {
-        if (!dicTeamProfile.ContainsKey(nickname)) return;
-        dicTeamProfile[nickname].UpdateUI();
+        if (!dicTeamProfile.ContainsKey(key)) return;
+        dicTeamProfile[key].UpdateUI();
     }
     public void UpdateScore(ETeam team, int score)
     {

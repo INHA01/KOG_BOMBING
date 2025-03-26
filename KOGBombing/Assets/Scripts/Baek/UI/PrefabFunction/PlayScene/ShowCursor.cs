@@ -68,7 +68,7 @@ namespace BAEK
             }
             return cursorPos;
         }
-        public void ShowSoundCursor(Vector3 soundPos, int cursorType, PlayerBlackBoard player)
+        public void ShowSoundCursor(Vector3 soundPos, int cursorType, PlayerData player)
         {
             GameObject soundEffect = null;
             for (int i = 0; i < soundCursor.Count; i++)
@@ -101,7 +101,7 @@ namespace BAEK
             }
             StartCoroutine(SoundCursorEffect(soundPos, soundEffect, player));
         }
-        IEnumerator SoundCursorEffect(Vector3 soundPos, GameObject go, PlayerBlackBoard player)
+        IEnumerator SoundCursorEffect(Vector3 soundPos, GameObject go, PlayerData player)
         {
             float time = 0;
             while (true)

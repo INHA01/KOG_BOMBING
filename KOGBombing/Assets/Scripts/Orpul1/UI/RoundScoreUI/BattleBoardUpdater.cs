@@ -36,20 +36,14 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     [SerializeField] Sprite[] halfRoundImages;
     [SerializeField] Image[] displayHalfRoundImages;
     bool isAlreadyReset = false;
-    void Awake()
-    {
-        Initialize();
-    }
     void OnEnable()
     { 
         LoadTeamPanelIcon();
     }
     public void Initialize()
     {
-        if (isAlreadyReset) return;
         SetTeamScore();
         SetPlayerScore();
-        isAlreadyReset = true;
     }
     private void SetPlayersMapping()
     {
@@ -93,7 +87,7 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
             dictPlayerScore.Add(players.ElementAt(i).Value.NickName, playerScoreUI);
         }
     }
-    public void ResetPlayerScore()
+    public void ResetScore()
     {
         for (int i = 0; i < dictPlayerScore.Count; i++)
         {
@@ -112,11 +106,16 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
 
     private void SetTeamScore()
     {
-        for (int i = 0; i < teamScorePanels.Length; i++) 
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        ETeam otherTeam = ETeam.BLUETEAM - (int)mTeam;
+        int[] teamIndex = new int[] { (int)mTeam, (int)otherTeam };
+        for (int i = 0; i < (int)ETeam.END; i++)
         {
             ISetScoreable<ETeamScore> teamScoreUI = teamScorePanels[i].GetComponent<ISetScoreable<ETeamScore>>();
-            dicTeamScore.Add((ETeam)i, teamScoreUI);
+            teamScoreUI.Initialize();
+            dicTeamScore.Add((ETeam)teamIndex[i], teamScoreUI);
         }
+        
     }
 
     public void UpdatePlayerScore(StringBuilder nickname, EPlayerScore updateType , int score)
@@ -148,11 +147,8 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         }
 
         teamScorePanels[0].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = myK.ToString();
-        
         teamScorePanels[0].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = myM.ToString();
-
         teamScorePanels[1].transform.GetChild((int)TeamScore.Kill).GetComponent<TextMeshProUGUI>().text = otherK.ToString();
-        
         teamScorePanels[1].transform.GetChild((int)TeamScore.MissionPoint).GetComponent<TextMeshProUGUI>().text = otherM.ToString();
     }
     public void UpdateTeamWinScore()

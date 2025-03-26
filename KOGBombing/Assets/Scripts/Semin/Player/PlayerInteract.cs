@@ -13,7 +13,7 @@ public class PlayerInteract : PlayerBehavior, IRescueAble
     [PunRPC]
 	private void ChangeWeaponInteract(int type)
 	{
-		ChangeWeapon(type);
+        animator.ChangeWeapon(playerData, type);
 	}
 	public INode.ENodeState CanBehavior()
     {

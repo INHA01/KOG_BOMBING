@@ -2,13 +2,16 @@ using UnityEngine;
 using System.Collections.Generic;
 using Photon.Pun;
 using System.Collections;
+using System.Text;
 using Orpul1;
 using BAEK;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
-public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IResetAble, ISetGameStateAble, IGetTeamTypeable,ISetAble<bool>
+using UnityEngine.InputSystem.XR;
+public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IResetAble, ISetGameStateAble,ISetAble<bool>, ISetAble<Vector3>
 {
-	[SerializeField]
-    public PlayerBlackBoard blackBoard;
+
+    [SerializeField] public PlayerBlackBoard blackBoard;
+    [SerializeField] PlayerStateData playerStateData = new PlayerStateData();
 	public Dictionary<EKey, bool> Inputs { get { return blackBoard.inputs; } }
 	public Vector3 SpawnPoint { set { blackBoard.spawnPoint = value; } }
     bool canBombInteract = false;
@@ -24,16 +27,11 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     PlayerData playerData;
 	PlayerMaterialController playerMaterialController;
     Interacting bombNotify;
-
-    bool isInitComplete = false;
     void Awake()
     {
-        isInitComplete = false;
         InitPlayerData();
-        StartCoroutine("CoMinimapInit");
         if (!playerData.pv.IsMine) return;
-        playerData.pv.RPC("SendBlackBoard", RpcTarget.All);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.CHARACTER.ToString(), blackBoard.characterType } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.CHARACTER.ToString(), playerData.characterType } });
     }
     IEnumerator CoMinimapInit()
     {
@@ -64,14 +62,23 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         ETeam playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
         if (bombNotify == null)
             bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
-        playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], blackBoard.characterType);
-        isInitComplete = true;
-        blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
-    }
+        playerData.animator.Init(playerData.playerObj, playerTeam, playerData.shootPos[(int)ShootPos.Start], playerData.characterType);
+        blackBoard.cursorUI = Managers.UI.GetPopupUI<CrossHairController>(UIKEY.CrossHair);
+        
 
+        StartCoroutine("CoMinimapInit");
+    }
+    IEnumerator CoSetTeamUI(TeamUIController teamUIController)
+    {
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        int teamCount = (int)PhotonNetwork.CurrentRoom.CustomProperties[mTeam.ToString()];
+        while (Managers.PunData.DataCount != teamCount) yield return null;
+        teamUIController.SetTeamUI(playerShooting);
+    }
     public void SetTeamUI(TeamUIController controller)
     {
-        StartCoroutine(WaitSetTeamUI(controller));
+        blackBoard.updateTeamState = controller;
+        StartCoroutine(CoSetTeamUI(controller));
     }
     private void InitPlayerData()
 	{
@@ -85,28 +92,26 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         blackBoard.canRespawn = false;
         blackBoard.nickname = playerData.pv.Owner.NickName;
         blackBoard.playerIndex = (int)playerData.pv.Owner.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-        blackBoard.playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
-    }
-	[PunRPC]
-	private void SendBlackBoard()
-	{
-        Managers.PunData.AddPlayerBlackBoard(playerData.pv.Owner.NickName, blackBoard);
-    }
-    IEnumerator WaitSetTeamUI(TeamUIController controller)
-	{
-        while (Managers.PunData.blackBoardCnt != PhotonNetwork.CurrentRoom.PlayerCount || !isInitComplete) yield return null;
-		Debug.Log($"isDataAllGet {Managers.PunData.blackBoardCnt}");
-        controller.SetTeamUI(playerShooting);
-        blackBoard.updateTeamState = controller;
+        playerData.playerTeam = (ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
 
+        playerStateData.playerStatus = blackBoard.playerStatus;
+        playerStateData.playerTeam = playerData.playerTeam;
+        playerStateData.playerIndex = blackBoard.playerIndex;
+        playerStateData.rigidBody = playerData.rigidBody;
+        playerStateData.nickname = new StringBuilder(playerData.pv.Owner.NickName);
+        ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+        if(mTeam == playerStateData.playerTeam)
+            Managers.PunData.AddPlayerBlackBoard(playerStateData);
     }
-	public void Init(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
+
+    public void Initialize(Camera camera, Vector3 spawnPosi,GameObject roundEventObj)
 	{
         blackBoard.viewCamera = camera;
 		blackBoard.spawnPoint = spawnPosi;
         blackBoard.setTeam = roundEventObj.GetComponent<ISetTeamCountAble>();
         blackBoard.setBombState = roundEventObj.GetComponent<IBombStateAble>();
-	}
+        playerStateData.spawnPosi = blackBoard.spawnPoint;
+    }
 
     private void Update()
     {
@@ -132,7 +137,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     [PunRPC]
     private void DestroyPlayer()
     {
-        Debug.Log($"DestroyPlayer {blackBoard.nickname}");
         playerShooting.DoDestory();
         playerData.supportWeapon.DoDestory();
         playerData.bomb.DoDestory();
@@ -157,12 +161,12 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             PlayerData playerD = colliders[i].GetComponent<PlayerData>();
             if (colliders[i].tag == "Player" && !playerD.pv.IsMine)
             {
-                PlayerBlackBoard player = colliders[i].GetComponent<PlayerBlackBoard>();
+                PlayerData playerData = colliders[i].GetComponent<PlayerData>();
                 ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
-                if (player.playerTeam != blackBoard.playerTeam && !player.showSoundEffect)
+                if (playerData.GetTeamType() != this.playerData.playerTeam && !playerData.showSoundEffect)
                 {
-                    player.showSoundEffect = true;
-                    showCursor.ShowSoundCursor(player.transform.position, 2, player);
+                    playerData.showSoundEffect = true;
+                    showCursor.ShowSoundCursor(playerData.transform.position, 2, playerData);
                 }
             }
         }
@@ -178,33 +182,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
         bombNotify.ActiveCanInteract(isActive, InteractUI.InteractBomb);
         playerData.isInteract = isActive;
     }
-    /*void ConfirmBombInteract()
-    {
-        bool tagBomb = false;
-        Collider[] colliders = Physics.OverlapSphere(blackBoard.transform.position, 1f);
-        for(int i = 0; i < colliders.Length; i++)
-        {
-            if (
-                (blackBoard.playerTeam == ETeam.REDTEAM && colliders[i].tag == "BombInteract")
-                ||
-                (blackBoard.playerTeam == ETeam.BLUETEAM && colliders[i].tag == "Bomb")
-               )
-            {
-                if (blackBoard.inputs[EKey.NUM_2])
-                {
-                    bombNotify.ActiveCanInteract(true, InteractUI.InteractBomb);
-                    tagBomb = true;
-                    playerData.isInteract = true;
-                }
-            }
-        }
-        
-        if (!tagBomb && bombNotify != null)
-        {
-            bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
-            playerData.isInteract = false;
-        }
-    }*/
     public void SetGameState(EGameState state)
     {
         if (EGameState.ROUNDENDWAIT == state)
@@ -214,19 +191,15 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
             blackBoard.playerStatus.canSettingBomb = true;
     }
 
-    public ETeam GetTeamType()
-    {
-        return blackBoard.playerTeam;
-    }
     private bool IsAttackTeamInteractBomb(string tag)
     {
-        if (blackBoard.playerTeam != ETeam.REDTEAM) return false;
+        if (playerData.playerTeam != ETeam.REDTEAM) return false;
         if (tag != "BombInteract") return false;
         return true;
     }
     private bool IsDefenceTeamInteractBomb(string tag)
     {
-        if (blackBoard.playerTeam != ETeam.BLUETEAM) return false;
+        if (playerData.playerTeam != ETeam.BLUETEAM) return false;
         if (tag != "Bomb") return false;
         return true;
     }
@@ -240,7 +213,6 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     private void OnCollisionExit(Collision collision)
     {
         if (collision.collider.tag != "BombInteract" & collision.collider.tag != "Bomb") return;
-        Debug.Log($"BombInteract False!");
         canBombInteract = false;
         SetBombInteract(false);
         
@@ -253,7 +225,11 @@ public class PlayerController : MonoBehaviour,ITeamUIInitAble, IDestroyAble,IRes
     public void SetValue(bool value)
     {
         canBombInteract = value;
-        Debug.Log($"canBombInteract {value}");
         if(!value) SetBombInteract(false);
+    }
+
+    public void SetValue(Vector3 spawnPosi)
+    {
+        transform.position = playerStateData.spawnPosi;
     }
 }

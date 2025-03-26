@@ -62,6 +62,8 @@ namespace Orpul1
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVECUSTOMROOMPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.ACTIVEMATCHINGPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.STARTGAME);
+            InitRoundData();
+
             float time = Time.time + matchData.StartDelay;
             Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDCOUNT);
             while (Time.time < time) yield return null;

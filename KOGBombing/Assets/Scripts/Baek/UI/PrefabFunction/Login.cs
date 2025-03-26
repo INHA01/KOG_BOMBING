@@ -1,8 +1,10 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using BAEK;
 using Orpul1;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class Login : MonoBehaviourPunCallbacks
@@ -27,7 +29,7 @@ public class Login : MonoBehaviourPunCallbacks
     Coroutine checkLogin;
     private void Start()
     {
-        Managers.UI.ShowPopupUI<CrossHariUpdater>(UIKEY.CrossHair);
+        Managers.UI.ShowPopupUI<CrossHairController>(UIKEY.CrossHair);
     }
     public void OnLoginClick(int type)  // create와 login 분리하면서 버튼에 따라 type 넣어서 이벤트 진행되도록 함
     {
@@ -80,6 +82,7 @@ public class Login : MonoBehaviourPunCallbacks
         Managers.Sound.PlayUISound(EUiSoundType.CLICK);
         Managers.UserData.userData = new UserData("User");
         Managers.UserData.userData.nickName = "User" + Random.Range(0, 1000);
+        
         PhotonNetwork.ConnectUsingSettings();
     }
     public override void OnConnectedToMaster()

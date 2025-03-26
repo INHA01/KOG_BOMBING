@@ -147,10 +147,14 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     public void DoReset()
     {
         Debug.Log($"Set Respawn");
+        playerData.pv.RPC("PunReset", RpcTarget.All);
+    }
+    [PunRPC]
+    private void PunReset()
+    {
         blackBoard.playerStatus.isBombDefuse = false;
         blackBoard.canRespawn = true;
     }
-
 
     void ConfirmSoundEffect()
     {

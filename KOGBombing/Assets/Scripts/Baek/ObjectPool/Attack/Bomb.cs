@@ -61,11 +61,12 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
             bombNotify = Managers.UI.ShowPopupUI<Interacting>(UIKEY.Interacting);
         else
             bombNotify.gameObject.SetActive(true);
-        if (bombData.bombState != null)
-            bombData.bombState.BombEvent(EBombState.SET, -1);
+        PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, new object[] { EBombState.SET, -1 }, options, SendOptions.SendReliable);
+        /*if (bombData.bombState != null)
+            bombData.bombState.BombEvent(EBombState.SET, -1);*/
         bombNotify.NotifyBombSet();
     }
-    private void OnCollisionStay(Collision collision)
+    /*private void OnCollisionStay(Collision collision)
     {
         PlayerBlackBoard player = collision.collider.GetComponent<PlayerBlackBoard>();
         if (player != null)
@@ -78,14 +79,15 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
                 player.playerStatus.isBombDefuse = false;
                 // ÆøÅº ÇØÁ¦ ¸ðµç ÇÃ·¹ÀÌ¾îµé¿¡°Ô Notify
                 bombNotify.NotifyBombDefuse();
-                Debug.Log("ÆøÅº ÇØÁ¦");
-                if (bombData.bombState != null)
-                    bombData.bombState.BombEvent(EBombState.CLEAR, player.playerIndex);
                 Release();
+                Debug.Log("ÆøÅº ÇØÁ¦");
+                *//*
+                if (bombData.bombState != null)
+                    bombData.bombState.BombEvent(EBombState.CLEAR, player.playerIndex);*//*
                 //RPCDestroy();
             }
         }
-    }
+    }*/
   /*  private void OnTriggerStay(Collider other)
     {
         PlayerBlackBoard player = other.GetComponent<PlayerBlackBoard>();
@@ -144,8 +146,9 @@ public class Bomb : AttackConsum,IDefendencyAble<BombData>,IResetAble
             yield return null;
         }
         ShowParticle();
-        if (bombData.bombState != null)
-            bombData.bombState.BombEvent(EBombState.EXPLOSION, playerIndex);
+        PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, new object[] { EBombState.SET, playerIndex }, options, SendOptions.SendReliable);
+        /* if (bombData.bombState != null)
+             bombData.bombState.BombEvent(EBombState.EXPLOSION, playerIndex);*/
         bombSound.ActiveSound(transform, (int)EBombSound.EXPLOSION);
         //ÆøÅº ¼³Ä¡ÇÑ ÇÃ·¹ÀÌ¾î ¹Ì¼Ç Æ÷ÀÎÆ® + 1 ÀÌº¥Æ®
         if (PhotonNetwork.IsMasterClient)

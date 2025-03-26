@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BAEK
+{ 
+    public class AttackFactory : FactoryBase
+    {
+        [SerializeField] GameObject[] _attackPrefabs = new GameObject[(int)AttackPrefab.Max];
+
+        public override T GetPrefab<T>(int index)
+        {
+            if(typeof(T) == typeof(GameObject))
+            {
+                return (T)(object)_attackPrefabs[index];
+            }
+            return _attackPrefabs[index].GetComponent<T>();
+        }
+    }
+}

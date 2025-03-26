@@ -1,3 +1,4 @@
+using BAEK;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
@@ -80,7 +81,7 @@ public class Result : MonoBehaviour
             else
                 resultText[i].gameObject.SetActive(false);
         }
-        GameObject resultAvatar = Managers.Resource.Instantiate("UIPrefabs/Scene/PlayScene/EndGame/ResultAvatar");
+        GameObject resultAvatar = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.ResultAvatar);
         resultAvatar.GetComponent<ISetWinTypeable>().SetWinType((ResultTeam)type);
         // 데이터 저장
         SaveRecordData();
@@ -249,7 +250,7 @@ public class Result : MonoBehaviour
                 levelText[0].text = currentLevel.ToString();
                 levelText[1].text = nextLevel.ToString();
             }
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.001f);
         }
         
         isFillFinish = true;

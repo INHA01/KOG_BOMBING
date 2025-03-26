@@ -26,15 +26,14 @@ public abstract class ThrowableBase : SupportWeaponBase
 
 	protected virtual void Awake()
 	{
-		decal = Managers.Resource.Instantiate("SupportWeapon/AttackRagneDecal").GetComponent<DecalProjector>();
-		lineRendererToTarget = Managers.Resource.Instantiate("SupportWeapon/AttackLineRenderer").GetComponent<LineRenderer>();
-		lineRendererToRange = Managers.Resource.Instantiate("SupportWeapon/AttackRangeLineRenderer").GetComponent<LineRenderer>();
-		decal.gameObject.SetActive(false);
+		decal = Managers.Resource.Instantiate(FactoryType.SupportAttack , (int)SupportAttackPrefab.AttackRangeDecal ,transform).GetComponent<DecalProjector>();
+        lineRendererToTarget = Managers.Resource.Instantiate(FactoryType.SupportAttack, (int)SupportAttackPrefab.AttackLineRenderer, transform).GetComponent<LineRenderer>();
+		lineRendererToRange = Managers.Resource.Instantiate(FactoryType.SupportAttack, (int)SupportAttackPrefab.AttackRangeLineRenderer, transform).GetComponent<LineRenderer>();
+
+        decal.gameObject.SetActive(false);
 		lineRendererToTarget.gameObject.SetActive(false);
 		lineRendererToRange.gameObject.SetActive(false);
-		decal.transform.parent = transform;
-		lineRendererToTarget.transform.parent = transform;
-		lineRendererToRange.transform.parent = transform;
+
 		lineRendererToTarget.positionCount = lineCnt;
 
 		count = 1;

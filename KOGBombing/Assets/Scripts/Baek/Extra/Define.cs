@@ -61,7 +61,7 @@ namespace BAEK
         Max,
     }
     public enum ProfileCharacterType
-    { 
+    {
         Elvacia_1,
         Elvacia_2,
         Ned_1,
@@ -108,6 +108,45 @@ namespace BAEK
         Bottom,
         Right,
         Left,
+        Max
+    }
+    public enum FactoryType
+    {
+        UI,
+        SupportUI,
+        Attack,
+        SupportAttack,
+        Max
+    }
+    public enum AttackPrefab
+    {
+        Magazine,
+        Bullet,
+        BulletHide,
+        AttackRange,
+        NoAttackRange,
+        MaxAttackRange,
+        Max
+    }
+    public enum SupportAttackPrefab
+    {
+        AttackRangeDecal,
+        AttackLineRenderer,
+        AttackRangeLineRenderer,
+        WarningAreaDecal,
+        Bomb,
+        LandMine,
+        Molotov,
+        Max
+    }
+    public enum SupportUI
+    {
+        ChooseAvatar,
+        ChooseIconBack,
+        PlayProfile,
+        MoveCursor,
+        ResultPlayer,
+        ResultAvatar,
         Max
     }
 }

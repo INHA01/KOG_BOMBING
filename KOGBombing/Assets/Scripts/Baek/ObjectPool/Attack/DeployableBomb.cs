@@ -34,7 +34,10 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
     public override void Use()
     {
         count--;
-        base.Use();
+        if (count == 0 && playerData.pv.IsMine)
+        {
+            playScene.subWeaponFades[1].SetActive(true);
+        }
         playerData.pv.RPC("PutBomb", RpcTarget.All);
     }
 

@@ -184,7 +184,7 @@ namespace Orpul1
         {
             if (!PhotonNetwork.IsMasterClient) return;
             if (roundData.teamCounts[(int)ETeam.REDTEAM] == 0 && roundData.isSetBomb) return;
-            IncreaseTeamScore(winnerTeam);
+            //IncreaseTeamScore(winnerTeam);
             EGameState nextRound = GetNextRoundState();
             object[] customDatas = new object[] { nextRound, winnerTeam, roundData.teamScores };
             PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, customDatas, gameData.options, sendOptions);
@@ -249,9 +249,10 @@ namespace Orpul1
                 roundData.isSetBomb = true;
                 return;
             }
-            //Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
+            Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
             roundData.isSetBomb = false;
             if (!PhotonNetwork.IsMasterClient) return;
+            Debug.Log("OnBombEvent UpMissionScore");
             gameData.playerObj.GetComponent<ISetPointable>().SetMissionPoint((ETeam)bombState, playerIndex);
             RaiseEventRoundEnd((ETeam)bombState);
         }

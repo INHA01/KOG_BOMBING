@@ -1,3 +1,4 @@
+using BAEK;
 using Knife.Effects.SimpleController;
 using Orpul1;
 using Photon.Pun;
@@ -46,8 +47,8 @@ public class ThrowableSkill : ThrowableBase, ISkill
             playScene.SetSkillIcon(CharacterType.Ned);
 		}
 
-        consum = Managers.Resource.Load<AttackConsum>("Prefabs/SupportWeapon/Skill/ShockGrenade");
-		type = WeaponType.SHOCK_GRENADE;
+		consum = Managers.Resource.Load<AttackConsum>(BAEK.FactoryType.SupportAttack, (int)SupportAttackPrefab.NedSkill);
+        type = WeaponType.SHOCK_GRENADE;
 		this.playerData = playerData;
 
 		decal.size = new Vector3(consum.GetComponent<ShockGrenade>().Range, consum.GetComponent<ShockGrenade>().Range, decal.size.z);

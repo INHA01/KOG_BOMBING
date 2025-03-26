@@ -8,6 +8,7 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using BAEK;
 
 public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
 {
@@ -59,10 +60,10 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     ETeam LoadTeamPanelIcon()
     {
         ETeam mine = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-        string teamPanel = mine == ETeam.REDTEAM ? "Red" : "Blue";
-        string otherTeamPanel = mine == ETeam.REDTEAM ? "Blue" : "Red";
-        teamPanels[0].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + teamPanel + "_BG");
-        teamPanels[1].sprite = Managers.Resource.Load<Sprite>("UISettings/BattleBoard_Popup/BattleBoard_UI_" + otherTeamPanel + "_BG");
+        PlayUI teamPanel = mine == ETeam.REDTEAM ? PlayUI.BattleBoardRed : PlayUI.BattleBoardBlue;
+        PlayUI otherTeamPanel = mine == ETeam.REDTEAM ? PlayUI.BattleBoardBlue : PlayUI.BattleBoardRed;
+        teamPanels[0].sprite = Managers.Resource.LoadImg(ImgLoaderType.Play, (int)teamPanel);
+        teamPanels[1].sprite = Managers.Resource.LoadImg(ImgLoaderType.Play, (int)otherTeamPanel);
         return mine;
     }
     private void SetPlayerScore()

@@ -145,14 +145,15 @@ public class PlayScene : UIPopup
     }
     public void SetSubWeaponIcon(WeaponType type)
     {
-        string name = type == WeaponType.LANDMINE ? "Landmine" : "Grenade_Flash";
-        subWeaponIcon.sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Item/T_Gui_Icon_Consumables_{name}");
+        PlayUI name = type == WeaponType.LANDMINE ? PlayUI.Landmine : PlayUI.Molotov;
+        subWeaponIcon.sprite = Managers.Resource.LoadImg(ImgLoaderType.Play, (int)name);
     }
     public void SetSkillIcon(CharacterType type)
     {
-        string name = type == CharacterType.Ned ? "Ned" : "Uni";
-        skillIcon[0].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill_Active");
-        skillIcon[1].GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"UISettings/Play/Play_UI_Skill/Play_UI_{name}_Skill");
+        PlayUI name = type == CharacterType.Ned ? PlayUI.NedSkill : PlayUI.UniSkill;
+        PlayUI activeName = type == CharacterType.Ned ? PlayUI.NedSkillActive : PlayUI.UniSkillActive;
+        skillIcon[0].GetComponent<Image>().sprite = Managers.Resource.LoadImg(ImgLoaderType.Play, (int)activeName);
+        skillIcon[1].GetComponent<Image>().sprite = Managers.Resource.LoadImg(ImgLoaderType.Play, (int)name);
         SetSkillActive(true);
     }
     public void SetSkillActive(bool isActive)

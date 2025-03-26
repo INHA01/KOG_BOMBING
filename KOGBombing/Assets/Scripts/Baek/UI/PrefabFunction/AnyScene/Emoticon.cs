@@ -44,10 +44,9 @@ public class Emoticon : UIPopup
         for(int i = 0; i < (int)PingPos.Max; i++)
         {
             emoticonType = (EmoticonType)Managers.UserData.userData.emoticon[i];
-            string path = emoticonType.ToString();
-            emoticonImage[i].sprite = Managers.Resource.Load<Sprite>("UISettings/Emoticon/" + path);
-            emoticons[i] = Managers.Resource.Instantiate("UIPrefabs/Emoticon/" + path, emoticonPos);
+            emoticons[i] = Managers.Resource.Instantiate(FactoryType.Emoticon, (int)emoticonType, emoticonPos);
             emoticons[i].SetActive(false);
+            emoticonImage[i].sprite = emoticons[i].GetComponent<Image>().sprite;
         }
     }
     public void OnEmoticon(InputValue value)
@@ -103,7 +102,7 @@ public class Emoticon : UIPopup
         Vector2 emoticonPosi = (Vector2)receiveDatas[1];
 
         EmoticonType emoticonPath = (EmoticonType)emoticonType;
-        GameObject emoticon = Managers.Resource.Instantiate("UIPrefabs/Emoticon/" + emoticonPath.ToString(), emoticonPos);
+        GameObject emoticon = Managers.Resource.Instantiate(FactoryType.Emoticon, (int)emoticonPath, emoticonPos);
         emoticon.transform.position = emoticonPosi;
         Managers.Sound.PlayEffect(emoticonSounds[(int)emoticonPath], EMixerGroup.UISOUND);
         //emoticon.transform.position = canvasPos + emoticonPosi;

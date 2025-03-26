@@ -186,7 +186,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
 
 		return INode.ENodeState.Success;
     }*/
-    [PunRPC]
+    /*[PunRPC]
     private void PunRespawn()
     {
         blackBoard.Initialize();
@@ -196,7 +196,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
 
 		this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-	}
+	}*/
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;

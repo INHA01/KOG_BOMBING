@@ -185,7 +185,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 
 		return INode.ENodeState.Success;
-    }*/
+    }*//*
     [PunRPC]
     private void PunRespawn()
     {
@@ -196,7 +196,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
 
 		this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-	}
+	}*/
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;

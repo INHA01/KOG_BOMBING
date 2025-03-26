@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 3516118447706832109}
   - component: {fileID: 3512808323563732157}
   - component: {fileID: 3640985674366247685}
+  - component: {fileID: 6889157027376509780}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
@@ -328,7 +329,7 @@ Animator:
   m_GameObject: {fileID: 3734198023152331101}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1c863efcf4f8939459a0b2df40b413fe, type: 2}
+  m_Controller: {fileID: 9100000, guid: adcd88418f80ca54591ad0bc134dc5a8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 2
   m_ApplyRootMotion: 0
@@ -339,6 +340,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!225 &6889157027376509780
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3734198023152331101}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3734369249883905171
 GameObject:
   m_ObjectHideFlags: 0

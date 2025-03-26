@@ -10,17 +10,18 @@ public class TeamScoreBoardModel
     Action<ETeamScore> updateUI;
     Dictionary<ETeamScore, StringBuilder> dictScoreText = new Dictionary<ETeamScore, StringBuilder>();
     public Dictionary<ETeamScore, StringBuilder> ScoreText { get { return dictScoreText; } }
-    int score = 0;
-    public int Score { get { return score; } }
+    List<int> scoreList = new List<int>();
     public TeamScoreBoardModel(Action<ETeamScore> updateUI)
     {
         this.updateUI = updateUI;
+        scoreList.Clear();
+        for (int i = 0; i < (int)ETeamScore.END; i++)
+            scoreList.Add(0);
         Initialize();
     }
     public void Initialize()
     {
         dictScoreText.Clear();
-        score = 0;
         for (int i = 0; i < (int)ETeamScore.END; i++)
         {
             dictScoreText.Add((ETeamScore)i, new StringBuilder());
@@ -28,9 +29,9 @@ public class TeamScoreBoardModel
     }
     public void SetScore(ETeamScore type, int score)
     {
-        this.score = score;
+        scoreList[(int)type] += score;
         dictScoreText[type].Clear();
-        dictScoreText[type].Append(this.score);
+        dictScoreText[type].Append(this.scoreList[(int)type]);
         updateUI(type);
     }
 }

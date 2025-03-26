@@ -123,14 +123,14 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
     }
 	
-    [PunRPC]
+    /*[PunRPC]
     private void ShowHitCursor(byte playerIndex, byte playerTeam)
     {
         ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         if (playerTeam == (byte)mTeam) return;
         if (playerIndex != mPlayerIndex) return;
-    }
+    }*/
     [PunRPC]
     public void HitEffectToPivot()
     {
@@ -276,7 +276,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         if (playerData.pv.IsMine)
         {
             Debug.Log($"OnDamged index {playerIndex}");
-            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
+            //playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
             playerPointController.OnDamagePoint(playerIndex, (int)damage);
             PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
             blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
@@ -292,10 +292,8 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
-        if(playerData.pv.IsMine)
-        {
-            PunHitMaterial();
-        }
+        PunHitMaterial();
+
         healthUpdater.Damage(damage, playerIndex);
 	}
     private void SetActiveState(bool isDie)

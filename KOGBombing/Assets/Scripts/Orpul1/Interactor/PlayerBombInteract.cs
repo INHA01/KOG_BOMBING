@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Orpul1
 {
-    public class PlayerInteractUIUpdater : MonoBehaviour
+    public class PlayerBombInteract : MonoBehaviour
     {
         [SerializeField] GameObject player;
         [SerializeField] PlayerBlackBoard blackBoard;

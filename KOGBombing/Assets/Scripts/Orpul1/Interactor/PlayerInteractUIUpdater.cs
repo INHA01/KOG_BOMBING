@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BAEK;
 using Photon.Pun;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -10,15 +11,60 @@ namespace Orpul1
     public class PlayerInteractUIUpdater : MonoBehaviour
     {
         [SerializeField] GameObject player;
+        [SerializeField] PlayerBlackBoard blackBoard;
+        [SerializeField] PlayerData playerData;
         ISetAble<bool> setCanActiveUI;
-        Interacting interactUI;
+        Interacting bombNotify;
+        bool canBombInteract = false;
         
         IEnumerator Start()
         {
             yield return null;
-            interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
+            bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
             setCanActiveUI = player.GetComponent<ISetAble<bool>>();
-            interactUI.ActiveCanInteract(false, InteractUI.Interact);
+            bombNotify.ActiveCanInteract(false, InteractUI.Interact);
+        }
+        private void Update()
+        {
+            ConfirmBombInteract();
+        }
+        void ConfirmBombInteract()
+        {
+            bool isActive = (canBombInteract && blackBoard.inputs[EKey.NUM_2]);
+            if (isActive == false) return;
+            SetBombInteract(isActive);
+        }
+        private void SetBombInteract(bool isActive)
+        {
+            bombNotify.ActiveCanInteract(isActive, InteractUI.InteractBomb);
+            playerData.isInteract = isActive;
+        }
+
+        private bool IsAttackTeamInteractBomb(string tag)
+        {
+            if (playerData.playerTeam != ETeam.REDTEAM) return false;
+            if (tag != "BombInteract") return false;
+            return true;
+        }
+        private bool IsDefenceTeamInteractBomb(string tag)
+        {
+            if (playerData.playerTeam != ETeam.BLUETEAM) return false;
+            if (tag != "Bomb") return false;
+            return true;
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            string tag = other.tag;
+
+            if (IsAttackTeamInteractBomb(tag) || IsDefenceTeamInteractBomb(tag))
+                canBombInteract = true;
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            string tag = other.tag;
+            if (tag != "BombInteract" & tag != "Bomb") return;
+            canBombInteract = false;
+            SetBombInteract(false);
         }
         /*private void SetCanActiveUI(string tag, bool value)
         {

@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 
 public abstract class FactoryBase : MonoBehaviour
 {
-    [SerializeField] protected List<AssetReferenceGameObject> rfPrefabs = new List<AssetReferenceGameObject>();
+    [SerializeField] protected AssetReferenceGameObject[] rfPrefabs;
     public abstract void Init();
     public abstract T GetPrefab<T>(int index);
 }

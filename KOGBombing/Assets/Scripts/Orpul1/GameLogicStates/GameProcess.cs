@@ -13,39 +13,40 @@ namespace Orpul1
     [Serializable]
     public class RoundData
     {
-        private int[] roomTeamCounts;
-        public int[] teamScores;
-        public int[] teamCounts;
-        public int[] secondHalfScores = new int[2];
-        public int[] canGetScore = new int[2] { 3, 3 }; 
-        public int processRoundCnt;
-        public int maxRoundScore;
-        public int winScoreGap;
-        public int switchRoundScore;
+        private byte[] roomTeamCounts;
+        public byte[] teamScores;
+        public byte[] teamCounts;
+        public byte[] secondHalfScores = new byte[2];
+        public byte[] canGetScore = new byte[2] { 3, 3 }; 
+        public byte processRoundCnt;
+        public byte maxRoundScore;
+        public byte winScoreGap;
+        public byte switchRoundScore;
         public bool isAlreadySwitchRoll;
         public bool isSetBomb;
         public bool isEndRound;
         public void Init()
         {
-            teamScores = new int[2];
-            teamCounts = new int[2];
-            roomTeamCounts = new int[2];
+            teamScores = new byte[2];
+            teamCounts = new byte[2];
+            roomTeamCounts = new byte[2];
             isAlreadySwitchRoll = false;
             for (int i=0; i<(int)ETeam.END; i++)
             {
                 EPropertyType teamType = (EPropertyType)i;
-                roomTeamCounts[i] = (int)PhotonNetwork.CurrentRoom.CustomProperties[teamType.ToString()];
+                int type = (int)PhotonNetwork.CurrentRoom.CustomProperties[teamType.ToString()];
+                roomTeamCounts[i] = (byte)type;
                 teamScores[i] = 0;
                 teamCounts[i] = roomTeamCounts[i];
             }
         }
         private void SwapTeam()
         {
-            int tempScore = teamScores[(int)ETeam.REDTEAM];
+            byte tempScore = teamScores[(int)ETeam.REDTEAM];
             teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
             teamScores[(int)ETeam.BLUETEAM] = tempScore;
 
-            int teamCount = roomTeamCounts[(int)ETeam.REDTEAM];
+            byte teamCount = roomTeamCounts[(int)ETeam.REDTEAM];
             roomTeamCounts[(int)ETeam.REDTEAM] = roomTeamCounts[(int)ETeam.BLUETEAM];
             roomTeamCounts[(int)ETeam.BLUETEAM] = teamCount;
 
@@ -55,7 +56,8 @@ namespace Orpul1
             for (int i = 0; i < (int)ETeam.END; i++)
             {
                 ETeam team = (ETeam)i;
-                teamCounts[(int)team] = (int)PhotonNetwork.CurrentRoom.CustomProperties[team.ToString()];
+                int count = (int)PhotonNetwork.CurrentRoom.CustomProperties[team.ToString()];
+                teamCounts[(int)team] = (byte)count;
             }
         }
         public bool IsSwitchRoll()
@@ -183,6 +185,11 @@ namespace Orpul1
             Debug.Log("RaiseEventRoundEND");
             IncreaseTeamScore(winnerTeam);
             EGameState nextRound = GetNextRoundState();
+            if (nextRound == EGameState.SWITCHTEAMROLL)
+            {
+                Debug.Log($"SWITCHTEAMROLL redTeam {roundData.teamScores[(int)ETeam.REDTEAM]}");
+                Debug.Log($"SWITCHTEAMROLL blueTeam {roundData.teamScores[(int)ETeam.BLUETEAM]}");
+            }
             object[] customDatas = new object[] { nextRound, winnerTeam, roundData.teamScores };
             PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, customDatas, gameData.options, sendOptions);
         }
@@ -202,10 +209,11 @@ namespace Orpul1
             object[] datas = (object[])punData.CustomData;
             nextRoundState = (EGameState)datas[0];
             winnerTeam = (ETeam)datas[1];
-            roundData.teamScores = (int[])datas[2];
-
+            byte[] scores= (byte[])datas[2];
+            roundData.teamScores = scores;
             Managers.RoundData.SetRoundWinTeam((WinnerTeam)winnerTeam);
-            Managers.RoundData.SetTeamScore(winnerTeam, roundData.teamScores[(int)winnerTeam]);
+            Managers.RoundData.SetTeamScore(ETeam.REDTEAM, roundData.teamScores[(int)ETeam.REDTEAM]);
+            Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, roundData.teamScores[(int)ETeam.BLUETEAM]);
             int winScore = Managers.RoundData.TeamScore[(int)winnerTeam];
             gameData.battleBoard.UpdateTeamScore(winnerTeam, ETeamScore.WINSCORE, winScore);
 

@@ -8,6 +8,16 @@ namespace BAEK
     {
         [SerializeField] GameObject[] _attackPrefabs = new GameObject[(int)AttackPrefab.Max];
 
+        public override void Init()
+        {
+            for (int i = 0; i < _attackPrefabs.Length; i++)
+            {
+                rfPrefabs[i].LoadAssetAsync().Completed += (load) =>
+                {
+                    _attackPrefabs[i] = load.Result;
+                };
+            }
+        }
         public override T GetPrefab<T>(int index)
         {
             if(typeof(T) == typeof(GameObject))

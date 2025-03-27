@@ -39,6 +39,26 @@ public class UserData
             emoticon[i] = 0;
         }
     }
+    public static bool operator ==(UserData a, UserData b)
+    {
+        if (a.userId != b.userId || a.nickName != b.nickName || a.kill != b.kill || a.death != b.death
+            || a.win != b.win || a.lose != b.lose || a.assist != b.assist || a.mission != b.mission
+            || a.level != b.level || a.exp != b.exp || a.profileType != b.profileType)
+        {
+            return false;
+        }
+        return true;
+    }
+    public static bool operator !=(UserData a, UserData b)
+    {
+        if (a.userId != b.userId || a.nickName != b.nickName || a.kill != b.kill || a.death != b.death
+            || a.win != b.win || a.lose != b.lose || a.assist != b.assist || a.mission != b.mission
+            || a.level != b.level || a.exp != b.exp || a.profileType != b.profileType)
+        {
+            return true;
+        }
+        return false;
+    }
 }
 public class UserDataManager
 {
@@ -136,13 +156,7 @@ public class UserDataManager
     public bool CheckUserDataLoadComplete()
     {
         UserData data = GetUserData();
-        bool isComplete = true;
-        if (userData.level != data.level || userData.exp != data.exp
-            || userData.kill != data.kill || userData.death != data.death 
-            || userData.win != data.win || userData.lose != data.lose 
-            || userData.assist != data.assist || userData.mission != data.mission) isComplete = false;
-
-        return isComplete;
+        return userData == data;
     }
     public void SettingNickName(string nickName)
     {

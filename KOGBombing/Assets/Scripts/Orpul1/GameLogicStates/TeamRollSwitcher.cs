@@ -53,6 +53,7 @@ namespace Orpul1
         }
         private void SwitchTeamRoll()
         {
+            //Managers.RoundData.TeamRollSwitch();
             ETeam setTeam = ETeam.REDTEAM;
             if ((ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
                 setTeam = ETeam.BLUETEAM;

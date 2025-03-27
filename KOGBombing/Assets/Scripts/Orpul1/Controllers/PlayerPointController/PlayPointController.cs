@@ -135,9 +135,10 @@ public class PlayPointController : MonoBehaviour, ISetPointable
         string[] playerList = GetPlayerList(team);
         StringBuilder targetPlayer = new StringBuilder(playerList[playerIndex]);
         Debug.Log("PunMission UpMissionScore");
-        updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);
-        updateScore.UpdateTeamScore(team, ETeamScore.MISSIONSCORE);
         Managers.PointData.AddPoint(targetPlayer.ToString(), EPointType.MISSION);
+        int missionPoint = Managers.PointData.GetPlayerInfo(targetPlayer.ToString()).MissionPoint;
+        updateScore.UpdatePlayerScore(targetPlayer, EPlayerScore.MISSIONSCORE);
+        //updateScore.UpdateTeamScore(team, ETeamScore.MISSIONSCORE, missionPoint);
     }
     
     [PunRPC]

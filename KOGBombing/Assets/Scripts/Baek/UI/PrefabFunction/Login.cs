@@ -43,7 +43,7 @@ public class Login : MonoBehaviourPunCallbacks
         else
         {
             Managers.FirebaseAuth.Login(_inputFields[(int)TextType.EMAIL].text, _inputFields[(int)TextType.PW].text);
-            time = 1;
+            time = 3;
         }
         // 여기서 로그인,회원가입 성공 여부 확인
         if (checkLogin == null)
@@ -55,7 +55,6 @@ public class Login : MonoBehaviourPunCallbacks
 		// 여기에 로그인 중, 혹은 회원가입 중 패널 띄우기
 		splashScreenAnimator.Play("Loading", -1, 0f);
 		yield return new WaitForSeconds(time);
-        splashScreenAnimator.Play("Loading Out", -1, 0f);
 		checkLogin = null;
 		if (Managers.FirebaseAuth.isLogin)
         {
@@ -74,7 +73,13 @@ public class Login : MonoBehaviourPunCallbacks
 		}
         if (Managers.UserData.userData.nickName == "User")
             Managers.UserData.SettingNickName("User" + Random.Range(0, 1000));
-
+        yield return new WaitForSeconds(3.0f);
+        while (!Managers.UserData.CheckUserDataLoadComplete())
+        {
+            yield return new WaitForSeconds(1.0f);
+            Managers.UserData.LoadUserData();
+        }
+        splashScreenAnimator.Play("Loading Out", -1, 0f);
         PhotonNetwork.ConnectUsingSettings();
 	}
     public void OnGuestClick()

@@ -56,8 +56,7 @@ public class UserDataManager
 
     public void SaveUserData()
     {
-        if (auth == null) return;
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
             string json = JsonUtility.ToJson(userData);
@@ -73,14 +72,10 @@ public class UserDataManager
                 }
             });
         }
-        else
-        {
-            Debug.LogError("No user is signed in.");
-        }
     }
     public void LoadUserData()
     {
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
             databaseReference.Child("users").Child(userId).Child("Data").GetValueAsync().ContinueWith(task =>
@@ -111,7 +106,7 @@ public class UserDataManager
     }
     public UserData GetUserData()
     {
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
             databaseReference.Child("users").Child(userId).Child("Data").GetValueAsync().ContinueWith(task =>
@@ -151,7 +146,7 @@ public class UserDataManager
     }
     public void SettingNickName(string nickName)
     {
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             // 다른 유저가 사용중인 닉네임이 아니라면
             databaseReference.Child("users").OrderByChild("Data/nickName").EqualTo(nickName).GetValueAsync().ContinueWith(task =>

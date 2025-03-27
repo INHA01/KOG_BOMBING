@@ -30,7 +30,7 @@ public class CharacterSelect : GameProcessLogic
         halfRound.SetHalfRound(roundState);
         _choosePlayerUI = Managers.UI.ShowPopupUI<UIPopup>(BAEK.UIKEY.CharacterChoose);
         EventBusSystem.Subscribe(EndSelectCharacter);
-        _choosePlayerUI.GetComponent<ChoosePlayer>().Init();
+        _choosePlayerUI.GetComponent<PhotonChoosePlayer>().Init();
         isSelectCharacter = false;
         gameData.selectCharacterPath.Clear();
         Debug.Log("Character Select State");

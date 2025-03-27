@@ -27,6 +27,8 @@ public class PlayerRescueInteract : MonoBehaviour
         if (!blackBoardInfo.playerStatus.isGroggy) return;
         if (interactUI == null) SetInteractUI();
         if (!playerData.pv.IsMine) return;
+        ETeam otherTeam = other.GetComponent<IGetTeamTypeable>().GetTeamType();
+        if (otherTeam != playerData.playerTeam) return;
         Debug.Log("Active Interact Trigger");
         interactUI.gameObject.SetActive(true);
         interactUI.ActiveCanInteract(true, InteractUI.Interact);

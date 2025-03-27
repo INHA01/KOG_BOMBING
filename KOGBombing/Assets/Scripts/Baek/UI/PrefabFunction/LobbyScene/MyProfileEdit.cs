@@ -33,7 +33,7 @@ namespace BAEK
         {
             StartCoroutine(InitProfilData());
         }
-        void InitProfile()
+        public void InitProfile()
         {
             ChangeProfileImage(Managers.UserData.userData.profileType);
             nickName.text = Managers.UserData.userData.nickName;
@@ -55,18 +55,6 @@ namespace BAEK
             yield return new WaitForSeconds(0.1f);
             InitProfile();
         }
-
-        public void OpenProfile()
-        {
-            profileEditPanel[(int)PanelType.ProfileEdit].SetActive(true);
-        }
-        public void CloseProfile()
-        {
-            ChangeProfileImage(Managers.UserData.userData.profileType);
-            StartCoroutine(InitProfilData());
-            //profileEditPanel[(int)PanelType.ProfileImgEdit].SetActive(false);
-            //profileEditPanel[(int)PanelType.ProfileEdit].SetActive(false);
-        }
         public void SaveProfile()
         {
             Managers.UserData.SettingNickName(nickName.text);
@@ -74,7 +62,7 @@ namespace BAEK
             Managers.UserData.SaveUserData();
             Lobby lobby = GetComponent<Lobby>();
             lobby.SetNickName(nickName.text);
-            CloseProfile();
+            InitProfile();
         }
         public void ProfileImgEditPopup(int type = 1)
         {

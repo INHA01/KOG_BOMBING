@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BAEK;
 using Photon.Pun;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Orpul1
 {

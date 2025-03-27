@@ -133,9 +133,9 @@ public class Result : MonoBehaviour
     void LoadRecordFrame(int score, RecordType type)
     {
         int frameIndex = 0;
-        if (score > 5)
+        if (score >= 5)
             frameIndex = 2;
-        else if (score > 3)
+        else if (score >= 3)
             frameIndex = 1;
         recordFrame[(int)type].sprite = Managers.Resource.LoadImg(ImgLoaderType.Frame, frameIndex + 31);
     }

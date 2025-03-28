@@ -13,6 +13,10 @@ public class ResourceManager : MonoBehaviour
         {
             yield return factories[i].Init();
         }
+        for (int i = 0; i < imgLoaders.Length; i++)
+        {
+            yield return imgLoaders[i].Init();
+        }
     }
     public T Load<T>(FactoryType type, int index) where T : Object
     {

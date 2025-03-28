@@ -6,13 +6,15 @@ using UnityEngine;
 public class ProfileLoader : ImgLoaderBase
 {
     [SerializeField] Sprite[] profileSprites = new Sprite[(int)ProfileCharacterType.Max * 2];
-    public void Reset()
+    
+    public override IEnumerator Init()
     {
-        for(int i = 0; i < (int)ProfileCharacterType.Max; i++)
+        yield return base.Init();
+        for (int i = 0; i < rfSprites.Length; i++)
         {
-            ProfileCharacterType profileType = (ProfileCharacterType)i;
-            profileSprites[i] = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Crop/Profile_" + profileType.ToString());
-            profileSprites[i + (int)ProfileCharacterType.Max] = Managers.Resource.Load<Sprite>("UISettings/CharacterProfile/Profile_" + profileType.ToString());
+            var load = rfSprites[i].LoadAssetAsync();
+            yield return load;
+            profileSprites[i] = load.Result;
         }
     }
     public override Sprite LoadImg(int index)

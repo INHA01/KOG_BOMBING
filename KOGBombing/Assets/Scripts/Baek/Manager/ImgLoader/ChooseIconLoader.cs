@@ -8,13 +8,14 @@ namespace BAEK
     {
         [SerializeField] Sprite[] chooseIconSprites = new Sprite[(int)ProfileCharacterType.Max * 2];
 
-        public void Reset()
+        public override IEnumerator Init()
         {
-            for (int i = 0; i < (int)ProfileCharacterType.Max; i++)
+            yield return base.Init();
+            for (int i = 0; i < rfSprites.Length; i++)
             {
-                ProfileCharacterType profileType = (ProfileCharacterType)i;
-                chooseIconSprites[i] = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Profile_" + profileType.ToString());
-                chooseIconSprites[i + (int)ProfileCharacterType.Max] = Managers.Resource.Load<Sprite>("Prefabs/UIPrefabs/Scene/PlayScene/ChoosePlayer/Crop/Top_Profile_" + profileType.ToString());
+                var load = rfSprites[i].LoadAssetAsync();
+                yield return load;
+                chooseIconSprites[i] = load.Result;
             }
         }
         public override Sprite LoadImg(int index)

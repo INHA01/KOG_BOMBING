@@ -179,6 +179,7 @@ public class PlayerAttack : PlayerBehavior
                 float waitTime = 5.0f;
                 if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime)) // 폭탄 설치
                 {
+                    blackBoard.rigidBody.velocity = Vector2.zero;
                     bombInteractTime += Time.deltaTime;
                     bombNotify.Interact(bombInteractTime / waitTime);
 
@@ -246,6 +247,7 @@ public class PlayerAttack : PlayerBehavior
                         if (blackBoard.bombInteraction.GetBomb() != null)
                             blackBoard.bombInteraction.SetBombInteraction(true);
                     }
+                    blackBoard.rigidBody.velocity = Vector2.zero;
                     playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
                     //playerData.isInteract = true;
                     bombInteractTime = 0;

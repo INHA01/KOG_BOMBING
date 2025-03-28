@@ -1,27 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class CheatController : MonoBehaviour
 {
-    [SerializeField] RoundData roundData;
-    [SerializeField] GameProcess gameProcess;
-    [SerializeField] GameDirector gameDirector;
-    bool isGameEnd = false;
-    bool isSwitchRoll = false;
-    private void Awake()
+    RaiseEventOptions options = new RaiseEventOptions();
+    /* [SerializeField] RoundData roundData;
+     [SerializeField] GameProcess gameProcess;
+     [SerializeField] GameDirector gameDirector;
+     bool isGameEnd = false;
+     bool isSwitchRoll = false;
+     private void Awake()
+     {
+         roundData = gameProcess.RoundData;
+     }*/
+    private void Start()
     {
-        roundData = gameProcess.RoundData;
+        options.Receivers = ReceiverGroup.All;
     }
     private void OnGUI()
     {
-        GUI.Label(new Rect(Screen.width * 0.25f, 100, 200, 100), "GameState " + gameDirector.CurState.ToString());
+        //GUI.Label(new Rect(Screen.width * 0.25f, 100, 200, 100), "GameState " + gameDirector.CurState.ToString());
         if (!PhotonNetwork.IsMasterClient) return;
-        RoundCheat();
+        bool isExplosionEvent = GUI.Button(new Rect(Screen.width * 0.25f, 200, 200, 100), "BombExplosion");
+        if(isExplosionEvent)
+        {
+            object[] datas = new object[] { EBombState.EXPLOSION ,0};
+            PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, datas, options, SendOptions.SendReliable);
+        }
+        //RoundCheat();
     }
-    private void RoundCheat()
+    /*private void RoundCheat()
     {
         for (int i = 0; i < (int)ETeam.END; i++)
         {
@@ -64,5 +77,5 @@ public class CheatController : MonoBehaviour
             }
             gameProcess.DoCheatGameEnd(ETeam.BLUETEAM);
         }
-    }
+    }*/
 }

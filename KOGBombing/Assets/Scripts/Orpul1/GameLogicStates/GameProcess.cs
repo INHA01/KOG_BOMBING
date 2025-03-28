@@ -7,6 +7,8 @@ using TMPro;
 using System;
 using BAEK;
 using DG.Tweening;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Orpul1
 {
@@ -42,6 +44,7 @@ namespace Orpul1
         }
         private void SwapTeam()
         {
+            Managers.RoundData.TeamRollSwitch();
             byte tempScore = teamScores[(int)ETeam.REDTEAM];
             teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
             teamScores[(int)ETeam.BLUETEAM] = tempScore;
@@ -134,12 +137,14 @@ namespace Orpul1
             PhotonNetwork.NetworkingClient.EventReceived += OnRoundEnd;
             PhotonNetwork.NetworkingClient.EventReceived += OnDecreaseTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived += OnBombEvent;
+            PhotonNetwork.NetworkingClient.EventReceived += OnSetRoundScore;
         }
         private void UnSubscribeEvent()
         {
             PhotonNetwork.NetworkingClient.EventReceived -= OnRoundEnd;
             PhotonNetwork.NetworkingClient.EventReceived -= OnDecreaseTeamCount;
             PhotonNetwork.NetworkingClient.EventReceived -= OnBombEvent;
+            PhotonNetwork.NetworkingClient.EventReceived -= OnSetRoundScore;
         }
         public override void UpdateState()
         {
@@ -185,13 +190,10 @@ namespace Orpul1
             Debug.Log("RaiseEventRoundEND");
             IncreaseTeamScore(winnerTeam);
             EGameState nextRound = GetNextRoundState();
-            if (nextRound == EGameState.SWITCHTEAMROLL)
-            {
-                Debug.Log($"SWITCHTEAMROLL redTeam {roundData.teamScores[(int)ETeam.REDTEAM]}");
-                Debug.Log($"SWITCHTEAMROLL blueTeam {roundData.teamScores[(int)ETeam.BLUETEAM]}");
-            }
             object[] customDatas = new object[] { nextRound, winnerTeam, roundData.teamScores };
+            object[] scoreDatas = new object[] { Managers.RoundData.TeamKillScore, roundData.teamScores, Managers.RoundData.TeamMissionScore, nextRound };
             PhotonNetwork.RaiseEvent((int)PunEventType.ENDROUND, customDatas, gameData.options, sendOptions);
+            PhotonNetwork.RaiseEvent((int)PunEventType.SETROUNDSCORE, scoreDatas, gameData.options, sendOptions);
         }
         private void RaiseEventDecreaseTeamCount(ETeam teamType)
         {
@@ -201,7 +203,31 @@ namespace Orpul1
         {
             PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, new object[]{ bombState, playerIndex }, gameData.options, sendOptions);
         }
+        private void OnSetRoundScore(EventData punData)
+        {
+            if (punData.Code != (int)PunEventType.SETROUNDSCORE)
+                return;
 
+            object[] datas = (object[])punData.CustomData;
+            EGameState nextGameState = (EGameState)datas[datas.Length - 1];
+
+            if (nextRoundState == EGameState.SWITCHTEAMROLL)
+                    gameData.battleBoard.SwapTeamUIScore();
+
+            for (int i = 0; i < (int)ETeamScore.END; i++)
+            {
+                byte[] scores = (byte[])datas[i];
+                SetScores((ETeamScore)i, scores);
+            }
+        }
+        private void SetScores(ETeamScore teamScoreType, byte[] score)
+        {
+            for (int i = 0; i < (int)ETeam.END; i++)
+            {
+                Managers.RoundData.SetScore((ETeam)i, teamScoreType, score[i]);
+                gameData.battleBoard.UpdateTeamScore((ETeam)i,teamScoreType,score[i]);
+            }
+        }
         private void OnRoundEnd(EventData punData)
         {
             if (punData.Code != (int)PunEventType.ENDROUND) return;
@@ -210,13 +236,11 @@ namespace Orpul1
             nextRoundState = (EGameState)datas[0];
             winnerTeam = (ETeam)datas[1];
             byte[] scores= (byte[])datas[2];
+
             roundData.teamScores = scores;
             Managers.RoundData.SetRoundWinTeam((WinnerTeam)winnerTeam);
-            Managers.RoundData.SetTeamScore(ETeam.REDTEAM, roundData.teamScores[(int)ETeam.REDTEAM]);
-            Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, roundData.teamScores[(int)ETeam.BLUETEAM]);
-            int winScore = Managers.RoundData.TeamScore[(int)winnerTeam];
-            gameData.battleBoard.UpdateTeamScore(winnerTeam, ETeamScore.WINSCORE, winScore);
 
+            
             if (roundData.isAlreadySwitchRoll)
             {
                 roundData.secondHalfScores[(int)winnerTeam]++;
@@ -248,7 +272,6 @@ namespace Orpul1
             if (punData.Code != (int)PunEventType.BOMBEVENT) return;
             object[] datas = (object[])punData.CustomData;
             EBombState bombState = (EBombState)datas[0];
-            Debug.Log($"bombState {bombState.ToString()}");
             int playerIndex = (int)datas[1];
 
             if (bombState == EBombState.SET)
@@ -256,12 +279,10 @@ namespace Orpul1
                 roundData.isSetBomb = true;
                 return;
             }
-            Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
             int missionPoint = Managers.RoundData.TeamMissionScore[(int)bombState];
-            gameData.battleBoard.UpdateTeamScore((ETeam)bombState, ETeamScore.MISSIONSCORE, missionPoint);
             roundData.isSetBomb = false;
             if (!PhotonNetwork.IsMasterClient) return;
-            Debug.Log("OnBombEvent UpMissionScore");
+            Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
             gameData.playerObj.GetComponent<ISetPointable>().SetMissionPoint((ETeam)bombState, playerIndex);
             RaiseEventRoundEnd((ETeam)bombState);
         }

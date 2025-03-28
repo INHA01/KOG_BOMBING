@@ -174,4 +174,11 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
         displayHalfRoundImages[0].sprite = halfRoundImages[(int)state];
         displayHalfRoundImages[1].sprite = halfRoundImages[(int)state];
     }
+
+    public void SwapTeamUIScore()
+    {
+        ISetScoreable<ETeamScore> redTeamTmp = dicTeamScore[(int)ETeam.REDTEAM];
+        dicTeamScore[(int)ETeam.REDTEAM] = dicTeamScore[ETeam.BLUETEAM];
+        dicTeamScore[ETeam.BLUETEAM] = redTeamTmp;
+    }
 }

@@ -7,9 +7,9 @@ using UnityEngine;
 public class DebugRoundData : MonoBehaviour
 {
     public int roundCount = 1;
-    public int[] teamScore = new int[2];
-    public int[] teamkillScore = new int[2];
-    public int[] teamMissionScore = new int[2];
+    public byte[] teamScore = new byte[2];
+    public byte[] teamkillScore = new byte[2];
+    public byte[] teamMissionScore = new byte[2];
 
     public WinnerTeam RoundWinTeam;
 

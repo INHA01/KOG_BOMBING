@@ -27,7 +27,6 @@ namespace Orpul1
 
         public override void EnterState()
         {
-            ResetBattleboardTeamScore();
             gameData.playerObj.GetComponent<IResetAble>().DoReset();
             Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play).PublishRound(Managers.RoundData.roundCount);
             Interacting interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
@@ -51,15 +50,6 @@ namespace Orpul1
             gameData.teamUIController.UpdateTeamScore(ETeam.BLUETEAM, Managers.RoundData.TeamScore[(int)ETeam.BLUETEAM]);
             time = 0;
             base.EnterState();
-        }
-        private void ResetBattleboardTeamScore()
-        {
-            for (int i = 0; i < (int)ETeam.END; i++) 
-            {
-                gameData.battleBoard.UpdateTeamScore((ETeam)i, ETeamScore.WINSCORE, Managers.RoundData.TeamScore[(int)i]);
-                gameData.battleBoard.UpdateTeamScore((ETeam)i, ETeamScore.KILLSCORE, Managers.RoundData.TeamKillScore[(int)i]);
-                gameData.battleBoard.UpdateTeamScore((ETeam)i, ETeamScore.MISSIONSCORE, Managers.RoundData.TeamMissionScore[(int)i]);
-            }
         }
         public override void UpdateState()
         {

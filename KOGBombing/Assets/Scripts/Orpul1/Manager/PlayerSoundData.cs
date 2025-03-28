@@ -9,7 +9,7 @@ public enum EGenralSound
     FOOTSTEP,
     LOWHP
 }
-public enum EHitDeathSound
+/*public enum EHitDeathSound
 {
     NED_DEATH,
     NED_HIT1,
@@ -33,16 +33,16 @@ public enum EPingSound
     UNI_HELP,
     UNI_LOCATION,
     UNI_MOVE,
-}
-public enum ESkillSound
+}*/
+/*public enum ESkillSound
 {
     NED_FLASH,
     NED_MINE,
     UNI_DASH,
     UNI_MINE,
     GREN,
-}
-public enum EWeaponSound
+}*/
+/*public enum EWeaponSound
 {
     EMPTYCLICK,
     HIT1,
@@ -51,12 +51,12 @@ public enum EWeaponSound
     RELOAD,
     SHOOTING,
     EXPLOSION
-}
-public enum EMissionSound
+}*/
+/*public enum EMissionSound
 {
     BOMBLAUNCHING,
     BOMBNARRATION,
-}
+}*/
 [Serializable]
 public class FootSound
 {

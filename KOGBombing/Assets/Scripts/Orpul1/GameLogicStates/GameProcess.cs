@@ -87,8 +87,8 @@ namespace Orpul1
             {
                 if (secondHalfScores[i] == 3) return true;
             }
-            int teamScoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]);
-            ETeam loseTeam = teamScores[(int)ETeam.REDTEAM] > teamScores[(int)ETeam.BLUETEAM] ? ETeam.BLUETEAM : ETeam.REDTEAM;
+            int teamScoreGap = Mathf.Abs(teamScores[(int)ETeam.REDTEAM] - teamScores[(int)ETeam.BLUETEAM]); //3
+            ETeam loseTeam = teamScores[(int)ETeam.REDTEAM] > teamScores[(int)ETeam.BLUETEAM] ? ETeam.BLUETEAM : ETeam.REDTEAM;//red
             if (teamScoreGap > canGetScore[(int)loseTeam]) return true;
             canGetScore[ETeam.BLUETEAM - loseTeam]--;
 

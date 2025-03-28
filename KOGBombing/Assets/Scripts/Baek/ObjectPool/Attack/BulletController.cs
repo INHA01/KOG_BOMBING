@@ -53,7 +53,7 @@ public class BulletController : PooledObject
 
         if (other.tag == "Player")
         {
-            if (!HitPlayer(other)) return;
+            if (HitPlayer(other)) return;
         }
 
         HitAndMakeParticle(other);

@@ -40,6 +40,7 @@ namespace Orpul1
                 roomTeamCounts[i] = (byte)type;
                 teamScores[i] = 0;
                 teamCounts[i] = roomTeamCounts[i];
+                canGetScore[i] = (byte)(maxRoundScore * 0.5f);
             }
         }
         private void SwapTeam()

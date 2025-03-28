@@ -271,29 +271,28 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     }
     public void OnDamaged(float damage, int playerIndex)
     {
+        if (!playerData.pv.IsMine) return;
+
         playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
         playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
-        if (playerData.pv.IsMine)
-        {
-            Debug.Log($"OnDamged index {playerIndex}");
-            //playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
-            playerPointController.OnDamagePoint(playerIndex, (int)damage);
-            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
-            blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
-            playerPointController.SetAttackPlayer(playerIndex);
-            playerData.timeWithoutDamage = 0;
-            if (isActiveHitSound) return;
-            blackBoard.updateTeamState.UpdateTeamState();
-            isActiveHitSound = true;
-            StartCoroutine(CoHitSound());
-        }
+        Debug.Log($"OnDamged index {playerIndex}");
+        //playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
+        playerPointController.OnDamagePoint(playerIndex, (int)damage);
+        PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
+        blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
+        playerPointController.SetAttackPlayer(playerIndex);
+        playerData.timeWithoutDamage = 0;
+        if (isActiveHitSound) return;
+        blackBoard.updateTeamState.UpdateTeamState();
+        isActiveHitSound = true;
+        StartCoroutine(CoHitSound());
+
     }
     [PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
         PunHitMaterial();
-
         healthUpdater.Damage(damage, playerIndex);
 	}
     private void SetActiveState(bool isDie)

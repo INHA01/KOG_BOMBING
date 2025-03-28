@@ -53,7 +53,7 @@ public class BulletController : PooledObject
 
         if (other.tag == "Player")
         {
-            if (HitPlayer(other)) return;
+            if (!HitPlayer(other)) return;
         }
 
         HitAndMakeParticle(other);
@@ -64,7 +64,7 @@ public class BulletController : PooledObject
         IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
         PlayerData playerData = other.GetComponent<PlayerData>();
         if (playerData == null) return false;
-        if (!playerData.pv.IsMine) return false;
+        //if (playerData.pv.IsMine) return false;
         if (teamType == null) return false;
         if (!IsOtherTeam(teamType)) return false;
         hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);

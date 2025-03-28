@@ -138,7 +138,7 @@ namespace Orpul1
                 if (!playerData.showSoundEffect)
                 {
                     playerData.showSoundEffect = true;
-                    playerData.pv.RPC("PunShowCursor", RpcTarget.All);
+                    playerData.pv.RPC("PunShowCursor", RpcTarget.All,transform.position);
                 }
             }
             if (groggyCoroutine != null)
@@ -149,10 +149,10 @@ namespace Orpul1
             blackBoard.transform.position = blackBoard.spawnPoint;
         }
         [PunRPC]
-        private void PunShowCursor()
+        private void PunShowCursor(Vector3 position)
         {
             ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
-            showCursor.ShowSoundCursor(blackBoard.transform.position, 3, playerData);
+            showCursor.ShowSoundCursor(position, 3, playerData);
         }
         private void SetHpbar()
         {

@@ -45,23 +45,23 @@ public class PhotonChoosePlayer : ChoosePlayer
     }
     private void OnSelectEvent(EventData punEvent)
     {
-        if(punEvent.Code == (int)PunEventType.CHOOSEPLAYER)
-        {
-            Debug.Log("On ChoosePlayer Event");
-            object[] receiveMsg = (object[])punEvent.CustomData;
-            byte receiveChooseIndex = (byte)receiveMsg[0];
-            byte receiveTeamIndex = (byte)receiveMsg[1];
-            string playerNickname = (string)receiveMsg[2];
-            int playerLevel = (int)receiveMsg[4];
-            ETeam receiveTeamType = (ETeam)receiveMsg[3];
-            Debug.Log($"PlayerSelct {playerNickname}, {(CharacterType)receiveChooseIndex}");
-            Managers.RoundData.SetSelectCharacter(playerNickname, (CharacterType)receiveChooseIndex);
-            if (receiveTeamType != eTeam) return;
-            ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
-            if (chooseAvatarIcon == null) return;
-            chooseAvatarIcon.SettingText(playerNickname, playerLevel);
-            chooseAvatarIcon.Choosing(receiveChooseIndex);
-        }
+        if (punEvent.Code != (int)PunEventType.CHOOSEPLAYER) return;
+
+        Debug.Log("On ChoosePlayer Event");
+        object[] receiveMsg = (object[])punEvent.CustomData;
+        byte receiveChooseIndex = (byte)receiveMsg[0];
+        byte receiveTeamIndex = (byte)receiveMsg[1];
+        string playerNickname = (string)receiveMsg[2];
+        int playerLevel = (int)receiveMsg[4];
+        ETeam receiveTeamType = (ETeam)receiveMsg[3];
+        Debug.Log($"PlayerSelct {playerNickname}, {(CharacterType)receiveChooseIndex}");
+        Managers.RoundData.SetSelectCharacter(playerNickname, (CharacterType)receiveChooseIndex);
+        if (receiveTeamType != eTeam) return;
+        ChooseAvatarIcon chooseAvatarIcon = photonAvatar.GetPlayerAvatar(receiveTeamIndex);
+        if (chooseAvatarIcon == null) return;
+        chooseAvatarIcon.SettingText(playerNickname, playerLevel);
+        chooseAvatarIcon.Choosing(receiveChooseIndex);
+
     }
     public override void Init()
     {

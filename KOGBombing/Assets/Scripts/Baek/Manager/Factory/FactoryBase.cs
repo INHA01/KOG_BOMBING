@@ -6,6 +6,9 @@ using UnityEngine.AddressableAssets;
 public abstract class FactoryBase : MonoBehaviour
 {
     [SerializeField] protected AssetReferenceGameObject[] rfPrefabs;
-    public abstract void Init();
+    public virtual IEnumerator Init()
+    {
+        yield return Addressables.InitializeAsync();
+    }
     public abstract T GetPrefab<T>(int index);
 }

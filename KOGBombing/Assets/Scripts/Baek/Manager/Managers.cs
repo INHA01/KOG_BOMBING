@@ -59,8 +59,9 @@ public class Managers : MonoBehaviour , InitClass
         _sound.Init();
         s_instance = GetComponent<Managers>();
     }
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return _resource.Init();
         Init();
     }
     void OnDestroy()

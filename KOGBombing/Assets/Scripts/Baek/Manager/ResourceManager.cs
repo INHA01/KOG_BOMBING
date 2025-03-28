@@ -7,6 +7,13 @@ public class ResourceManager : MonoBehaviour
 {
     [SerializeField] FactoryBase[] factories = new FactoryBase[(int)FactoryType.Max];
     [SerializeField] ImgLoaderBase[] imgLoaders = new ImgLoaderBase[(int)ImgLoaderType.Max];
+    public IEnumerator Init()
+    {
+        for (int i = 0; i < factories.Length; i++)
+        {
+            yield return factories[i].Init();
+        }
+    }
     public T Load<T>(FactoryType type, int index) where T : Object
     {
         T prefab = factories[(int)type].GetPrefab<T>(index);

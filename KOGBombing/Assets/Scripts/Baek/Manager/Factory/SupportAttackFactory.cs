@@ -8,14 +8,14 @@ namespace BAEK
     {
         [SerializeField] GameObject[] _supportAttackPrefabs = new GameObject[(int)SupportAttackPrefab.Max];
 
-        public override void Init()
+        public override IEnumerator Init()
         {
-            for (int i = 0; i < _supportAttackPrefabs.Length; i++)
+            yield return base.Init();
+            for (int i = 0; i < rfPrefabs.Length; i++)
             {
-                rfPrefabs[i].LoadAssetAsync().Completed += (load) =>
-                {
-                    _supportAttackPrefabs[i] = load.Result;
-                };
+                var load = rfPrefabs[i].LoadAssetAsync();
+                yield return load;
+                _supportAttackPrefabs[i] = load.Result;
             }
         }
         public override T GetPrefab<T>(int index)

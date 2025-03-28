@@ -3,28 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 namespace BAEK
 { 
     public class UIFactory : FactoryBase
     {
         [SerializeField] GameObject[] _uiPrefabs = new GameObject[(int)UIKEY.Max];
-        IEnumerator Start()
+
+        public override IEnumerator Init()
         {
-            for(int i =0; i< rfPrefabs.Length; i++)
+            yield return base.Init();
+            for (int i = 0; i < rfPrefabs.Length; i++)
             {
+                if(i == (int)UIKEY.NONE || i == (int)UIKEY.Lobby || i == (int)UIKEY.Login) continue;
                 var load = rfPrefabs[i].LoadAssetAsync();
                 yield return load;
-            }
-            Init();
-        }
-
-        public override void Init()
-        {
-            for (int i = 1; i < _uiPrefabs.Length; i++)
-            {
-                if(i == (int)UIKEY.Lobby || i == (int)UIKEY.Login) continue;
-                _uiPrefabs[i] = rfPrefabs[i].Asset as GameObject;
+                _uiPrefabs[i] = load.Result;
             }
         }
 

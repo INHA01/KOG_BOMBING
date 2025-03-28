@@ -8,14 +8,14 @@ namespace BAEK
     {
         [SerializeField] GameObject[] _emoticons = new GameObject[(int)EmoticonType.Max];
 
-        public override void Init()
+        public override IEnumerator Init()
         {
-            for (int i = 0; i < _emoticons.Length; i++)
+            yield return base.Init();
+            for (int i = 0; i < rfPrefabs.Length; i++)
             {
-                rfPrefabs[i].LoadAssetAsync().Completed += (load) =>
-                {
-                    _emoticons[i] = load.Result;
-                };
+                var load = rfPrefabs[i].LoadAssetAsync();
+                yield return load;
+                _emoticons[i] = load.Result;
             }
         }
         public override T GetPrefab<T>(int index)

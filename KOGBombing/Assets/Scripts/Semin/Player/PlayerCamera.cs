@@ -41,8 +41,7 @@ public class PlayerCamera : ViewObserver
 	{
 		if(Input.GetMouseButton(1))
 		{
-			if (!playerData.isInteract)
-			    TargetRotation();
+            TargetRotation();
 		}
     }
     protected override void SetPlayerSight(int isZoom)

@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using BAEK;
+using DG.Tweening;
 
 namespace Orpul1
 {
@@ -43,9 +44,6 @@ namespace Orpul1
             int tempScore = teamScores[(int)ETeam.REDTEAM];
             teamScores[(int)ETeam.REDTEAM] = teamScores[(int)ETeam.BLUETEAM];
             teamScores[(int)ETeam.BLUETEAM] = tempScore;
-
-            Managers.RoundData.SetTeamScore(ETeam.REDTEAM, teamScores[(int)ETeam.REDTEAM]);
-            Managers.RoundData.SetTeamScore(ETeam.BLUETEAM, teamScores[(int)ETeam.BLUETEAM]);
 
             int teamCount = roomTeamCounts[(int)ETeam.REDTEAM];
             roomTeamCounts[(int)ETeam.REDTEAM] = roomTeamCounts[(int)ETeam.BLUETEAM];
@@ -100,7 +98,6 @@ namespace Orpul1
         ISetDataAble<EGameState> setNextEndRoundGameState;
         ETeam winnerTeam;
         EGameState nextRoundState;
-        IUpdateScore updateScore;
         SendOptions sendOptions = new SendOptions();
         public RoundData RoundData { get { return roundData; } set { roundData = value; } }
         public void DoCheatGameEnd(ETeam winnerTeam)
@@ -113,7 +110,6 @@ namespace Orpul1
             roundData.Init();
             sendOptions.Reliability = true;
             sendOptions.DeliveryMode = DeliveryMode.Reliable;
-            updateScore = Managers.UI.GetPopupUI<BattleBoardUpdater>(UIKEY.BattleBoard);
         }
         public override void EnterState()
         {
@@ -210,7 +206,8 @@ namespace Orpul1
 
             Managers.RoundData.SetRoundWinTeam((WinnerTeam)winnerTeam);
             Managers.RoundData.SetTeamScore(winnerTeam, roundData.teamScores[(int)winnerTeam]);
-            updateScore.UpdateTeamScore(winnerTeam, ETeamScore.WINSCORE);
+            int winScore = Managers.RoundData.TeamScore[(int)winnerTeam];
+            gameData.battleBoard.UpdateTeamScore(winnerTeam, ETeamScore.WINSCORE, winScore);
 
             if (roundData.isAlreadySwitchRoll)
             {
@@ -230,7 +227,8 @@ namespace Orpul1
             ETeam teamType = (ETeam)punData.CustomData;
             ETeam otherTeamType = ETeam.BLUETEAM - (int)teamType;
             Managers.RoundData.IncreaseTeamKillScore(otherTeamType);
-
+            int killScore = Managers.RoundData.TeamKillScore[(int)ETeamScore.KILLSCORE];
+            gameData.battleBoard.UpdateTeamScore(otherTeamType, ETeamScore.KILLSCORE, killScore);
             if (!PhotonNetwork.IsMasterClient) return;
             roundData.teamCounts[(int)teamType] -= 1;
 
@@ -251,6 +249,8 @@ namespace Orpul1
                 return;
             }
             Managers.RoundData.IncreaseTeamMissionScore((ETeam)bombState);
+            int missionPoint = Managers.RoundData.TeamMissionScore[(int)bombState];
+            gameData.battleBoard.UpdateTeamScore((ETeam)bombState, ETeamScore.MISSIONSCORE, missionPoint);
             roundData.isSetBomb = false;
             if (!PhotonNetwork.IsMasterClient) return;
             Debug.Log("OnBombEvent UpMissionScore");
@@ -270,6 +270,5 @@ namespace Orpul1
             //TODO: ÆÀ Á¡¼ö ¼³Á¤
             roundData.teamScores[(int)teamType] += 1;
         }
-        bool isGameEnd = false;
     }
 }

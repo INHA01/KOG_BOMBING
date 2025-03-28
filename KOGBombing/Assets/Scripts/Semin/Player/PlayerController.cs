@@ -120,11 +120,9 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         
         if (playerData.animator != null)
         {
-            if (playerData.isInteract)
-				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
-			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
+			playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
         }
-        ConfirmBombInteract();
+        //ConfirmBombInteract();
         ConfirmSoundEffect();
     }
     

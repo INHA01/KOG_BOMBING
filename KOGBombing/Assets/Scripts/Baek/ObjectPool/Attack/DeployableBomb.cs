@@ -88,8 +88,6 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
                 // 폭탄 해제 모든 플레이어들에게 Notify
                 Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).NotifyBombDefuse();
                 playerData.pv.RPC("PunBombRelease", RpcTarget.All);
-                
-
                 Debug.Log("폭탄 해제");
             }
         }

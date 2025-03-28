@@ -61,6 +61,21 @@ namespace Orpul1
         {
             teamScore[(int)type] = score;
         }
+        public void TeamRollSwitch()
+        {
+            int scoreTemp = teamScore[0];
+            teamScore[0] = teamScore[1];
+            teamScore[1] = scoreTemp;
+
+            int killScore = teamkillScore[0];
+            teamkillScore[0] = teamkillScore[1];
+            teamkillScore[1] = killScore;
+
+            int missionScore = teamMissionScore[0];
+            teamMissionScore[0] = teamMissionScore[1];
+            teamMissionScore[1] = missionScore;
+        }
+
         public void SetSelectCharacter(string nickname, CharacterType type)
         {
             if(dicCharacterSelects.ContainsKey(nickname))

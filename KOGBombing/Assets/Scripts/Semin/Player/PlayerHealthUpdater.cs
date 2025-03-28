@@ -125,11 +125,7 @@ namespace Orpul1
             int soundIndex = (int)playerData.characterType * (int)EHitDeathSound.UNI_DEATH;
             EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
             playerData.playerSound.hitDeathSound.ActiveSound(blackBoard.transform, deathSound);
-            if (!playerData.showSoundEffect)
-            {
-                playerData.showSoundEffect = true;
-                playerData.pv.RPC("PunShowCursor", RpcTarget.All);
-            }
+            
             if (playerData.pv.IsMine)
             {
                 PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
@@ -139,6 +135,11 @@ namespace Orpul1
                 if (blackBoard.updateTeamState != null)
                     blackBoard.updateTeamState.UpdateTeamState();
                 StartCoroutine("CoObservePlayer");
+                if (!playerData.showSoundEffect)
+                {
+                    playerData.showSoundEffect = true;
+                    playerData.pv.RPC("PunShowCursor", RpcTarget.All);
+                }
             }
             if (groggyCoroutine != null)
                 StopCoroutine(groggyCoroutine);

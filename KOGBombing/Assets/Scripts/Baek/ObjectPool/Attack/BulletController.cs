@@ -53,18 +53,20 @@ public class BulletController : PooledObject
 
         if (other.tag == "Player")
         {
-            HitPlayer(other);
+            if (!HitPlayer(other)) return;
         }
 
         HitAndMakeParticle(other);
         Release();
     }
-    private void HitPlayer(Collider other)
+    private bool HitPlayer(Collider other)
     {
         IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
-        if (!other.GetComponent<PlayerData>().pv.IsMine) return;
-        if (teamType == null) return;
-        if (!IsOtherTeam(teamType)) return;
+        PlayerData playerData = other.GetComponent<PlayerData>();
+        if (playerData == null) return false;
+        if (!playerData.pv.IsMine) return false;
+        if (teamType == null) return false;
+        if (!IsOtherTeam(teamType)) return false;
         hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
         IDamageAble player = other.transform.GetComponent<IDamageAble>();
         if (player != null)
@@ -73,6 +75,7 @@ public class BulletController : PooledObject
             distance = 0;
             //return;
         }
+        return true;
     }
     public void SetHitCursorDefency(IChangeHitCursorAble hitCursor)
     {

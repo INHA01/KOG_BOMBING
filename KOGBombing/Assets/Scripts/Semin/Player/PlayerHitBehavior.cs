@@ -374,7 +374,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
             bullet = other.GetComponent<BulletController>();
             if (bullet == null) return;
 
-            if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
+            if (playerData.playerTeam == bullet.eTeamBullet) return;
             bullet.HitAndMakeParticle(GetComponent<Collider>());
 
             Vector3 contactPoint = other.ClosestPoint(transform.position);

@@ -81,6 +81,8 @@ public class PhotonChoosePlayer : ChoosePlayer
                 SetIcon(false);
         }
         base.Init();
+        object[] sendMsg = new object[5] { (byte)CharacterType.Ned, (byte)playerTeamIndex, PhotonNetwork.LocalPlayer.NickName, eTeam, Managers.UserData.userData.level };
+        PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);
     }
     private void InitAvatar()
     {

@@ -12,4 +12,13 @@ public abstract class ImgLoaderBase : MonoBehaviour
         yield return Addressables.InitializeAsync();
     }
     public abstract Sprite LoadImg(int index);
+
+    private void OnApplicationQuit()
+    {
+        for (int i = 0; i < rfSprites.Length; i++)
+        {
+            //Addressables.Release(rfSprites[i]);
+            rfSprites[i].ReleaseAsset();
+        }
+    }
 }

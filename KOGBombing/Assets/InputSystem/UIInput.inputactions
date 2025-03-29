@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Chat",
+                    "type": "Button",
+                    "id": "44b1fe07-f039-4574-b2a2-6b6f84d21573",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -84,6 +93,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Emoticon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c5f5bef8-7f5d-406a-b35d-0d1f7b56832e",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chat",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -52,14 +52,16 @@ namespace Semin
 				{
 					act = (Func<INode.ENodeState>)Delegate.CreateDelegate(typeof(Func<INode.ENodeState>), methodTarget, methdoInfo);
 				}
-			}
-		}
+            }
+            state = INode.ENodeState.Fail;
+        }
 
         public override INode.ENodeState Evaluate()
 		{
 			if (act != null)
-                return act.Invoke();
-            return INode.ENodeState.Fail;
+                state = act.Invoke();
+            else state = INode.ENodeState.Fail;
+			return state;
 		}
 	}
 }

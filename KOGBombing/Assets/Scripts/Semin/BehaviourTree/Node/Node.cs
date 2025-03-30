@@ -9,6 +9,8 @@ namespace Semin
         public string guid;
 		[HideInInspector] public Vector2 position;
 		protected GameObject target;
+		public INode.ENodeState state;
+		[TextArea] public string description;
 
 		public abstract INode.ENodeState Evaluate();
 

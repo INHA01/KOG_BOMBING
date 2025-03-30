@@ -57,18 +57,27 @@ namespace Semin
 				{
 					condition = (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), methodTarget, methdoInfo);
 				}
-			}
-		}
+            }
+        }
 
         public override INode.ENodeState Evaluate()
         {
             if (condition == null)
-				return INode.ENodeState.Fail;
+			{
+				state = INode.ENodeState.Fail;
+				child.state = INode.ENodeState.Fail;
+			}
 
 			if (condition.Invoke())
-				return child.Evaluate();
+				state = child.Evaluate();
 
-			return INode.ENodeState.Fail;
+			else
+			{
+				state = INode.ENodeState.Fail;
+                child.state = INode.ENodeState.Fail;
+            }
+			
+			return state;
 		}
 	}
 

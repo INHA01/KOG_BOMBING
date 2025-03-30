@@ -16,6 +16,7 @@ namespace Semin
         {
             if (child)
                 child.Start();
+            state = INode.ENodeState.Fail;
         }
 
         public DecoratorNode(Node child)

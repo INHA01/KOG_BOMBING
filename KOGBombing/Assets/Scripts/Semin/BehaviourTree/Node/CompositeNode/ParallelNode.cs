@@ -39,10 +39,16 @@ namespace Semin
 			}
 
 			if (!isSuccessed)
-				return INode.ENodeState.Fail;
+			{
+				state = INode.ENodeState.Fail;
+				for (int i = 0; i < children.Count; i++)
+					children[i].state = INode.ENodeState.Fail;
+			}
 			if (isRunning)
-				return INode.ENodeState.Running;
-			return INode.ENodeState.Success;
+				state = INode.ENodeState.Running;
+			else state = INode.ENodeState.Success;
+
+			return state;
 		}
 	}
 		

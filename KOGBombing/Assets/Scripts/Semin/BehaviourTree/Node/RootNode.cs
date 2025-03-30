@@ -34,6 +34,7 @@ namespace Semin
         public override void Start()
         {
 			child.Start();
+			state = INode.ENodeState.Fail;
 		}
 	}
 }

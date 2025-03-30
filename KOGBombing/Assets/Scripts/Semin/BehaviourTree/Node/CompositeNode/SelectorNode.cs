@@ -14,19 +14,25 @@ namespace Semin
 		public override INode.ENodeState Evaluate()
 		{
 			if (children == null)
+			{
+				state = INode.ENodeState.Fail;
 				return INode.ENodeState.Fail;
+			}
 
 			for (int i = 0; i < children.Count; i++)
 			{
 				switch (children[i].Evaluate())
 				{
 					case INode.ENodeState.Running:
+						state = INode.ENodeState.Running;
 						return INode.ENodeState.Running;
 					case INode.ENodeState.Success:
+						state = INode.ENodeState.Success;
 						return INode.ENodeState.Success;
 				}
 			}
 
+			state = INode.ENodeState.Fail;
 			return INode.ENodeState.Fail;
 		}
 	}

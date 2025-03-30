@@ -13,7 +13,8 @@ namespace Semin
 
         public override void Start()
         {
-			for (int i = 0; i < children.Count; i++) 
+            state = INode.ENodeState.Fail;
+            for (int i = 0; i < children.Count; i++) 
                 children[i].Start();
         }
 

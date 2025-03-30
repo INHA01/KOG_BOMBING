@@ -232,4 +232,9 @@ public class BehaviorTreeEditor : EditorWindow
 
         return parameters;
     }
+
+    private void OnInspectorUpdate()
+    {
+        treeView?.UpdateNodeStates();
+    }
 }

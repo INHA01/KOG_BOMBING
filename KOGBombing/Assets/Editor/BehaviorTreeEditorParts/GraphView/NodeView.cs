@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.PackageManager.UI;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using UnityEditor;
 using Unity.VisualScripting;
 
@@ -29,6 +30,10 @@ namespace Semin
 			CreateInputPorts();
 			CreateOutputPorts();
 			SetupClasses();
+
+			Label descriptionLabel = this.Q<Label>("description");
+			descriptionLabel.bindingPath = "description";
+			descriptionLabel.Bind(new SerializedObject(node));
 		}
 
 		private void SetupClasses()
@@ -131,6 +136,30 @@ namespace Semin
 		private int SortByHorizontalPosition(Node left, Node right)
 		{
 			return left.position.x < right.position.x ? -1 : 1;
+		}
+
+		public void UpdateState()
+		{
+			RemoveFromClassList("running");
+            RemoveFromClassList("failure");
+            RemoveFromClassList("success");
+
+            if (Application.isPlaying)
+            {
+                switch (node.state)
+                {
+                    case INode.ENodeState.Running:
+                        AddToClassList("running");
+                        break;
+                    case INode.ENodeState.Fail:
+                        AddToClassList("failure");
+                        break;
+                    case INode.ENodeState.Success:
+                        AddToClassList("success");
+                        break;
+
+                }
+            }
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace Orpul1
         RaiseEventOptions options = new RaiseEventOptions();
         SendOptions sendOptions = new SendOptions();
         [SerializeField] FactoryBase factory;
-        
+        [SerializeField] Color[] teamColor;
         private void Awake()
         {
             options.Receivers = ReceiverGroup.All;
@@ -61,6 +61,7 @@ namespace Orpul1
             string message = (string)receiveDatas[1];
 
             TextMeshProUGUI chatTextUI = factory.GetPrefab<TextMeshProUGUI>(0);
+            chatTextUI.color = teamColor[(int)team];
             chatTextUI.text = message;
         }
     }

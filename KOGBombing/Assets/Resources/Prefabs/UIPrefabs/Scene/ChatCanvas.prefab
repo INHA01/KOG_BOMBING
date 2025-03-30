@@ -1139,7 +1139,27 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 70c82dd6-6d8b-49d3-914b-505aa87d6db0
+    m_ActionName: Desktop/Ping[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c30b338e-4a01-45a9-be18-50ef15e0b1a0
+    m_ActionName: Desktop/ExtractMap[/Keyboard/m]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a0b26a47-f5b5-45c6-94fe-89fac0b64ae8
+    m_ActionName: Desktop/Rotation[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0c68df38-97c2-421e-8c5c-7c7b0de04d6d
+    m_ActionName: Desktop/Emoticon[/Keyboard/t]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 44b1fe07-f039-4574-b2a2-6b6f84d21573
+    m_ActionName: Desktop/Chat[/Keyboard/escape,/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Desktop
@@ -1162,8 +1182,6 @@ MonoBehaviour:
   inputActions:
   - {fileID: -944628639613478452, guid: 553a5adc69c5eaf45b44ea4aee335aeb, type: 3}
   - {fileID: -944628639613478452, guid: 9299538e5e627104cbe9f521e90e5378, type: 3}
-  extraMap: {fileID: 5471519970205455167, guid: 553a5adc69c5eaf45b44ea4aee335aeb,
-    type: 3}
 --- !u!114 &6358445520235787231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1177,6 +1195,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   factory: {fileID: 5134093898374357967}
+  teamColor:
+  - {r: 1, g: 0.2784314, b: 0.2784314, a: 1}
+  - {r: 0.29411766, g: 0.49411765, b: 1, a: 1}
+  - {r: 1, g: 0.6509804, b: 0.1882353, a: 1}
 --- !u!114 &5134093898374357967
 MonoBehaviour:
   m_ObjectHideFlags: 0

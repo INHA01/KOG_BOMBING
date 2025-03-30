@@ -1,3 +1,4 @@
+using BAEK;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -72,7 +73,7 @@ namespace Orpul1
                 yield return waitOneSec;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
+            Managers.UI.ClosePopupUI(UIKEY.ChatCanvas);
             Managers.SceneLoad.LoadScene("MainGame");
         }
     }

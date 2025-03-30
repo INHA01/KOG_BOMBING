@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using WebSocketSharp;
 
 namespace Orpul1
 {
     public class ChatInputListner : MonoBehaviour
     {
         [SerializeField] bool isSendMessage = false;
-        [SerializeField] TextMeshProUGUI inputMessage;
         [SerializeField] TMP_InputField inputField;
-        Action<bool> setPlayerInput;
+        Action<int> setPlayerInput;
         Action<string> sendInputMessage;
 
         private void Start()
@@ -20,15 +22,30 @@ namespace Orpul1
             ChatController chatController = GetComponent<ChatController>();
             setPlayerInput = chatController.SetBlockPlayerInput;
             sendInputMessage = chatController.SendChatMessage;
+            inputField.enabled = false;
+            inputField.DeactivateInputField();
         }
         public void OnChat(InputValue input)
         {
-            setPlayerInput(isSendMessage);
-            SetInputMessage();
+            int value = (int)input.Get<float>();
+            setPlayerInput(value);
+            inputField.Select();
+            Debug.Log(value);
+            if (value < 0)
+            {
+                inputField.enabled = false;
+                inputField.DeactivateInputField();
+            }
+            else
+            {
+                inputField.enabled = true;
+                inputField.ActivateInputField();
+            }
         }
-        public void SetInputMessage()
+        public void Submit()
         {
-            if (!isSendMessage) return;
+            inputField.ActivateInputField();
+            if (inputField.text.IsNullOrEmpty()) return;
             sendInputMessage?.Invoke(inputField.text);
             inputField.text = "";
         }

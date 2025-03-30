@@ -48,7 +48,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -97,15 +97,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "c5f5bef8-7f5d-406a-b35d-0d1f7b56832e",
-                    "path": "<Keyboard>/enter",
+                    "name": "ChatOnOff",
+                    "id": "8517b100-c68c-4eef-bcd8-e5673f46c688",
+                    "path": "1DAxis(whichSideWins=2)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chat",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "9ab5f6fa-4b15-454d-b44d-c017f227ff3a",
+                    "path": "<Keyboard>/{Cancel}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Chat",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ea684f87-0f9f-4c33-8bc8-6892f4d27e8b",
+                    "path": "<Keyboard>/{Submit}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chat",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

@@ -42,9 +42,9 @@ namespace Orpul1
         }
         public void SendChat(string message)
         {
+            string nickname = "["+PhotonNetwork.NickName + "]: ";
             ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
-            int playerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
-            object[] sendDatas = new object[] { mTeam, playerIndex, message };
+            object[] sendDatas = new object[] { mTeam, nickname + message };
             PhotonNetwork.RaiseEvent((int)PunEventType.SENDCHAT, sendDatas, options, sendOptions);
         }
         //ETeam, int, string
@@ -53,8 +53,7 @@ namespace Orpul1
             if (punEvent.Code != (int)PunEventType.SENDCHAT) return;
             object[] receiveDatas = (object[])punEvent.CustomData;
             ETeam team = (ETeam)receiveDatas[0];
-            int playerIndex = (int)receiveDatas[1];
-            string message = (string)receiveDatas[2];
+            string message = (string)receiveDatas[1];
 
             TextMeshProUGUI chatTextUI = factory.GetPrefab<TextMeshProUGUI>(0);
             chatTextUI.text = message;

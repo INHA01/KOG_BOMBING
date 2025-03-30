@@ -11,6 +11,11 @@ using UnityEngine;
 
 namespace Orpul1
 {
+    public enum EChatDelivery
+    {
+        ALL,
+        TEAM,
+    }
     public class ChatUpdater : MonoBehaviour
     {
         RaiseEventOptions options = new RaiseEventOptions();

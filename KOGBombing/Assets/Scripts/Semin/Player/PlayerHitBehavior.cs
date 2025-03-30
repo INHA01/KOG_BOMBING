@@ -123,14 +123,14 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
     }
 	
-    [PunRPC]
+    /*[PunRPC]
     private void ShowHitCursor(byte playerIndex, byte playerTeam)
     {
         ETeam mTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
         int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
         if (playerTeam == (byte)mTeam) return;
         if (playerIndex != mPlayerIndex) return;
-    }
+    }*/
     [PunRPC]
     public void HitEffectToPivot()
     {
@@ -167,14 +167,15 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         return INode.ENodeState.Success;
     }
 
-    public bool CanRespawnPlayer()
+   /* public bool CanRespawnPlayer()
     {
         if (!blackBoard.canRespawn) return false;
         return true;
     }
     public INode.ENodeState RespawnNode()
     {
-        if(!playerData.pv.IsMine)return INode.ENodeState.Fail;
+        blackBoard.Initialize();
+        if (!playerData.pv.IsMine)return INode.ENodeState.Fail;
         playerData.pv.RPC("PunRespawn", RpcTarget.All);
         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
         playerData.supportWeapon.LoadWeaponIcon();
@@ -184,8 +185,8 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 
 		return INode.ENodeState.Success;
-    }
-    [PunRPC]
+    }*/
+    /*[PunRPC]
     private void PunRespawn()
     {
         blackBoard.Initialize();
@@ -195,7 +196,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
 
 		this.transform.position = blackBoard.spawnPoint;
         this.transform.rotation = blackBoard.initRotation;
-	}
+	}*/
     public bool IsDie()
     {
         return !blackBoard.playerStatus.isLive;
@@ -210,6 +211,9 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     {
         if(blackBoard.nickname ==playerPointController.GetKillPlayerNickname().ToString())
             playerData.pv.RPC("PunShowKillUI", RpcTarget.All);
+        //임시 초기화
+        GetComponent<PlayeRescue>().DeactiveRescueCollider();
+
         return INode.ENodeState.Success;
     }
     [PunRPC]
@@ -229,7 +233,6 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     public INode.ENodeState SetPlayerScore()
     {
         if (blackBoard.isSetScore) return INode.ENodeState.Fail;
-        //if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
         playerData.pv.RPC("PunDeathSound", RpcTarget.All);
 
         playerPointController.OnKillPoint();
@@ -268,31 +271,28 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     }
     public void OnDamaged(float damage, int playerIndex)
     {
+        if (!playerData.pv.IsMine) return;
+
         playerData.pv.RPC("Damage", RpcTarget.All, damage, playerIndex);
         playerData.pv.RPC("HitEffectToPivot", RpcTarget.All);
-        if (playerData.pv.IsMine)
-        {
-            Debug.Log($"OnDamged index {playerIndex}");
-            playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
-            playerPointController.OnDamagePoint(playerIndex, (int)damage);
-            PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
-            blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
-            playerPointController.SetAttackPlayer(playerIndex);
-            playerData.timeWithoutDamage = 0;
-            if (isActiveHitSound) return;
-            blackBoard.updateTeamState.UpdateTeamState();
-            isActiveHitSound = true;
-            StartCoroutine(CoHitSound());
-        }
+        Debug.Log($"OnDamged index {playerIndex}");
+        //playerData.pv.RPC("ShowHitCursor", RpcTarget.All, (byte)playerIndex, (byte)playerData.playerTeam);
+        playerPointController.OnDamagePoint(playerIndex, (int)damage);
+        PhotonNetwork.RaiseEvent((int)PunEventType.UPDATETEAMSTATE, null, options, SendOptions.SendReliable);
+        blackBoard.viewCamera.GetComponent<PlayerCamera>().Shake(0.15f, 0.125f);
+        playerPointController.SetAttackPlayer(playerIndex);
+        playerData.timeWithoutDamage = 0;
+        if (isActiveHitSound) return;
+        blackBoard.updateTeamState.UpdateTeamState();
+        isActiveHitSound = true;
+        StartCoroutine(CoHitSound());
+
     }
     [PunRPC]
     private void Damage(float damage,int playerIndex)
 	{
 		if (blackBoard.playerStatus.invincibility) return;
-        if(playerData.pv.IsMine)
-        {
-            PunHitMaterial();
-        }
+        PunHitMaterial();
         healthUpdater.Damage(damage, playerIndex);
 	}
     private void SetActiveState(bool isDie)
@@ -313,7 +313,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
     {
 		blackBoard.speedDebuff.rigidityValue = 0.5f;
         StartCoroutine(ResetRigidity(time));
-    }
+    }/*
     public bool IsTargetDie()
     {
         if (!Managers.PunData.IsContainKey(blackBoard.observaTargetIndex))
@@ -359,7 +359,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
         }
         blackBoard.observaTarget = null;
         return INode.ENodeState.Fail;
-    }
+    }*/
     IEnumerator ResetRigidity(float time)
     {
         yield return new WaitForSeconds(time);
@@ -373,7 +373,7 @@ public class PlayerHitBehavior : PlayerBehavior, IDamageAble
             bullet = other.GetComponent<BulletController>();
             if (bullet == null) return;
 
-            if (GetComponent<IGetTeamTypeable>().GetTeamType() == bullet.eTeamBullet) return;
+            if (playerData.playerTeam == bullet.eTeamBullet) return;
             bullet.HitAndMakeParticle(GetComponent<Collider>());
 
             Vector3 contactPoint = other.ClosestPoint(transform.position);

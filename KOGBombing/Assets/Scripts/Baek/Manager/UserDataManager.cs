@@ -56,8 +56,7 @@ public class UserDataManager
 
     public void SaveUserData()
     {
-        if (auth == null) return;   
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
             string json = JsonUtility.ToJson(userData);
@@ -73,14 +72,10 @@ public class UserDataManager
                 }
             });
         }
-        else
-        {
-            Debug.LogError("No user is signed in.");
-        }
     }
     public void LoadUserData()
     {
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
             databaseReference.Child("users").Child(userId).Child("Data").GetValueAsync().ContinueWith(task =>
@@ -111,7 +106,7 @@ public class UserDataManager
     }
     public UserData GetUserData()
     {
-        if (auth.CurrentUser != null)
+        if (auth != null && auth.CurrentUser != null)
         {
             string userId = auth.CurrentUser.UserId;
             databaseReference.Child("users").Child(userId).Child("Data").GetValueAsync().ContinueWith(task =>
@@ -138,27 +133,45 @@ public class UserDataManager
         }
         return userData;
     }
+    public bool CheckUserDataLoadComplete()
+    {
+        UserData data = GetUserData();
+        bool isComplete = true;
+        if (userData.level != data.level || userData.exp != data.exp
+            || userData.kill != data.kill || userData.death != data.death 
+            || userData.win != data.win || userData.lose != data.lose 
+            || userData.assist != data.assist || userData.mission != data.mission) isComplete = false;
 
+        return isComplete;
+    }
     public void SettingNickName(string nickName)
     {
-        // 다른 유저가 사용중인 닉네임이 아니라면
-        databaseReference.Child("users").OrderByChild("Data/nickName").EqualTo(nickName).GetValueAsync().ContinueWith(task =>
+        if (auth != null && auth.CurrentUser != null)
         {
-            if (task.IsCompleted)
+            // 다른 유저가 사용중인 닉네임이 아니라면
+            databaseReference.Child("users").OrderByChild("Data/nickName").EqualTo(nickName).GetValueAsync().ContinueWith(task =>
             {
-                DataSnapshot snapshot = task.Result;
-                // 닉네임이 사용 중이지 않은 경우
-                if (!snapshot.Exists)
+                if (task.IsCompleted)
                 {
-                    PhotonNetwork.LocalPlayer.NickName = nickName;
-                    userData.nickName = nickName; // 닉네임 설정
-                    SaveUserData(); // 사용자 데이터 저장
+                    DataSnapshot snapshot = task.Result;
+                    // 닉네임이 사용 중이지 않은 경우
+                    if (!snapshot.Exists)
+                    {
+                        PhotonNetwork.LocalPlayer.NickName = nickName;
+                        userData.nickName = nickName; // 닉네임 설정
+                        SaveUserData(); // 사용자 데이터 저장
+                    }
+                    else
+                    {
+                        Debug.Log("The nickname is already in use."); // 닉네임 사용 중 경고
+                    }
                 }
-                else
-                {
-                    Debug.Log("The nickname is already in use."); // 닉네임 사용 중 경고
-                }
-            }
-        });
+            });
+        }
+        else
+        {
+            PhotonNetwork.LocalPlayer.NickName = nickName;
+            userData.nickName = nickName;
+        }
     }
 }

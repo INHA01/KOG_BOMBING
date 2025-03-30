@@ -57,5 +57,10 @@ namespace Michsky.UI.Shift
 				isOn = false;
 			}
 		}
+
+        public void SetIsOn(bool isOn)
+        {
+            this.isOn = isOn;
+        }
 	}
 }

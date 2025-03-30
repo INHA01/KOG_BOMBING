@@ -8,5 +8,6 @@ public enum PunEventType
     ROUNDREADY,
     BOMBEVENT,
     EMOTICON,
-    ENDROUND
+    ENDROUND,
+    SETROUNDSCORE,
 }

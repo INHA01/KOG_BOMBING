@@ -26,15 +26,14 @@ public class PlayeRescue : InteractObject
     {
         if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
         if (interactCollider.enabled == true) return INode.ENodeState.Fail;
+        interactUI.ActiveCanInteract(true, InteractUI.Interact);
         playerData.pv.RPC("OnInteractColl", RpcTarget.All);
         return INode.ENodeState.Fail;
     }
     
-    public INode.ENodeState DeactiveRescueCollider()
+    public void DeactiveRescueCollider()
     {
-        if (!playerData.pv.IsMine) return INode.ENodeState.Fail;
         playerData.pv.RPC("OffInteractColl", RpcTarget.All);
-        return INode.ENodeState.Fail;
     }
     [PunRPC]
     private void OnInteractColl() //상호작용 전용 콜라이더 활성화
@@ -50,6 +49,8 @@ public class PlayeRescue : InteractObject
     {
         Debug.Log("Deactive InteractCollider");
 		interactCollider.enabled = false;
+        if (interactUI == null)
+            interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         interactUI.ActiveCanInteract(false, InteractUI.Interact);
         canInteract = false;
     }
@@ -115,16 +116,11 @@ public class PlayeRescue : InteractObject
         if (team != (byte)mteam) return;
         interactUI.Interact(value);
     }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+    }
     protected override void OnTriggerExit(Collider other)
     {
-        if (other.tag != "Player") return;
-        if (!canInteract) return;
-        ETeam otherTeam = other.GetComponent<IGetTeamTypeable>().GetTeamType();
-        if (otherTeam != playerData.playerTeam) return;
-        interactUI.ActiveCanInteract(false, InteractUI.Interact);
-        if (target == null || target != other.gameObject) return;
-        playerData.pv.RPC("SetGroggyInteract", RpcTarget.All, false);
-        target = null;
     }
-
 }

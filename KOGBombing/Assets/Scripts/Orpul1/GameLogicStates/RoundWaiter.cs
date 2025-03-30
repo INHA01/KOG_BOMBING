@@ -27,6 +27,7 @@ namespace Orpul1
 
         public override void EnterState()
         {
+            gameData.playerObj.GetComponent<IResetAble>().DoReset();
             Managers.UI.GetPopupUI<PlayScene>(UIKEY.Play).PublishRound(Managers.RoundData.roundCount);
             Interacting interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
             interactUI.SwitchGuide(false);

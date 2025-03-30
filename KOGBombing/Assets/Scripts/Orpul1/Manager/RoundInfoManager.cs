@@ -9,16 +9,16 @@ namespace Orpul1
 {
     public class RoundInfoManager
     {
-        public int roundCount = 1;
-        int[] teamScore = new int[2];
-        int[] teamkillScore = new int[2];
-        int[] teamMissionScore = new int[2];
+        public byte roundCount = 1;
+        byte[] teamScore = new byte[2];
+        byte[] teamkillScore = new byte[2];
+        byte[] teamMissionScore = new byte[2];
         Dictionary<string, CharacterType> dicCharacterSelects = new Dictionary<string, CharacterType>();
         private WinnerTeam roundWinTeam;
         
-        int[] playerMissionScores = new int[2];
-        int[] playerKillScores = new int[2];
-        int[] playerDeathScores = new int[2];
+        byte[] playerMissionScores = new byte[2];
+        byte[] playerKillScores = new byte[2];
+        byte[] playerDeathScores = new byte[2];
 
         public WinnerTeam RoundWinTeam
         {
@@ -27,9 +27,9 @@ namespace Orpul1
                 return roundWinTeam;
             }
         }
-        public int[] TeamScore { get { return teamScore; } }
-        public int[] TeamKillScore { get { return teamkillScore; } }
-        public int[] TeamMissionScore{ get { return teamMissionScore; } }
+        public byte[] TeamScore { get { return teamScore; } }
+        public byte[] TeamKillScore { get { return teamkillScore; } }
+        public byte[] TeamMissionScore{ get { return teamMissionScore; } }
         public Dictionary<string, CharacterType> CharacterSelects {  get { return dicCharacterSelects; } }
 
         public WinnerTeam WinTeam;
@@ -53,14 +53,52 @@ namespace Orpul1
         {
             teamMissionScore[(int)type] += 1;
         }
+        public void SetTeamMissionScore(ETeam type, byte score)
+        {
+            TeamMissionScore[(int)type] = score;
+        }
+        public void SetTeamKillScore(ETeam type, byte score)
+        {
+            TeamKillScore[(int)type] = score;
+        }
         public void SetRoundWinTeam(WinnerTeam type)
         {
             roundWinTeam = type;
         }
-        public void SetTeamScore(ETeam type,int score)
+        public void SetTeamScore(ETeam type,byte score)
         {
             teamScore[(int)type] = score;
         }
+        public void SetScore(ETeam teamType, ETeamScore scoreType, byte score)
+        {
+            switch(scoreType)
+            {
+                case ETeamScore.KILLSCORE:
+                    teamkillScore[(int)teamType] = score;
+                    break;
+                case ETeamScore.MISSIONSCORE:
+                    teamMissionScore[(int)teamType] = score;
+                    break;
+                case ETeamScore.WINSCORE:
+                    teamScore[(int)teamType] = score;
+                    break;
+            }
+        }
+        public void TeamRollSwitch()
+        {
+            byte scoreTemp = teamScore[0];
+            teamScore[0] = teamScore[1];
+            teamScore[1] = scoreTemp;
+
+            byte killScore = teamkillScore[0];
+            teamkillScore[0] = teamkillScore[1];
+            teamkillScore[1] = killScore;
+
+            byte missionScore = teamMissionScore[0];
+            teamMissionScore[0] = teamMissionScore[1];
+            teamMissionScore[1] = missionScore;
+        }
+
         public void SetSelectCharacter(string nickname, CharacterType type)
         {
             if(dicCharacterSelects.ContainsKey(nickname))
@@ -108,9 +146,9 @@ namespace Orpul1
             {
                 PlayerPointInfo pointInfo = Managers.PointData.GetPlayerInfo(players[i].NickName);
                 ETeam team = (ETeam)players[i].CustomProperties[EPropertyType.TEAM.ToString()];
-                playerMissionScores[(int)team] += pointInfo.MissionPoint;
-                playerKillScores[(int)team] += pointInfo.KillPoint;
-                playerDeathScores[(int)team] += pointInfo.DeathPoint;
+                playerMissionScores[(int)team] += (byte)pointInfo.MissionPoint;
+                playerKillScores[(int)team] += (byte)pointInfo.KillPoint;
+                playerDeathScores[(int)team] += (byte)pointInfo.DeathPoint;
             }
             int scoreResult = playerMissionScores[(int)WinnerTeam.REDTEAM] - playerMissionScores[(int)WinnerTeam.BLUETEAM];
 

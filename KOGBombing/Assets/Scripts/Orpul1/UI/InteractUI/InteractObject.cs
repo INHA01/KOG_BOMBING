@@ -33,6 +33,10 @@ public abstract class InteractObject : Subject, IInteractAble
 
     protected virtual void Start()
     {
+        SetInteractUI();
+    }
+    protected void SetInteractUI()
+    {
         interactUI = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
     }
     public abstract bool ProcessInteract(PhotonView pView);
@@ -58,7 +62,7 @@ public abstract class InteractObject : Subject, IInteractAble
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") return;
-        if (interactUI == null) return;
+        if (interactUI == null) SetInteractUI();
         PhotonView pView = other.GetComponent<PhotonView>();
         if (!pView.IsMine) return;
         SetOutline(true);

@@ -3,6 +3,10 @@ using BAEK;
 using System.Collections;
 using Photon.Pun;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
+using UnityEditor;
+using System.Collections.Generic;
+using Michsky.UI.Shift;
+using Semin;
 namespace Orpul1
 {
     public class PlayerHealthUpdater : MonoBehaviour
@@ -49,7 +53,7 @@ namespace Orpul1
         }
         private void DoGroggyState(PlayerBlackBoard blackBoard)
         {
-            if (!blackBoard.playerStatus.isLive)
+            if (!blackBoard.playerStatus.isLive|| !CanGroggy())
             {
                 blackBoard.playerStatus.groggyable = false;
                 blackBoard.hpBar.SetGroggyValue(0);
@@ -79,17 +83,49 @@ namespace Orpul1
             blackBoard.hpBar.SetHpValue(blackBoard.playerStatus.hp, blackBoard.playerStatus.defence);
             groggyCoroutine = StartCoroutine(Groggy());
         }
+        /*
+        
+
+   private bool CanGroggy()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+
+      for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i] == gameObject) continue;
+            ETeam otherPlayerTeam = (ETeam)players[i].GetComponent<PlayerData>().pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()];
+            if (myTeam == otherPlayerTeam)  //         ٸ   °      ִ    Ȯ  
+            {
+                Debug.Log($"MyPlayer: {myTeam}, otherTeam: {otherPlayerTeam}, {players[i].name}");
+                if (players[i].GetComponent<PlayerBlackBoard>().playerStatus.isLive)
+                    return true;
+            }
+      }
+        return false;
+    }
+         */
+
+        private bool CanGroggy()
+        {
+            if (!playerData.pv.IsMine) return true;
+            List<PlayerStateData> playerDatas = Managers.PunData.GetAllStateData();
+            ETeam myTeam = (ETeam)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
+            int mPlayerIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAMINDEX.ToString()];
+            for (int i = 0; i < playerDatas.Count; i++)
+            {
+                if (mPlayerIndex == playerDatas[i].playerIndex) continue;
+                if (playerDatas[i].playerStatus.isLive)
+                    return true;
+            }
+            return false;
+        }
         private void Death()
         {
-            ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
             int soundIndex = (int)playerData.characterType * (int)EHitDeathSound.UNI_DEATH;
             EHitDeathSound deathSound = (EHitDeathSound)soundIndex;
             playerData.playerSound.hitDeathSound.ActiveSound(blackBoard.transform, deathSound);
-            if (!playerData.showSoundEffect)
-            {
-                playerData.showSoundEffect = true;
-                showCursor.ShowSoundCursor(blackBoard.transform.position, 3, playerData);
-            }
+            
             if (playerData.pv.IsMine)
             {
                 PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.STATE.ToString(), EPlayerState.WAITROUND } });
@@ -98,14 +134,25 @@ namespace Orpul1
                 playerData.pv.RPC("SetActiveState", RpcTarget.All, false);
                 if (blackBoard.updateTeamState != null)
                     blackBoard.updateTeamState.UpdateTeamState();
+                StartCoroutine("CoObservePlayer");
+                if (!playerData.showSoundEffect)
+                {
+                    playerData.showSoundEffect = true;
+                    playerData.pv.RPC("PunShowCursor", RpcTarget.All,transform.position);
+                }
             }
             if (groggyCoroutine != null)
                 StopCoroutine(groggyCoroutine);
 
-            blackBoard.Initialize();
             blackBoard.playerStatus.isLive = false;
             playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
             blackBoard.transform.position = blackBoard.spawnPoint;
+        }
+        [PunRPC]
+        private void PunShowCursor(Vector3 position)
+        {
+            ShowCursor showCursor = Managers.UI.GetPopupUI<ShowCursor>(UIKEY.Play);
+            showCursor.ShowSoundCursor(position, 3, playerData);
         }
         private void SetHpbar()
         {
@@ -143,6 +190,72 @@ namespace Orpul1
                 Damage(blackBoard.playerStatus.maxGroggy / 10, -1);
                 groggyTime = 0;
             }
+        }
+
+        IEnumerator CoObservePlayer()
+        {
+            while(true)
+            {
+                yield return null;
+                if (blackBoard.playerStatus.isLive) yield break;
+                if (FindAlivePlayer())
+                {
+                    SetCameraTarget();
+                    break;
+                }
+            }
+            while(true)
+            {
+                yield return null;
+                if (blackBoard.playerStatus.isLive) yield break;
+                if (!IsTargetDie()) continue;
+                if (!FindAlivePlayer()) continue;
+                SetCameraTarget();
+            }
+        }
+        public bool IsTargetDie()
+        {
+            if (!Managers.PunData.IsContainKey(blackBoard.observaTargetIndex))
+                return false;
+
+            bool isLiveTarget = Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive;
+            Debug.Log("PlayerDie Search alive Other Player");
+            if (isLiveTarget)
+                return false;
+            Debug.Log("PlayerDie Observe Other Player");
+            return true;
+        }
+        public bool FindAlivePlayer()
+        {
+            List<PlayerStateData> playerStateList = Managers.PunData.GetAllStateData();
+            Debug.Log("Search Alive Player");
+            for (int i = 0; i < playerStateList.Count; i++)
+            {
+                if (playerStateList[i].rigidBody == null) return false;
+                if (playerStateList[i].playerTeam != playerData.playerTeam) continue;
+                if (playerStateList[i].rigidBody.gameObject == gameObject) continue;
+                if (!playerStateList[i].playerStatus.isLive) continue;
+
+                Debug.Log($"Find Target {playerStateList[i].nickname}");
+                blackBoard.observaTarget = playerStateList[i].observaTarget;
+                blackBoard.observaTargetIndex = playerStateList[i].playerIndex;
+                return true;
+            }
+            blackBoard.observaTarget = null;
+            return false;
+        }
+        public void SetCameraTarget()
+        {
+
+            if (Managers.PunData.GetPlayerStateData(blackBoard.observaTargetIndex).playerStatus.isLive)
+            {
+                blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(blackBoard.observaTarget);
+                blackBoard.viewCamera.transform.LookAt(blackBoard.observaTarget.transform);
+                Debug.Log("Set Camera Look Alive Player");
+                return;
+            }
+            blackBoard.observaTarget = null;
+            return;
         }
     }
    

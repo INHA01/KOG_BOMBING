@@ -23,27 +23,10 @@ public class BulletController : PooledObject
     [Header("Effect")]
     public GameObject muzzlePrefab;
     public GameObject hitPrefab;
-    RaiseEventOptions options = new RaiseEventOptions();
-    SendOptions optionsSend;
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     public float Damage { get { return damage; } }
     IChangeHitCursorAble hitCursor;
-    int relaseEventCode = 99;
-    private void Awake()
-    {
-        options.Receivers = ReceiverGroup.All;
-        optionsSend.Reliability = true;
-        optionsSend.DeliveryMode = DeliveryMode.Reliable;
-    }
-    private void OnEnable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= OnRelase;
-        PhotonNetwork.NetworkingClient.EventReceived += OnRelase;
-    }
-    private void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= OnRelase;
-    }
+  
     protected virtual void FixedUpdate()
     {
         transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
@@ -70,23 +53,29 @@ public class BulletController : PooledObject
 
         if (other.tag == "Player")
         {
-
-            IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
-            if (!other.GetComponent<PlayerData>().pv.IsMine) return;
-            if (teamType == null) return;
-            if (!IsOtherTeam(teamType)) return;
-            hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
-            IDamageAble player = other.transform.GetComponent<IDamageAble>();
-            if (player != null)
-            {
-				player.OnDamaged(damage, playerIndex);
-                distance = 0;
-				//return;
-            }
+            if (!HitPlayer(other)) return;
         }
 
         HitAndMakeParticle(other);
         Release();
+    }
+    private bool HitPlayer(Collider other)
+    {
+        IGetTeamTypeable teamType = other.GetComponent<IGetTeamTypeable>();
+        PlayerData playerData = other.GetComponent<PlayerData>();
+        if (playerData == null) return false;
+        //if (playerData.pv.IsMine) return false;
+        if (teamType == null) return false;
+        if (!IsOtherTeam(teamType)) return false;
+        hitCursor.ChangeHitCursor(playerIndex, eTeamBullet);
+        IDamageAble player = other.transform.GetComponent<IDamageAble>();
+        if (player != null)
+        {
+            player.OnDamaged(damage, playerIndex);
+            distance = 0;
+            //return;
+        }
+        return true;
     }
     public void SetHitCursorDefency(IChangeHitCursorAble hitCursor)
     {
@@ -115,11 +104,6 @@ public class BulletController : PooledObject
 		//Release();
     }
 
-    private void OnRelase(EventData punData)
-    {
-        if (punData.Code != relaseEventCode) return;
-        Release();
-    }
     public void ShowMuzzle()
     {
         if (muzzlePrefab != null)

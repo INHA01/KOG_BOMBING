@@ -163,14 +163,22 @@ public class BattleBoardUpdater : UIPopup, IUpdateScore, IHalfRoundUISetable
     public void UpdateMissionPoint()
     { 
     }
-    public void UpdateTeamScore(ETeam team, ETeamScore updateType)
+    public void UpdateTeamScore(ETeam team, ETeamScore updateType, int score)
     {
-        dicTeamScore[team].SetScore(updateType, 1);
+        Debug.Log($"UpdateBattleBoard {updateType.ToString()}");
+        dicTeamScore[team].SetScore(updateType, score);
     }
 
     public void SetHalfRound(ERoundState state)
     {
         displayHalfRoundImages[0].sprite = halfRoundImages[(int)state];
         displayHalfRoundImages[1].sprite = halfRoundImages[(int)state];
+    }
+
+    public void SwapTeamUIScore()
+    {
+        ISetScoreable<ETeamScore> redTeamTmp = dicTeamScore[(int)ETeam.REDTEAM];
+        dicTeamScore[(int)ETeam.REDTEAM] = dicTeamScore[ETeam.BLUETEAM];
+        dicTeamScore[ETeam.BLUETEAM] = redTeamTmp;
     }
 }

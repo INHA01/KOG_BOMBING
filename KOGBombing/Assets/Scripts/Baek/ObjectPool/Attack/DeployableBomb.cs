@@ -1,3 +1,5 @@
+using BAEK;
+using ExitGames.Client.Photon;
 using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
@@ -12,6 +14,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
     public BombInteraction bombInteraction;
     BombData bombData;
     Bomb bomb;
+    RaiseEventOptions options = new RaiseEventOptions();
     public override void SetTeam(ETeam team, int playerIndex)
 	{
         base.SetTeam(team, playerIndex);
@@ -29,6 +32,7 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
         this.count = count;
         if(bomb != null)
             bomb.Release();
+        options.Receivers = ReceiverGroup.All;
     }
 
     public override void Use()
@@ -75,11 +79,25 @@ public class DeployableBomb : DeployableBase,IDefendencyAble<BombData>
 		else
 		{
             Debug.Log("PutAfterAnim");
-            PlayerBlackBoard blackBoard = this.GetComponent<PlayerBlackBoard>();
-			blackBoard.playerStatus.isBombDefuse = true;
-		}
+            if(playerData.pv.IsMine)
+            {
+                //blackBoard.playerStatus.isBombDefuse = true;
+                
+                PhotonNetwork.RaiseEvent((int)PunEventType.BOMBEVENT, new object[] { EBombState.CLEAR, playerIndex }, options, SendOptions.SendReliable);
+                //player.playerStatus.isBombDefuse = false;
+                // ÆøÅº ÇØÁ¦ ¸ðµç ÇÃ·¹ÀÌ¾îµé¿¡°Ô Notify
+                Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting).NotifyBombDefuse();
+                playerData.pv.RPC("PunBombRelease", RpcTarget.All);
+                Debug.Log("ÆøÅº ÇØÁ¦");
+            }
+        }
 	}
-
+    [PunRPC]
+    private void PunBombRelease()
+    {
+        PlayerBlackBoard blackBoard = this.GetComponent<PlayerBlackBoard>();
+        blackBoard.bombInteraction.Initialize();
+    }
     public void Defendency(BombData bombData)
     {
         this.bombData = bombData;

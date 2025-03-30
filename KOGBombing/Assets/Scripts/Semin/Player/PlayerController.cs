@@ -7,6 +7,7 @@ using Orpul1;
 using BAEK;
 using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.InputSystem.XR;
+using Semin;
 public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IResetAble, ISetGameStateAble,ISetAble<bool>, ISetAble<Vector3>
 {
 
@@ -119,11 +120,9 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
         
         if (playerData.animator != null)
         {
-            if (playerData.isInteract)
-				playerData.animator.UpdateAnimation(new Vector2(0, 0), transform);
-			else playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
+			playerData.animator.UpdateAnimation(blackBoard.speedValue * blackBoard.speedDebuff.GetValue(), transform);
         }
-        ConfirmBombInteract();
+        //ConfirmBombInteract();
         ConfirmSoundEffect();
     }
     
@@ -147,9 +146,44 @@ public class PlayerController : MonoBehaviour, ITeamUIInitAble, IDestroyAble, IR
     public void DoReset()
     {
         Debug.Log($"Set Respawn");
+        blackBoard.Initialize();
+        if (!playerData.pv.IsMine) return;
+        playerData.pv.RPC("PunRespawn", RpcTarget.All);
+        playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.Groggy, false);
+        playerData.supportWeapon.LoadWeaponIcon();
+        playerData.skill.LoadSkillIcon();
+        blackBoard.viewCamera.GetComponent<PlayerCamera>().SetTarget(gameObject);
+        blackBoard.updateTeamState.UpdateTeamState();
+        playerShooting.RoundChange();
+        GetComponent<PlayeRescue>().DeactiveRescueCollider();
+        //playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
+        playerData.pv.RPC("PunReset", RpcTarget.All);
+    }
+    [PunRPC]
+    private void PunRespawn()
+    {
+        blackBoard.Initialize();
+        playerMaterialController.StartCreateEffect();
+        SetActiveState(true);
+        playerData.InitializeCount();
+
+        this.transform.position = blackBoard.spawnPoint;
+        this.transform.rotation = blackBoard.initRotation;
+    }
+    private void SetActiveState(bool isDie)
+    {
+        for (int i = 0; i < playerData.changeMaterialMeshs.Count; i++)
+            playerData.changeMaterialMeshs[i].SetActive(isDie);
+
+        blackBoard.rigidBody.isKinematic = !isDie;
+        blackBoard.playerCollider.enabled = isDie;
+    }
+    [PunRPC]
+    private void PunReset()
+    {
+        blackBoard.playerStatus.isBombDefuse = false;
         blackBoard.canRespawn = true;
     }
-
 
     void ConfirmSoundEffect()
     {

@@ -44,8 +44,10 @@ public class PlayScene : UIPopup
     [Header("SubWeapon")]
     [SerializeField] public GameObject[] subWeaponFades = new GameObject[2];
     [SerializeField]Image subWeaponIcon;
+    [SerializeField]InputActionAsset uiInput;
     
     [HideInInspector] public PlayerShooting weapon;
+
 
     void Awake()
     {
@@ -80,6 +82,8 @@ public class PlayScene : UIPopup
     }
     public void OnExtractMap(InputValue value)
     {
+        if (!uiInput.enabled) return;
+        Debug.Log($"extraMap : {value.Get()}");
         if (value.isPressed)
         {
             // 애니메이션 리셋

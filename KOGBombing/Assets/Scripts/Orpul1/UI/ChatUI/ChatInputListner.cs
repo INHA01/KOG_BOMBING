@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -15,8 +16,7 @@ namespace Orpul1
         [SerializeField] bool isSendMessage = false;
         [SerializeField] TMP_InputField inputField;
         [SerializeField] InputActionAsset[] inputActions;
-        [SerializeField] InputAction chatInput;
-
+        InputAction extraMap;
         Action<int> setPlayerInput;
         Action<string> sendInputMessage;
 
@@ -27,7 +27,7 @@ namespace Orpul1
             sendInputMessage = chatController.SendChatMessage;
             inputField.enabled = false;
             inputField.DeactivateInputField();
-            chatInput = inputActions[1].FindAction("Chat");
+            extraMap = inputActions[0].FindAction("ExtractMap");
         }
         private void ActivePlayerInput()
         {
@@ -35,6 +35,7 @@ namespace Orpul1
             {
                 inputActions[i].Enable();
             }
+            extraMap.Enable();
         }
         private void DeactivePlayerInput()
         {
@@ -42,6 +43,7 @@ namespace Orpul1
             {
                 inputActions[i].Disable();
             }
+            extraMap.Disable();
         }
         public void OnChat(InputValue input)
         {

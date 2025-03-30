@@ -23,6 +23,9 @@ namespace Orpul1
             isAllPlayerReady = false;
             curPlayerCnt = PhotonNetwork.CurrentRoom.PlayerCount;
             gameData.options.Receivers = ReceiverGroup.All;
+
+            Managers.UI.ShowPopupUI<ChatController>(UIKEY.ChatCanvas).SetCanvasOrderLayer(5);
+            
             Managers.UI.GetPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard).Initialize();
             Managers.UI.ShowPopupUI<Interacting>(UIKEY.Interacting);
             Managers.UI.ClosePopupUI(UIKEY.Interacting);

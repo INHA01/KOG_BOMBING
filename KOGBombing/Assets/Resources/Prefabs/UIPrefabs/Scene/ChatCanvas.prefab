@@ -1072,7 +1072,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &474144880787748616
 MonoBehaviour:
@@ -1162,15 +1162,8 @@ MonoBehaviour:
   inputActions:
   - {fileID: -944628639613478452, guid: 553a5adc69c5eaf45b44ea4aee335aeb, type: 3}
   - {fileID: -944628639613478452, guid: 9299538e5e627104cbe9f521e90e5378, type: 3}
-  chatInput:
-    m_Name: Chat Input
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 463d491d-a573-4546-93b9-a5511bcefcfb
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  extraMap: {fileID: 5471519970205455167, guid: 553a5adc69c5eaf45b44ea4aee335aeb,
+    type: 3}
 --- !u!114 &6358445520235787231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,6 +1210,15 @@ MonoBehaviour:
   chatSize:
   - {x: 500, y: 450}
   - {x: 500, y: 150}
+  chatCanvas: {fileID: 1601550035672417327}
+  rectImages:
+  - {fileID: 2077966203049161734}
+  - {fileID: 4998968184319204359}
+  rectColorValues:
+  - serializedVersion: 2
+    rgba: 6531812
+  - serializedVersion: 2
+    rgba: 4284726270
 --- !u!1 &5066621299224707874
 GameObject:
   m_ObjectHideFlags: 0

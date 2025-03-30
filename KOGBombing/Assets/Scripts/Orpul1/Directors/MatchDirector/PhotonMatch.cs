@@ -28,7 +28,6 @@ namespace Orpul1
         public override void OnJoinedRoom()
         {
             SetTeam();
-            Managers.UI.ShowPopupUI<ChatController>(UIKEY.ChatCanvas);
         }
         public override void OnLeftRoom()
         {

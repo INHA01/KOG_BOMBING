@@ -17,21 +17,43 @@ namespace Orpul1
         [SerializeField] BadWordData badWordData;
         [SerializeField] GameObject chatUI;
         [SerializeField] Vector2[] chatSize;
+        [SerializeField] Canvas chatCanvas;
+        [SerializeField] Image[] rectImages;
         Action<string> sendMessage;
+        [SerializeField] Color32[] rectColorValues = new Color32[2];
+        private void Reset()
+        {
+            chatCanvas = GetComponent<Canvas>();
+        }
         private void Start()
         {
             sendMessage = GetComponent<ChatUpdater>().SendChat;
             chatPanel.DOSizeDelta(chatSize[1], 0.5f);
+            ChangeRectImageAlpha(0);
+        }
+        public void SetCanvasOrderLayer(int layer)
+        {
+            chatCanvas.sortingOrder = layer;
         }
         public void SetBlockPlayerInput(int keyType)
         {
             if (keyType == 1)
             {
                 chatPanel.DOSizeDelta(chatSize[0], 0.5f);
+                ChangeRectImageAlpha(1);
             }
             else if (keyType == -1)
             {
                 chatPanel.DOSizeDelta(chatSize[1], 0.5f);
+                ChangeRectImageAlpha(0);
+            }
+        }
+        private void ChangeRectImageAlpha(int index)
+        {
+
+            for (int i = 0; i < rectImages.Length; i++)
+            {
+                rectImages[i].DOColor(rectColorValues[index], 0.5f);
             }
         }
         public void SendChatMessage(string message)
@@ -44,8 +66,6 @@ namespace Orpul1
         {
             return badWordData.FilterMessage(message);
         }
-
-        
     }
 
 }

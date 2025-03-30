@@ -1159,6 +1159,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSendMessage: 1
   inputField: {fileID: 6012605066293514607}
+  inputActions:
+  - {fileID: -944628639613478452, guid: 553a5adc69c5eaf45b44ea4aee335aeb, type: 3}
+  - {fileID: -944628639613478452, guid: 9299538e5e627104cbe9f521e90e5378, type: 3}
+  chatInput:
+    m_Name: Chat Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 463d491d-a573-4546-93b9-a5511bcefcfb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &6358445520235787231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1201,7 +1213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatPanel: {fileID: 4462791331554422498}
   badWordData: {fileID: 11400000, guid: 77c6219deb5ef794c8e3a5938ebef9af, type: 2}
-  chatUI: {fileID: 0}
+  chatUI: {fileID: 4437939093349228186}
   chatSize:
   - {x: 500, y: 450}
   - {x: 500, y: 150}

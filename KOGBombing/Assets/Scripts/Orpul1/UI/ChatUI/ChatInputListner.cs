@@ -14,6 +14,9 @@ namespace Orpul1
     {
         [SerializeField] bool isSendMessage = false;
         [SerializeField] TMP_InputField inputField;
+        [SerializeField] InputActionAsset[] inputActions;
+        [SerializeField] InputAction chatInput;
+
         Action<int> setPlayerInput;
         Action<string> sendInputMessage;
 
@@ -24,6 +27,21 @@ namespace Orpul1
             sendInputMessage = chatController.SendChatMessage;
             inputField.enabled = false;
             inputField.DeactivateInputField();
+            chatInput = inputActions[1].FindAction("Chat");
+        }
+        private void ActivePlayerInput()
+        {
+            for (int i = 0; i < inputActions.Length; i++)
+            {
+                inputActions[i].Enable();
+            }
+        }
+        private void DeactivePlayerInput()
+        {
+            for(int i=0; i<inputActions.Length; i++)
+            {
+                inputActions[i].Disable();
+            }
         }
         public void OnChat(InputValue input)
         {
@@ -35,11 +53,13 @@ namespace Orpul1
             {
                 inputField.enabled = false;
                 inputField.DeactivateInputField();
+                ActivePlayerInput();
             }
             else
             {
                 inputField.enabled = true;
                 inputField.ActivateInputField();
+                DeactivePlayerInput();
             }
         }
         public void Submit()

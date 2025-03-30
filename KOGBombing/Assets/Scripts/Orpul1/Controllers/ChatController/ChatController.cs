@@ -22,7 +22,6 @@ namespace Orpul1
         {
             sendMessage = GetComponent<ChatUpdater>().SendChat;
             chatPanel.DOSizeDelta(chatSize[1], 0.5f);
-            chatUI.SetActive(false);
         }
         public void SetBlockPlayerInput(int keyType)
         {

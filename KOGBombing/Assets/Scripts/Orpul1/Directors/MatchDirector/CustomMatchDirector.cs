@@ -36,7 +36,7 @@ namespace Orpul1
         {
             if (!isCustomMatch) return;
             base.OnJoinedRoom();
-            Managers.UI.ShowPopupUI<ChatController>(UIKEY.ChatCanvas);
+            Managers.UI.ShowPopupUI<ChatController>(UIKEY.ChatCanvas).SetCanvasOrderLayer(3);
 
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);

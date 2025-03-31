@@ -15,7 +15,7 @@ namespace Orpul1
     {
         [SerializeField] RectTransform chatPanel;
         [SerializeField] BadWordData badWordData;
-        [SerializeField] GameObject chatUI;
+        [SerializeField] GameObject sendModeText;
         [SerializeField] Vector2[] chatSize;
         [SerializeField] Canvas chatCanvas;
         [SerializeField] Image[] rectImages;
@@ -30,6 +30,7 @@ namespace Orpul1
             sendMessage = GetComponent<ChatUpdater>().SendChat;
             chatPanel.DOSizeDelta(chatSize[1], 0.5f);
             ChangeRectImageAlpha(0);
+            sendModeText.SetActive(false);
         }
         public void SetCanvasOrderLayer(int layer)
         {
@@ -41,13 +42,16 @@ namespace Orpul1
             {
                 chatPanel.DOSizeDelta(chatSize[0], 0.5f);
                 ChangeRectImageAlpha(1);
+                sendModeText.SetActive(true);
             }
             else if (keyType == -1)
             {
                 chatPanel.DOSizeDelta(chatSize[1], 0.5f);
                 ChangeRectImageAlpha(0);
+                sendModeText.SetActive(false);
             }
         }
+        
         private void ChangeRectImageAlpha(int index)
         {
 

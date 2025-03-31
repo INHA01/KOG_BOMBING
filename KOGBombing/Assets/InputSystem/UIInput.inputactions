@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ChatSendMode",
+                    "type": "Button",
+                    "id": "f5194385-aee3-4a4c-974d-6c3058b798f4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -128,6 +137,17 @@
                     "action": "Chat",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c4e12461-2eb2-4f10-b709-13a34c6f0459",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChatSendMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

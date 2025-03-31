@@ -5,10 +5,6 @@ using PhotnHashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 using TMPro;
 using System;
-using BAEK;
-using DG.Tweening;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace Orpul1
 {

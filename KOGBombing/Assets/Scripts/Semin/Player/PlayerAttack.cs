@@ -164,7 +164,7 @@ public class PlayerAttack : PlayerBehavior
     }*/
     public INode.ENodeState BombInteract()
     {
-        if((blackBoard.playerStatus.isLive == false)|| (blackBoard.playerStatus.isGroggy == true) || (blackBoard.playerStatus.canSettingBomb == false))
+        if ((blackBoard.playerStatus.isLive == false)|| (blackBoard.playerStatus.isGroggy == true) || (blackBoard.playerStatus.canSettingBomb == false))
         {
             return INode.ENodeState.Fail;
         }
@@ -177,7 +177,7 @@ public class PlayerAttack : PlayerBehavior
             if (playerData.animator.GetAnimBool(PlayerAnimation.AnimType.BombDefuse) == true)
             {
                 float waitTime = 5.0f;
-                if (blackBoard.inputs[EKey.LMOUSEBUTTON] && (bombInteractTime < waitTime)) // 폭탄 설치
+                if (blackBoard.inputs[EKey.NUM_2] && (bombInteractTime < waitTime)) // 폭탄 설치
                 {
                     blackBoard.rigidBody.velocity = Vector2.zero;
                     bombInteractTime += Time.deltaTime;
@@ -195,7 +195,7 @@ public class PlayerAttack : PlayerBehavior
                 {
                     isSetBomb = false;
 
-                    if (!blackBoard.inputs[EKey.LMOUSEBUTTON] && bombInteractTime < waitTime)   // Cancel
+                    if (bombInteractTime < waitTime)   // Cancel
 					{
                         bombNotify.ActiveCanInteract(false, InteractUI.InteractBomb);
                         bombNotify.SwitchGuide(false);
@@ -226,7 +226,6 @@ public class PlayerAttack : PlayerBehavior
                         isChangableAnim = true;
 						bombInteractTime = 0;
 						blackBoard.inputs[EKey.NUM_2] = false;
-                        blackBoard.inputs[EKey.LMOUSEBUTTON] = false;
 						blackBoard.playerStatus.isBombInteract = false;
 						playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
                         playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
@@ -238,6 +237,7 @@ public class PlayerAttack : PlayerBehavior
                     return INode.ENodeState.Running;
                 }
             }
+            /*
             if (blackBoard.inputs[EKey.LMOUSEBUTTON])
             {
                 if(playerData.isInteract == true)
@@ -258,11 +258,41 @@ public class PlayerAttack : PlayerBehavior
                 bombNotify.SwitchGuide(false);
                 playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
 			}
-
+            */
+            ActivateBombInteract();
+            if (blackBoard.playerStatus.isBombInteract)
+            {
+                return INode.ENodeState.Running;
+            }
+            return INode.ENodeState.Fail;
         }
         return INode.ENodeState.Fail;
     }
+    void ActivateBombInteract()
+    {
+        if (blackBoard.inputs[EKey.NUM_2] && !blackBoard.playerStatus.isBombInteract)
+        {
+            if (playerData.isInteract == true)
+            {
+                playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.BOMB);
 
+                if (playerData.playerTeam == ETeam.BLUETEAM)
+                {
+                    if (blackBoard.bombInteraction.GetBomb() != null)
+                        blackBoard.bombInteraction.SetBombInteraction(true);
+                }
+                blackBoard.rigidBody.velocity = Vector2.zero;
+                playerData.animator.SetAnimBool(PlayerAnimation.AnimType.BombDefuse, true);
+                //playerData.isInteract = true;
+                bombInteractTime = 0;
+                blackBoard.playerStatus.isBombInteract = true;
+                blackBoard.playerStatus.isBombDefuse = false;
+                //return INode.ENodeState.Running;
+            }
+            bombNotify.SwitchGuide(false);
+            playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)WeaponType.GUN);
+        }
+    }
     [PunRPC]
     private void PunBombSound(int soundType)
     {
@@ -450,39 +480,22 @@ public class PlayerAttack : PlayerBehavior
         {   // Red팀인데 이미 설치된 폭탄이 있다면 2번 못 누름
             Bomb myBomb = gameObject.GetComponent<BombInteraction>().GetBomb();
 		    if (myBomb != null)
-			    return;            
+            {
+                return;
+            }
         }
-
-		ResetAttackInput(EKey.NUM_2);
-
-		isChangableAnim = true;
-        WeaponType weaponType = WeaponType.GUN;
-        blackBoard.inputs[EKey.NUM_2] = !blackBoard.inputs[EKey.NUM_2];
-        if(bombNotify == null)
+        isChangableAnim = true;
+        blackBoard.inputs[EKey.NUM_2] = value.isPressed;
+        if (bombNotify == null)
         {
             bombNotify = Managers.UI.GetPopupUI<Interacting>(UIKEY.Interacting);
         }
-
-        if (blackBoard.inputs[EKey.NUM_2])
+        if(!blackBoard.inputs[EKey.NUM_2])
         {
-            bombNotify.SwitchGuide(true);
-            if (playerData.bomb is SupportWeaponBase baseWeapon)
-            {
-                // �������� ��� ��ź����, �������� ��� �����̹Ƿ� �Ǽ�
-                if ((ETeam)playerData.pv.Owner.CustomProperties[EPropertyType.TEAM.ToString()] == ETeam.REDTEAM)
-                    weaponType = WeaponType.BOMB;
-                else
-                    weaponType = WeaponType.NONE;
-            }
-        }
-        else
-        {
-            bombNotify.SwitchGuide(false);
-            playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
+            //playerData.punAnimator.SetAnimationBool(PlayerAnimation.AnimType.BombDefuse, false);
             playerData.punAnimator.SetAnimationTrigger(PlayerAnimation.AnimType.Cancel, playerData.mousePos);
             playerData.bomb.Disable();
 		}
-		playerData.pv.RPC("ChangeWeaponAttack", RpcTarget.All, (int)weaponType);
 	}
     public void OnUseAttackConsum(InputValue value)
     {
@@ -542,11 +555,11 @@ public class PlayerAttack : PlayerBehavior
 
     public void ResetAttackInput(EKey input)
 	{
-		if (input != EKey.NUM_2 && blackBoard.inputs[EKey.NUM_2])
-		{
-			CancelBomb();
-			blackBoard.inputs[EKey.NUM_2] = false;
-		}
+		//if (input != EKey.NUM_2 && blackBoard.inputs[EKey.NUM_2])
+		//{
+		//	CancelBomb();
+		//	blackBoard.inputs[EKey.NUM_2] = false;
+		//}
 		if (input != EKey.NUM_1 && blackBoard.inputs[EKey.NUM_1])
 		{
 			CancelSupportWeapon();

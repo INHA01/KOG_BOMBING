@@ -861,8 +861,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.5}
-  m_SizeDelta: {x: -20, y: -13}
+  m_AnchoredPosition: {x: 22.5, y: 0}
+  m_SizeDelta: {x: -65, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6218572887048093044
 MonoBehaviour:
@@ -991,8 +991,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 25, y: 0}
-  m_SizeDelta: {x: 500, y: 80}
+  m_AnchoredPosition: {x: 25, y: 30}
+  m_SizeDelta: {x: 440, y: 22}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &7182971487462178295
 CanvasRenderer:
@@ -1341,16 +1341,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b10a19504e1c84f8646e7b6f2be128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initPoolSize: 50
+  objectToPool: {fileID: 4398821547101797704, guid: f8e7f1a6ab98ee04b9b98fa5b4803427,
+    type: 3}
+  parentPrefab: {fileID: 0}
   factory: {fileID: 5134093898374357967}
   teamColor:
   - {r: 1, g: 0.2784314, b: 0.2784314, a: 1}
   - {r: 0.29411766, g: 0.49411765, b: 1, a: 1}
   - {r: 1, g: 0.6509804, b: 0.1882353, a: 1}
-  chatLogList: []
   sendModetext: {fileID: 8041269271635407718}
   sendTypeText:
   - "\uD300"
   - "\uC804\uCCB4"
+  uiParent: {fileID: 6699933471182278671}
 --- !u!114 &5134093898374357967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,8 +1432,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 24.999998, y: 0}
-  m_SizeDelta: {x: -50.000004, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3332739709430234466
 CanvasRenderer:
@@ -1495,7 +1499,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 2
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1941,8 +1945,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 24.999998, y: 0}
-  m_SizeDelta: {x: -50.000004, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5458423336163112542
 CanvasRenderer:
@@ -2008,7 +2012,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

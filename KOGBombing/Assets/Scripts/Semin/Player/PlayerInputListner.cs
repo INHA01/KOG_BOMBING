@@ -6,9 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputListner : Subject
 {
-    [SerializeField]
-    PlayerBlackBoard blackBoard;
-
+    [SerializeField] PlayerBlackBoard blackBoard;
+    [SerializeField] PlayerData playerData;
     private void Start()
     {
         for (int i = 0; i < (int)EKey.MAX; i++)
@@ -20,6 +19,7 @@ public class PlayerInputListner : Subject
     }
     public void OnCanBehavior(InputValue value)
     {
+        if (!playerData.pv.IsMine) return;
         blackBoard.inputs[EKey.ESC] = !blackBoard.inputs[EKey.ESC];
         if (blackBoard.inputs[EKey.ESC])
         {
@@ -35,6 +35,7 @@ public class PlayerInputListner : Subject
 
     public void OnAttack(InputValue value)
     {
+        if (!playerData.pv.IsMine) return;
         blackBoard.inputs[EKey.LMOUSEBUTTON] = value.isPressed;
     }
     bool CheckMouseOutScreen(Vector2 mousePos)
@@ -43,13 +44,14 @@ public class PlayerInputListner : Subject
     }
     public void OnRotate(InputValue value)
     {
+        if (!playerData.pv.IsMine) return;
         if (!CheckMouseOutScreen(value.Get<Vector2>())) return;
         blackBoard.mousePos = value.Get<Vector2>();
     }
 
     public void OnMove(InputValue value)
     {
-        //if (!playerData.pv.IsMine) return;
+        if (!playerData.pv.IsMine) return;
         Vector2 inputVector = value.Get<Vector2>();
         blackBoard.speedValue.x = inputVector.x;
         blackBoard.speedValue.y = inputVector.y;
@@ -95,10 +97,12 @@ public class PlayerInputListner : Subject
     }
     public void OnInteract(InputValue value)
     {
+        if (!playerData.pv.IsMine) return;
         blackBoard.inputs[EKey.F] = value.isPressed;
     }
     public void OnSlowMove(InputValue value)
     {
+        if (!playerData.pv.IsMine) return;
         blackBoard.inputs[EKey.LEFTSHIFT] = value.isPressed;
         int pressed = value.isPressed ? 1 : 0;
         Notify(pressed);
@@ -108,13 +112,15 @@ public class PlayerInputListner : Subject
     }
     public void OnOpenBattleboard(InputValue value)
     {
-        if(value.isPressed)
+        if (!playerData.pv.IsMine) return;
+        if (value.isPressed)
             Managers.UI.ShowPopupUI<BattleBoardUpdater>(BAEK.UIKEY.BattleBoard);
         else
             Managers.UI.ClosePopupUI(BAEK.UIKEY.BattleBoard);
     }
     public void OnOpenKeyDescription(InputValue value)
     {
+        if (!playerData.pv.IsMine) return;
         if (value.isPressed)
             Managers.UI.ShowPopupUI<KeyDescription>(BAEK.UIKEY.KeyDescription).LoadImg(blackBoard.playerStatus.CharacterType);
         else

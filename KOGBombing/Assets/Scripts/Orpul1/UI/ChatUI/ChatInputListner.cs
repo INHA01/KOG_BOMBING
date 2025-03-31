@@ -7,23 +7,15 @@ using WebSocketSharp;
 
 namespace Orpul1
 {
-    enum EActiveInput
-    {
-        Chat,
-        ChatSendMode,
-        END,
-    }
     public class ChatInputListner : MonoBehaviour
     {
         [SerializeField] bool isSendMessage = false;
         [SerializeField] TMP_InputField inputField;
         [SerializeField] InputActionAsset[] inputActions;
-        List<InputAction> activeInputList = new List<InputAction>();
         InputAction extraMapInput;
         Action<int> setPlayerInput;
         Action<string> sendInputMessage;
         Action<EChatDelivery> changeSendMode;
-        bool isPressSendModeKey = false;
         int sendMode = (int)EChatDelivery.ALL;
         private void Start()
         {
@@ -33,11 +25,6 @@ namespace Orpul1
             changeSendMode = GetComponent<ChatUpdater>().SetSendModeText;
             inputField.enabled = false;
             inputField.DeactivateInputField();
-            for (int i = 0; i < (int)EActiveInput.END; i++) 
-            {
-                EActiveInput eActiveInput = (EActiveInput)i;
-                activeInputList.Add(inputActions[0].FindAction(eActiveInput.ToString()));
-            }
             extraMapInput = inputActions[0].FindAction("ExtractMap");
         }
         private void ActivePlayerInput()
@@ -46,7 +33,6 @@ namespace Orpul1
             {
                 inputActions[i].Enable();
             }
-            extraMapInput.Enable();
         }
         private void DeactivePlayerInput()
         {
@@ -54,18 +40,20 @@ namespace Orpul1
             {
                 inputActions[i].Disable();
             }
-            for (int i = 0; i < activeInputList.Count; i++)
-                activeInputList[i].Enable();
 
             extraMapInput.Disable();
         }
-        public void OnChatSendMode(InputValue input)
+
+        // >> : 대화 상대 변경(key : TAB)
+        public void OnChatSendMode(InputValue input) 
         {
             if (inputField.text.Length > 1) return;
             sendMode++;
             sendMode = sendMode % (int)EChatDelivery.MAX;
             changeSendMode((EChatDelivery)sendMode);
         }
+
+        // >> : 대화 시작, 종료(key : Enter, ESC)
         public void OnChat(InputValue input)
         {
             int value = (int)input.Get<float>();
@@ -75,6 +63,7 @@ namespace Orpul1
             {
                 inputField.enabled = false;
                 inputField.DeactivateInputField();
+                inputField.text = "";
                 ActivePlayerInput();
             }
             else

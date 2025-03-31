@@ -5,8 +5,6 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 namespace Orpul1
@@ -17,32 +15,34 @@ namespace Orpul1
         ALL,
         MAX,
     }
-    public class ChatUpdater : MonoBehaviour
+    public class ChatUpdater : ObjectPool
     {
         RaiseEventOptions options = new RaiseEventOptions();
         SendOptions sendOptions = new SendOptions();
         [SerializeField] FactoryBase factory;
         [SerializeField] Color[] teamColor;
-        [SerializeField] List<GameObject> chatLogList = new List<GameObject>();
         [SerializeField] TextMeshProUGUI sendModetext;
         [SerializeField] string[] sendTypeText;
+        [SerializeField] Transform uiParent;
         EChatDelivery sendMode = EChatDelivery.ALL;
+        int pooluseCount = 0;
         private void Awake()
         {
             options.Receivers = ReceiverGroup.All;
             sendOptions.DeliveryMode = DeliveryMode.Reliable;
             sendOptions.Reliability = true;
             SetSendModeText(sendMode);
+            parent = uiParent;
         }
         private void OnEnable()
         {
             UnsubscribeEvent();
             SubscribeEvent();
+            pooluseCount = 0;
         }
         private void OnDisable()
         {
             UnsubscribeEvent();
-            DeleteAllChat();
         }
         private void SubscribeEvent()
         {
@@ -74,24 +74,33 @@ namespace Orpul1
                 textColor = (int)PhotonNetwork.LocalPlayer.CustomProperties[EPropertyType.TEAM.ToString()];
             return textColor;
         }
-        //ETeam, int, string
+
         private void PunChat(EventData punEvent)
         {
-            if (punEvent.Code != (int)PunEventType.SENDCHAT) 
-                return;
+            if (punEvent.Code != (int)PunEventType.SENDCHAT) return;
 
             object[] receiveDatas = (object[])punEvent.CustomData;
             EChatDelivery sendMode = (EChatDelivery)receiveDatas[0];
             ETeam team = (ETeam)receiveDatas[1];
-            if (!CanRecievChat(sendMode, team)) 
-                return;
+
+            if (!CanRecievChat(sendMode, team))  return;
+
             int textColor = GetColorType(sendMode);
             string message = (string)receiveDatas[2];
 
-            TextMeshProUGUI chatTextUI = factory.GetPrefab<TextMeshProUGUI>(0);
+            EnableChatUI(message, textColor);
+        }
+        private void EnableChatUI(string message, int textColor)
+        {
+            PooledObject chatUI = GetPooledObject();
+            TextMeshProUGUI chatTextUI = chatUI.GetComponent<TextMeshProUGUI>();
+            chatTextUI.transform.SetParent(null);
             chatTextUI.color = teamColor[textColor];
             chatTextUI.text = message;
-            chatLogList.Add(chatTextUI.gameObject);
+            chatTextUI.transform.SetParent(uiParent);
+            ReturnToPool(chatUI);
+            chatTextUI.transform.localScale = Vector3.one;
+            chatTextUI.gameObject.SetActive(true);
         }
         private bool CanRecievChat(EChatDelivery sendMode, ETeam team)
         {
@@ -103,13 +112,6 @@ namespace Orpul1
                 return true;
 
             return false;
-        }
-        private void DeleteAllChat()
-        {
-            for(int i=0; i<chatLogList.Count; i++)
-            {
-                Destroy(chatLogList[i]);
-            }
         }
     }
 

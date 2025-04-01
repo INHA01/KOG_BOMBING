@@ -28,8 +28,8 @@ namespace Orpul1
         }
         void ConfirmBombInteract()
         {
-            bool isActive = (canBombInteract && blackBoard.inputs[EKey.NUM_2]);
-            if (isActive == false) return;
+            bool isActive = canBombInteract;
+            if (isActive == false || !blackBoard.playerStatus.canSettingBomb) return;
             SetBombInteract(isActive);
         }
         private void SetBombInteract(bool isActive)
@@ -53,7 +53,6 @@ namespace Orpul1
         private void OnTriggerEnter(Collider other)
         {
             string tag = other.tag;
-
             if (IsAttackTeamInteractBomb(tag) || IsDefenceTeamInteractBomb(tag))
                 canBombInteract = true;
         }

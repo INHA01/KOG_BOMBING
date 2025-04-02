@@ -1,3 +1,4 @@
+using BAEK;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -28,8 +29,11 @@ namespace Orpul1
         {
             SetTeam();
         }
+        public override void OnLeftRoom()
+        {
+            Managers.UI.ClosePopupUI(UIKEY.ChatCanvas);
+        }
 
-       
         public override void OnJoinedLobby()
         {
         }
@@ -100,6 +104,7 @@ namespace Orpul1
             Managers.Sound.PlayUISound(EUiSoundType.MATCHFOUNDSET);
             for (int i = 0; i < 2; i++)
                 yield return waitOneSec;
+            Managers.UI.ClosePopupUI(UIKEY.ChatCanvas);
             Managers.SceneLoad.LoadScene(ESceneType.MainGame.ToString());
         }
     }

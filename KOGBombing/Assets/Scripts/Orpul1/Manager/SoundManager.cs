@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public enum EMixerGroup
 {
+    Master,
     BGM,
     EFFECT,
     UISOUND,

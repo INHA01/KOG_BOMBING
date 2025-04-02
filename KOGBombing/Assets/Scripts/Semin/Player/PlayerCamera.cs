@@ -36,6 +36,7 @@ public class PlayerCamera : ViewObserver
         }
         playerData = target.GetComponent<PlayerData>();
 		SetSubject(target.GetComponent<PlayerInputListner>(),true);
+        sensitivity = Managers.CamData.GetSensitive();
     }
     void FixedUpdate()
 	{

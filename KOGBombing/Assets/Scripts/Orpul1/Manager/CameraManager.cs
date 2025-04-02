@@ -12,9 +12,18 @@ public enum ECameraType
 public class CameraManager
 {
     Dictionary<ECameraType, GameObject> dicCamera = new Dictionary<ECameraType, GameObject>();
+    private float sensitive = 1;
     public CameraManager()
     {
 
+    }
+    public void SetSensitive(float value)
+    {
+        sensitive = value;
+    }
+    public float GetSensitive()
+    {
+        return sensitive;
     }
     public void AddCamera(GameObject cameraObj, ECameraType eCameraType)
     {

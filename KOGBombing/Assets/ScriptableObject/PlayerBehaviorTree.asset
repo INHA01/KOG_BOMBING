@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: b657134a57c64114e9acef68e0836e18
-  position: {x: 699.99994, y: 231}
-  state: 0
-  description: Check Input 'LMOUSEBUTTON'
+  position: {x: 913, y: 227.00002}
   child: {fileID: 6882639984666204211}
   method: CheckInput
   paramName: LMOUSEBUTTON
@@ -33,9 +31,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: d8d3eb5f08db541418e1ab92065c8347
-  position: {x: -1252.0002, y: 176.00002}
-  state: 0
-  description: 
+  position: {x: -1530.3204, y: 25.000015}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -52,9 +48,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: a0032de2e54ce404f87fa05e7d107bdd
-  position: {x: 399.9999, y: 229.99997}
-  state: 0
-  description: Is Ned
+  position: {x: 597, y: 227}
   child: {fileID: -1446105872691957205}
   method: IsNed
   paramName: 
@@ -72,9 +66,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 8909ff68af306264780cf6dc9c643114
-  position: {x: 550, y: -297}
-  state: 0
-  description: Player Movement
+  position: {x: 757.87616, y: -296.99997}
   children:
   - {fileID: -5288419803410853016}
   - {fileID: -6981434794934456990}
@@ -92,9 +84,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 87c2e36f3c82123438b55f40fbde30c9
-  position: {x: -377.0003, y: 49.00005}
-  state: 0
-  description: 
+  position: {x: -512, y: 48.999992}
   children:
   - {fileID: 7189016390488239316}
   - {fileID: 2381097818974102332}
@@ -111,9 +101,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: f60b1d4b76311bf45b8c4bb2df3b5b54
-  position: {x: -702.0002, y: -200}
-  state: 0
-  description: Is Die
+  position: {x: -856.99994, y: -199.99998}
   child: {fileID: -7170902545123407570}
   method: IsDie
   paramName: 
@@ -131,10 +119,8 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 70e82954d432dea43bf59a75b00e20a2
-  position: {x: 245.00006, y: -297}
-  state: 0
-  description: Check Input 'NUM_2'
-  child: {fileID: -3290740795640126274}
+  position: {x: 359.47913, y: -296.99997}
+  child: {fileID: 0}
   method: CheckInput
   paramName: NUM_2
   className: PlayerInputListner
@@ -151,9 +137,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 32590d5588da483418585039052ec4f7
-  position: {x: -54.999996, y: -297}
-  state: 0
-  description: Is Not Groggy
+  position: {x: -115.000084, y: -297}
   child: {fileID: 225296470337349713}
   method: IsNotGroggy
   paramName: 
@@ -171,12 +155,9 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: ba3de5e932228a846ba878b12bcb23a2
-  position: {x: -702.0002, y: -95}
-  state: 0
-  description: 
+  position: {x: -856.99994, y: -94.99994}
   children:
   - {fileID: 7780571593512279722}
-  - {fileID: 649707792052996928}
   - {fileID: -975095478299540825}
 --- !u!114 &-7147036626057015698
 MonoBehaviour:
@@ -191,9 +172,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 7baabe8ea7225cd40b49735ad0d8fc66
-  position: {x: -212.00034, y: -58.000008}
-  state: 0
-  description: Is Interacting
+  position: {x: -347.00003, y: -58.000023}
   child: {fileID: 9203852556320774010}
   method: IsInteracting
   paramName: 
@@ -211,9 +190,7 @@ MonoBehaviour:
   m_Name: ParallelNode
   m_EditorClassIdentifier: 
   guid: 79342286855fc6649bdf0e8161f0b4f4
-  position: {x: 550, y: -165}
-  state: 0
-  description: 
+  position: {x: 757.87616, y: -144.99997}
   children:
   - {fileID: 3069321850940118252}
   - {fileID: 8200657294350586246}
@@ -231,9 +208,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: ce6a3b0bc811c2b47b961e2b75d439f1
-  position: {x: -702.0002, y: -297}
-  state: 0
-  description: Is Die
+  position: {x: -856.99994, y: -297}
   children:
   - {fileID: -7802083987999387392}
 --- !u!114 &-6603330800000110849
@@ -249,9 +224,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 3b3b2a2b560c5f74593259d4c4af4aa1
-  position: {x: 924.99994, y: -182.00003}
-  state: 0
-  description: Active Rescue Collider
+  position: {x: 1196, y: -177.99998}
   paramName: 
   method: ActiveRescueCollider
   className: PlayeRescue
@@ -268,9 +241,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: d42ac24cdc40ced4d97b7596f1625922
-  position: {x: -1117.0002, y: -62.000023}
-  state: 0
-  description: Reset Attack Data
+  position: {x: -1252, y: -61.999985}
   paramName: 
   method: ResetAttackData
   className: PlayerAttack
@@ -288,8 +259,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: be38eb0c3abd9544392bf616688d8ce9
   position: {x: 193, y: -98.00006}
-  state: 0
-  description: 
   child: {fileID: 225296470337349713}
   method: IsNotGroggy
   paramName: Landmine
@@ -307,9 +276,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 7cc41908cfba48b4a90d5b6b0f0646f1
-  position: {x: -1102.0002, y: 176.00002}
-  state: 0
-  description: 
+  position: {x: -1366.0002, y: 25.433472}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -326,9 +293,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: cc370945274aed3488a68f8caf738156
-  position: {x: 399.9999, y: 437.00003}
-  state: 0
-  description: Set Skill
+  position: {x: 597, y: 434}
   paramName: 
   method: SetSkill
   className: PlayerAttack
@@ -345,9 +310,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c531646cc1b5f9f4e8668128c0e9841e
-  position: {x: 399.99997, y: -168.99998}
-  state: 0
-  description: Rotate Player
+  position: {x: 532.8762, y: -164.99995}
   paramName: 
   method: RotatePlayer
   className: PlayerMovement
@@ -364,9 +327,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 6d11af19884fb1e4bbc3f26afb0ae711
-  position: {x: -1119.0002, y: 176.00002}
-  state: 0
-  description: Set Deactive UI
+  position: {x: -1254, y: 175.99994}
   paramName: 
   method: SetDeactiveUI
   className: PlayerHitBehavior
@@ -383,9 +344,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 2d995bac573101d4d9262ec081fb3049
-  position: {x: 95.00003, y: -103.00002}
-  state: 0
-  description: Check Input 'Q'
+  position: {x: 169.91632, y: -102.999954}
   child: {fileID: 5513869529623679263}
   method: CheckInput
   paramName: Q
@@ -403,9 +362,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 896cea48607595e409d8f1add82e96b3
-  position: {x: 924.99994, y: -297}
-  state: 0
-  description: Is Groggy
+  position: {x: 1196.4979, y: -296.99997}
   child: {fileID: -6603330800000110849}
   method: IsGroggy
   paramName: 
@@ -423,9 +380,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 2efde3255fa92d04fa03e837b6f59906
-  position: {x: -377.0003, y: -62.000023}
-  state: 0
-  description: Check Input 'F'
+  position: {x: -512, y: -62.000027}
   child: {fileID: -7833102057359241417}
   method: CheckInput
   paramName: F
@@ -443,9 +398,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 3aba2f5555cc1324c8e3cbb084b7b3e5
-  position: {x: 245.00006, y: -175}
-  state: 0
-  description: Bomb Interact
+  position: {x: 361, y: -188}
   paramName: 
   method: BombInteract
   className: PlayerAttack
@@ -462,9 +415,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: bf43af4aee70b3f41a5100032c6c1660
-  position: {x: 550, y: 231}
-  state: 0
-  description: Is Attack Team
+  position: {x: 758.00006, y: 227.47913}
   child: {fileID: 1713173759231001354}
   method: IsAttackTeam
   paramName: 
@@ -482,9 +433,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c95596c467b5ac840876b7e15f37ada0
-  position: {x: -967.0003, y: -62.000023}
-  state: 0
-  description: Deactive Rescue Colider
+  position: {x: -1102.0001, y: -61.999985}
   paramName: 
   method: DeactiveRescueCollider
   className: PlayeRescue
@@ -501,9 +450,7 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   guid: 2372331e3ee48ff489ddf6c1ea5edccd
-  position: {x: 94.999664, y: -515}
-  state: 0
-  description: Player Behavior Tree
+  position: {x: 34.69783, y: -515.4786}
   child: {fileID: 1624584447135552367}
 --- !u!114 &-2048248934707703818
 MonoBehaviour:
@@ -518,9 +465,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: b258f705f64de114baea4bc6d0ce44cc
-  position: {x: 699.99994, y: -4.999982}
-  state: 0
-  description: Is Walk
+  position: {x: 912.8762, y: -7.999964}
   child: {fileID: 3009803146195699248}
   method: IsWalk
   paramName: 
@@ -538,9 +483,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: aaba949fd9b0cdf439754d8c5ca62a3f
-  position: {x: -54.999996, y: -103.00002}
-  state: 0
-  description: Is Defence Team
+  position: {x: -115.000084, y: -102.99997}
   child: {fileID: 8366443915547346038}
   method: IsDefenceTeam
   paramName: 
@@ -558,9 +501,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: 6275358fa4846bc40ba80d31871b5a32
-  position: {x: 550, y: 91.00001}
-  state: 0
-  description: 'Player Attack '
+  position: {x: 757.87616, y: 87.00003}
   children:
   - {fileID: -8340223700539422723}
   - {fileID: -3281831052019774864}
@@ -578,9 +519,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 3eeb7986d68bf3f44999249279be6067
-  position: {x: -1267.0002, y: 175.99998}
-  state: 0
-  description: Set Player Score
+  position: {x: -1404, y: 175.99994}
   paramName: 
   method: SetPlayerScore
   className: PlayerHitBehavior
@@ -597,9 +536,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 8d9b3cb5afbfb9f4ea5ad6d15cfb3f87
-  position: {x: 399.9999, y: 333}
-  state: 0
-  description: Check Input 'Q'
+  position: {x: 597, y: 329.99997}
   child: {fileID: -5304561471504019390}
   method: CheckInput
   paramName: Q
@@ -618,8 +555,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: cf7f405367281cf488c83578cd46f3ec
   position: {x: 193, y: -235.00005}
-  state: 0
-  description: 
   child: {fileID: 1194003659082968326}
   method: IsNotGroggy
   paramName: Interaction
@@ -637,9 +572,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 90fe78d4596405847881b1e226417bd4
-  position: {x: -532.0001, y: 45.999977}
-  state: 0
-  description: Success Node
+  position: {x: -687.99994, y: 46.000046}
   paramName: 
   method: SuccessNode
   className: PlayerHitBehavior
@@ -656,9 +589,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: ef0aa5e1ce532194793e6c71fddf2728
-  position: {x: 550, y: 437.99997}
-  state: 0
-  description: Set Support Weapon
+  position: {x: 758.00006, y: 434.4791}
   paramName: 
   method: SetSupportWeapon
   className: PlayerAttack
@@ -727,11 +658,13 @@ MonoBehaviour:
   - {fileID: -6603330800000110849}
   - {fileID: 8710056310030271584}
   - {fileID: -3137541061979543970}
+  - {fileID: -5335882687480156656}
   - {fileID: -6932081876933467733}
   - {fileID: -3829355589323812755}
   - {fileID: -1567745938999925633}
   - {fileID: 7780571593512279722}
   - {fileID: -4965493617326162921}
+  - {fileID: -8389100774706129543}
   - {fileID: -6137478795078086819}
   - {fileID: 584862216382814153}
   - {fileID: -2048248934707703818}
@@ -749,9 +682,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: bf0171e340d973c428fc5c7c99fdfc74
-  position: {x: -54.999996, y: -200}
-  state: 0
-  description: Check Input 'Num_1'
+  position: {x: -115.000084, y: -199.99998}
   child: {fileID: -1819408944471962811}
   method: CheckInput
   paramName: NUM_1
@@ -769,9 +700,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 429a24365a6422543b3f1a807fac993b
-  position: {x: 775, y: -168.99998}
-  state: 0
-  description: Is Interacting
+  position: {x: 1016.87634, y: -164.99995}
   child: {fileID: 5499220917565172958}
   method: IsInteracting
   paramName: 
@@ -789,9 +718,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 178adf6f3b1473240a9e6d9468c72331
-  position: {x: -967.0003, y: 176.00002}
-  state: 0
-  description: Show Kill UI
+  position: {x: -1102, y: 175.99994}
   paramName: 
   method: ShowKillUI
   className: PlayerHitBehavior
@@ -808,9 +735,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 656fe56fce444bd42a36a3cbf6c2e546
-  position: {x: -702.0002, y: 45.999977}
-  state: 0
-  description: Set Camera
+  position: {x: -856.99994, y: 46.000046}
   children:
   - {fileID: 1613006539770928240}
   - {fileID: 1584241473073964167}
@@ -827,9 +752,7 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: 541e904d24cce6541bf5c101c6260f40
-  position: {x: -302.0002, y: -200.00002}
-  state: 0
-  description: 
+  position: {x: -437, y: -199.99998}
   children:
   - {fileID: -3704719262176938618}
   - {fileID: -7147036626057015698}
@@ -846,9 +769,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2780f2f49acad5a4c97d7dbeb8af335d
-  position: {x: -1269.0002, y: -62.000023}
-  state: 0
-  description: Respawn Node
+  position: {x: -1404, y: -61.999985}
   paramName: 
   method: RespawnNode
   className: PlayerHitBehavior
@@ -865,9 +786,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 9631d5fe104d79c4ab6eb48bc55efc0f
-  position: {x: -607.00006, y: 181}
-  state: 0
-  description: Set Camera Target
+  position: {x: -761.99994, y: 189}
   paramName: 
   method: SetCameraTarget
   className: PlayerHitBehavior
@@ -884,9 +803,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 151e5b5d541a37a448f78535d4b0eb4f
-  position: {x: -777.00006, y: 181}
-  state: 0
-  description: Is Target Die
+  position: {x: -931.9999, y: 189}
   child: {fileID: 6077192041609901196}
   method: IsTargetDie
   paramName: 
@@ -904,15 +821,14 @@ MonoBehaviour:
   m_Name: SelectorNode
   m_EditorClassIdentifier: 
   guid: 8dc3e1a7f585c514fa2ba12ece6a19e3
-  position: {x: 94.999664, y: -429}
-  state: 0
-  description: 
+  position: {x: 35.00002, y: -428.99994}
   children:
+  - {fileID: 6600464113284892490}
   - {fileID: -6932081876933467733}
   - {fileID: 6230328644466973241}
   - {fileID: -7184894367834191486}
   - {fileID: 2007857642856111159}
-  - {fileID: -7722109807516606535}
+  - {fileID: -3290740795640126274}
   - {fileID: -7834396176166106668}
   - {fileID: -3829355589323812755}
 --- !u!114 &1713173759231001354
@@ -928,9 +844,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 7e290234733aa9043a9c2c23f21b1451
-  position: {x: 550, y: 334}
-  state: 0
-  description: Check Input 'NUM_1'
+  position: {x: 758.00006, y: 330.4791}
   child: {fileID: -240715722926024634}
   method: CheckInput
   paramName: NUM_1
@@ -948,9 +862,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 8f5012b3f847689438991909bdb81514
-  position: {x: 95.00003, y: -297}
-  state: 0
-  description: Is Not Groggy
+  position: {x: 169.91632, y: -296.99997}
   child: {fileID: 2735303377056483291}
   method: IsNotGroggy
   paramName: 
@@ -968,9 +880,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: df683c26caada074d924fefa11479752
-  position: {x: -302.0002, y: 189}
-  state: 0
-  description: Process Interact Node
+  position: {x: -437.00003, y: 189.00005}
   paramName: 
   method: ProcessInteractNode
   className: PlayerInteract
@@ -987,9 +897,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 4bbab7893a3d0354da96e88f6f890a35
-  position: {x: -1117.0002, y: -297}
-  state: 0
-  description: Can Respawn Player
+  position: {x: -1252, y: -297}
   child: {fileID: 8710056310030271584}
   method: CanRespawnPlayer
   paramName: 
@@ -1007,9 +915,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: dce6709dd7d43744f9b2dc08c33a4c4c
-  position: {x: 95.00003, y: -200}
-  state: 0
-  description: Is Uni
+  position: {x: 169.91632, y: -199.99997}
   child: {fileID: -4123719882947693958}
   method: IsUni
   paramName: 
@@ -1027,9 +933,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 4f85657e1e93fb445bbc4c33fb0d5ef6
-  position: {x: 699.99994, y: 92.00003}
-  state: 0
-  description: Play Walk Sound
+  position: {x: 912.8762, y: 88.00002}
   paramName: 
   method: PlayWalkSound
   className: PlayerMovement
@@ -1046,9 +950,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: cf66d58015d499b4bbcbdf5f045aae42
-  position: {x: 399.9999, y: -4.999982}
-  state: 0
-  description: Is Bomb Interact
+  position: {x: 596.8762, y: -7.999964}
   child: {fileID: 6193472429586276356}
   method: IsBombInteract
   paramName: 
@@ -1067,8 +969,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 4ee9810e9f5db404e8a2c81e4d11c157
   position: {x: 497, y: 413.55005}
-  state: 0
-  description: 
   child: {fileID: -1676848161917596575}
   method: IsNotGroggy
   paramName: 
@@ -1086,9 +986,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 876e5aa7fbda8014caab232d39034a0a
-  position: {x: 775, y: -82.99999}
-  state: 0
-  description: Abort Interact
+  position: {x: 1016.87634, y: -74.999954}
   paramName: 
   method: AbortInteract
   className: PlayerInteract
@@ -1105,9 +1003,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 72ee9b6b51740f54c8d7f6843938c3f5
-  position: {x: 95.00003, y: -4.999982}
-  state: 0
-  description: Dash Skill
+  position: {x: 170.00003, y: -5.0000253}
   paramName: 
   method: DashSkill
   className: PlayerAttack
@@ -1124,9 +1020,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: c05b2d6b371aad7499246dd349a37006
-  position: {x: -777.00006, y: 271.00006}
-  state: 0
-  description: Find Alive Player
+  position: {x: -931.9999, y: 279}
   paramName: 
   method: FindAlivePlayer
   className: PlayerHitBehavior
@@ -1143,9 +1037,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 2daf35ad2c3351a4db5454e837fdcef2
-  position: {x: 399.9999, y: 91.00001}
-  state: 0
-  description: Move
+  position: {x: 596.8762, y: 88.00002}
   paramName: 
   method: Move
   className: PlayerMovement
@@ -1162,9 +1054,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 0413aaa3f3d687a47868ad7751a5da6f
-  position: {x: -302.0002, y: -297}
-  state: 0
-  description: Is Not Groggy
+  position: {x: -437, y: -297}
   child: {fileID: 1194003659082968326}
   method: IsNotGroggy
   paramName: 
@@ -1182,9 +1072,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: a5823d0448a98dd4a9b5f5f36f4f9fa2
-  position: {x: -1306.0002, y: -297}
-  state: 0
-  description: Can Behavior
+  position: {x: -1441.0001, y: -297}
   paramName: 
   method: CanBehavior
   className: PlayerInteract
@@ -1201,9 +1089,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 32a724eb36e0a614e8e9d72196e443e3
-  position: {x: 718.99994, y: 320.99997}
-  state: 0
-  description: Shoot Bullet
+  position: {x: 913, y: 330}
   paramName: 
   method: ShootBullet
   className: PlayerAttack
@@ -1220,9 +1106,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 75da69a6887104f45bb0fc5c9390a3e3
-  position: {x: -452.00024, y: 189}
-  state: 0
-  description: Find Interact Obj Node
+  position: {x: -587, y: 189}
   paramName: 
   method: FindInteractObjNode
   className: PlayerInteract
@@ -1239,14 +1123,10 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 63d5072f68b9ef64ba6bc052112b3a7c
-  position: {x: -967.0003, y: 45.999977}
-  state: 0
-  description: Died
+  position: {x: -1102.0001, y: 46.000046}
   children:
   - {fileID: -1567745938999925633}
-  - {fileID: -8389100774706129543}
   - {fileID: -4965493617326162921}
-  - {fileID: -5335882687480156656}
   - {fileID: 584862216382814153}
 --- !u!114 &8200657294350586246
 MonoBehaviour:
@@ -1261,9 +1141,7 @@ MonoBehaviour:
   m_Name: IfDecoratorNode
   m_EditorClassIdentifier: 
   guid: 965833fd334acab4db8423ece042ff8a
-  position: {x: 550, y: -4.999982}
-  state: 0
-  description: Is Not Groggy
+  position: {x: 757.87616, y: -8.999952}
   child: {fileID: -1676848161917596575}
   method: IsNotGroggy
   paramName: 
@@ -1281,9 +1159,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: b9f696e256882b5489995bd4b15db166
-  position: {x: -54.999996, y: -4.999982}
-  state: 0
-  description: Laying Landmine
+  position: {x: -115.000084, y: -4.9999304}
   paramName: 
   method: LayingLandmine
   className: PlayerAttack
@@ -1300,9 +1176,7 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   guid: 560f461ee9784f645bfa2141b6d49749
-  position: {x: -1117.0002, y: -200.00002}
-  state: 0
-  description: Respawn
+  position: {x: -1252, y: -199.99998}
   children:
   - {fileID: 1416728964697576737}
   - {fileID: -6137478795078086819}
@@ -1320,9 +1194,7 @@ MonoBehaviour:
   m_Name: ActionNode
   m_EditorClassIdentifier: 
   guid: 80f9e6d94b614b24d90413a9619a6acc
-  position: {x: -212.00034, y: 52.99998}
-  state: 0
-  description: Abort Interact Node
+  position: {x: -347.00003, y: 52.999992}
   paramName: 
   method: AbortInteractNode
   className: PlayerInteract

@@ -1,3 +1,4 @@
+using BAEK;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -35,6 +36,8 @@ namespace Orpul1
         {
             if (!isCustomMatch) return;
             base.OnJoinedRoom();
+            Managers.UI.ShowPopupUI<ChatController>(UIKEY.ChatCanvas).SetCanvasOrderLayer(3);
+
             UIEventBus.Publish(UIEventBus.UIEventType.DEACTIVEROOMLISTPANEL);
             UIEventBus.Publish(UIEventBus.UIEventType.ACTIVECUSTOMROOMPANEL);
         }
@@ -72,7 +75,7 @@ namespace Orpul1
                 yield return waitOneSec;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.IsMessageQueueRunning = true;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
+            Managers.UI.ClosePopupUI(UIKEY.ChatCanvas);
             Managers.SceneLoad.LoadScene("MainGame");
         }
     }

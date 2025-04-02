@@ -33,8 +33,8 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(new PhotonHashTable { { EPropertyType.TEAMINDEX.ToString(), 0 } });
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("OfflineMode On");
-        StartCoroutine(TimeCount());
-        EventBusSystem.Subscribe(SpawnPlayer);
+        //StartCoroutine(TimeCount());
+        //EventBusSystem.Subscribe(SpawnPlayer);
     }
     IEnumerator TimeCount()
     {
@@ -54,14 +54,14 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
     {
         Debug.Log("JoinRoom");
         InitEvent();
-        SpawnPlayer();
+        //SpawnPlayer();
         //SelectPlayer();
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         PhotonNetwork.CurrentRoom.SetCustomProperties(new PhotonHashTable { { EPropertyType.REDTEAM.ToString(), 1 } });
         InitEvent();
-        SpawnPlayer();
+        //SpawnPlayer();
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -98,6 +98,6 @@ public class PhotonOfflineMode : MonoBehaviourPunCallbacks
         UIPopup _uiPopup = Managers.UI.ShowPopupUI<UIPopup>(UIKEY.Play);
         //_uiPopup.GetComponent<ShowCursor>().bombPos = bombPos.position;
         _uiPopup.GetComponent<PlayScene>().weapon = playerObj.GetComponent<PlayerShooting>();
-        EventBusSystem.Unsubscribe(SpawnPlayer);
+       // EventBusSystem.Unsubscribe(SpawnPlayer);
     }
 }

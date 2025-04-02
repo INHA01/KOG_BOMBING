@@ -1,4 +1,5 @@
 using System.Text;
+using BAEK;
 using Michsky.UI.Shift;
 using Photon.Pun;
 using UnityEngine;
@@ -29,6 +30,7 @@ namespace Orpul1
         }
         public override void ExitState()
         {
+            Managers.UI.ClosePopupUI(UIKEY.ChatCanvas);
         }
     }
 }

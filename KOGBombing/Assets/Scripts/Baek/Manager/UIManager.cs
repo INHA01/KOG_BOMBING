@@ -21,32 +21,21 @@ public class UIManager
         }
     }
     int _order = 0;
-    //value
     UIPopup[] _popupArray = new UIPopup[(int)UIKEY.Max];
-    //key
-    UIKEY[] _popupKey = new UIKEY[(int)UIKEY.Max];
 
     public void Init()
     {
         _order = 0;
-        for (int i = 0; i < (int)UIKEY.Max; i++)
-        {
-            _popupKey[i] = UIKEY.NONE;
-        }
     }
-    int GetHash(UIKEY key)
-    {
-        int hash = key.GetHashCode();
-        return Mathf.Abs(hash) % (int)UIKEY.Max;
-    }
+
 
     public T GetPopupUI<T>(UIKEY name) where T : UIPopup
     {
         if (name == UIKEY.NONE) return null;
-        int index = GetHash(name);
-        if (_popupKey[index].Equals(name))
+        int index = (int)name;
+        if(_popupArray[index] != null)
         {
-            return _popupArray[index].GetComponent<T>();
+            return _popupArray[index] as T;
         }
         return ShowPopupUI<T>(name);
     }
@@ -55,46 +44,24 @@ public class UIManager
     {
         if (name == UIKEY.NONE) return null;
 
-        int index = GetHash(name);
-        GameObject go = null;
-        bool isExist = false;
-        if (_popupKey[index].Equals(name))
-        {
-            go = _popupArray[(int)name].gameObject;
-        }
-        else
+        int index = (int)name;
+        GameObject go = _popupArray[index]?.gameObject;
+        if(go == null)
         {
             go = Managers.Resource.Instantiate(FactoryType.UI, (int)name, Root.transform);
-            isExist = true;
-        }
-        go.SetActive(true);
-        T sceneUI = Util.GetOrAddComponent<T>(go);
-        if (sceneUI == null)
-        {
-            Debug.LogError("UIPopup is Null");
-            return null;
-        }
-        sceneUI.Init();
-        if (isExist)
-        {
-            // 아직 생성되지 않은 팝업일 경우
-            // 키값 추가
-            _popupKey[index] = name;
+            T sceneUI = Util.GetOrAddComponent<T>(go);
+            sceneUI.Init();
             _popupArray[index] = sceneUI;
         }
-
-        return sceneUI;
+        go.SetActive(true);
+        
+        return _popupArray[index] as T;
     }
     public void ClosePopupUI(UIKEY name)
     {
-        GameObject go = null;
-        int index = 0;
         if (name == UIKEY.NONE) return;
-        index = GetHash(name);
-        if (_popupKey[index].Equals(name))
-        {
-            go = _popupArray[index].gameObject;
-        }
+        int index = (int)name;
+        GameObject go = _popupArray[index]?.gameObject;
         if (go != null)
         {
             _order--;
@@ -105,9 +72,9 @@ public class UIManager
     {
         for(int i = 0; i < (int)UIKEY.Max; i++)
         {
-            if (_popupKey[i] == UIKEY.CrossHair || _popupKey[i] == UIKEY.Emoticon) continue;
-            if(_popupKey[i] != UIKEY.NONE)
-                ClosePopupUI(_popupKey[i]);
+            if (i == (int)UIKEY.CrossHair || i == (int)UIKEY.Emoticon) continue;
+            if(i != (int)UIKEY.NONE)
+                ClosePopupUI((UIKEY)i);
         }
         _order = 0;
     }
@@ -134,7 +101,7 @@ public class UIManager
         {
             if (_popupArray[i] != null)
             {
-                if (_popupKey[i] == UIKEY.CrossHair || _popupKey[i] == UIKEY.Emoticon) continue;
+                if (i == (int)UIKEY.CrossHair || i == (int)UIKEY.Emoticon) continue;
                 Canvas canvas = _popupArray[i].GetComponent<Canvas>();
                 canvas.renderMode = mode;
                 if (mode == RenderMode.ScreenSpaceCamera)

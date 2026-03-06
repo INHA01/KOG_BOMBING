@@ -8,17 +8,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using BAEK;
 
-public class ChoosePlayer : Subject
+public class ChoosePlayer : MonoBehaviour
 {
     [SerializeField] protected Transform teamIconBack;
     [SerializeField] TextMeshProUGUI characterName;
     [SerializeField] TextMeshProUGUI teamType;
     [SerializeField] TextMeshProUGUI countDownText;
     public Semin.CharacterType type;
-    public override void Notify(int index)
+
+    [SerializeField] Subject subject;
+    public Subject Subject => subject;
+    [SerializeField] SubjectParam<int> subjectParam;
+    public SubjectParam<int> SubjectParam => subjectParam;
+
+    public void SetCharacterName(int index)
     {
-        base.Notify(index);
-        SetCharacterName(index);
+        type = (Semin.CharacterType)index;
+        characterName.text = type.ToString();
+        subjectParam.Notify(index);
     }
     public virtual void Init()
     {
@@ -37,33 +44,27 @@ public class ChoosePlayer : Subject
             teamType.colorGradient = new VertexGradient(Color.red, Color.red, weekRed, weekRed);
             teamType.text = "АјАн";
         }
-        GameObject go = null;
-        go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.ChooseAvatar);
-        go.GetComponent<ChooseAvatar>().SetSubject(this, true);
 
-        Notify((int)type);
-        //SetIcon(true);
+        SetCharacterName((int)type);
+        SetIcon(true);
         StartCoroutine(CountDown());
     }
     public virtual void SetIcon(bool isMine)
     {
-        GameObject go = null;
-        go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.ChooseIconBack, teamIconBack);
-        if (isMine)
-        {
-            go.GetComponent<ChooseAvatarIcon>().SetSubject(this , true);
-        }
+        //GameObject go = null;
+        //go = Managers.Resource.Instantiate(FactoryType.SupportUI, (int)SupportUI.ChooseIconBack, teamIconBack);
+        //if (isMine)
+        //{
+        //    go.GetComponent<ChooseAvatarIcon>().SetSubject(this , true);
+        //}
     }
-    public void SetCharacterName(int index)
-    {
-        type = (Semin.CharacterType)index;
-        characterName.text = type.ToString();
-    }
+    
     public void Spawn()
     {
-        EventBusSystem.Publish();
-        Notify();
-        RemoveAllObserver();
+        //EventBusSystem.Publish();
+        subject.Notify();
+        subject.ClearObservers();
+
         type = Semin.CharacterType.Ned;
         Managers.UI.ClosePopupUI(BAEK.UIKEY.CharacterChoose);
     }

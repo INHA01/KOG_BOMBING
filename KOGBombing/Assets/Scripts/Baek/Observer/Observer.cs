@@ -23,20 +23,20 @@ public abstract class Observer : MonoBehaviour
     {
         if (subject != null)
         {
-            if (isParam)
-                subject.AddObserverParam(this);
-            else
-                subject.AddObserver(this);
+            //if (isParam)
+            //    subject.AddObserverParam(this);
+            //else
+            //    subject.AddObserver(this);
         }
     }
     protected void Detach(bool isParam)
     {
         if (subject != null)
         {
-            if(isParam)
-                subject.RemoveObserverParam(this);
-            else
-                subject.RemoveObserver(this);
+            //if(isParam)
+            //    subject.RemoveObserverParam(this);
+            //else
+            //    subject.RemoveObserver(this);
         }
     }
 }

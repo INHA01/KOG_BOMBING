@@ -1,45 +1,27 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-public abstract class Subject : MonoBehaviour
+public class Subject : MonoBehaviour
 {
-    public event Action OnNotify;
-    public event Action<int> OnNotifyParam;
+    private readonly List<IObserver> _observers = new List<IObserver>();
 
-    #region OnNotify
+    public void AddObserver(IObserver observer)
+    {
+        _observers.Add(observer);
+    }
+    public void RemoveObserver(IObserver observer)
+    {
+        _observers.Remove(observer);
+    }
+    public void ClearObservers()
+    {
+        _observers.Clear();
+    }
     public virtual void Notify()
     {
-         OnNotify?.Invoke();
-    }
-    public void AddObserver(Observer observer)
-    {
-        OnNotify += observer.OnNotify;
-    }
-    public void RemoveObserver(Observer observer)
-    {
-        OnNotify -= observer.OnNotify;
-    }
-    #endregion
-
-    #region OnNotifyParam
-    public virtual void Notify(int index)
-    {
-        OnNotifyParam?.Invoke(index);
-    }
-    public void AddObserverParam(Observer observer)
-    {
-        OnNotifyParam += observer.OnNotifyParam;
-    }
-    public void RemoveObserverParam(Observer observer)
-    {
-        OnNotifyParam -= observer.OnNotifyParam;
-    }
-    #endregion
-    public void RemoveAllObserver()
-    {
-        OnNotify = null;
-        OnNotifyParam = null;
+        foreach (IObserver observer in _observers)
+        {
+            observer.OnNotify();
+        }
     }
 }

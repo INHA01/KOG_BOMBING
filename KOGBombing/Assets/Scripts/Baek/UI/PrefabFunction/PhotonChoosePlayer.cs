@@ -32,17 +32,18 @@ public class PhotonChoosePlayer : ChoosePlayer
     {
         PhotonNetwork.NetworkingClient.EventReceived -= OnSelectEvent;
     }
-    public override void Notify(int index)
-    {
-        if (index == selectCharacterIndex) return;
-        selectCharacterIndex = index;
-        Managers.Sound.StopRecentSound();
-        Managers.Sound.PlayEffect(sound.selectSound[index],EMixerGroup.CHARACTER);
-        base.Notify(index);
+    // 임시 제외
+    //public override void Notify(int index)
+    //{
+    //    if (index == selectCharacterIndex) return;
+    //    selectCharacterIndex = index;
+    //    Managers.Sound.StopRecentSound();
+    //    Managers.Sound.PlayEffect(sound.selectSound[index],EMixerGroup.CHARACTER);
+    //    base.Notify(index);
 
-        object[] sendMsg = new object[5] { (byte)index, (byte)playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam, Managers.UserData.userData.level };
-        PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);
-    }
+    //    object[] sendMsg = new object[5] { (byte)index, (byte)playerTeamIndex,PhotonNetwork.LocalPlayer.NickName, eTeam, Managers.UserData.userData.level };
+    //    PhotonNetwork.RaiseEvent((int)PunEventType.CHOOSEPLAYER, sendMsg, option, SendOptions.SendReliable);
+    //}
     private void OnSelectEvent(EventData punEvent)
     {
         if(punEvent.Code == (int)PunEventType.CHOOSEPLAYER)
@@ -115,7 +116,7 @@ public class PhotonChoosePlayer : ChoosePlayer
         if (isMine)
         {
             ChooseAvatarIcon chooseAvatarIcon = go.GetComponent<ChooseAvatarIcon>();
-            chooseAvatarIcon.SetSubject(this, true);
+            //chooseAvatarIcon.SetSubject(this, true);
             chooseAvatarIcon.SettingText(Managers.UserData.userData.nickName, Managers.UserData.userData.level);
         }
         else

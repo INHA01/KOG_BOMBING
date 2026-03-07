@@ -43,15 +43,6 @@ public class GenericObjectpool<T> where T : Component
             instance.transform.localScale = Vector3.one;
         }
     }
-    public void ResetPool()
-    {
-        foreach (var obj in queue)
-        {
-            UnityEngine.Object.Destroy(obj.gameObject);
-        }
-        queue.Clear();
-        SetupPool();
-    }
 
     public T GetPooledObject()
     {

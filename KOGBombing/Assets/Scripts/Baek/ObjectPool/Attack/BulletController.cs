@@ -3,11 +3,12 @@ using Orpul1;
 using Photon.Pun;
 using Photon.Realtime;
 using Semin;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class BulletController : PooledObject
+public class BulletController : MonoBehaviour
 {
     [SerializeField] protected float moveSpeed;
     [HideInInspector] public ETeam eTeamBullet;
@@ -18,7 +19,6 @@ public class BulletController : PooledObject
     protected float destroyDistance;
     protected float distance;
     public Vector3 direction;
-    Collider target;
 
     [Header("Effect")]
     public GameObject muzzlePrefab;
@@ -26,16 +26,23 @@ public class BulletController : PooledObject
     public float DestroyDistance { get => destroyDistance; set => destroyDistance = value; }
     public float Damage { get { return damage; } }
     IChangeHitCursorAble hitCursor;
-  
+
+    // BulletController Release시 호출 이벤트
+    public Action<BulletController> OnRelease; 
+
     protected virtual void FixedUpdate()
     {
         transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
         distance += moveSpeed * Time.deltaTime;
         if (distance > destroyDistance)
         {
-            distance = 0;
-            Release();
+            ReturnToPool();
         }
+    }
+    private void ReturnToPool()
+    {
+        distance = 0;
+        OnRelease?.Invoke(this); // Release 시 이벤트 호출
     }
 
     protected bool IsOtherTeam(IGetTeamTypeable teamType)
@@ -57,7 +64,7 @@ public class BulletController : PooledObject
         }
 
         HitAndMakeParticle(other);
-        Release();
+        ReturnToPool();
     }
     private void HitPlayer(Collider other)
     {

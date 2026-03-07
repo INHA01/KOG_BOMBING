@@ -5,8 +5,14 @@ using System.Collections;
 using UnityEngine;
 
 
-public class PlayerShooting : Magazine
+public class PlayerShooting : MonoBehaviour, IDestroyAble
 {
+    [Header("ObjectPool")]
+    [SerializeField] BulletController bulletPrefab;
+    [SerializeField] GenericObjectpool<BulletController> _bulletPool;
+    [SerializeField] Transform _bulletParent;
+
+
     [Header("Bullet")]
     [SerializeField] int InitBulletCount = 9;
     [SerializeField] int InitMagazineCount = 4;
@@ -27,9 +33,25 @@ public class PlayerShooting : Magazine
 
     public int MagazineCount { get { return magazineCount; } }
     public float ReloadTime { get { return time / reloadTime; } }
-    BulletController targetBullet;
 
     #region Shooting
+    private void InitializeObjectPool()
+    {
+        if (_bulletPool == null || _bulletParent == null)
+        {
+            Debug.LogError("Bullet Pool or Parent is not assigned.");
+            return;
+        }
+        _bulletPool = new GenericObjectpool<BulletController>
+            (
+            bulletPrefab, _bulletParent, InitBulletCount,
+            onGet: bullet => 
+                {
+                    // 총알이 반환을 요청할 때, 이 풀의 Release를 실행하도록 연결
+                    bullet.OnRelease = (b) => _bulletPool.Release(b);
+                }
+            );
+    }
     public void Init(PlayerAnimation animator, AttackRange attackRange, PlayerInfo playerInfo)
     {
         playerData = GetComponent<PlayerData>();
@@ -39,6 +61,8 @@ public class PlayerShooting : Magazine
         this.animator = animator;
         this.playerInfo = playerInfo;
         hitCursor = Managers.UI.GetPopupUI<CrossHairController>(UIKEY.CrossHair);
+
+        InitializeObjectPool();
     }
     public void RoundChange()
     {
@@ -69,7 +93,7 @@ public class PlayerShooting : Magazine
     [PunRPC]
     void BulletSpawn(Vector3 shootPosi,Vector3 shootDirection)
     {
-        GameObject bullet = GetPooledObject().gameObject;
+        GameObject bullet = _bulletPool.GetPooledObject().gameObject;
 		if (bullet == null)
         {
             Debug.Log("bullet is null");
@@ -121,7 +145,7 @@ public class PlayerShooting : Magazine
         {
             yield return null;
             time += Time.deltaTime;
-            if((time > reloadTime) && (Count > InitBulletCount))
+            if((time > reloadTime) && (_bulletPool.Count > InitBulletCount))
             {
                 time = 0;
                 magazineCount++;
@@ -133,4 +157,9 @@ public class PlayerShooting : Magazine
         reloadCoroutine = null;
     }
     #endregion
+
+    public void DoDestory()
+    {
+        Destroy(_bulletParent.gameObject);
+    }
 }

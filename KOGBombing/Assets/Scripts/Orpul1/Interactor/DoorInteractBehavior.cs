@@ -19,7 +19,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
         TriOpenDoor,
         TriInitDoor
     }
-   
+
     [SerializeField] InteractSound sound;
     [SerializeField] PhotonView pView;
     [SerializeField] DoorInteractBehavior otherDoor;
@@ -28,7 +28,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     IActiveable activeAlertUI;
     IResetAble interactUICamera;
     Action openOtherDoor;
-   
+
     protected override void Start()
     {
         base.Start();
@@ -40,7 +40,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     }
     private void OnEnable()
     {
-        GameEventBus.Subscribe(GameEventBus.EGameEvent.DOORCLOSE,CloseDoor);
+        GameEventBus.Subscribe(GameEventBus.EGameEvent.DOORCLOSE, CloseDoor);
     }
     private void OnDisable()
     {
@@ -50,7 +50,7 @@ public class DoorInteractBehavior : InteractObject, IInteractAble
     {
         if (interactState == InteractState.COMPLETE) return false;
         StartCoroutine(CoInteractDelay());
-        
+
         return true;
     }
     [PunRPC]

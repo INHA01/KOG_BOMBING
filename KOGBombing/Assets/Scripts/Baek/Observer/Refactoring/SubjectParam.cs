@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class SubjectParam<T> : MonoBehaviour
+public class SubjectParam<T>
 {
-    private readonly List<IObserverParam<T>> _observers = new List<IObserverParam<T>>();
+    private readonly HashSet<IObserverParam<T>> _observers = new HashSet<IObserverParam<T>>();
     
     public void AddObserver(IObserverParam<T> observer)
     {

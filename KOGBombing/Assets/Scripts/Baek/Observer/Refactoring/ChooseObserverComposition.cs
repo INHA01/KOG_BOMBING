@@ -21,12 +21,12 @@ public class ChooseObserverComposition : MonoBehaviour
 
             if (go.TryGetComponent(out IObserver observer))
             {
-                _playerSubject.Subject.AddObserver(observer);
+                _playerSubject.AddObserver(observer);
             }
 
             if (go.TryGetComponent(out IObserverParam<int> observerParam))
             {
-                _playerSubject.SubjectParam.AddObserver(observerParam);
+                _playerSubject.AddObserver(observerParam);
             }
         }
     }

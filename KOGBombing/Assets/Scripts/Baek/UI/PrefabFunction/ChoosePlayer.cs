@@ -16,10 +16,17 @@ public class ChoosePlayer : MonoBehaviour
     [SerializeField] TextMeshProUGUI countDownText;
     public Semin.CharacterType type;
 
-    [SerializeField] Subject subject;
-    public Subject Subject => subject;
-    [SerializeField] SubjectParam<int> subjectParam;
-    public SubjectParam<int> SubjectParam => subjectParam;
+    Subject subject = new Subject();
+    SubjectParam<int> subjectParam = new SubjectParam<int>();
+
+    public void AddObserver(IObserver observer)
+    {
+        subject.AddObserver(observer);
+    }
+    public void AddObserver(IObserverParam<int> observer)
+    {
+        subjectParam.AddObserver(observer);
+    }
 
     public void SetCharacterName(int index)
     {

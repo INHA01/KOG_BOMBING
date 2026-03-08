@@ -6,7 +6,7 @@ using Orpul1;
 using Photon.Pun;
 using UnityEngine;
 
-public abstract class InteractObject : Subject, IInteractAble
+public abstract class InteractObject : MonoBehaviour, IInteractAble
 {
     [SerializeField] 
     protected GameObject lookUiCamera;
@@ -23,6 +23,7 @@ public abstract class InteractObject : Subject, IInteractAble
     protected float interactTime = 0;
     protected Interacting interactUI;
 
+    protected Subject subject = new Subject();
     protected enum InteractState
     {
         NONE,

@@ -4,11 +4,11 @@ using BAEK;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputListner : Subject
+public class PlayerInputListner : MonoBehaviour
 {
     [SerializeField]
     PlayerBlackBoard blackBoard;
-
+    public Subject subject = new Subject();
     private void Start()
     {
         for (int i = 0; i < (int)EKey.MAX; i++)

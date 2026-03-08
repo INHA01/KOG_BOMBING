@@ -35,7 +35,7 @@ public class PlayerCamera : ViewObserver
 			target = GameObject.FindWithTag("Player");
         }
         playerData = target.GetComponent<PlayerData>();
-		SetSubject(target.GetComponent<PlayerInputListner>(),true);
+		SetSubject(target.GetComponent<PlayerInputListner>().subject,true);
     }
     void FixedUpdate()
 	{

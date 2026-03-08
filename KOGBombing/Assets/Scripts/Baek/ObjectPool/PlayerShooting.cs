@@ -9,8 +9,8 @@ public class PlayerShooting : MonoBehaviour, IDestroyAble
 {
     [Header("ObjectPool")]
     [SerializeField] BulletController bulletPrefab;
-    [SerializeField] GenericObjectpool<BulletController> _bulletPool;
     [SerializeField] Transform _bulletParent;
+    GenericObjectpool<BulletController> _bulletPool;
 
 
     [Header("Bullet")]

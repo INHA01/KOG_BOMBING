@@ -31,24 +31,25 @@ public class Managers : MonoBehaviour , InitClass
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PhotonDataManager PunData { get { return Instance._punData; } }
     public static CameraManager CamData { get { return Instance._camData; } }
-    static Managers Instance 
+    public static Managers Instance 
     { 
         get 
         {
             if (s_instance == null)
-            {
-                GameObject go = GameObject.Find("@Managers");
-                if (go == null)
-                {
-                    // Hierarchi 코드로 오브젝트 만들고 스크립트 넣음
-                    go = new GameObject { name = "@Managers" };
-                    go.AddComponent<Managers>();
-                }
-
-                s_instance = go.GetComponent<Managers>();
-            }
+                SetupInstance();
             return s_instance;
         } 
+    }
+    private static void SetupInstance()
+    {
+        GameObject go = GameObject.Find("@Managers");
+        if (go == null)
+        {
+            go = new GameObject { name = "@Managers" };
+            go.AddComponent<Managers>();
+        }
+
+        s_instance = go.GetComponent<Managers>();
     }
     public void Init()
     {
@@ -57,7 +58,6 @@ public class Managers : MonoBehaviour , InitClass
         _sceneLoad.Init();
         _sound = gameObject.GetComponentInChildren<SoundManager>();
         _sound.Init();
-        s_instance = GetComponent<Managers>();
     }
     private IEnumerator Start()
     {

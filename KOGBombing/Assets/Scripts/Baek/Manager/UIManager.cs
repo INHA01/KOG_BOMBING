@@ -35,16 +35,12 @@ public class UIManager
         }
         ShowPopupUI<CrossHairController>(UIKEY.CrossHair);
     }
-    int GetHash(UIKEY key)
-    {
-        int hash = key.GetHashCode();
-        return Mathf.Abs(hash) % (int)UIKEY.Max;
-    }
+
 
     public T GetPopupUI<T>(UIKEY name) where T : UIPopup
     {
         if (name == UIKEY.NONE) return null;
-        int index = GetHash(name);
+        int index = (int)name;
         if (_popupKey[index].Equals(name))
         {
             return _popupArray[index].GetComponent<T>();
@@ -56,7 +52,7 @@ public class UIManager
     {
         if (name == UIKEY.NONE) return null;
 
-        int index = GetHash(name);
+        int index = (int)name;
         GameObject go = null;
         bool isExist = false;
         if (_popupKey[index].Equals(name))
@@ -91,7 +87,7 @@ public class UIManager
         GameObject go = null;
         int index = 0;
         if (name == UIKEY.NONE) return;
-        index = GetHash(name);
+        index = (int)name;
         if (_popupKey[index].Equals(name))
         {
             go = _popupArray[index].gameObject;
